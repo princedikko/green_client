@@ -1,0 +1,34 @@
+.sectionHomeComp3 {
+  background-color: #fff;
+  padding: 5.8rem;
+  text-align: center;
+}
+.HomeComp3Cont {
+  background-color: transparent;
+}
+
+.HomeComp3Cont h2 {
+  font-size: 5.6rem;
+}
+.HomeComp3Cont > p {
+  max-width: 46.89rem;
+  line-height: 1.5;
+}
+.HomeComp3Cont {
+  font-size: 1.6rem;
+}
+
+.HomeComp3CardsCont .HomeComp3Card {
+  max-width: 28rem;
+}
+.HomeComp3CardsCont .HomeComp3Card h3 {
+  font-size: 2.4rem;
+}
+
+.HomeComp3CardsCont .HomeComp3Card p {
+  font-size: 1.5rem;
+  line-height: 1.5;
+}
+.HomeComp3CardsCont .HomeComp3Card img {
+  max-width: 8.4rem;
+}

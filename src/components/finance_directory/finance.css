@@ -1,0 +1,134 @@
+/* grid-column: span 2; */
+.financeProfileCont {
+  font-size: 1.5rem;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: 1fr 9fr;
+  background-color: #fff;
+}
+
+.financeHeader {
+  /* grid-column: span 2; */
+  background-color: #fff;
+  padding: 1.8rem;
+}
+
+.financeAside {
+  position: relative;
+  grid-row: span 2;
+  background-color: #fafaff;
+  padding: 1.8rem;
+}
+
+.itemsPf img {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.profBtn {
+  width: 100%;
+  padding: 0.7rem 1.4rem;
+  border-radius: 0.2rem;
+  background-color: #00d285;
+  color: #fff;
+  margin-bottom: 3.2rem;
+}
+.financeContents {
+  font-size: 1.5rem;
+}
+
+.financeAsideSec {
+  width: 100%;
+  /* margin-top: 2.4rem; */
+}
+.financeAsideSec .loginLogo img {
+  width: 65%;
+}
+.active-prl-tab:link,
+.active-prl-tab:visited {
+  transition: var(--speed) ease;
+  /* background-color: #2d5ecf; */
+  border-radius: 0.4rem;
+  color: #2d5ecf;
+}
+
+.prfLinksto {
+  margin: 3.2rem 0 1.8rem 0;
+  width: 100%;
+  color: #999;
+  padding-left: 1.6rem;
+}
+.itemsPf:hover,
+.itemsPf:active {
+  transition: var(--speed) ease;
+  background-color: #f3f3f3;
+  border-radius: 0.4rem;
+  color: #2d5ecf;
+}
+.financeAsideSec .itemsPf:hover,
+.financeAsideSec .itemsPf:active {
+  transition: var(--speed) ease;
+  background-color: transparent;
+  color: #f35e6a;
+}
+
+.logout_finance {
+  padding: 0.7rem 1.8rem;
+  background-color: transparent;
+  color: #666;
+}
+
+.logout_finance:hover,
+.logout_finance:active {
+  color: #f35e6a;
+}
+.close-prl-tab {
+  transition: var(--speed) ease;
+}
+
+.financeContents {
+  padding: 2.4rem;
+}
+
+.dp {
+  height: 2.4rem;
+  width: 2.4rem;
+  background-color: #6693fa;
+  color: #fff;
+  border-radius: 55rem;
+  overflow: hidden;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.financeHeader a:link,
+.financeHeader a:visited {
+  color: #999;
+  font-size: 1.4rem;
+}
+.notifBtn {
+  position: relative;
+  color: #999;
+  cursor: pointer;
+}
+.notifBtn:active,
+.notifBtn:hover {
+  color: #2d5ecf;
+}
+.notifBtn figure {
+  width: 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.5rem;
+  background-color: #f35e6a;
+  color: #fff;
+  border-radius: 12rem;
+  position: absolute;
+  padding: 0.2rem;
+  right: -30%;
+  top: -39%;
+}

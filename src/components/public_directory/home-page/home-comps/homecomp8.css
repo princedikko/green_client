@@ -1,0 +1,60 @@
+.sectionHomeComp8 {
+  background-color: #fbfbfb;
+  padding: 9.6rem 4.5rem;
+}
+.homeComp8Cont {
+  color: #333d64;
+}
+
+.homeComp8Left {
+  width: 50%;
+  align-items: flex-end;
+}
+.homeComp8Left img {
+  max-width: 35rem;
+}
+.homeComp8Left h3 {
+  max-width: 40rem;
+  font-weight: 500;
+  font-size: 3.6rem;
+  line-height: 1.5;
+}
+.homeComp8Left h3 span {
+  font-size: 1.2rem;
+}
+.homeComp8Left h4 {
+  font-size: 1.6rem;
+}
+
+.homeCmp8Subicon {
+  width: 3.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0rem;
+  border-radius: 50rem;
+  background-color: transparent;
+  color: #38c5e5;
+}
+
+.homeComp8Left p {
+  max-width: 40rem;
+  font-size: 1.6rem;
+  line-height: 1.5;
+}
+.homeComp8Left button {
+  padding: 1.2rem 2.4rem;
+  border-radius: 50rem;
+  align-items: flex-end;
+  max-width: 18rem;
+  background-color: #333e60;
+  color: #fff;
+}
+
+.homeComp8Right {
+  width: 50%;
+}
+
+.homeComp8Right img {
+  max-width: 35rem;
+}

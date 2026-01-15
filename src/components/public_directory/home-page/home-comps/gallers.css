@@ -1,0 +1,59 @@
+.sectionGalleryS {
+  padding: 3.5rem;
+  color: #fff;
+}
+
+.gallerSCont {
+  display: grid;
+  grid-template-columns: 2fr 2fr 4fr;
+  gap: 2rem;
+}
+
+.gallerSCont figure {
+  height: 30rem;
+  border-radius: 1.2rem;
+  overflow: hidden;
+  padding: 1.2rem;
+  border-radius: 4.8rem;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.gallerSCont figure:first-child {
+  background-image: url("./homepage_images/a_student.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  /* background-color: #ff763e; */
+}
+
+.gallerSCont figure:last-child {
+  /* background-color: #f7d225; */
+  background-image: url("./homepage_images/with_teacher.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.gallerSCont figure:nth-child(2) {
+  border-radius: 0;
+  padding: 0;
+}
+.gallerSCont figure:nth-child(2) div {
+  height: 50%;
+  background-color: #ff763e;
+  border-radius: 4.8rem;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+  overflow: hidden;
+  padding: 2rem 4rem;
+  font-size: 2rem;
+  color: #fff;
+  font-weight: 400;
+}
+.gallerSCont figure:nth-child(2) div:nth-child(2) {
+  border-radius: 4.8rem;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+  background-color: #b09df3;
+}

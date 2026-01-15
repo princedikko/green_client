@@ -1,0 +1,273 @@
+/* ======== RESPONSIVE WEB DESIGN ============== */
+
+/* Grid with 3 columns */
+/* .App .rwdG3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+} */
+/* Tablets (Medium Screens) */
+@media (max-width: 1024px) {
+  .App .rwdG2 {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .App .mobileViewRegDisc1 {
+    /* background-color: red; */
+    display: block;
+  }
+  .App .mobileViewRegDisc1x {
+    /* background-color: red; */
+    display: none;
+  }
+}
+
+/* Mobile (Small Screens) */
+@media (max-width: 768px) {
+  .App .rwdG2 {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .App .mobileViewRegDisc1 {
+    /* background-color: red; */
+    display: block;
+  }
+  .App .mobileViewRegDisc1x {
+    /* background-color: red; */
+    display: none;
+  }
+}
+
+/* Grid with 3 columns */
+/* .App .rwdG3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+} */
+
+@media (max-width: 1024px) {
+  .App .rwdG3 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .App .rwdG3 {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Grid with 4 columns */
+/* .App .rwdG4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+} */
+
+@media (max-width: 1200px) {
+  .App .rwdG4 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .App .rwdG4 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .App .rwdG4 {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Grid with 5 columns */
+/* .App .rwdG5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+} */
+
+@media (max-width: 1400px) {
+  .App .rwdG5 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 1200px) {
+  .App .rwdG5 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .App .rwdG5 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .App .rwdG5 {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Grid with 6 columns */
+/* .App .rwdG6 {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+} */
+
+@media (max-width: 1600px) {
+  .App .rwdG6 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (max-width: 1400px) {
+  .App .rwdG6 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 1200px) {
+  .App .rwdG6 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .App .rwdG6 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .App .rwdG6 {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+/* @@@@@@@@@@@@@@@@@ ALL DEVICES RESPONSIVE DESIGNS @@@@@@@@@@@@@@@@@@@@ */
+
+/* Large Desktops (≥ 1600px) */
+@media (min-width: 1600px) {
+  .responsive-container {
+    max-width: 1600px;
+  }
+}
+
+/* Desktops & Laptops (1200px - 1599px) */
+@media (max-width: 1599px) {
+  .responsive-container {
+    max-width: 1200px;
+  }
+}
+
+/* Tablets & Small Laptops (1024px - 1199px) */
+@media (max-width: 1199px) {
+  .App .rwdG2RegformResultCont {
+    grid-template-columns: 1fr;
+    max-width: 61rem;
+  }
+
+  .App .gradeSelection .regInputCont {
+    max-width: 25rem;
+  }
+}
+
+/* Large Tablets & iPads (768px - 1023px) */
+@media (max-width: 1023px) {
+  .responsive-container {
+    max-width: 768px;
+    padding: 12px;
+  }
+  .App .mobileViewRegDisc1 {
+    /* background-color: red; */
+    display: block;
+  }
+}
+
+/* Small Tablets & Large Phones (600px - 767px) */
+@media (max-width: 767px) {
+  .responsive-container {
+    max-width: 600px;
+    padding: 10px;
+  }
+  .App .rwdHide {
+    display: none;
+  }
+  .App .mcons-home-navbar-b-cont h1 div span {
+    width: 100%;
+    font-size: 1.2rem;
+  }
+  .mcons-home-navbar-b-cont h1 div h2 {
+    font-size: 1.3rem;
+  }
+  .mcons-home-navbar-b-cont h1 img {
+    width: 11rem;
+    /* opacity: 0; */
+  }
+  .App .contactUsCont {
+    padding: 1.8rem;
+  }
+  .App .sectioncontactUs {
+    background-color: #fafaff;
+  }
+}
+
+/* Mobile Phones (≤ 599px) */
+@media (max-width: 599px) {
+  .App .regFormfloat {
+    flex-direction: column;
+  }
+  .App .regFormfloat > div {
+    width: 100%;
+  }
+  .App .regformScoreRwd {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr;
+  }
+  .App .gradeSelection .regInputCont {
+    max-width: 17rem;
+  }
+
+  .App .regformSect {
+    padding: 1.4rem;
+  }
+  .App .passportRwdRegForm {
+    position: absolute;
+    right: -10%;
+    top: -8%;
+  }
+  .App .rwdRegExistDb {
+    grid-template-columns: 1fr;
+  }
+
+  .App .adminRegCont {
+    padding: 2.5rem 1.8rem;
+  }
+}
+
+/* Extra Small Devices (≤ 375px) */
+@media (max-width: 375px) {
+  .responsive-container {
+    padding: 5px;
+  }
+}

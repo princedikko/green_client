@@ -1,0 +1,116 @@
+.passportUploadCont {
+  font-family: Arial, sans-serif;
+  border-radius: 0.4rem;
+  border: 1px dashed #065ad8;
+  background-color: #e2eefb;
+  color: #065ad8;
+  width: 100%;
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 2rem;
+  height: 18rem;
+}
+.passportUploadCont img {
+  max-width: 10rem;
+  height: 12rem;
+  border-radius: 0.6rem;
+}
+.fileUploadCont img {
+  max-width: 10rem;
+  height: 12rem;
+  border-radius: 0.6rem;
+}
+.fileUploadCont {
+  display: grid;
+  font-family: Arial, sans-serif;
+  border-radius: 0.4rem;
+  border: 1px dashed #065ad8;
+  background-color: #e2eefb;
+  color: #065ad8;
+  width: 100%;
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 1rem 0.2rem;
+  height: 18rem;
+}
+
+.fileUploadCont h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.fileUploadCont label {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.fileUploadCont label:hover {
+  background-color: #0056b3;
+}
+
+.fileUploadCont progress {
+  width: 100%;
+  height: 6px;
+}
+
+.fileUploadCont progress::-webkit-progress-bar {
+  background-color: #f3f3f3;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+.fileUploadCont progress::-webkit-progress-value {
+  background-color: #007bff;
+  border-radius: 10px;
+}
+
+.fileUploadCont .upload-status {
+  color: green;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.fileUploadCont .error-status {
+  color: red;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.student-registration-form .fileUploadCont button {
+  background-color: transparent;
+  color: #007bff;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+/* RESPONSIVE WEB DECORATIONS BLOCKS */
+.uploads-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem; /* Adjust the gap between grid items */
+  padding: 1rem;
+}
+
+@media (max-width: 1200px) {
+  .uploads-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .uploads-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .uploads-container {
+    grid-template-columns: 1fr;
+  }
+}

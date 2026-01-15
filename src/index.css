@@ -1,0 +1,275 @@
+html {
+  /* 10px / 16px = 0.625 = 62.5% */
+  /* Percentage of user's browser font-size setting */
+  font-size: 62.5%;
+  overflow-x: hidden;
+  /* font-size: 10px; */
+
+  /* Does NOT work on Safari */
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: none;
+  /* transition: all .3s; */
+}
+
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #333;
+  /* Only works if there is nothing absolutely positioned in relation to body */
+  overflow-x: hidden;
+}
+
+.scroll {
+  overflow-y: scroll;
+  min-height: 75vh;
+}
+a:link,
+a:visited {
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+a {
+  color: #2d5ecf;
+}
+
+img {
+  width: 100%;
+}
+
+*:focus {
+  border: none;
+  background-color: rgba(102, 51, 153, 0.075);
+  outline: none;
+}
+
+ul {
+  list-style: none;
+  list-style-type: none;
+}
+
+input:focus {
+  background-color: transparent; /* removes background color */
+  outline: none; /* removes default outline */
+  box-shadow: none; /* removes any shadow effects */
+}
+
+button {
+  cursor: pointer;
+  background: none;
+}
+
+/* Css classes implement */
+/* FlexBoxs */
+.fx {
+  display: flex;
+}
+.fx-as {
+  display: flex;
+  align-items: flex-start;
+}
+.fx-ac {
+  display: flex;
+  align-items: center;
+}
+.fx-ae {
+  display: flex;
+  align-items: flex-end;
+}
+
+.fx-js {
+  display: flex;
+  justify-content: flex-start;
+}
+.fx-jc {
+  display: flex;
+  justify-content: center;
+}
+.fx-jb {
+  display: flex;
+  justify-content: space-between;
+}
+.fx-je {
+  display: flex;
+  justify-content: flex-end;
+}
+.fx-cl {
+  display: flex;
+  flex-direction: column;
+}
+.spacem {
+  gap: 0.6rem;
+}
+.space {
+  gap: 0.7rem;
+}
+.space1 {
+  gap: 1.2rem;
+}
+.space2 {
+  gap: 2.4rem;
+}
+.space3 {
+  gap: 3.4rem;
+}
+.space4 {
+  gap: 4.6rem;
+}
+.space5 {
+  gap: 5.2rem;
+}
+.space6 {
+  gap: 6.4rem;
+}
+.space7 {
+  gap: 0.75rem;
+}
+.space9 {
+  gap: 9.6rem;
+}
+
+/* Grid Layout */
+.g {
+  display: grid;
+}
+.g2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.g3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.g4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+.g5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+.g6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+/* Fonst Sizes */
+.fs1 {
+  font-size: 1.2rem;
+}
+.fs2 {
+  font-size: 1.4rem;
+}
+.fs3 {
+  font-size: 1.5rem;
+}
+.fs4 {
+  font-size: 1.6rem;
+}
+.fs5 {
+  font-size: 1.8rem;
+}
+.fs6 {
+  font-size: 2.4rem;
+}
+.fs7 {
+  font-size: 2.8rem;
+}
+.fs7 {
+  font-size: 3.4rem;
+}
+.fs8 {
+  font-size: 3.8rem;
+}
+.fs9 {
+  font-size: 4.6rem;
+}
+.fsbig {
+  font-size: 5.6rem;
+}
+.fsbigger {
+  font-size: 6.5rem;
+}
+.fslarge {
+  font-size: 7.8rem;
+}
+.fshuge {
+  font-size: 9.6rem;
+}
+
+.cw {
+  color: #fff;
+}
+.cb {
+  color: #666;
+}
+.cblue {
+  color: #2d5ecf;
+}
+.cfaf {
+  color: #fafaff;
+}
+.cf3 {
+  color: #f3f3f3;
+}
+
+/* Border Classes */
+
+.bd-w {
+  border: 1px solid #fff;
+}
+.bd-b {
+  border: 1px solid #666;
+}
+.bd-f3 {
+  border: 1px solid #f3f3f3;
+}
+.bd-blue {
+  border: 1px solid #2d5ecf;
+}
+.br1 {
+  border-radius: 0.4rem;
+}
+.br2 {
+  border-radius: 0.8rem;
+}
+.br3 {
+  border-radius: 1.2rem;
+}
+.br4 {
+  border-radius: 1.6rem;
+}
+.br5 {
+  border-radius: 1.8rem;
+}
+.br6 {
+  border-radius: 999rem;
+}
+
+/* Padding Classes */
+.pd-nm {
+  padding: 1.2rem;
+}
+.pd-btn {
+  padding: 1.2rem 2.4rem;
+}
+.pd-btl {
+  padding: 1.2rem 3.4rem;
+}
+.pd-btlx {
+  padding: 1.2rem 4.2rem;
+}
+.pd-btlxx {
+  padding: 1.2rem 5.8rem;
+}
+.pd1 {
+  padding: 1.2rem 5.8rem;
+}
+.pd2 {
+  padding: 2.4rem 2.8rem;
+}
+
+/* STYLING FOR SELECT OPTIONS */

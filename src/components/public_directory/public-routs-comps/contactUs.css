@@ -1,0 +1,57 @@
+.sectioncontactUs {
+    height: 100vh;
+    padding: 2.2rem;
+}
+
+.contactUsCont {
+    background-color: #fafaff;
+    padding: 6.5rem;
+    width: 90%;
+    box-shadow: 1rem 8rem 6rem -8rem rgba(0, 0, 0, 0.35);
+}
+
+
+.contactUsForm input, .contactUsForm textarea{
+    background-color: #fff;
+    border-radius: .5rem;
+    border: 1px solid #ddd;
+    padding: 1.2rem 1.8rem;
+    width: 100%;
+    font-size: 1.6rem;
+}
+
+.contactUsForm{
+   width: 100%;
+}
+.contactUsForm button{
+    background-color: #2f63b2;
+    color: #fff;
+    padding: 1.2rem 1.2rem;
+    border-radius: .4rem;
+}
+.sectioncontactUs button:hover,
+.sectioncontactUs button:active{
+    background-color: #4b7ac0;
+    color: #fff;
+}
+
+.contactUsDiscription {
+    width: 20%;
+}
+.contactUsDiscription h2 {
+   font-size: 1.4rem;
+   font-weight: 600;
+}
+.contactUsDiscription p {
+   font-size: 1.3rem;
+   color: #666;
+   text-align: center;
+}
+.contactUsDiscription button {
+   font-size: 1.3rem;
+   color: #fff;
+   padding: 1.2rem 1.4rem;
+   width: 80%;
+   border-radius: .4rem;
+   background-color: #00d285;
+}

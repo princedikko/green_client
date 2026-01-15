@@ -1,0 +1,181 @@
+#regCont {
+  /* background-color: #ede8ff; */
+  background: linear-gradient(rgb(237, 232, 255), rgb(247, 245, 255));
+}
+
+.regHeader {
+  text-align: center;
+}
+
+.regHeader h3 {
+  font-size: 3.2rem;
+  color: #15006f;
+}
+
+.regHTag {
+  font-size: 1.2rem;
+}
+
+.regHTag figure {
+  border-right: 2px solid #e0daff;
+  padding: 1rem 2.3rem;
+}
+
+.regHTag figure:last-child {
+  border-right: none;
+}
+
+.regTag {
+  background-color: #e0daff;
+  color: #6c439b;
+  display: inline-block;
+  font-size: 1.6rem;
+  padding: 1.2rem 2.4rem;
+  border-radius: 0.8rem;
+  width: 54rem;
+}
+
+.regMainCont {
+  width: 100%;
+  max-width: 99rem;
+  padding: 6.5rem 3.2rem;
+  color: #555;
+}
+
+.regMainDiv {
+  padding: 6.5rem 5.2rem;
+  border-radius: 0.8rem;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 1rem 1.2rem 2rem -1.1rem rgba(0, 0, 0, 0.35);
+}
+
+.regFormData.regMainDiv {
+  display: grid;
+  grid-template-columns: 2fr 1.4fr;
+  font-size: 1.4rem;
+  padding: 0;
+}
+.regFormData.regMainDiv > div {
+  padding: 6.5rem 3.2rem;
+}
+
+.regStep figure {
+  background-color: #e0daff;
+  color: #6d4aff;
+  font-size: 1.2rem;
+  padding: 0.3rem 0.9rem;
+  border-radius: 0.4rem;
+  font-weight: bold;
+}
+
+.regStep h3 {
+  font-size: 2.1rem;
+  color: #333;
+}
+
+.regPricingCard {
+  max-width: 45rem;
+  width: 100%;
+  border-radius: 1.2rem;
+  padding: 3.4rem 2.4rem;
+  border: 1px solid #ddd;
+}
+
+.regPricingCard.active {
+  border: 2px solid #6d4aff;
+}
+
+.regPricingCard h5 {
+  font-size: 1.8rem;
+}
+
+.discountReg {
+  font-size: 1.1rem;
+}
+
+.regPrice {
+  font-size: 2.9rem;
+  font-weight: 700;
+  color: #000;
+}
+
+.regPricingCard button,
+.regbtnSubmit {
+  background-color: #6d4aff;
+  color: #fff;
+  padding: 0.8rem 2.5rem;
+  border-radius: 0.8rem;
+}
+
+.bestValue {
+  position: relative;
+}
+
+.bestValueTag {
+  background-color: #6d4aff;
+  color: #fff;
+  border-radius: 50rem;
+  padding: 0.2rem 1.4rem;
+  font-size: 1.2rem;
+  position: absolute;
+  top: 0;
+  right: 4rem;
+  transform: translate(-50%, -50%);
+}
+
+.regInputCont {
+  /* background-color: #eaeff7; */
+  background-color: transparent;
+  /* border: 2px solid #c1d0e8; */
+  box-shadow: inset 0rem 0rem 0rem 0.1rem #c1d0e8;
+  border-radius: 1rem;
+  padding: 0.5rem 1.3rem;
+  font-weight: 200;
+}
+
+.regInputCont input,
+.regInputCont select {
+  padding: 0.6rem;
+  width: 100%;
+}
+
+.regFormfloat {
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+}
+
+.regPlanList {
+  border-left: 1px solid #ddd;
+  padding: 4.3rem 0rem 4.3rem 3.2rem;
+}
+
+.courseBtn {
+  background-color: #dbdbdc;
+  color: #999;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.6rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.regCourses {
+  padding: 1rem;
+  background-color: #f0f0f0;
+  border-radius: 0.7rem;
+  cursor: pointer;
+}
+
+.regCourses.checked {
+  padding: 1rem;
+  background-color: #6de78c;
+  border-radius: 0.7rem;
+  outline: 1px solid #26bf89;
+}
+
+.regCourses:hover,
+.regCourses:active {
+  padding: 1rem;
+  background-color: #e0e0e0;
+  border-radius: 0.7rem;
+}

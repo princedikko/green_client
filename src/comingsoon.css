@@ -1,0 +1,15 @@
+.comingsoon {
+  height: 100vh;
+  background-image: linear-gradient( to right bottom, rgba(0, 0, 128, 0.637), rgba(255, 0, 0, 0.507) ), url(./ssss.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 5.6rem;
+    font-size: 1.8rem;
+    color: #fff;
+}
+.comingsoon div{
+background-color: #0000004f;
+padding: 5.4rem;
+border-radius: 1.2rem;
+text-align: center;
+}

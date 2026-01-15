@@ -1,0 +1,32 @@
+.sectionHomeComp4 {
+  padding: 4.5rem;
+  background-color: #f3f0e8;
+  font-size: 1.6rem;
+}
+.HomeComp4Cont h2 {
+  font-size: 4.5rem;
+  font-family: "Times New Roman", Times, serif;
+}
+.HomeComp4CardsCont {
+  position: relative;
+  color: #42240a;
+}
+.HomeComp4CardsContPos {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(-50%, -50%);
+}
+.left.HomeComp4CardsContPos {
+  right: 90%;
+}
+
+.homeComp4Card figure {
+  max-width: 15.89rem;
+}
+.homeComp4Card span {
+  font-size: 1.2rem;
+}
+.homeComp4Card p {
+  font-weight: 700;
+}

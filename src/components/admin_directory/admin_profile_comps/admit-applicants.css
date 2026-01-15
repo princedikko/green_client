@@ -1,0 +1,109 @@
+.cardsHeader div {
+  padding: 1rem 2.4rem;
+  font-size: 1.2rem;
+  border: 1px solid #f3f3f3;
+  background-color: #fafaff;
+  border-radius: 0.6rem;
+}
+.cardsHeader div p {
+  font-size: 5.2rem;
+  color: #666;
+  font-weight: 100;
+  margin-top: 1rem;
+}
+
+.admit_applicants table {
+  padding: 2.4rem 0;
+}
+.admit_applicants table thead tr {
+  display: grid;
+  grid-template-columns: 1fr 6fr 3fr 1.5fr 2fr 2.4fr 2.6fr 3.3fr 2.8fr;
+  padding: 1.2rem;
+  background-color: rgb(29, 86, 251);
+  border-radius: 0.8rem;
+  font-size: 1.2rem 2.4rem;
+  color: white;
+  text-align: left;
+  gap: 0.8rem;
+}
+
+.admit_applicants table tbody tr {
+  display: grid;
+  /* gap: .6rem; */
+  grid-template-columns: 1fr 6fr 3fr 1.5fr 2fr 2.4fr 2.6fr 3.3fr 2.8fr;
+  align-items: center;
+  border-bottom: 1px solid #f3f3f3;
+  padding: 1.2rem 2.4rem;
+  background-color: #fff;
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: rgb(34, 33, 33);
+  gap: 0.8rem;
+}
+.admit_applicants table tbody tr:hover,
+.admit_applicants table tbody tr:active {
+  background-color: #fafaff;
+  border-radius: 0.8rem;
+}
+.admit_applicants table tbody tr .recommended {
+  padding: 0.3rem 1.6rem;
+  border-radius: 0.4rem;
+  background-color: #eefef2;
+  color: #048e5b;
+}
+.admit_applicants table tbody tr .not_recommended {
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.4rem;
+  background-color: #ffe6e6;
+  color: #e30606;
+}
+.admit_applicants table tbody tr td:nth-child(2) {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  font-weight: 600;
+  color: #666;
+}
+.admit_applicants table tbody tr td:nth-child(2) figure {
+  background-color: #48c798;
+  color: white;
+  border-radius: 55rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  overflow: hidden;
+}
+
+.admit_applicants table tbody tr button {
+  background-color: transparent;
+  color: #12e095;
+}
+.admit_applicants table tbody tr button:first-child {
+  background-color: transparent;
+  color: #999;
+}
+
+.admit_applicants header select {
+  padding: 1rem 3rem;
+  border-radius: 0.8rem;
+  background-color: #fafaff;
+  color: #048e5b;
+}
+.admit_applicants header button {
+  background-color: transparent;
+}
+
+/* Grid views */
+.admit_applicants .gridViewCard {
+  background-color: #fafaff;
+  border-radius: 1.2rem;
+  border: 1px solid green;
+  padding: 2.4rem;
+}
+
+.girdViewCont {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 1.2rem;
+  row-gap: 3rem;
+  padding: 3rem;
+}

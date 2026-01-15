@@ -1,0 +1,169 @@
+.std_form-application-container {
+  /* max-width: 900px; */
+  width: 100rem;
+  background-color: #ffffff;
+  /* border-radius: 15px; */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  font-size: 1.4rem;
+  font-weight: 300;
+}
+.std_form_infor_top {
+  display: grid;
+  grid-template-columns: 5fr 1.2fr;
+}
+.std_form-application-container label {
+  font-weight: 400;
+  color: #000;
+}
+.std_form-header {
+  background-color: #007bff;
+  color: #ffffff;
+  padding: 20px;
+  text-align: center;
+  font-size: 2em;
+  letter-spacing: 1px;
+  border-bottom: 5px solid #0056b3;
+}
+
+.std_form-content {
+  padding: 30px;
+  line-height: 1.6;
+}
+
+.std_form-personal-info,
+.std_form-schools-attended,
+.std_form-exam-info,
+.std_form-documents,
+.std_form-referees {
+  margin-bottom: 30px;
+  padding: 3.5rem;
+  border-radius: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.std_form-documents h2 {
+  font-size: 1.6em;
+  color: #007bff;
+  border-bottom: 2px solid #0056b3;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.std_form-documents img {
+  max-width: 7.5rem;
+}
+.std_form-personal-info .std_form-passport-photo {
+  float: right;
+  width: 130px;
+  height: 130px;
+  border-radius: 8px;
+  border: 3px solid #007bff;
+  margin-left: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.std_form-info-group {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.std_form-info-group div {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.std_form-info-group div:last-child {
+  margin-right: 0;
+}
+
+.std_form-schools-attended .std_form-school {
+  margin-bottom: 15px;
+  border-left: 4px solid #007bff;
+  padding-left: 10px;
+}
+
+.std_form-exam-info table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.std_form-exam-info table th,
+.std_form-exam-info table td {
+  padding: 12px;
+  border: 1px solid #ced4da;
+  text-align: left;
+  transition: background-color 0.3s;
+}
+
+.std_form-exam-info table th {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+.std_form-exam-info table tr:hover td {
+  background-color: #e9ecef;
+}
+
+.std_form-documents ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.std_form-documents ul li {
+  margin: 5px 0;
+  padding: 10px;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.std_form-documents ul li:hover {
+  background-color: #e3f2fd;
+}
+
+.std_form-referees .std_form-referee {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  background-color: #f1f8ff;
+}
+
+.std_form-referee label {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.std_form-referee p {
+  margin: 5px 0;
+  color: #495057;
+}
+
+.btnRecommend {
+  background: #0361f0;
+}
+.btnReject {
+  background: #f00395;
+}
+
+.btnReject:hover,
+.btnRecommend:hover {
+  opacity: 0.7;
+}
+
+.applogDetailsFormPrev button {
+  min-width: 33rem;
+  height: 56px;
+  padding: 7px 24px;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 14px;
+}

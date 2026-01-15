@@ -1,0 +1,11 @@
+.examsQuestionPreviewCont {
+  height: 90vh;
+  width: 69rem;
+  font-size: 3.2rem;
+  font-weight: 300;
+  line-height: 1.5;
+  padding: 3rem;
+  overflow-y: scroll;
+  background-color: rgba(255, 0, 0, 0.507);
+  backdrop-filter: blur(1.5rem);
+}

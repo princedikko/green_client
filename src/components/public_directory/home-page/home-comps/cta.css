@@ -1,0 +1,28 @@
+.sectionCTA {
+  padding: 2rem;
+}
+.ctaCont {
+  display: grid;
+  grid-template-columns: 4fr 6fr;
+  gap: 2rem;
+}
+.ctaDisc {
+}
+
+.ctaFiguresCont figure {
+  border-radius: 1.2rem;
+  padding: 2.4rem;
+  overflow: hidden;
+  gap: 2.4rem;
+}
+
+.ctaFiguresCont figure:first-child {
+  background-color: rosybrown;
+  grid-column: span 2;
+}
+.ctaFiguresCont figure:nth-child(2) {
+  background-color: rgb(186, 223, 52);
+}
+.ctaFiguresCont figure:last-child {
+  background-color: rgb(53, 209, 236);
+}

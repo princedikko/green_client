@@ -1,0 +1,142 @@
+.sectionHomeComp6 {
+  padding: 4.5rem;
+}
+
+.HomeComp6top {
+  max-width: 70rem;
+  line-height: 1.5;
+  font-size: 1.6rem;
+}
+
+.HomeComp6top img {
+  width: 20rem;
+}
+.HomeComp6CardConts {
+  position: relative;
+  align-items: flex-end;
+}
+
+.HomeComp6CardConts figure {
+  padding: 2.4rem;
+  border-radius: 1.8rem;
+  width: 30.3rem;
+  background-repeat: no-repeat;
+  background-size: 14rem;
+  background-position: bottom;
+  position: relative;
+}
+.HomeComp6CardConts figure:nth-child(1) {
+  background-color: #2bd887;
+  background-image: url("./homepage_images/test/f3.png");
+  height: 35rem;
+}
+.HomeComp6CardConts figure:nth-child(2) {
+  background-color: #cdbdf5;
+  background-image: url("./homepage_images/test/f4.png");
+  height: 45rem;
+}
+.HomeComp6CardConts figure:nth-child(3) {
+  background-color: #dbffba;
+  height: 25rem;
+  background-image: url("./homepage_images/test/f5.png");
+}
+.HomeComp6CardConts figure h4 {
+  font-size: 2.8rem;
+  font-weight: 600;
+}
+.HomeComp6CardConts figure h4 em {
+  font-family: serif;
+}
+.HomeComp6CardConts figure img {
+  max-width: 12.5rem;
+}
+.HomeComp6CardConts figure span {
+  font-size: 1.2rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 50rem;
+  border: 1px solid #000;
+  max-width: 7rem;
+  text-align: center;
+}
+
+.HomeComp6CardConts figure button {
+  border-radius: 50rem;
+  border: 1px solid #000;
+  padding: 0.6rem;
+  height: 4.8rem;
+  width: 4.8rem;
+  font-size: 2.4rem;
+  background-color: transparent;
+  position: absolute;
+  right: 23px;
+}
+
+.floatingBtnsCont {
+  position: absolute;
+  bottom: 56%;
+  right: 11.5%;
+  background-color: transparent;
+  font-size: 1.4rem;
+  color: #000;
+}
+.floatingBtns {
+  position: relative;
+  height: 15rem;
+  width: 30.3rem;
+}
+
+.floatingBtns button {
+  position: absolute;
+  width: 15rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: 60rem;
+  border: none;
+  text-align: center;
+  font-size: 1.8rem;
+}
+.btnHomeComp6_one {
+  background-color: #ffbbf4;
+  bottom: 77%;
+  left: -1%;
+  transform: rotate3d(1, 1, 1, 39deg);
+}
+.btnHomeComp6_two {
+  background-color: #31d889;
+  left: 25%;
+  bottom: 8%;
+  transform: rotate3d(2, 8, 5, 21deg);
+}
+.btnHomeComp6_three {
+  background-color: #cabeef;
+  right: 5%;
+  bottom: 56%;
+  transform: rotate3d(1, 1, 1, 314deg);
+}
+.floatingBtns span {
+  height: 4.4rem;
+  width: 4.4rem;
+  border-radius: 55rem;
+  padding: 0.4rem;
+  text-align: center;
+  font-size: 2.8rem;
+  position: absolute;
+}
+
+.floatingBtns span:nth-child(1) {
+  background-color: #fdb9f2;
+  bottom: 27%;
+  right: 17%;
+  /* transform: rotate3d(1, 1, 1, 39deg); */
+}
+.floatingBtns span:nth-child(2) {
+  background-color: #ffef7a;
+  bottom: 41%;
+  left: 19%;
+  /* transform: rotate3d(1, 1, 1, 39deg); */
+}
+.floatingBtns span:nth-child(3) {
+  background-color: #dafeb9;
+  bottom: 92%;
+  left: 48%;
+  /* transform: rotate3d(1, 1, 1, 39deg); */
+}

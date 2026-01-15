@@ -1,0 +1,83 @@
+.section-staff-login {
+  display: flex;
+  background-color: f3f3f3;
+  padding: 3.4rem;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #a5aebd;
+  background-image: linear-gradient(
+      rgba(221, 221, 221, 0.658),
+      rgba(255, 255, 255, 0.788)
+    ),
+    url("./staffloginBG.png");
+  background-position: center;
+  background-size: cover;
+}
+
+.staff-login-container {
+  width: 60%;
+  border-radius: 1.2rem;
+  background-color: #ffffff;
+  overflow: hidden;
+  box-shadow: 1rem 4rem 2rem -3rem rgba(0, 0, 0, 0.35);
+  font-size: 1.4rem;
+  padding: 3.2rem;
+}
+
+.staff-login-form-cont {
+  background-color: #fff;
+  padding: 4.4rem;
+  color: #999;
+}
+
+.staff-login-form-cont header {
+  color: #666;
+}
+.staff-login-form-cont header h2 {
+  font-size: 2.5rem;
+}
+
+.staff-login-form div div {
+  background-color: #f2f4f8;
+  border: 1px solid #f2f4f8;
+  border-radius: 0.6rem;
+  padding: 0.8rem 0.8rem;
+}
+.staff-login-form div div:hover,
+.staff-login-form div div:active {
+  box-shadow: inset 0rem 0rem 0rem 0.4rem #f2f4f8;
+  background-color: transparent;
+}
+.staff-login-form div input {
+  width: 100%;
+  font-size: 1.6rem;
+  padding: 0.5rem 0.2rem;
+  color: #666;
+  background-color: transparent;
+}
+.staff-login-form button {
+  width: 100%;
+  font-size: 1.6rem;
+  padding: 1.3rem;
+  color: #fff;
+  background-color: #065ad8;
+  border-radius: 0.6rem;
+}
+.staff-login-form button:hover,
+.staff-login-form button:active {
+  opacity: 0.7;
+}
+
+.staff-login-disc {
+  background-color: #f2f4f8;
+  padding: 4.4rem 4.2rem;
+  color: #666;
+  height: 100%;
+  font-size: 1.2rem;
+  text-align: center;
+  border-radius: 1.2rem;
+}
+.staff-login-disc h4 {
+  font-size: 2.6rem;
+}

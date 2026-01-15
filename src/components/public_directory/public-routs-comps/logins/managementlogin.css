@@ -1,0 +1,80 @@
+.section-management-login {
+    display: flex;
+    background-color: f3f3f3;
+    padding: 3.4rem;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+    background-color: #A5AEBD;
+}
+
+.management-login-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    width: 80%;
+    border-radius: 1.2rem;
+    background-color: #ffffff;
+    overflow: hidden;
+    box-shadow: 1rem 4rem 2rem -3rem rgba(0, 0, 0, 0.35);
+    font-size: 1.4rem;
+    padding: 3.2rem;
+}
+
+.management-login-form-cont { 
+    background-color: #fff;
+    padding: 4.4rem;
+    color: #999;
+}
+
+.management-login-form-cont header { 
+    color: #666;
+}
+.management-login-form-cont header h2 {
+    font-size: 2.5rem;
+}
+
+
+.management-login-form div div {
+    background-color: #F2F4F8;
+    border: 1px solid #F2F4F8; 
+    border-radius: .6rem;
+    padding: .8rem .8rem;
+} 
+.management-login-form div div:hover ,
+.management-login-form div div:active { 
+    box-shadow: inset 0rem 0rem 0rem .4rem #F2F4F8;
+    background-color: transparent;
+}
+.management-login-form div input {
+    width: 100%;
+    font-size: 1.6rem;
+    padding: .5rem .2rem;
+    color: #666;
+    background-color: transparent;
+}
+.management-login-form button {
+    width: 100%;
+    font-size: 1.6rem;
+    padding: 1.3rem;
+    color: #fff;
+    background-color: #065AD8;
+    border-radius: .6rem;
+}
+.management-login-form button:hover ,
+.management-login-form button:active {
+    opacity: .7;
+}
+
+.management-login-disc{ 
+    background-color: #F2F4F8; 
+    padding: 4.4rem 4.2rem;
+    color: #666; 
+    height: 100%;
+    font-size: 1.2rem;
+    text-align: center;
+    border-radius: 1.2rem;
+}
+.management-login-disc h4 { 
+    font-size: 2.6rem; 
+}
+

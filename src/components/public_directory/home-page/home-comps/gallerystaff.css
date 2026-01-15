@@ -1,0 +1,74 @@
+.section-gallery {
+  padding: 0.6rem 2.4rem;
+}
+.gallery-cont {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.gallery-card {
+  display: flex;
+  flex-direction: column;
+  width: 29rem;
+  height: 45rem;
+  border-radius: 1.2rem;
+  /* background-color: red; */
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-size: 1.4rem;
+  padding: 3rem 2rem;
+  color: #fff;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  text-align: center;
+  margin: 0 auto;
+}
+.gallery-card:first-child {
+  background-image: linear-gradient(
+      to top,
+      rgba(17, 17, 17, 0.863),
+      rgba(31, 30, 30, 0.158)
+    ),
+    url("./homepage_images/test/K1.png");
+}
+.gallery-card:nth-child(2) {
+  background-image: linear-gradient(
+      to top,
+      rgba(17, 17, 17, 0.863),
+      rgba(31, 30, 30, 0.158)
+    ),
+    url("./homepage_images/test/K2.png");
+}
+.gallery-card:nth-child(3) {
+  background-image: linear-gradient(
+      to top,
+      rgba(17, 17, 17, 0.863),
+      rgba(31, 30, 30, 0.158)
+    ),
+    url("./homepage_images/test/K3.png");
+}
+.gallery-card:last-child {
+  background-image: linear-gradient(
+      to top,
+      rgba(17, 17, 17, 0.863),
+      rgba(31, 30, 30, 0.158)
+    ),
+    url("./homepage_images/test/K1.png");
+}
+
+.gallery-card span {
+  width: 12rem;
+  padding: 0.5rem 1rem;
+  background-color: #ffffff;
+  border-radius: 0.2rem;
+  font-size: 1.2rem;
+  color: #000;
+}
+.gallery-card h3 {
+  font-size: 2.2rem;
+  font-weight: 200;
+}
+.gallery-card p {
+  font-size: 1.7rem;
+  /* font-family: 'Times New Roman', Times, serif; */
+}

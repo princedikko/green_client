@@ -1,0 +1,55 @@
+.sectionHomeComp5 {
+  margin-top: 9.6rem;
+  background-color: #fff;
+  font-size: 1.6rem;
+  padding: 6.9rem;
+}
+.HomeComp5Cont {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 3.2rem;
+}
+.HomeComp5Left,
+.HomeComp5Right {
+  border-radius: 4.8rem;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.HomeComp5Left {
+  background-color: #facf23;
+}
+
+.HomeComp5Left div:first-child {
+  padding: 3.4rem;
+  width: 50%;
+}
+.HomeComp5Left div:last-child {
+  position: relative;
+  height: 100%;
+  width: 50%;
+}
+.HomeComp5Left div:last-child img {
+  position: absolute;
+  bottom: 0;
+}
+.HomeComp5Right {
+  padding: 3.4rem;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  background-color: #ff763e;
+  color: #fff;
+}
+.HomeComp5Cont h3 {
+  font-size: 2.8rem;
+  font-weight: 400;
+}
+
+.HomeComp5Cont button {
+  background-color: #fff;
+  padding: 1.2rem 1.2rem;
+  border-radius: 1.8rem;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+  max-width: 16rem;
+}

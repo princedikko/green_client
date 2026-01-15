@@ -1,0 +1,89 @@
+.section-carousel {
+    padding: 9.6rem 4.5rem;
+}
+.crsbg {
+    border-radius: 1.2rem;
+}
+.home-carousel-container {
+    display: flex;
+    font-family: 'Roboto';
+    /* background: linear-gradient(180deg, #3b146b, #240847); */
+    /* background: linear-gradient(180deg, #13544e, #427671); */
+    border-radius: 1.2rem;
+    padding: 0 2.4rem;
+    padding-left: 0rem;
+    margin: 0 auto;
+    width: 100%;
+    font-size: 1.4rem; 
+  }
+  
+  /* .extraCaroStyle{
+    overflow: hidden;
+  } */
+ 
+
+  .home-carousel-leftDiv {
+    height: 35rem;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .home-carousel-rightDiv {
+    flex: 1;
+    display: flex;
+    gap: 1.2rem;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
+    padding: 20px; 
+  }
+  
+  .home-carousel-image {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .home-carousel-heading {
+    font-size: 3.4rem;
+    color: #fff;
+    font-weight: 800;
+  }
+  
+  .home-carousel-paragraph {
+    font-size: 1.6rem;
+    line-height: 1.9;
+    font-weight: 100;
+  }
+  
+  .home-carousel-button {
+    padding: 10px 20px;
+    font-size: 1.6rem;
+    border: none;
+    border-radius: 50rem;
+    background-color: #fff;
+    color: #13544e; 
+    cursor: pointer;
+    font-weight: 900;
+    width: 23rem;
+  }
+  .home-carousel-button:hover,
+  .home-carousel-button:active { 
+    background-color: #ffffff;
+    color: #7c248d;
+     
+  }
+  
+
+  body .section-carousel .swiper {
+    overflow: visible; 
+  }
+
+
+  .crsbg {
+    background-image: linear-gradient(to top, rgba(17, 17, 17, 0.863), rgba(31, 30, 30, 0.158)), url("./asdf.jpg");
+    background-size: cover;
+    background-repeat: no-repeat; 
+
+  }

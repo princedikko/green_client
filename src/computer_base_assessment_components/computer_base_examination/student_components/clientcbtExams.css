@@ -1,0 +1,390 @@
+.exHubOptionCont {
+  margin-top: 2rem;
+}
+.optionSelectionEx {
+  cursor: pointer;
+  font-size: 1.8rem;
+  font-weight: 300;
+}
+.exOptionsType {
+  font-weight: 300;
+  color: #666;
+  margin-left: 0.5rem;
+  font-size: 1.4rem;
+}
+
+.optionSelectionEx::before {
+  content: "";
+  padding: 0.6rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 60rem;
+  border: 6px solid #dad7d7;
+}
+
+.optionSelectionEx.checkedExOpt::before {
+  border: 6px solid #26bf89;
+}
+.checkEx::before {
+  border: 6px solid #3a84f8;
+}
+
+/* ------------------------------------NEW ------------------------------------ */
+.sectionCBTExamsHub {
+  font-size: 1.3rem;
+}
+.cbtExamsHubCont {
+}
+.ctbExamsHubHeader {
+  padding: 2.4rem;
+}
+.cbtExamsHubheaderCont {
+}
+
+.cbtExamshubHeading {
+  font-size: 1.6rem;
+}
+
+.cbtExamshubStatusBar {
+  font-size: 1.1rem;
+  color: #727272;
+}
+
+.ctbExamsHubRight span {
+  padding: 0.9rem 2.2rem;
+  border-radius: 1rem;
+  background-color: #fafafa;
+  color: #8f8f8f;
+}
+
+.ctbExamsHubRight .cbtdp {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 222rem;
+  background-color: #3a84f8;
+  color: #fff;
+  overflow: hidden;
+}
+/* Main Section */
+.ctbExamsHubMain {
+  display: grid;
+  grid-template-columns: 10fr 3fr;
+  margin: 2rem 5.6rem;
+}
+
+/* .ctbExamsHubMain .main {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 85vh;
+  padding: 2.8rem;
+  padding-top: 0;
+} */
+
+.ctbExamsHubMain aside {
+  max-height: 80vh;
+}
+
+.ctbExamsHubSubjects {
+  margin-bottom: 3.6rem;
+}
+.ctbExamsHubSubjects button {
+  padding: 1.2rem 1.8rem;
+  border-radius: 1.2rem;
+  background-color: #26bf89;
+  color: #fff;
+  text-align: center;
+  width: 14rem;
+  transition: all 0.3s;
+}
+
+.ctbExamsHubSubjects button:hover,
+.ctbExamsHubSubjects button:active {
+  background-color: #3a84f8;
+  color: #fff;
+}
+
+.ctbExamsHubSubjects .active {
+  background-color: #e9f5f3;
+  color: #26bf89;
+}
+.ctbExamsHubMiddleWare {
+  position: absolute;
+  top: -30px;
+  left: 0;
+  width: 100%;
+  /* margin-top: 2.4rem; */
+}
+.ctbExamsHubMiddleWare button {
+  padding: 0.4rem 1.2rem;
+  border-radius: 0.8rem;
+  background-color: transparent;
+}
+.counterIcon {
+  background-color: #fff;
+  border: 6px solid #f85a38;
+  border-radius: 55rem;
+  width: 1.8rem;
+  height: 1.8rem;
+}
+.ctbExamsHubMiddleWare button:hover {
+  background-color: #fafafa;
+}
+.ctbExamsHubQuestion {
+  padding: 3.6rem;
+  border-radius: 1.2rem;
+  background-color: #fafafa;
+  color: #666;
+  position: relative;
+}
+
+.ctbExamsHubQuestionCounts {
+  max-width: 15rem;
+  background-color: #fff;
+  border-radius: 1.2rem;
+  padding: 0.5rem 1.2rem;
+}
+.ctbExamsHubQuestionBtn {
+  max-width: 20rem;
+  background-color: transparent;
+  padding: 2rem;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.cbtTheQuestion {
+  height: 10rem;
+  font-size: 3.2rem;
+  font-weight: 300;
+  line-height: 1.5;
+  padding: 1rem;
+}
+
+.switchQuestionToScroll {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  font-size: 1.8rem;
+  line-height: 2;
+  padding: 1.8rem;
+  padding-top: 4.5rem;
+}
+
+.switchQuestionFontSizeMedium {
+  font-size: 2.4rem;
+}
+
+.ctbExamsHubQuestionBtn button,
+.ctbExamsHubOperations button {
+  height: 4.5rem;
+  width: 4.5rem;
+  border-radius: 55rem;
+  padding: 0.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  color: #777777;
+  box-shadow: 0.4rem 0.4rem 2.3rem -1rem rgba(0, 0, 0, 0.35);
+  font-size: 0.8rem;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.ctbExamsHubQuestionBtn button:nth-child(2) {
+  background-color: #3a84f8;
+  color: #fff;
+  box-shadow: none;
+}
+.ctbExamsHubQuestionBtn button:first-child {
+  background-color: #fff;
+  color: #26bf89;
+}
+
+.ctbExamsHubOperations button.active {
+  background-color: #26bf89;
+  color: #fff;
+}
+.ctbExamsHubOperations button.submit {
+  width: 13rem;
+  padding: 1.2rem 1.6rem;
+  border-radius: 50rem;
+  text-align: center;
+  background-color: #f85a38;
+  color: #fff;
+  font-size: 1.2rem;
+}
+.ctbExamsHubOperations .prev button,
+.ctbExamsHubOperations .next button {
+  width: 10rem;
+  height: 3rem;
+  padding: 1.6rem 1.1rem;
+  border-radius: 0.6rem;
+  text-align: center;
+  color: #fff;
+  font-size: 1.2rem;
+}
+.ctbExamsHubOperations .next button {
+  background-color: #26bf89;
+}
+.ctbExamsHubOperations .prev button {
+  background-color: #3a84f8;
+}
+
+.ctbExamsHubOperations button.submit:hover {
+  background-color: #3a84f8;
+  color: #fff;
+}
+.ctbExamsHubOperations button:hover,
+.ctbExamsHubOperations button:active {
+  background-color: #e4e8f1;
+  color: #333;
+}
+
+.ctbExamsHubQuestionBtn button .tooltips,
+.ctbExamsHubOperations button .tooltips {
+  display: none;
+  position: absolute;
+  transform: translateY(100%);
+  bottom: 0;
+  font-size: 0.95rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 1.8rem;
+  background-color: rgba(51, 51, 51, 0.438);
+  box-shadow: 0rem 0rem 2rem 0rem rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-style: italic;
+  font-weight: 200;
+}
+
+.ctbExamsHubQuestionBtn button:hover .tooltips,
+.ctbExamsHubOperations button:hover .tooltips {
+  display: block;
+}
+
+.ctbExamsHubPaginationsCont {
+  /* box-shadow: 0.4rem 0.4rem 2.3rem -1rem rgba(0, 0, 0, 0.35); */
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  /* padding: 2.5rem; */
+  border-radius: 1.2rem;
+  gap: 1.5rem;
+  row-gap: 2.4rem;
+}
+.ctbExamsHubPaginationsCont .pagination-button {
+  background-color: #e9f5f3;
+  color: #333;
+  border-radius: 50rem;
+  width: 4rem;
+  padding: 0.5rem 0.4rem;
+  outline: 1px solid #26bf89;
+  outline-offset: 0.4rem;
+  font-family: serif;
+  font-size: 1.3rem;
+  transition: all 0.3s;
+}
+
+/* PAGINATION BUTTON CHECKED */
+.ctbExamsHubPaginationsCont .pagination-button.peginationChecked {
+  background-color: #3a84f8;
+  outline: 1px solid #3a84f8;
+  color: #fff;
+}
+.ctbExamsHubPaginationsCont .pagination-button:hover {
+  background-color: #f85a38;
+  color: #fff;
+  outline: 1px solid #f85a38;
+}
+
+.ctbExamsHubPaginationsCont .pagination-button.peginationChecked.active {
+  background-color: #26bf89;
+  color: rgb(255, 255, 255);
+
+  outline: 1px solid #26bf89;
+}
+
+.ctbExamsHubPaginationsCont .pagination-button.active {
+  background-color: #080808;
+  color: rgb(255, 255, 255);
+
+  outline: 1px solid #080808;
+}
+
+/* ASIDE DECORATIONS BLOCKS */
+.ctbExamsHubMain .aside {
+  background-color: #f5f5f5;
+  color: #333;
+  padding: 2.8rem 1.9rem;
+  border-radius: 1.2rem;
+}
+
+.ctbExamsHubAsideNav {
+  background-color: #fff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 1.2rem;
+  /* overflow-y: scroll; */
+  max-width: 26rem;
+}
+
+.ctbExamsHubAsideNav button {
+  background-color: transparent;
+  color: #26bf89;
+  padding: 0.8rem 1rem;
+  border-radius: 1rem;
+  font-size: 1.1rem;
+}
+.ctbExamsHubAsideNav button:hover {
+  background-color: #e9f5f3;
+  color: #26bf89;
+}
+.ctbExamsHubAsideNav button.active {
+  background-color: #26bf89;
+  color: #fff;
+}
+
+.Instructions,
+.Regulations,
+.OperatingGuide {
+  background-color: #fff;
+  border-radius: 1rem;
+  padding: 2.4rem 1.7rem;
+}
+
+.ctbExamsHubFooter {
+  padding: 1.4rem 4.5rem;
+  font-family: serif;
+  font-variant: small-caps;
+  font-stretch: extra-expanded;
+  font-style: italic;
+  text-align: center;
+  background-color: #e9f5f3;
+  border-radius: 1.4rem;
+  margin: 3.4rem;
+}
+
+/* DEPENDENCIES DECORATIONS  */
+.ReactModalPortal .ReactModal__Overlay.ReactModal__Overlay--after-open {
+  background: transparent !important;
+  background-color: rgba(58, 131, 248, 0.61) !important;
+  backdrop-filter: blur(15px);
+}
+
+.ReactModalPortal .ReactModal__Content.ReactModal__Content--after-open {
+  max-width: 30rem;
+  margin: 0 auto;
+  border: none !important;
+  background: transparent !important;
+}
+
+#modalContainer {
+  background-color: #0000006e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-height: 100vh;
+  width: 100%;
+  /* backdrop-filter: blur(15px); */
+  z-index: 99999999;
+  position: fixed;
+}

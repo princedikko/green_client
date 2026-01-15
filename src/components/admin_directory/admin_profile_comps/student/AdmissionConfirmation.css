@@ -1,0 +1,28 @@
+.sectionConfirmation {
+  padding: 4rem;
+  font-size: 1.4rem;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  line-height: 1.5;
+}
+
+.confirmationDetails {
+  max-width: 84rem;
+  background-color: #fafaff;
+  padding: 6.4rem;
+  margin-top: 3.4rem;
+  border-radius: 0.8rem;
+}
+.confirmationDetails h3 {
+  text-align: center;
+}
+.confirmationDetails p {
+  text-align: justify;
+  line-height: 2;
+}
+
+.admletterHeader {
+  text-align: center;
+}
+.admletterHeader img {
+  max-width: 10rem;
+}

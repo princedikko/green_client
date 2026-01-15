@@ -1,0 +1,156 @@
+.sectionCBTDashBoards {
+  height: 100vh;
+}
+
+.cbtAdminCont {
+  height: 100vmin;
+  background-image: url("./cbt_admin_images/gpt.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+  backdrop-filter: blur(15px);
+  background-color: rgba(253, 253, 253, 0.761);
+  font-size: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: 1fr 9fr;
+  background-color: #fff;
+}
+.instructorProfileCont {
+  font-size: 1.5rem;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: 1fr 9fr;
+  background-color: #fff;
+}
+
+.cbtAdminHeader {
+  border-radius: 1.2rem;
+  margin: 2rem;
+  /* grid-column: span 2; */
+  background-color: #fff;
+  padding: 1.8rem;
+}
+
+.cbtAdminAside {
+  position: relative;
+  grid-row: span 2;
+  background-color: rgba(255, 255, 255, 0.831);
+  padding: 1.8rem;
+  backdrop-filter: blur(15px);
+}
+
+.itemsPf img {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.profBtn {
+  width: 100%;
+  padding: 0.7rem 1.4rem;
+  border-radius: 0.2rem;
+  background-color: #00d285;
+  color: #fff;
+  margin-bottom: 3.2rem;
+}
+.cbtAdminContents {
+  background-color: rgba(255, 255, 255, 0.651);
+  backdrop-filter: blur(8px);
+  font-size: 1.5rem;
+}
+
+.cbtAdminAsideSec {
+  width: 100%;
+  /* margin-top: 2.4rem; */
+}
+.cbtAdminAsideSec .loginLogo img {
+  width: 65%;
+}
+.sidenavCBTactive:link,
+.sidenavCBTactive:visited {
+  transition: var(--speed) ease;
+  background-color: #6740c4;
+  border-radius: 0.4rem;
+  color: #fff;
+}
+
+.prfLinksto {
+  margin: 3.2rem 0 1.8rem 0;
+  width: 100%;
+  color: #999;
+  padding-left: 1.6rem;
+}
+.itemsPf:hover,
+.itemsPf:active {
+  transition: all 0.3s;
+  background-color: #f3f3f3;
+  border-radius: 0.4rem;
+  color: #2d5ecf;
+}
+.cbtAdminAsideSec .itemsPf:hover,
+.cbtAdminAsideSec .itemsPf:active {
+  transition: var(--speed) ease;
+  background-color: #c090ec;
+  color: #fff;
+}
+
+.logout_cbtAdmin {
+  padding: 0.7rem 1.8rem;
+  background-color: transparent;
+  color: #666;
+}
+
+.logout_cbtAdmin:hover,
+.logout_cbtAdmin:active {
+  color: #f35e6a;
+}
+.close-prl-tab {
+  transition: var(--speed) ease;
+}
+
+.cbtAdminContents {
+  padding: 2.4rem;
+}
+
+.dp {
+  height: 2.4rem;
+  width: 2.4rem;
+  background-color: #c090ec;
+  color: #fff;
+  border-radius: 55rem;
+  overflow: hidden;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.cbtAdminHeader a:link,
+.cbtAdminHeader a:visited {
+  color: #999;
+  font-size: 1.4rem;
+}
+.notifBtn {
+  position: relative;
+  color: #999;
+  cursor: pointer;
+}
+.notifBtn:active,
+.notifBtn:hover {
+  color: #2d5ecf;
+}
+.notifBtn figure {
+  width: 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.5rem;
+  background-color: #f35e6a;
+  color: #fff;
+  border-radius: 12rem;
+  position: absolute;
+  padding: 0.2rem;
+  right: -30%;
+  top: -39%;
+}

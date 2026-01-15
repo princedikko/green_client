@@ -1,0 +1,242 @@
+/* grid-column: span 2; */
+.adminStaffProfileCont {
+  font-size: 1.5rem;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.2fr 5fr;
+  grid-template-rows: 1fr 9fr;
+  /* background-color: #fff;
+   */
+  background: linear-gradient(to bottom right, #f3f6f8, #e8f1ee);
+}
+
+.adminStaffHeader {
+  /* grid-column: span 2; */
+  /* background-color: #fff; */
+  padding: 1.8rem;
+}
+
+.adminStaffAside {
+  position: relative;
+  grid-row: span 2;
+  /* background-color: #f3f6f8; */
+  background-color: transparent;
+  padding: 1.8rem;
+}
+
+.profBtn {
+  width: 100%;
+  padding: 0.7rem 1.4rem;
+  border-radius: 0.2rem;
+  background-color: #00d285;
+  color: #fff;
+  margin-bottom: 3.2rem;
+}
+.adminStaffContents {
+  font-size: 1.5rem;
+}
+
+.adminStaffAsideSec {
+  width: 100%;
+  /* margin-top: 2.4rem; */
+}
+.adminStaffAsideSec .dashboardLogo {
+  background-color: #000;
+  color: #fff;
+  border-radius: 50rem;
+  padding: 0.6rem;
+  font-weight: 700;
+  width: 4rem;
+  height: 4rem;
+}
+
+.prfLinksto {
+  margin: 3.2rem 0 1.8rem 0;
+  width: 100%;
+  color: #999;
+  padding-left: 1.6rem;
+}
+
+.logout_adminStaff {
+  padding: 0.7rem 1.8rem;
+  background-color: transparent;
+  color: #666;
+}
+
+.logout_adminStaff:hover,
+.logout_adminStaff:active {
+  color: #f35e6a;
+}
+.close-prl-tab {
+  transition: var(--speed) ease;
+}
+
+.adminStaffContents {
+  padding-top: 2rem;
+  padding-right: 2.4rem;
+}
+
+.adminStaffDpCont {
+  font-size: 1.6rem;
+  color: #000;
+}
+.adminStaffDpCont .date {
+  font-size: 1.3rem;
+  color: #666;
+}
+
+.adminStaffDpCont button {
+  background: none;
+  text-align: left;
+}
+.adminStaffDp {
+  height: 4.6rem;
+  width: 4.6rem;
+  background-color: #6693fa;
+  color: #fff;
+  border-radius: 55rem;
+  overflow: hidden;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.notifBtn {
+  position: relative;
+  color: #999;
+  cursor: pointer;
+}
+.notifBtn:active,
+.notifBtn:hover {
+  color: #2d5ecf;
+}
+.notifBtn figure {
+  width: 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.5rem;
+  background-color: #f35e6a;
+  color: #fff;
+  border-radius: 12rem;
+  position: absolute;
+  padding: 0.2rem;
+  right: 0%;
+  top: -9%;
+}
+
+.adminStaffDashboardNaV {
+  background-color: transparent;
+  padding: 0.6rem;
+  border-radius: 1.9rem;
+  color: #000;
+  transition: all 0.3s ease;
+}
+.adminStaffDashboardNaVIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fafaff;
+  padding: 0.2rem;
+  border-radius: 1.5rem;
+  color: #1958f7;
+  width: 3.6rem;
+  height: 3.6rem;
+}
+.adminStaffDashboardNaV.active-prl-tab {
+  background-color: #1958f7;
+  color: #e4eafa;
+}
+.adminStaffDashboardNaV.active-prl-tab .adminStaffDashboardNaVIcon {
+  background-color: #e4eafa;
+  color: #1958f7;
+}
+
+.adminStaffDashboardNaV:hover,
+.adminStaffDashboardNaV:active {
+  background-color: #000;
+  color: #e4eafa;
+}
+
+.adminStaffDashboardNaV:hover .adminStaffDashboardNaVIcon,
+.adminStaffDashboardNaV:active .adminStaffDashboardNaVIcon {
+  background-color: #e4eafa;
+  color: #000;
+}
+
+.adminStaffProfileDropdownBtn {
+  margin-right: 1.2rem;
+  color: #000;
+}
+
+.active-prl-tab .adminStaffProfileDropdownBtn {
+  color: #fff;
+}
+.adminStaffDashboardNaV:hover .adminStaffProfileDropdownBtn,
+.adminStaffDashboardNaV:active .adminStaffProfileDropdownBtn {
+  color: #fff;
+}
+
+.adminStaffProfileItemsCont {
+  padding: 0 1.8rem;
+}
+
+.adminStaffSubNavIcon {
+  height: 1.5rem;
+  width: 1.5rem;
+  background-color: #fa66f3;
+  color: #fff;
+  border-radius: 55rem;
+  overflow: hidden;
+  justify-content: center;
+}
+
+.adminStaffSubNavCont {
+  margin: 2rem 0rem 0rem 2rem;
+  border-left: 1px solid #ddd;
+  padding: 0rem 0rem 0rem 3rem;
+}
+
+.adminStaffDBSearchCont {
+  max-width: 35rem;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 55rem;
+  overflow: hidden;
+  /* padding: 1.1rem 1.2rem; */
+  color: #666;
+  font-size: 1.2rem;
+}
+
+.adminStaffDBSearchCont input[type="search"] {
+  width: 35rem;
+  color: #666;
+}
+
+.adminStaffDBSearchCont input[type="search"]::placeholder {
+  color: ddd;
+  font-size: 1.2rem;
+  opacity: 1; /* ensures full visibility in some browsers */
+}
+.adminStaffDashboardHeadBtn {
+  background-color: #fff;
+  border-radius: 55rem;
+  height: 3.8rem;
+  width: 3.8rem;
+  padding: 0.8rem;
+}
+.adminStaffPrRoundIcon {
+  background-color: #fff;
+  border-radius: 55rem;
+  height: 3.8rem;
+  width: 3.8rem;
+  padding: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adminStaffDashboardHeadRight {
+  color: #666;
+}

@@ -1,0 +1,106 @@
+.courseContainer table {
+  padding: 2.4rem 0;
+}
+.courseContainer table thead tr {
+  display: grid;
+  grid-template-columns: 1fr 2fr 6.1fr 1.5fr 1.5fr 2fr 1.5fr 1.5fr 1.5fr 1.5fr;
+  padding: 1.2rem;
+  background-color: #2cb783;
+  /* border-radius: 50.8rem; */
+  font-size: 1.2rem;
+  color: white;
+}
+
+.courseContainer table tbody tr {
+  display: grid;
+  /* gap: .6rem; */
+  grid-template-columns: 1fr 2fr 6.1fr 1.5fr 1.5fr 2fr 1.5fr 1.5fr 1.5fr 1.5fr;
+  align-items: center;
+  /* border-bottom: 1px solid #f3f3f3; */
+  padding: 1.2rem 2.4rem;
+  background-color: #fff;
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: rgb(34, 33, 33);
+  text-align: center;
+  /* border-radius: 50.8rem; */
+}
+.courseContainer table tbody tr:nth-child(even) {
+  background-color: #cbfdea;
+  color: #04361f;
+}
+/* .courseContainer table tbody tr:hover,
+.courseContainer table tbody tr:active {
+  background-color: #fafaff;
+  border-radius: 0.8rem;
+} */
+
+.courseContainer table tbody tr td:nth-child(2) {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  font-weight: 600;
+  color: #666;
+}
+.courseContainer table tbody tr td:nth-child(2) figure {
+  background-color: #48c798;
+  color: white;
+  border-radius: 55rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  overflow: hidden;
+}
+
+.courseContainer table tbody tr button {
+  background-color: transparent;
+  color: #12e095;
+}
+.courseContainer table tbody tr button:first-child {
+  background-color: transparent;
+  color: #999;
+}
+
+.courseContainer header select {
+  padding: 1rem 3rem;
+  border-radius: 0.8rem;
+  background-color: #fafaff;
+  color: #048e5b;
+}
+.courseContainer header button {
+  padding: 1rem 3rem;
+  border-radius: 0.8rem;
+  background-color: #048e5b;
+  color: #fff;
+}
+
+/* Grid views */
+.courseContainer .gridViewCard {
+  background-color: #fafaff;
+  border-radius: 1.2rem;
+  border: 1px solid green;
+  padding: 2.4rem;
+}
+
+.girdViewCont {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 1.2rem;
+  row-gap: 3rem;
+  padding: 3rem;
+}
+
+.couresOfStudyCard {
+  border: 1px solid #6693fa61;
+  border-radius: 1.2rem;
+  color: #090247;
+  background-color: #fafaff;
+  font-size: 1.2rem;
+  overflow: hidden;
+  padding: 2.4rem;
+  margin-top: 2.4rem;
+}
+
+.couresOfStudyCard button {
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.4rem;
+}

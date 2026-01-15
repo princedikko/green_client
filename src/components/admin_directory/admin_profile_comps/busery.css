@@ -1,0 +1,166 @@
+.busery_cont table {
+  padding: 2.4rem 0;
+}
+.busery_cont table thead tr {
+  display: grid;
+  grid-template-columns: 1fr 5fr 3fr 2.4fr 2.6fr 4fr 2.8fr 2.4fr 2.3fr;
+  padding: 1.2rem 2.4rem;
+  background-color: rgb(29, 86, 251);
+  border-radius: 0.8rem;
+  font-size: 1.2rem;
+  color: white;
+  text-align: left;
+}
+
+.busery_cont table tbody tr {
+  display: grid;
+  /* gap: .6rem; */
+  grid-template-columns: 1fr 5fr 3fr 2.4fr 2.6fr 4fr 2.8fr 2.4fr 2.3fr;
+  align-items: center;
+  border-bottom: 1px solid #f3f3f3;
+  padding: 1.2rem 2.4rem;
+  background-color: #fff;
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: rgb(34, 33, 33);
+}
+.busery_cont table tbody tr:hover,
+.busery_cont table tbody tr:active {
+  background-color: #fafaff;
+  border-radius: 0.8rem;
+}
+.busery_cont table tbody tr .success {
+  padding: 0.3rem 1.6rem;
+  border-radius: 0.4rem;
+  background-color: #eefef2;
+  color: #048e5b;
+}
+.busery_cont table tbody tr .pending {
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.4rem;
+  background-color: #ffe6e6;
+  color: #e30606;
+}
+.busery_cont table tbody tr .completed {
+  padding: 0.3rem 1.6rem;
+  border-radius: 0.4rem;
+  background-color: #eefef2;
+  color: #048e5b;
+}
+.busery_cont table tbody tr .pending {
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.4rem;
+  background-color: #ffe6e6;
+  color: #e30606;
+}
+.busery_cont table tbody tr td:nth-child(2) {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  font-weight: 600;
+  color: #666;
+}
+
+.busery_cont table tbody tr td figure {
+  background-color: #48c798;
+  color: white;
+  border-radius: 55rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  overflow: hidden;
+}
+
+.busery_cont table tbody tr button {
+  background-color: transparent;
+  color: #12e095;
+}
+.busery_cont table tbody tr button:first-child {
+  background-color: transparent;
+  color: #999;
+}
+
+.busery_cont header select {
+  padding: 1rem 3rem;
+  width: 50rem;
+  border-radius: 0.8rem;
+  color: #333;
+}
+.busery_cont header button {
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+}
+
+/* Grid views */
+.busery_cont .gridViewCard {
+  background-color: #fafaff;
+  border-radius: 1.2rem;
+  border: 1px solid green;
+  padding: 2.4rem;
+}
+
+.girdViewCont {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 1.2rem;
+  row-gap: 3rem;
+  padding: 3rem;
+}
+
+/* NEON BUTTON STYLE */
+.neon-button {
+  font-size: 1rem;
+  color: #fff;
+  padding: 0.4rem 0.6rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 3px;
+  border-radius: 2.7px;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid #0066ff;
+  transition: color 0.4s ease;
+}
+
+.neon-button:hover {
+  color: #121212;
+}
+
+.neon-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 75%;
+  height: 100%;
+  background: #264f8e;
+  transition: transform 0.4s ease;
+  transform: skewX(-25deg);
+  z-index: 1;
+}
+
+.neon-button:hover::before {
+  transform: translateX(300%);
+}
+
+.neon-button::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 15px;
+  background: rgba(0, 255, 234, 0.1);
+  filter: blur(8px);
+  z-index: -1;
+}
+
+.busery_cont .cards1 div {
+  padding: 1rem 2.4rem;
+  font-size: 1.2rem;
+  /* border: 1px solid #f3f3f3; */
+  background-color: #fafaff;
+  border-radius: 0.6rem;
+}
+
+.busery_cont .cards1 div p {
+  font-size: 3.5rem;
+}

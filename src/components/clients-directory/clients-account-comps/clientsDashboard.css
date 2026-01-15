@@ -1,0 +1,63 @@
+.clientDashboardCard {
+  background-color: rgba(255, 255, 255, 0.623);
+  border-radius: 1.2rem;
+  box-shadow: 1.2rem 1rem 4rem -2.5rem rgba(0, 0, 0, 0.35);
+  padding: 2rem;
+}
+.clientNotifBar {
+  padding: 2.3rem;
+}
+
+.clientNotifBar figure {
+  width: 4.5rem;
+  height: 4.5rem;
+  background-color: #000;
+  color: #fff;
+  border-radius: 55rem;
+  padding: 0.6rem;
+}
+
+.clientNotifBar button {
+  background-color: #1958f7;
+  color: #fff;
+  border-radius: 99.6rem;
+  padding: 0.8rem 1.3rem;
+}
+
+.clientDashboardNumber {
+  font-size: 3.5rem;
+  font-weight: 600;
+}
+
+.clientDashboardCard .clientPrRoundIcon {
+  border: 1px solid#ddd;
+  width: 6.3rem;
+  height: 4.3rem;
+}
+
+.clientDashboardAside {
+  display: grid;
+  grid-template-columns: 2fr 2.4fr;
+}
+
+.clientDashboardAside .clientDashboardCard {
+  padding: 1.2rem;
+}
+.clientDashboardAside .clientDashboardCard .asideDisc p {
+  font-size: 1.2rem;
+}
+.clientDashboardAside .clientDashboardCard .clientPrRoundIcon {
+  background-color: #000;
+  color: #fff;
+  width: 3.4rem;
+  height: 3.4rem;
+}
+.clientDashboardAside .tag {
+  background-color: #ffffff;
+  color: #0f0f0f;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 1px solid #ddd;
+  border-radius: 55rem;
+  overflow: hidden;
+}

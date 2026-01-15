@@ -1,0 +1,94 @@
+
+.academicCard{
+    height: 13rem;
+    width: 32rem;
+    padding: 2.4rem;
+    border-radius: 1.2rem;
+    background-color: #f3f3f3; 
+    font-size: 1.6rem;
+  }
+  
+  .academic-list-section { 
+    /* padding: 2.4rem; */
+    padding-top: 4.5rem;
+    border-radius: 10px; 
+    row-gap: 3rem;
+    /* width: 80%; */
+    margin: 0 auto; 
+  }
+  
+  
+  .academicsImg {
+    height: 15rem;
+    width: 15rem;
+    border-radius: 1.8rem;
+    overflow: hidden;
+    background-color: #ddd;
+    display: flex;
+    align-items: flex-end;
+  }
+
+    .academic-list-header {
+      width: 100%;
+      height: 40rem;
+      background-image: linear-gradient(rgba(0, 128, 0, 0.37), rgba(0, 0, 255, 0.349)), url("./home-comps/asdf.jpg");
+      background-size: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      padding: 2.4rem 7.4rem;
+      font-size:2.8rem;
+      font-weight: 300;
+      text-align: center;
+    }
+    
+    .academic-list-header h2 {
+      font-size: 5.8rem; 
+      font-weight: 200;
+      margin-bottom: 15px; 
+    }
+    
+   
+  
+  .academic-list-container 
+  .mcons-home-navbar-b {
+    position: unset;
+    background-color: #fff;
+    color: #666;
+  }
+  
+  
+  .academic-list-container .mcons-home-nav-menu-b a:link, .academic-list-container .mcons-home-nav-menu-b a:visited{
+    color: #fff;
+  }
+
+.academics-main {
+    display: flex;
+    padding: 4.3rem;
+    gap: 3.4rem;
+    
+}
+.acad-contents {
+    background-color: #fff;
+    width: 75%;
+    padding: 2.3rem;
+
+}
+  .acad-aside {
+    background-color: #f3f3f3;
+    border-radius: 1.2rem;
+    width: 25%;
+    padding: 2rem;
+
+  }
+
+  .acad-discription {
+    font-size: 1.8rem;
+    line-height: 1.5;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 200;
+  }
+  .acad-discription h4{
+    font-size: 3rem; 
+  }

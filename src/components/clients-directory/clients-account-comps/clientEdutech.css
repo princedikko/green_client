@@ -1,0 +1,99 @@
+.sectionclnEdTech {
+  background-color: transparent;
+  font-size: 1.6rem;
+}
+.clnEdTechCont {
+  display: grid;
+  grid-template-columns: 2.35fr 1fr;
+  gap: 2.2rem;
+}
+.clnEdTechBanner {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr;
+  background-color: #1958f7;
+  color: #fff;
+}
+.clnEdTechLeft,
+.clnEdTechRight {
+  border-radius: 4.8rem;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.clientDashboardCard.clnEdTechLeft {
+  /* background-color: #facf23; */
+  padding: 0rem;
+}
+
+.clnEdTechLeft div:first-child {
+  padding: 3.4rem;
+  /* width: 50%; */
+}
+.clnEdTechLeft div:last-child {
+  position: relative;
+  height: 100%;
+}
+.clnEdTechLeft div:last-child img {
+  width: 85%;
+  position: absolute;
+  bottom: 0;
+  transform: rotateY(180deg);
+}
+.clnEdTechRight {
+  padding: 3.4rem;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  /* background-color: #ff763e; */
+}
+.clnEdTechCont h3 {
+  font-size: 2rem;
+  font-weight: 400;
+}
+.clnEdTechCont p {
+  font-size: 1.3rem;
+}
+
+.clnEdTechCont button {
+  background-color: rgba(0, 0, 0, 0.473);
+  color: #fff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 1.8rem;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+  max-width: 16rem;
+}
+
+.exmTypeCont.clientDashboardCard .extypeCard {
+  padding: 2rem;
+}
+
+.clnEdTechCont .extypeCard button {
+  background-color: rgb(0 0 0 / 23%);
+  color: #fff;
+  padding: 1.2rem 1.2rem;
+  border-radius: 1.4rem;
+  /* border-top-left-radius: 0; */
+  /* border-bottom-right-radius: 0; */
+  max-width: 16rem;
+}
+.clnEdTechCont span.tag {
+  background-color: #3effa5;
+  color: #fff;
+  padding: 0.4rem 1rem;
+  border-radius: 1.4rem;
+  font-size: 1.2rem;
+  text-align: center;
+  margin: 1.6rem;
+
+  max-width: 9rem;
+}
+
+.exmTypeCont.clientDashboardCard.clnEdTechLeft {
+  border-radius: 1.8rem;
+}
+
+.cardContz {
+  overflow-y: hidden;
+  overflow-x: scroll;
+  height: 17rem;
+}

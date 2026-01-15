@@ -1,0 +1,139 @@
+.libBookTabs {
+  background-color: #fff;
+  padding: 1.2rem;
+  border-radius: 0.5rem;
+  /* box-shadow: 0rem 0rem 2rem 0rem rgba(80, 79, 79, 0.35); */
+}
+.libBookTabs button {
+  border: none;
+  background-color: #fff;
+  border-radius: 0.4rem;
+  color: #666;
+  width: 6rem;
+  padding: 0.4rem;
+}
+
+.library_bookss-main {
+  background-color: #fafaff;
+  display: flex;
+  padding: 4.3rem;
+  gap: 3.4rem;
+}
+.library_books-contents {
+  background-color: #fafaff;
+  width: 75%;
+  padding: 2.3rem;
+}
+.library_books-aside {
+  background-color: #fff;
+  /* border-radius: 1.2rem; */
+  width: 25%;
+  padding: 4rem;
+  position: fixed;
+  right: 1%;
+  height: 95%;
+}
+
+.library_books-discription {
+  font-size: 1.8rem;
+  line-height: 1.5;
+  font-family: "Times New Roman", Times, serif;
+  font-weight: 200;
+}
+.library_books-discription h4 {
+  font-size: 3rem;
+}
+
+.grid-container.m_cons_library {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  /* padding: 16px; */
+  /* background-color: #f4f4f4; */
+}
+
+.card.m_cons_library {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 12px;
+  /* border: 1px solid #ddd; */
+  padding: 16px;
+  height: 180px;
+}
+
+.card-header.m_cons_library {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-header.m_cons_library button {
+  background-color: transparent;
+  color: #bbb;
+}
+.card-icon.m_cons_library {
+  font-size: 40px;
+  color: #007bff; /* Blue for PDF icon */
+}
+
+.card-status.m_cons_library {
+  background-color: #d4f5e9;
+  color: #00855a;
+  border-radius: 12px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.card-body.m_cons_library {
+  text-align: center;
+}
+
+.card-title.m_cons_library {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 8px 0 4px;
+  color: #333;
+}
+
+.card-subtitle.m_cons_library {
+  font-size: 1.2rem;
+  color: #666;
+  background-color: #f0f0f0;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.libBookSearch {
+  background-color: #fff;
+}
+.libBookSearch input[type="search"] {
+  padding: 0.4rem 0.8rem;
+  color: #ddd;
+  font-size: 1.2rem;
+}
+
+.libBooksBack:link,
+.libBooksBack:visited {
+  position: fixed;
+  left: 4%;
+  top: 4%;
+  padding: 2.4rem;
+  height: 5rem;
+  width: 5rem;
+  border-radius: 555rem;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 2.5rem;
+  transition: all 0.35s;
+}
+
+.libBooksBack:hover,
+.libBooksBack:active {
+  opacity: 0.7;
+  transform: scale(1.2);
+}

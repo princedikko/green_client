@@ -1,0 +1,129 @@
+/* Personal Info Section */
+.studentDataPreviewCont {
+  padding: 6rem;
+}
+
+.studentDataPr {
+  background-color: #f9fcff;
+  padding: 4.5rem;
+  font-size: 1.2rem;
+  border-radius: 6px;
+  max-width: 86rem;
+  border-radius: 1.2rem;
+  margin: 0 auto;
+  border: 1px solid #d1e9ff;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.1);
+  margin-bottom: 25px;
+  color: #666;
+}
+.std_scroll {
+  overflow: scroll;
+  overflow-x: hidden;
+  max-height: 85vh;
+  padding: 0.2rem;
+  padding-right: 1rem;
+}
+/* Profile Image */
+.studentDataPrpassport {
+  width: 120px;
+  height: 120px;
+  /* border-radius: 50%; */
+  border: 3px solid #0056b3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Info Group */
+.studentDataPrcomp {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  width: 100%;
+}
+
+.studentDataPrcomp div {
+  color: #333;
+  display: flex;
+  flex-direction: column;
+}
+
+.studentDataPrcomp div strong {
+  font-weight: 500;
+  color: #0056b3;
+}
+
+.studentDataPrcomp div span {
+  font-size: 1.2em;
+  color: #666;
+}
+
+.studentDataPrHeader {
+  text-align: center;
+}
+.studentDataPrHeader img {
+  max-width: 10rem;
+}
+.studentDataPr ul {
+  list-style-type: disc;
+  margin-top: 2rem;
+}
+.studentDataPr h3 {
+  list-style-type: disc;
+  margin-top: 2rem;
+}
+
+.studentDataPrpart {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.fileUploadedCont {
+  font-family: Arial, sans-serif;
+  border-radius: 0.4rem;
+  border: 1px dashed #065ad8;
+  background-color: #e2eefb;
+  color: #065ad8;
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 2rem;
+  height: 12rem;
+  max-width: 30rem;
+}
+.fileUploadedCont img {
+  border-radius: 0.4rem;
+}
+
+.studentDataPr table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.studentDataPr table th,
+.studentDataPr table td {
+  padding: 12px;
+  border: 1px solid #ced4da;
+  text-align: left;
+  transition: background-color 0.3s;
+}
+
+.studentDataPr table th {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+.studentDataPr table tr:hover td {
+  background-color: #e9ecef;
+}
+
+.studentDataPreviewCont button {
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
+  transition: all 0.3s;
+  text-align: center;
+  min-width: 14rem;
+}
+.studentDataPreviewCont button:hover,
+.studentDataPreviewCont button:active {
+  transform: scale(1.1);
+  opacity: 0.7;
+}
