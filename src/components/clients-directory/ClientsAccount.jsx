@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import "./clientsAccount.css";
 import { useDispatch } from "react-redux";
 import * as Action from "../../store/redux/client_reducer.js";
+import * as ActionHybrid from "../../store/redux/hybrid_reducer.js";
 
 // importing components
 import ClientsDashboard from "./clients-account-comps/ClientsDashboard.jsx";
@@ -89,6 +90,41 @@ export default function ClientsAccount() {
       console.log(error);
     }
   };
+  const products = [
+    { name: "Milk", price: 2343 },
+    { name: "Bread", price: 1200 },
+    { name: "Eggs", price: 1500 },
+    { name: "Rice", price: 5000 },
+    { name: "Sugar", price: 2500 },
+    { name: "Salt", price: 800 },
+    { name: "Oil", price: 4500 },
+    { name: "Butter", price: 3000 },
+    { name: "Cheese", price: 4000 },
+    { name: "Yogurt", price: 2000 },
+    { name: "Juice", price: 1500 },
+    { name: "Tea", price: 1200 },
+    { name: "Coffee", price: 3000 },
+    { name: "Cereal", price: 3500 },
+    { name: "Pasta", price: 1800 },
+    { name: "Chicken", price: 7000 },
+    { name: "Beef", price: 9000 },
+    { name: "Fish", price: 6000 },
+    { name: "Vegetables", price: 2500 },
+    { name: "Fruits", price: 3000 },
+  ];
+
+  function handlePayload(item) {
+    dispatch(DispatchPayLoads(item));
+  }
+  const DispatchPayLoads = (item) => async (dispatch) => {
+    try {
+      dispatch(ActionHybrid.hybridAction({ products }));
+      console.log("submenu" + item);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const breads = { active, active_display };
   function switchComponents() {
     switch (active_display) {
@@ -369,8 +405,10 @@ export default function ClientsAccount() {
                 <img src={data?.profile?.photoURL} alt="" />
               </figure>
               <p className="fx-cl spacem" style={{ fontSize: "1.6rem" }}>
-                <span>{data?.first_Name || "Zainab Abubakar"}</span>
-                <span className="date">Fri, October 26, 2025</span>
+                <h3>Sokoto State Mall</h3>
+                <span className="date">
+                  <strong>Staff: </strong> {data?.first_Name || " Nana Othman"}
+                </span>
               </p>
             </div>
           </div>
@@ -383,10 +421,13 @@ export default function ClientsAccount() {
                 <SearchIcon fontSize="medium" />
               </button>
             </div>
-            <span className="notifBtn clientDashboardHeadBtn fx-ac fx-jc space1">
+            <button
+              onClick={() => handlePayload()}
+              className="notifBtn clientDashboardHeadBtn fx-ac fx-jc space1"
+            >
               <NotificationsActiveOutlinedIcon fontSize="medium" />
               <figure>0</figure>
-            </span>
+            </button>
             <button
               className="clientDashboardHeadBtn fx-ac fx-jc logout_st_accont fx-ac space1"
               onClick={() => logOut()}

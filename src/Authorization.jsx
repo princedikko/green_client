@@ -29,9 +29,6 @@ export default function Authorization() {
   const clientAuth = useSelector(
     (state) => state.clientFunction.isAuthenticated
   );
-  const admAuth = useSelector(
-    (state) => state.admissionActions.isAuthenticated
-  );
 
   return (
     <Routes>
@@ -160,67 +157,7 @@ export default function Authorization() {
               key={index}
             />
           );
-        } else if (req.isAdmission) {
-          return (
-            <Route
-              path={req.path}
-              element={
-                admAuth ? req.element : <Navigate to="/admission_status" />
-              }
-              key={index}
-            />
-          );
-        } else if (req.isPrivate) {
-          // Determine which auth applies
-          let auth = false;
-          let redirect = "/";
-
-          if (admAuth) {
-            auth = admAuth;
-            redirect = "/";
-          } else if (staffAuth) {
-            auth = staffAuth;
-            redirect = "/";
-          } else if (clientAuth) {
-            auth = clientAuth;
-            redirect = "/";
-          }
-
-          return (
-            <Route
-              path={req.path}
-              element={auth ? req.element : <Navigate to={redirect} />}
-              key={index} // or index
-            />
-          );
-        }
-
-        // else if (req.isPrivate) {
-        //   return (
-        //     <Route
-        //       path={req.path}
-        //       element={admAuth ? req.element : <Navigate to="/" />}
-        //       key={index}
-        //     />
-        //   );
-        // } else if (req.isPrivate) {
-        //   return (
-        //     <Route
-        //       path={req.path}
-        //       element={staffAuth ? req.element : <Navigate to="/" />}
-        //       key={index}
-        //     />
-        //   );
-        // } else if (req.isPrivate) {
-        //   return (
-        //     <Route
-        //       path={req.path}
-        //       element={clientAuth ? req.element : <Navigate to="/" />}
-        //       key={index}
-        //     />
-        //   );
-        // }
-        else return false;
+        } else return false;
       })}
     </Routes>
   );

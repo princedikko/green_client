@@ -410,41 +410,43 @@ export default function Sales({ breadcrumbs }) {
     }
     function TableView({ currentRows }) {
       return (
-        <table className="fx-cl spacem">
-          <thead className="fx-cl spacem">
-            <tr>
-              <th>Customer name</th>
-              <th>Invoice No.</th>
-              <th>Payment status</th>
-              <th>Total amount</th>
-              <th>Total paid</th>
-              <th>Quantity</th>
-              <th>Sell Due</th>
-              <th>Date</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody className="fx-cl spacem">
-            {currentRows.map((item, index) => (
-              <tr key={item.invoiceNo}>
-                {/* <td>{index + 1}</td> */}
-                <td>
-                  <strong>{item.customerName}</strong>
-                </td>
-                <td>{item.invoiceNo}</td>
-                <td>{item.paymentStatus}</td>
-                <td>₦{item.totalAmount.toLocaleString()}</td>
-                <td>₦{item.totalPaid.toLocaleString()}</td>
-                <td>{item.totalItems}</td>
-                <td>₦{item.sellDue.toLocaleString()}</td>
-                <td>{item.date}</td>
-                <td>
-                  <button>{item.action}</button>
-                </td>
+        <div className="completed">
+          <table className="fx-cl spacem">
+            <thead className="fx-cl spacem">
+              <tr>
+                <th>Customer name</th>
+                <th>Invoice No.</th>
+                <th>Payment status</th>
+                <th>Total amount</th>
+                <th>Total paid</th>
+                <th>Quantity</th>
+                <th>Sell Due</th>
+                <th>Date</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="fx-cl spacem">
+              {currentRows.map((item, index) => (
+                <tr key={item.invoiceNo}>
+                  {/* <td>{index + 1}</td> */}
+                  <td>
+                    <strong>{item.customerName}</strong>
+                  </td>
+                  <td>{item.invoiceNo}</td>
+                  <td>{item.paymentStatus}</td>
+                  <td>₦{item.totalAmount.toLocaleString()}</td>
+                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>{item.totalItems}</td>
+                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>{item.date}</td>
+                  <td>
+                    <button>{item.action}</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       );
     }
 
@@ -607,41 +609,43 @@ export default function Sales({ breadcrumbs }) {
     }
     function TableView({ currentRows }) {
       return (
-        <table className="fx-cl spacem">
-          <thead className="fx-cl spacem">
-            <tr>
-              <th>Customer name</th>
-              <th>Invoice No.</th>
-              <th>Payment status</th>
-              <th>Total amount</th>
-              <th>Total paid</th>
-              <th>Quantity</th>
-              <th>Sell Due</th>
-              <th>Date</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody className="fx-cl spacem">
-            {currentRows.map((item, index) => (
-              <tr key={item.invoiceNo}>
-                {/* <td>{index + 1}</td> */}
-                <td>
-                  <strong>{item.customerName}</strong>
-                </td>
-                <td>{item.invoiceNo}</td>
-                <td>{item.paymentStatus}</td>
-                <td>₦{item.totalAmount.toLocaleString()}</td>
-                <td>₦{item.totalPaid.toLocaleString()}</td>
-                <td>{item.totalItems}</td>
-                <td>₦{item.sellDue.toLocaleString()}</td>
-                <td>{item.date}</td>
-                <td>
-                  <button>{item.action}</button>
-                </td>
+        <div className="prog">
+          <table className="fx-cl spacem">
+            <thead className="fx-cl spacem">
+              <tr>
+                <th>Customer name</th>
+                <th>Invoice No.</th>
+                <th>Payment status</th>
+                <th>Total amount</th>
+                <th>Total paid</th>
+                <th>Quantity</th>
+                <th>Sell Due</th>
+                <th>Date</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="fx-cl spacem">
+              {currentRows.map((item, index) => (
+                <tr key={item.invoiceNo}>
+                  {/* <td>{index + 1}</td> */}
+                  <td>
+                    <strong>{item.customerName}</strong>
+                  </td>
+                  <td>{item.invoiceNo}</td>
+                  <td>{item.paymentStatus}</td>
+                  <td>₦{item.totalAmount.toLocaleString()}</td>
+                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>{item.totalItems}</td>
+                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>{item.date}</td>
+                  <td>
+                    <button>{item.action}</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       );
     }
 

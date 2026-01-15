@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import * as Action from "../../../../store/redux_computer_base/client_computer_base_reducer.js";
+import * as Action from "../../../../store/redux/hybrid_reducer.js";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import IsLoading from "../../../../isLoading.jsx";
@@ -50,7 +50,6 @@ function WarehouseTerminal() {
   // INTEGRATIONS_-----------------------------
   const [showPassword, setShowPassword] = useState(false);
   const [changeview, setChangeView] = useState("");
-  const examsQuestions = useSelector((state) => state.clientAssesment?.queue);
   const [loading, setLoading] = useState(false);
   const redirect = useNavigate();
   const dispatch = useDispatch();
@@ -76,10 +75,9 @@ function WarehouseTerminal() {
   };
 
   // REDUX STATE SELECTOR----------------------
-  const state = useSelector((state) => state);
-  const answered = useSelector((state) => state.clientAssesment?.answers);
-
-  // const { questionIndex } = examsQuestions[selectedSubject];
+  const products = useSelector(
+    (state) => state.hybridActions.warehouse.products
+  );
 
   // END OF MODAL FUNCTIONS------------------
   const [toggleAside, setToggleAside] = useState("instruction");
@@ -87,6 +85,20 @@ function WarehouseTerminal() {
   const [openModal, setOpenModal] = useState(false);
   const [onTimeChange, setOnTimeChange] = useState(false);
   const [togglePagination, setTogglePagination] = useState(true);
+
+  /////////////////////////////////////////////////////////////////////////
+  // REDUX FUCNTIONS
+  /////////////////////////////////////////////////////////////////////////
+
+  function addToCart(item) {
+    dispatch(Action.addtoCart(item));
+    console.log("CART:", item);
+  }
+  function clearCart() {
+    dispatch(Action.clearCart());
+  }
+
+  // ...................////////
   function toggleModalBoxContents() {
     switch (showModal) {
       case "calculator":
@@ -95,7 +107,6 @@ function WarehouseTerminal() {
         return (
           <Items
             setOpenModal={setOpenModal}
-            examsQuestions={examsQuestions}
             selectedSubject={selectedSubject}
             openCalculator={openCalculator}
           />
@@ -110,7 +121,7 @@ function WarehouseTerminal() {
       case "warning":
         return "Waring!";
       case "submit":
-        return <button onClick={() => endExam()}>Clear data</button>;
+        return <button>Clear data</button>;
       case "exams logs":
         return <ExaminationLogs />;
       case "appeals":
@@ -159,60 +170,34 @@ function WarehouseTerminal() {
             <strong>Examination Regulations</strong>
             <span>Lorem ipsum dolor sit.</span>
           </div>
-          <ol>
-            <li>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Aspernatur, rem quaerat!
-            </li>
-            <li>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Aspernatur, rem quaerat!
-            </li>
-            <li>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Aspernatur, rem quaerat!
-            </li>
-            <li>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Aspernatur, rem quaerat!
-            </li>
-            <li>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Aspernatur, rem quaerat!
-            </li>
-          </ol>
+          <div className="g g4">
+            <figure className="clientDashboardCard productsCardWH fx-cl space1">
+              <img src="" alt="xt" />
+              <h3>name</h3>
+              <p>price</p>
+            </figure>
+          </div>
         </div>
       </div>
     );
   }
   function Products() {
     return (
-      <div className="Instructions">
-        <div className="fx-cl">
-          <div className="fx-cl">
-            <strong>Examination Instructions</strong>
-            <span>Lorem ipsum dolor sit.</span>
-          </div>
-          <ol>
-            <li>Items list and cards</li>
-            <li>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Aspernatur, rem quaerat!
-            </li>
-            <li>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Aspernatur, rem quaerat!
-            </li>
-            <li>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Aspernatur, rem quaerat!
-            </li>
-            <li>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Aspernatur, rem quaerat!
-            </li>
-          </ol>
-        </div>
+      <div className="g g3 space1">
+        {products?.map((item, index) => {
+          return (
+            <figure
+              onClick={() => {
+                addToCart({ name: item.name, price: item.price });
+              }}
+              key={index}
+              className="clientDashboardCard productsCardWH fx-cl space1"
+            >
+              <h3>{item.name}</h3>
+              <p>₦{item.price}</p>
+            </figure>
+          );
+        })}
       </div>
     );
   }
@@ -258,97 +243,6 @@ function WarehouseTerminal() {
         return <Products />;
     }
   }
-
-  const DispatchEndExamination = () => async (dispatch) => {
-    try {
-      dispatch(Action.endExamsAction());
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  function endExam() {
-    dispatch(DispatchEndExamination());
-  }
-
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
-
-  const DispatchnextQuestion = (selectedSubject) => async (dispatch) => {
-    try {
-      dispatch(Action.nextQuestion({ selectedSubject }));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const DispatchPushAnswer = (score) => async (dispatch) => {
-    try {
-      dispatch(Action.pushAnswers(score));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const querry = examsQuestions[selectedSubject]?.questionIndex + 1;
-  const DispatchfillAnswer =
-    ({ selectedSubject, score, querry }) =>
-    async (dispatch) => {
-      dispatch(Action.fillAnswer({ selectedSubject, score, querry }));
-    };
-  const handleNextQuestion = () => {
-    if (
-      examsQuestions[selectedSubject]?.questionIndex <
-      examsQuestions[selectedSubject]?.questions.length
-    ) {
-      if (check !== undefined) {
-        dispatch(DispatchfillAnswer({ selectedSubject, score, querry }));
-      }
-      dispatch(DispatchnextQuestion(selectedSubject));
-      setCheck(undefined);
-    }
-  };
-
-  const handlePrevtQuestion = () => {
-    if (examsQuestions[selectedSubject]?.questionIndex > 0) {
-      if (check !== undefined) {
-        dispatch(DispatchfillAnswer({ selectedSubject, score, querry }));
-      }
-      dispatch(DispatchPrevQuestion(selectedSubject));
-      setCheck(undefined);
-    }
-  };
-  const DispatchPrevQuestion = (selectedSubject) => async (dispatch) => {
-    try {
-      dispatch(Action.prevQuestion({ selectedSubject }));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const peginationIndex = (selectedSubject, num) => {
-    dispatch(DispatchMovePegination(selectedSubject, num)); // Pass both selectedSubject and num
-    setCheck(undefined);
-  };
-
-  const DispatchMovePegination = (selectedSubject, num) => async (dispatch) => {
-    try {
-      dispatch(Action.onnPegination({ selectedSubject, num })); // Pass both as part of the payload
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // const handleAsideNave = (item) => {
-  //   dispatch(DispatchAsideNav(item));
-  // };
-
-  // const DispatchAsideNav = () => async (dispatch) => {
-  //   try {
-  //     dispatch(Action.switchAsideNav({ item })); // Pass both as part of the payload
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   useEffect(() => {
     !isFullscreen && toggleFullscreen();
@@ -412,7 +306,7 @@ function WarehouseTerminal() {
                 <button
                   className="fx-ac fx-jc cbtdp"
                   onClick={() =>
-                    redirect(`/clients/691a663dc9f64e6b9b8be48e/dashboard`)
+                    redirect(`/clients/691a663dc9f64e6b9b8be48e/account`)
                   }
                 >
                   <PowerSettingsNewIcon fontSize="large" />
@@ -433,7 +327,7 @@ function WarehouseTerminal() {
                       placeholder="im looking for..."
                     />
                   </div>
-                  <button onClick={() => alert("searching")}>
+                  <button onClick={() => clearCart()}>
                     <SearchIcon fontSize="small" />
                   </button>
                 </div>
@@ -441,12 +335,12 @@ function WarehouseTerminal() {
 
               <div className="warehouseItemsCont fx-cl">
                 <div className="warehouseHubQuestionBtn fx-ac space2">
-                  <button onClick={() => openExamLogs()} className="">
+                  <button className="">
                     <span className="tooltips">toggle pagination</span>
                     {/* QuestionMarkIcon */}
                     <QuestionMarkIcon fontSize="large" />
                   </button>
-                  <button onClick={() => openPreviewQuestion()} className="">
+                  <button className="">
                     <span className="tooltips">toggle pagination</span>
                     {/* Previews Question on Modal box */}
                     <VisibilityIcon fontSize="large" />
@@ -488,51 +382,27 @@ function WarehouseTerminal() {
                   </span>
                 </span>
 
-                {/* ____________QUESTION MAPPING___________ */}
-
-                <div className="fx-cl space4">
-                  {examsQuestions[selectedSubject]?.questions
-                    ?.slice(
-                      examsQuestions[selectedSubject]?.questionIndex,
-                      examsQuestions[selectedSubject]?.questionIndex + 1
-                    )
-                    .map((response, id) => {
-                      return (
-                        <>
-                          <div
-                            key={id}
-                            className="question-body fx-cl fx-jb space1"
-                          >
-                            <Items
-                              setChangeView={setChangeView}
-                              changeview={changeview}
-                            />
-                          </div>
-                        </>
-                      );
-                    })}
-                </div>
+                {/* ____________CART ITEMS MAPPING___________ */}
+                <Items />
               </div>
             </div>
 
             <div className="warehouseHubOperations fx-ac space3 fx-jb">
               <div className="prev">
-                {examsQuestions[selectedSubject]?.questionIndex > 0 ? (
-                  <button className="next-button" onClick={handlePrevtQuestion}>
-                    <SkipPreviousIcon />
-                    <span>Previous</span>
-                  </button>
-                ) : (
-                  <button
-                    style={{
-                      backgroundColor: "transparent",
-                      color: "transparent",
-                      boxShadow: "none",
-                    }}
-                  >
-                    &nbsp;
-                  </button>
-                )}
+                <button>
+                  <SkipPreviousIcon />
+                  <span>Previous</span>
+                </button>
+
+                <button
+                  style={{
+                    backgroundColor: "transparent",
+                    color: "transparent",
+                    boxShadow: "none",
+                  }}
+                >
+                  &nbsp;
+                </button>
               </div>
               <figure className="fx-jc fx-ac space1">
                 <button onClick={() => alert("I got clicked")} className="">
@@ -584,23 +454,20 @@ function WarehouseTerminal() {
                 </button>
               </figure>
               <div className="next">
-                {examsQuestions[selectedSubject]?.questionIndex <
-                examsQuestions[selectedSubject]?.questions.length - 1 ? (
-                  <button className="next-button" onClick={handleNextQuestion}>
-                    <span>Next</span>
-                    <SkipNextIcon />
-                  </button>
-                ) : (
-                  <button
-                    style={{
-                      backgroundColor: "transparent",
-                      color: "transparent",
-                      boxShadow: "none",
-                    }}
-                  >
-                    &nbsp;
-                  </button>
-                )}
+                <button className="next-button">
+                  <span>Next</span>
+                  <SkipNextIcon />
+                </button>
+
+                <button
+                  style={{
+                    backgroundColor: "transparent",
+                    color: "transparent",
+                    boxShadow: "none",
+                  }}
+                >
+                  &nbsp;
+                </button>
               </div>
             </div>
           </div>

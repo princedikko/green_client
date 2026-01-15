@@ -6,7 +6,7 @@ import staffReducer from "../redux/staff_reducer.js";
 import instructorReducer from "../redux/instructor_reducer.js";
 import clientReducer from "../redux/client_reducer.js";
 import appFormReducer from "../redux/registrationReducer.js";
-import admissionReducer from "../redux/admission_reducer.js";
+import hybridReducer from "../redux/hybrid_reducer.js";
 import parentReducer from "../redux/parent_reducer.js";
 import executiveReducer from "../redux/executive_reducer.js";
 import financeReducer from "../redux/finance_reducer.js";
@@ -34,7 +34,7 @@ const rootReducer = combineReducers({
   agentFunction: agentReducer,
   securityFunction: securityReducer,
   applictaionForm: appFormReducer,
-  admissionActions: admissionReducer,
+  hybridActions: hybridReducer,
   // storage for computer base assessment and evaluations
   adminAssesment: adminAssesmentReducer,
   staffAssesment: staffAssesmentReducer,
@@ -63,14 +63,14 @@ export { store, persistor };
 // import staffReducer from "./staff_reducer";
 // import clientReducer from "./client_reducer";
 // import appFormReducer from "./registrationReducer.js";
-// import admissionReducer from "./admission_reducer.js";
+// import hybridReducer from "./hybrid_reducer.js";
 
 // const rootReducer = combineReducers({
 //   adminFunction: adminReducer,
 //   staffFunction: staffReducer,
 //   clientFunction: clientReducer,
 //   applictaionForm: appFormReducer,
-//   admissionActions: admissionReducer,
+//   hybridActions: hybridReducer,
 // });
 
 // // create store with reducer

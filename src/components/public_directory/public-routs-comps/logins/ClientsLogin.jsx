@@ -1,5 +1,5 @@
 import "./clientslogin.css";
-import { useReducer, useState, useEffect } from "react";
+import { useReducer, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
 import * as Action from "../../../../store/redux/client_reducer.js";
@@ -16,7 +16,7 @@ let clientData;
 
 export default function ClientsLogin() {
   const [showPassword, setShowPassword] = useState(false);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [isloadin, setIslaoding] = useState(false);
   const redirect = useNavigate();
   const dispatch = useDispatch();
@@ -170,7 +170,7 @@ export default function ClientsLogin() {
         </div>
         <div className="client-login-disc fx-cl fx-jc fx-ac space3">
           <figure>
-            <img src={Logo3D} alt="image" />
+            <img src={Logo3D} alt="someting" />
           </figure>
           <div>
             <h4>Connect to your School</h4>

@@ -139,7 +139,8 @@
   transition: all 0.3s ease;
 }
 .clientDashboardSubMenu:hover {
-  background-color: #fff;
+  /* background-color: #fff; */
+  color: #2d5ecf;
 }
 .clientDashboardNaVIcon {
   display: flex;
@@ -209,6 +210,10 @@
   border-radius: 55rem;
   overflow: hidden;
   justify-content: center;
+  transition: all 0.3s ease-in-out;
+}
+.clientDashboardSubMenu:hover .clientSubNavIcon {
+  background-color: #26bf89;
 }
 
 .clientSubNavCont {

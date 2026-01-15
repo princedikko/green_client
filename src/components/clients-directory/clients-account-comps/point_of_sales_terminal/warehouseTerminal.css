@@ -312,6 +312,7 @@
 
 /* ASIDE DECORATIONS BLOCKS */
 .warehouseHubMain .aside {
+  width: 40rem;
   background-color: #f5f5f5;
   color: #333;
   padding: 2.8rem 1.9rem;
@@ -411,4 +412,12 @@
 .warehauseSearch button:active {
   background-color: #f35e6a;
   color: #fff;
+}
+
+.productsCardWH {
+  padding: 1rem;
+  width: 10rem;
+  background-color: rgba(255, 255, 255, 0.623);
+  border-radius: 1.2rem;
+  box-shadow: 1.2rem 1rem 4rem -2.5rem rgba(0, 0, 0, 0.35);
 }
