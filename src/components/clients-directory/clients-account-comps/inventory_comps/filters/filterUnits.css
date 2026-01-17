@@ -1,0 +1,129 @@
+.units_advanced_search {
+  background: transparent;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  font-family: system-ui, sans-serif;
+}
+
+/* Title */
+.units_advanced_title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+/* Top dropdowns */
+.units_advanced_top {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.units_field {
+  flex: 1;
+}
+
+.units_field label {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.units_select,
+.units_input {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  min-width: 120px;
+}
+
+/* Filter groups */
+.units_filter_group {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 14px;
+  background: #fafafa;
+}
+
+.units_group_title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #374151;
+}
+
+/* Rule row */
+.units_rule_row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Action buttons */
+.units_rule_actions {
+  display: flex;
+  gap: 6px;
+}
+
+.units_actionBar .right button.units_btn_blue {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.units_actionBar .right button.units_btn_gray {
+  background: #e5e7eb;
+  color: #374151;
+  border: none;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.units_actionBar .right button.units_btn_red {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Footer */
+.units_advanced_footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.units_add_group {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.units_footer_actions {
+  display: flex;
+  gap: 10px;
+}
+
+.units_search_btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}

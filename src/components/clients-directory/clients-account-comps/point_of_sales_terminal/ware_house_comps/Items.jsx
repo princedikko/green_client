@@ -7,8 +7,6 @@ import { useDispatch } from "react-redux";
 import * as Action from "../../../../../store/redux/hybrid_reducer.js";
 // import from MUI
 import IsLoading from "../../../../../isLoading";
-import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
-import TocOutlinedIcon from "@mui/icons-material/TocOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 
 export default function Items({ setChangeView, changeview }) {
@@ -82,15 +80,8 @@ function TableView() {
               <td>32 pieces</td>
               <td className="fx-ac space1">
                 <span>₦{item.price} </span>
-                <button
-                  style={{
-                    // backgroundColor: "#f35e6a",
-                    color: "#f35e6a",
-                    borderRadius: ".7rem",
-                  }}
-                  onClick={() => popCart(index)}
-                >
-                  <CloseIcon fontSize="large" />
+                <button className="removeCart " onClick={() => popCart(index)}>
+                  <CloseIcon fontSize="medium" />
                 </button>
               </td>
             </tr>

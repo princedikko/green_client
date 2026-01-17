@@ -5,7 +5,17 @@ import "./clientsAccount.css";
 import { useDispatch } from "react-redux";
 import * as Action from "../../store/redux/client_reducer.js";
 import * as ActionHybrid from "../../store/redux/hybrid_reducer.js";
+//////////////////////////////////////////////////////////////////
+/// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+import "./styles.css";
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/scrollbar";
 
+// Import required modules
+import { FreeMode, Scrollbar, Mousewheel } from "swiper/modules";
 // importing components
 import ClientsDashboard from "./clients-account-comps/ClientsDashboard.jsx";
 import ClientEduTech from "./clients-account-comps/ClientEduTech.jsx";
@@ -30,6 +40,23 @@ import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsAc
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import Sales from "./clients-account-comps/inventory_comps/Sales.jsx";
 import Quatations from "./clients-account-comps/inventory_comps/Quatations.jsx";
+import Discount from "./clients-account-comps/inventory_comps/Discount.jsx";
+import Subscriptions from "./clients-account-comps/inventory_comps/Subscriptions.jsx";
+import Drafts from "./clients-account-comps/inventory_comps/Drafts.jsx";
+import SellReturn from "./clients-account-comps/inventory_comps/SellReturn.jsx";
+import ProductServices from "./clients-account-comps/inventory_comps/ProductServices.jsx";
+import Imports from "./clients-account-comps/inventory_comps/Imports.jsx";
+import PriceGroups from "./clients-account-comps/inventory_comps/PriceGroups.jsx";
+import Units from "./clients-account-comps/inventory_comps/Units.jsx";
+import Brands from "./clients-account-comps/inventory_comps/Brands.jsx";
+import Categories from "./clients-account-comps/inventory_comps/Categories.jsx";
+import TaxRate from "./clients-account-comps/inventory_comps/TaxRate.jsx";
+import Variations from "./clients-account-comps/inventory_comps/Variations.jsx";
+import Recives from "./clients-account-comps/inventory_comps/Recieves.jsx";
+import Returns from "./clients-account-comps/inventory_comps/Returns.jsx";
+import FilterOrders from "./clients-account-comps/inventory_comps/filters/FilterOders.jsx";
+import Orders from "./clients-account-comps/inventory_comps/Orders.jsx";
+import Transfers from "./clients-account-comps/inventory_comps/Transfers.jsx";
 
 export default function ClientsAccount() {
   const dispatch = useDispatch();
@@ -67,29 +94,14 @@ export default function ClientsAccount() {
 
   // Redux functions for dashboards navigation
   function handleNavigator(item) {
-    dispatch(DispatchNavigator(item));
+    dispatch(Action.dispathcDashboardNavigator({ item }));
   }
-  const DispatchNavigator = (item) => async (dispatch) => {
-    try {
-      dispatch(Action.dispathcDashboardNavigator({ item }));
-      console.log("main menu" + item);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   // Redux functions for sub-navigation
   function handleSubNavigator(item) {
-    dispatch(DispatchSubNavigator(item));
+    dispatch(Action.dispatchDashboardSubNavigator({ item }));
   }
-  const DispatchSubNavigator = (item) => async (dispatch) => {
-    try {
-      dispatch(Action.dispatchDashboardSubNavigator({ item }));
-      console.log("submenu" + item);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   const products = [
     { name: "Milk", price: 2343 },
     { name: "Bread", price: 1200 },
@@ -138,6 +150,38 @@ export default function ClientsAccount() {
         return <Sales breadcrumbs={breads} />;
       case "quatations":
         return <Quatations breadcrumbs={breads} />;
+      case "discount":
+        return <Discount breadcrumbs={breads} />;
+      case "subscriptions":
+        return <Subscriptions breadcrumbs={breads} />;
+      case "draft":
+        return <Drafts breadcrumbs={breads} />;
+      case "productservices":
+        return <ProductServices breadcrumbs={breads} />;
+      case "imports":
+        return <Imports breadcrumbs={breads} />;
+      case "pricegroups":
+        return <PriceGroups breadcrumbs={breads} />;
+      case "units":
+        return <Units breadcrumbs={breads} />;
+      case "brands":
+        return <Brands breadcrumbs={breads} />;
+      case "categories":
+        return <Categories breadcrumbs={breads} />;
+      case "taxrate":
+        return <TaxRate breadcrumbs={breads} />;
+      case "variations":
+        return <Variations breadcrumbs={breads} />;
+      case "recieves":
+        return <Recives breadcrumbs={breads} />;
+      case "returns":
+        return <Returns breadcrumbs={breads} />;
+      case "orders":
+        return <Orders breadcrumbs={breads} />;
+      case "transfers":
+        return <Transfers breadcrumbs={breads} />;
+
+      // /.....................................
       case "setting":
         return "Change your Password here ...";
       default:
@@ -161,25 +205,8 @@ export default function ClientsAccount() {
       console.log(error);
     }
   };
-
+  console.log("Active Display:" + active_display);
   const menuItems = [
-    {
-      title: "Dashboard",
-      icon: <DashboardRoundedIcon fontSize="medium" />,
-      hooks: "dashboard",
-      active: "dashboard",
-    },
-
-    {
-      title: "Warehouse",
-      icon: <SchoolRoundedIcon fontSize="medium" />,
-      hooks: "cbt",
-      active: "cbt",
-      // children: [
-      //   { title: "Take a Test", href: "/cbt/take-test" },
-      //   { title: "Custom Tests", href: "/cbt/custom" },
-      // ],
-    },
     {
       title: "Inventory",
       icon: <VideoLibraryRoundedIcon fontSize="medium" />,
@@ -192,7 +219,6 @@ export default function ClientsAccount() {
         { title: "Subscriptions", href: "/live/replays" },
         { title: "Draft", href: "/live/replays" },
         { title: "Sell Return", href: "/live/replays" },
-        { title: "dashboard", href: "/live/replays" },
       ],
     },
     {
@@ -201,13 +227,13 @@ export default function ClientsAccount() {
       hooks: "materials",
       active: "materials",
       children: [
-        { title: "Products/Services", href: "/materials/past-questions" },
-        { title: "Import", href: "/materials/downloads" },
-        { title: "Selling Price Group", href: "/materials/videos" },
+        { title: "ProductServices", href: "/materials/past-questions" },
+        { title: "Imports", href: "/materials/downloads" },
+        { title: "Pricegroups", href: "/materials/videos" },
         { title: "Units", href: "/materials/formulas" },
         { title: "Brands", href: "/materials/formulas" },
         { title: "Categories", href: "/materials/formulas" },
-        { title: "Tax rates", href: "/materials/formulas" },
+        { title: "Taxrate", href: "/materials/formulas" },
         { title: "Variations", href: "/materials/formulas" },
       ],
     },
@@ -219,12 +245,12 @@ export default function ClientsAccount() {
       children: [
         { title: "Recieves", href: "/materials/past-questions" },
         { title: "Returns", href: "/materials/downloads" },
-        { title: "Order", href: "/materials/videos" },
+        { title: "Orders", href: "/materials/videos" },
       ],
     },
 
     {
-      title: "Stock Management",
+      title: "Manage Stock",
       icon: <InsightsRoundedIcon fontSize="medium" />,
       hooks: "performance",
       active: "performance",
@@ -335,7 +361,27 @@ export default function ClientsAccount() {
               <div>
                 <span style={{ textTransform: "capitalize" }}>{active}</span>
               </div>
+
               <div className="clientProfileItemsCont fx-cl spacem">
+                <button
+                  className={`clientDashboardNaV cb fx-ac fx-jb  ${
+                    active === "dashboard" ? "active-prl-tab" : null
+                  }`}
+                  onClick={() => {
+                    handleNavigator("dashboard");
+                    handleSubNavigator("dashboard");
+                    toggleIndex(0);
+                  }}
+                >
+                  <span className=" fx-ac spacem">
+                    <span className="clientDashboardNaVIcon">
+                      {" "}
+                      <DashboardRoundedIcon fontSize="medium" />
+                    </span>
+
+                    <span>Dashboard</span>
+                  </span>
+                </button>
                 {menuItems.map((item, index) => (
                   <div className="fx-cl" key={index}>
                     <button
@@ -366,7 +412,7 @@ export default function ClientsAccount() {
                       )}
                     </button>
 
-                    {openIndex === index && (
+                    {openIndex === index ? (
                       <div className="clientSubNavCont fx-cl spacem">
                         {item?.children?.map((sub, idx) => (
                           <button
@@ -388,7 +434,7 @@ export default function ClientsAccount() {
                           </button>
                         ))}
                       </div>
-                    )}
+                    ) : null}
                   </div>
                 ))}
               </div>
@@ -436,7 +482,9 @@ export default function ClientsAccount() {
             </button>
           </span>
         </div>
-        <div className="clientContents">{switchComponents()}</div>
+        <div className="clientContents clientAccountScroll">
+          {switchComponents()}
+        </div>
       </div>
     </section>
   );

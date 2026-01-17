@@ -1,13 +1,19 @@
 /* grid-column: span 2; */
 .clientProfileCont {
   font-size: 1.5rem;
-  min-height: 100vh;
+  height: 100vh;
   display: grid;
   grid-template-columns: 1.2fr 5fr;
   grid-template-rows: 1fr 9fr;
   /* background-color: #fff;
    */
   background: linear-gradient(to bottom right, #f3f6f8, #e8f1ee);
+}
+
+.clientAccountScroll {
+  height: 86vh;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 
 .clientHeader {
@@ -22,6 +28,7 @@
   /* background-color: #f3f6f8; */
   background-color: transparent;
   padding: 1.8rem;
+  padding-bottom: 0;
 }
 
 .profBtn {
@@ -199,7 +206,10 @@
 }
 
 .clientProfileItemsCont {
+  height: 76vh;
   padding: 0 1.8rem;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 
 .clientSubNavIcon {

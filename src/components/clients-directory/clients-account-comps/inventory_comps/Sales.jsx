@@ -21,11 +21,8 @@ import PrintIcon from "@mui/icons-material/Print";
 import FlightIcon from "@mui/icons-material/Flight";
 import PlaceIcon from "@mui/icons-material/Place";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
-import MultipleStopIcon from "@mui/icons-material/MultipleStop";
 import AddIcon from "@mui/icons-material/Add";
 import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
-import ImportExportIcon from "@mui/icons-material/ImportExport";
-import ArtTrackIcon from "@mui/icons-material/ArtTrack";
 
 // image imports
 import ImgOne from "./img1.jpg";
@@ -109,10 +106,6 @@ export default function Sales({ breadcrumbs }) {
     }
   }
 
-  //____________________________________________________________
-  // useEffect(() => {
-  //   getApplicants();
-  // }, []);
   const printElement = (id) => {
     const element = document.getElementById(id);
     if (!element) return;

@@ -55,10 +55,10 @@ const styles = StyleSheet.create({
 });
 
 // 2. PDF Document Component
-const MyPDFDocument = ({ data }) => (
+const PDFDocument = ({ data }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      <Text style={{ marginBottom: 10, fontSize: 10 }}>Sales Table</Text>
+      <Text style={{ marginBottom: 10, fontSize: 10 }}>Sell Returns Table</Text>
       <View style={styles.table}>
         {/* Header */}
         <View style={[styles.tableRow, styles.tableHeader]}>
@@ -122,8 +122,8 @@ const MyPDFDocument = ({ data }) => (
 // 3. Button Component
 const ExportPDFButton = ({ currentRows }) => (
   <PDFDownloadLink
-    document={<MyPDFDocument data={currentRows} />}
-    fileName="sales_table.pdf"
+    document={<PDFDocument data={currentRows} />}
+    fileName="sell-return_table.pdf"
   >
     {({ loading }) =>
       loading ? (

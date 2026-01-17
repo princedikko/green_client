@@ -5,10 +5,10 @@
   display: grid;
   grid-template-columns: 1fr 6fr 4fr 1.5fr;
   padding: 1.2rem;
-  background-color: #e3ecfd;
+  background-color: #3a84f8;
   border-radius: 1rem;
   font-size: 1.2rem;
-  color: #3a84f8;
+  color: #fff;
 }
 
 .item_row table tbody tr {
@@ -22,13 +22,29 @@
   font-size: 1.2rem;
   font-weight: 300;
   color: #0b3983;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
 }
 .item_row table tbody tr:hover,
 .item_row table tbody tr:active {
-  background-color: #3a84f8;
-  color: #fff;
+  background-color: #e3ecfd;
+  color: #3a84f8;
   font-weight: bold;
   border-radius: 0.8rem;
+}
+.item_row table tbody tr .removeCart {
+  background-color: transparent;
+  color: #f35e6a;
+  font-weight: bold;
+  border: 1px solid #f35e6a;
+  border-radius: 70rem;
+  height: 2.4rem;
+  width: 2.4rem;
+  padding: 0.4rem;
+  transition: all 0.3s ease-in-out;
+}
+.item_row table tbody tr .removeCart:hover {
+  transform: scale(1.1);
 }
 .item_row table tbody tr .completed {
   padding: 0.3rem 1.6rem;
