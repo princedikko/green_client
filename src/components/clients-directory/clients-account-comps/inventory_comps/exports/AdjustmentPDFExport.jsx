@@ -122,7 +122,7 @@ const PDFDocument = ({ data }) => (
 const ExportPDFButton = ({ currentRows }) => (
   <PDFDownloadLink
     document={<PDFDocument data={currentRows} />}
-    fileName="Discounts.pdf"
+    fileName="Adjustmentss List.pdf"
   >
     {({ loading }) =>
       loading ? (

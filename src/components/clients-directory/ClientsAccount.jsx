@@ -57,6 +57,14 @@ import Returns from "./clients-account-comps/inventory_comps/Returns.jsx";
 import FilterOrders from "./clients-account-comps/inventory_comps/filters/FilterOders.jsx";
 import Orders from "./clients-account-comps/inventory_comps/Orders.jsx";
 import Transfers from "./clients-account-comps/inventory_comps/Transfers.jsx";
+import OpeningStock from "./clients-account-comps/inventory_comps/OpeningStock.jsx";
+import Reconciliation from "./clients-account-comps/inventory_comps/Reconciliation.jsx";
+import Discripancies from "./clients-account-comps/inventory_comps/Discripancies.jsx";
+import FilterAdjustment from "./clients-account-comps/inventory_comps/filters/FilterAdjustment.jsx";
+import Adjustment from "./clients-account-comps/inventory_comps/Adjustment.jsx";
+import Expenses from "./clients-account-comps/inventory_comps/Expenses.jsx";
+import CategoriesX from "./clients-account-comps/inventory_comps/CategoriesX.jsx";
+import Invoicing from "./clients-account-comps/inventory_comps/Invoicing.jsx";
 
 export default function ClientsAccount() {
   const dispatch = useDispatch();
@@ -180,6 +188,20 @@ export default function ClientsAccount() {
         return <Orders breadcrumbs={breads} />;
       case "transfers":
         return <Transfers breadcrumbs={breads} />;
+      case "openingstock":
+        return <OpeningStock breadcrumbs={breads} />;
+      case "reconciliation":
+        return <Reconciliation breadcrumbs={breads} />;
+      case "discripancies":
+        return <Discripancies breadcrumbs={breads} />;
+      case "adjusment":
+        return <Adjustment breadcrumbs={breads} />;
+      case "expenses":
+        return <Expenses breadcrumbs={breads} />;
+      case "categoriesx":
+        return <CategoriesX breadcrumbs={breads} />;
+      case "invoicing":
+        return <Invoicing breadcrumbs={breads} />;
 
       // /.....................................
       case "setting":
@@ -206,19 +228,184 @@ export default function ClientsAccount() {
     }
   };
   console.log("Active Display:" + active_display);
+  // const menuItems = [
+  //   {
+  //     title: "Inventory",
+  //     icon: <VideoLibraryRoundedIcon fontSize="medium" />,
+  //     hooks: "inventory",
+  //     active: "inventory",
+  //     children: [
+  //       { title: "Sales", href: "/live/upcoming" },
+  //       { title: "Quatations", href: "/live/join" },
+  //       { title: "Discount", href: "/live/replays" },
+  //       { title: "Subscriptions", href: "/live/replays" },
+  //       { title: "Draft", href: "/live/replays" },
+  //       { title: "Sell Return", href: "/live/replays" },
+  //     ],
+  //   },
+  //   {
+  //     title: "Manage Products",
+  //     icon: <MenuBookRoundedIcon fontSize="medium" />,
+  //     hooks: "materials",
+  //     active: "materials",
+  //     children: [
+  //       { title: "ProductServices", href: "/materials/past-questions" },
+  //       { title: "Imports", href: "/materials/downloads" },
+  //       { title: "Pricegroups", href: "/materials/videos" },
+  //       { title: "Units", href: "/materials/formulas" },
+  //       { title: "Brands", href: "/materials/formulas" },
+  //       { title: "Categories", href: "/materials/formulas" },
+  //       { title: "Taxrate", href: "/materials/formulas" },
+  //       { title: "Variations", href: "/materials/formulas" },
+  //     ],
+  //   },
+  //   {
+  //     title: "Purchases",
+  //     icon: <EventRoundedIcon fontSize="medium" />,
+  //     hooks: "result",
+  //     active: "result",
+  //     children: [
+  //       { title: "Recieves", href: "/materials/past-questions" },
+  //       { title: "Returns", href: "/materials/downloads" },
+  //       { title: "Orders", href: "/materials/videos" },
+  //     ],
+  //   },
+
+  //   {
+  //     title: "Manage Stock",
+  //     icon: <InsightsRoundedIcon fontSize="medium" />,
+  //     hooks: "performance",
+  //     active: "performance",
+  //     children: [
+  //       { title: "Transfers", href: "/analytics/scores" },
+  //       { title: "openingstock", href: "Import Opening Stock" },
+  //       { title: "Reconciliation", href: "/analytics/time" },
+  //       { title: "Discripancies", href: "/analytics/ai" },
+  //       { title: "Adjusment", href: "/analytics/ai" },
+  //     ],
+  //   },
+
+  //   {
+  //     title: "Expanses",
+  //     icon: <ForumRoundedIcon fontSize="medium" />,
+  //     hooks: "community",
+  //     active: "community",
+  //     children: [
+  //       { title: "Expenses", href: "All Expensives" },
+  //       { title: "CategoriesX", href: "/community/groups" },
+  //     ],
+  //   },
+  //   {
+  //     title: "Invoicing",
+  //     icon: <EventRoundedIcon fontSize="medium" />,
+  //     hooks: "schedule",
+  //     active: "schedule",
+  //     children: [
+  //       { title: "Payments", href: "/schedule/timetable" },
+  //       { title: "Invoices", href: "/schedule/attendance" },
+  //       { title: "Billing Estimate", href: "/schedule/reminders" },
+  //     ],
+  //   },
+
+  //   {
+  //     title: "Production",
+  //     icon: <WorkspacePremiumRoundedIcon fontSize="medium" />,
+  //     hooks: "achievements",
+  //     active: "achievements",
+  //     children: [
+  //       { title: "Recipe", href: "/rewards/badges" },
+  //       { title: "Production", href: "/rewards/badges" },
+  //       { title: "Settings", href: "/rewards/certificates" },
+  //       { title: "Report", href: "/rewards/challenges" },
+  //     ],
+  //   },
+  //   {
+  //     title: "Reports",
+  //     icon: <WorkspacePremiumRoundedIcon fontSize="medium" />,
+  //     hooks: "achievements",
+  //     active: "achievements",
+  //     children: [
+  //       { title: "Stock", href: "/rewards/challenges" },
+  //       { title: "Expense & Account", href: "/rewards/badges" },
+  //       { title: "Contact & CRM", href: "/rewards/badges" },
+  //       { title: "Sales", href: "/rewards/certificates" },
+  //       { title: "Purchases", href: "/rewards/challenges" },
+  //       { title: "Profit/Loss", href: "/rewards/badges" },
+  //       { title: "Invoices", href: "/rewards/badges" },
+  //     ],
+  //   },
+
+  //   {
+  //     title: "Account",
+  //     icon: <AccountCircleRoundedIcon fontSize="medium" />,
+  //     hooks: "account",
+  //     active: "account",
+  //     children: [
+  //       { title: "Profile", href: "/account/profile" },
+  //       { title: "Settings", href: "/account/settings" },
+  //       { title: "Language", href: "/account/language" },
+  //       { title: "Logout", href: "/logout" },
+  //     ],
+  //   },
+
+  //   {
+  //     title: "Help & Support",
+  //     icon: <HelpCenterRoundedIcon fontSize="medium" />,
+  //     hooks: "support",
+  //     active: "support",
+  //     children: [
+  //       { title: "FAQs", href: "/support/faqs" },
+  //       { title: "Contact Support", href: "/support/contact" },
+  //       { title: "System Guide", href: "/support/guide" },
+  //     ],
+  //   },
+  // ];
+
+  // ___________________________________END_______________
+
   const menuItems = [
+    {
+      title: "Dashboard",
+      icon: <DashboardRoundedIcon fontSize="medium" />,
+      hooks: "dashboard",
+      active: "dashboard",
+    },
     {
       title: "Inventory",
       icon: <VideoLibraryRoundedIcon fontSize="medium" />,
       hooks: "inventory",
       active: "inventory",
       children: [
-        { title: "Sales", href: "/live/upcoming" },
-        { title: "Quatations", href: "/live/join" },
-        { title: "Discount", href: "/live/replays" },
-        { title: "Subscriptions", href: "/live/replays" },
-        { title: "Draft", href: "/live/replays" },
-        { title: "Sell Return", href: "/live/replays" },
+        {
+          title: "Sales",
+          hook: "sales",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Quatations",
+          hook: "quatations",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Discount",
+          hook: "discount",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Subscriptions",
+          hook: "subscriptions",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Draft",
+          hook: "draft",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Sell Return",
+          hook: "sellreturn",
+          tabs: ["main", "completed", "pending"],
+        },
       ],
     },
     {
@@ -227,14 +414,46 @@ export default function ClientsAccount() {
       hooks: "materials",
       active: "materials",
       children: [
-        { title: "ProductServices", href: "/materials/past-questions" },
-        { title: "Imports", href: "/materials/downloads" },
-        { title: "Pricegroups", href: "/materials/videos" },
-        { title: "Units", href: "/materials/formulas" },
-        { title: "Brands", href: "/materials/formulas" },
-        { title: "Categories", href: "/materials/formulas" },
-        { title: "Taxrate", href: "/materials/formulas" },
-        { title: "Variations", href: "/materials/formulas" },
+        {
+          title: "ProductServices",
+          hook: "productservices",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Imports",
+          hook: "imports",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Pricegroups",
+          hook: "pricegroups",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Units",
+          hook: "units",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Brands",
+          hook: "brands",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Categories",
+          hook: "categories",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Taxrate",
+          hook: "taxrate",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Variations",
+          hook: "variations",
+          tabs: ["main", "completed", "pending"],
+        },
       ],
     },
     {
@@ -243,58 +462,123 @@ export default function ClientsAccount() {
       hooks: "result",
       active: "result",
       children: [
-        { title: "Recieves", href: "/materials/past-questions" },
-        { title: "Returns", href: "/materials/downloads" },
-        { title: "Orders", href: "/materials/videos" },
+        {
+          title: "Recieves",
+          hook: "recieves",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Returns",
+          hook: "returns",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Orders",
+          hook: "orders",
+          tabs: ["main", "completed", "pending"],
+        },
       ],
     },
-
     {
       title: "Manage Stock",
       icon: <InsightsRoundedIcon fontSize="medium" />,
       hooks: "performance",
       active: "performance",
       children: [
-        { title: "Transfers", href: "/analytics/scores" },
-        { title: "Import Opening Stock", href: "/analytics/weak-topics" },
-        { title: "Reconciliation", href: "/analytics/time" },
-        { title: "Discripancies", href: "/analytics/ai" },
-        { title: "Adjusment", href: "/analytics/ai" },
+        {
+          title: "Transfers",
+          hook: "transfers",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "openingstock",
+          hook: "openingstock",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Reconciliation",
+          hook: "reconciliation",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Discripancies",
+          hook: "discripancies",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Adjusment",
+          hook: "adjusment",
+          tabs: ["main", "completed", "pending"],
+        },
       ],
     },
-
     {
       title: "Expanses",
       icon: <ForumRoundedIcon fontSize="medium" />,
       hooks: "community",
       active: "community",
       children: [
-        { title: "All Expensives", href: "/community/forum" },
-        { title: "Categories", href: "/community/groups" },
+        {
+          title: "Expenses",
+          hook: "expenses",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "CategoriesX",
+          hook: "categoriesx",
+          tabs: ["main", "completed", "pending"],
+        },
       ],
     },
     {
-      title: "Invoices",
+      title: "Invoicing",
       icon: <EventRoundedIcon fontSize="medium" />,
-      hooks: "schedule",
-      active: "schedule",
-      children: [
-        { title: "Payments", href: "/schedule/timetable" },
-        { title: "Invoices", href: "/schedule/attendance" },
-        { title: "Billing Estimate", href: "/schedule/reminders" },
-      ],
+      hooks: "invoicing",
+      active: "invoicing",
+      //   children: [
+      //     {
+      //       title: "Payments",
+      //       hook: "payments",
+      //       tabs: ["main", "completed", "pending"],
+      //     },
+      //     {
+      //       title: "Invoices",
+      //       hook: "invoices",
+      //       tabs: ["main", "completed", "pending"],
+      //     },
+      //     {
+      //       title: "Billing Estimate",
+      //       hook: "billingestimate",
+      //       tabs: ["main", "completed", "pending"],
+      //     },
+      //   ],
     },
-
     {
       title: "Production",
       icon: <WorkspacePremiumRoundedIcon fontSize="medium" />,
       hooks: "achievements",
       active: "achievements",
       children: [
-        { title: "Recipe", href: "/rewards/badges" },
-        { title: "Production", href: "/rewards/badges" },
-        { title: "Settings", href: "/rewards/certificates" },
-        { title: "Report", href: "/rewards/challenges" },
+        {
+          title: "Recipe",
+          hook: "recipe",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Production",
+          hook: "production",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Settings",
+          hook: "settings",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Report",
+          hook: "report",
+          tabs: ["main", "completed", "pending"],
+        },
       ],
     },
     {
@@ -303,43 +587,91 @@ export default function ClientsAccount() {
       hooks: "achievements",
       active: "achievements",
       children: [
-        { title: "Stock", href: "/rewards/challenges" },
-        { title: "Expense & Account", href: "/rewards/badges" },
-        { title: "Contact & CRM", href: "/rewards/badges" },
-        { title: "Sales", href: "/rewards/certificates" },
-        { title: "Purchases", href: "/rewards/challenges" },
-        { title: "Profit/Loss", href: "/rewards/badges" },
-        { title: "Invoices", href: "/rewards/badges" },
+        {
+          title: "Stock",
+          hook: "stock",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Expense & Account",
+          hook: "expense&account",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Contact & CRM",
+          hook: "contact&crm",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Sales",
+          hook: "sales",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Purchases",
+          hook: "purchases",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Profit/Loss",
+          hook: "profit/loss",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Invoices",
+          hook: "invoices",
+          tabs: ["main", "completed", "pending"],
+        },
       ],
     },
-
     {
       title: "Account",
       icon: <AccountCircleRoundedIcon fontSize="medium" />,
       hooks: "account",
       active: "account",
       children: [
-        { title: "Profile", href: "/account/profile" },
-        { title: "Settings", href: "/account/settings" },
-        { title: "Language", href: "/account/language" },
-        { title: "Logout", href: "/logout" },
+        {
+          title: "Profile",
+          hook: "profile",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Settings",
+          hook: "settings",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Language",
+          hook: "language",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Logout",
+          hook: "logout",
+          tabs: ["main", "completed", "pending"],
+        },
       ],
     },
-
     {
       title: "Help & Support",
       icon: <HelpCenterRoundedIcon fontSize="medium" />,
       hooks: "support",
       active: "support",
       children: [
-        { title: "FAQs", href: "/support/faqs" },
-        { title: "Contact Support", href: "/support/contact" },
-        { title: "System Guide", href: "/support/guide" },
+        { title: "FAQs", hook: "faqs", tabs: ["main", "completed", "pending"] },
+        {
+          title: "Contact Support",
+          hook: "contactsupport",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "System Guide",
+          hook: "systemguide",
+          tabs: ["main", "completed", "pending"],
+        },
       ],
     },
   ];
-
-  // ___________________________________END_______________
 
   return (
     <section className="sectionclientProfile">
@@ -363,57 +695,64 @@ export default function ClientsAccount() {
               </div>
 
               <div className="clientProfileItemsCont fx-cl spacem">
-                <button
-                  className={`clientDashboardNaV cb fx-ac fx-jb  ${
-                    active === "dashboard" ? "active-prl-tab" : null
-                  }`}
-                  onClick={() => {
-                    handleNavigator("dashboard");
-                    handleSubNavigator("dashboard");
-                    toggleIndex(0);
-                  }}
-                >
-                  <span className=" fx-ac spacem">
-                    <span className="clientDashboardNaVIcon">
-                      {" "}
-                      <DashboardRoundedIcon fontSize="medium" />
-                    </span>
-
-                    <span>Dashboard</span>
-                  </span>
-                </button>
                 {menuItems.map((item, index) => (
                   <div className="fx-cl" key={index}>
-                    <button
-                      className={`clientDashboardNaV cb fx-ac fx-jb  ${
-                        active === `${item.active}` ? "active-prl-tab" : null
-                      }`}
-                      onClick={() => {
-                        handleNavigator(item.active);
-                        toggleIndex(index);
-                      }}
-                    >
-                      <span className=" fx-ac spacem">
-                        <span className="clientDashboardNaVIcon">
-                          {item.icon}
-                          {item.img}
-                        </span>
+                    {item.children ? (
+                      <button
+                        className={`clientDashboardNaV cb fx-ac fx-jb  ${
+                          active === `${item.active}` ? "active-prl-tab" : null
+                        }`}
+                        onClick={() => {
+                          handleNavigator(item.active);
+                          toggleIndex(index);
+                        }}
+                      >
+                        <span className=" fx-ac spacem">
+                          <span className="clientDashboardNaVIcon">
+                            {item.icon}
+                            {item.img}
+                          </span>
 
-                        <span>{item.title}</span>
-                      </span>
-                      {item?.children && (
-                        <span className="clientProfileDropdownBtn fx-ac fx-jc">
-                          {openIndex === index ? (
-                            <KeyboardArrowDownIcon fontSize="small" />
-                          ) : (
-                            <KeyboardArrowRightIcon fontSize="small" />
-                          )}
+                          <span>{item.title}</span>
                         </span>
-                      )}
-                    </button>
+                        {item?.children && (
+                          <span className="clientProfileDropdownBtn fx-ac fx-jc">
+                            {openIndex === index ? (
+                              <KeyboardArrowDownIcon fontSize="small" />
+                            ) : (
+                              <KeyboardArrowRightIcon fontSize="small" />
+                            )}
+                          </span>
+                        )}
+                      </button>
+                    ) : (
+                      <button
+                        className={`clientDashboardNaV cb fx-ac fx-jb  ${
+                          active === `${item.active}` ? "active-prl-tab" : null
+                        }`}
+                        onClick={() => {
+                          handleNavigator(item.active);
+                          toggleIndex(index);
+                          handleSubNavigator(item.hooks);
+                        }}
+                      >
+                        <span className=" fx-ac spacem">
+                          <span className="clientDashboardNaVIcon">
+                            {item.icon}
+                            {item.img}
+                          </span>
+
+                          <span>{item.title}</span>
+                        </span>
+                      </button>
+                    )}
 
                     {openIndex === index ? (
-                      <div className="clientSubNavCont fx-cl spacem">
+                      <div
+                        className={` ${
+                          item?.children && "clientSubNavCont fx-cl spacem"
+                        }`}
+                      >
                         {item?.children?.map((sub, idx) => (
                           <button
                             className={`clientDashboardSubMenu cb fx-ac space1  ${

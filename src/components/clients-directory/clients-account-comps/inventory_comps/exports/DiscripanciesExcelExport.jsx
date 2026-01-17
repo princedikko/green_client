@@ -7,7 +7,7 @@ const ExportExcelJSButton = ({ currentRows }) => {
   const exportToExcel = async () => {
     // 1. Create a new workbook
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Discount Table");
+    const worksheet = workbook.addWorksheet("Discripancies Table");
 
     // 2. Define columns
     worksheet.columns = [
@@ -70,12 +70,12 @@ const ExportExcelJSButton = ({ currentRows }) => {
     // 6. Export
     const buffer = await workbook.xlsx.writeBuffer();
     const blob = new Blob([buffer], { type: "application/octet-stream" });
-    saveAs(blob, "Discounts .xlsx");
+    saveAs(blob, "Discripancies List.xlsx");
   };
 
   return (
     <button
-      className="discount_export_btn fx-ac spacem"
+      className="discripancies_export_btn fx-ac spacem"
       onClick={exportToExcel}
       style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}
     >

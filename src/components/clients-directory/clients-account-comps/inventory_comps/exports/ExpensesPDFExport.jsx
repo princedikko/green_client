@@ -1,4 +1,3 @@
-import React from "react";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import MultipleStopIcon from "@mui/icons-material/MultipleStop";
@@ -7,7 +6,7 @@ const ExportExcelJSButton = ({ currentRows }) => {
   const exportToExcel = async () => {
     // 1. Create a new workbook
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Discount Table");
+    const worksheet = workbook.addWorksheet("Expenses Table");
 
     // 2. Define columns
     worksheet.columns = [
@@ -70,12 +69,12 @@ const ExportExcelJSButton = ({ currentRows }) => {
     // 6. Export
     const buffer = await workbook.xlsx.writeBuffer();
     const blob = new Blob([buffer], { type: "application/octet-stream" });
-    saveAs(blob, "Discounts .xlsx");
+    saveAs(blob, "Expenses List.xlsx");
   };
 
   return (
     <button
-      className="discount_export_btn fx-ac spacem"
+      className="expenses_export_btn fx-ac spacem"
       onClick={exportToExcel}
       style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}
     >
