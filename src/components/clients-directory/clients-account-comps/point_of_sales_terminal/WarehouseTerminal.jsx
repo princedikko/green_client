@@ -76,7 +76,7 @@ function WarehouseTerminal() {
 
   // REDUX STATE SELECTOR----------------------
   const products = useSelector(
-    (state) => state.hybridActions.warehouse.products
+    (state) => state.hybridActions.warehouse.products,
   );
 
   // END OF MODAL FUNCTIONS------------------
@@ -183,7 +183,7 @@ function WarehouseTerminal() {
   }
   function Products() {
     return (
-      <div className="g g3 space1">
+      <div className="items_product_cont g g3 space1">
         {products?.map((item, index) => {
           return (
             <figure
@@ -244,9 +244,9 @@ function WarehouseTerminal() {
     }
   }
 
-  useEffect(() => {
-    !isFullscreen && toggleFullscreen();
-  }, [isFullscreen]);
+  // useEffect(() => {
+  //   !isFullscreen && toggleFullscreen();
+  // }, [isFullscreen]);
   return (
     <section className="sectionwarehouseHub fx-cl">
       {openModal && (

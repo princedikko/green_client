@@ -65,25 +65,27 @@ import Adjustment from "./clients-account-comps/inventory_comps/Adjustment.jsx";
 import Expenses from "./clients-account-comps/inventory_comps/Expenses.jsx";
 import CategoriesX from "./clients-account-comps/inventory_comps/CategoriesX.jsx";
 import Invoicing from "./clients-account-comps/inventory_comps/Invoicing.jsx";
+import Production from "./clients-account-comps/inventory_comps/Production.jsx";
+import ReportsMain from "./clients-account-comps/reports_comps/ReportsMain.jsx";
 
 export default function ClientsAccount() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const data = useSelector(
-    (state) => state.clientFunction?.queue?.clientData?.info
+    (state) => state.clientFunction?.queue?.clientData?.info,
   );
 
   const active = useSelector(
-    (state) => state.clientFunction?.dashboard?.nav_trace
+    (state) => state.clientFunction?.dashboard?.nav_trace,
   );
   const active_display = useSelector(
-    (state) => state.clientFunction?.dashboard?.subNavBar_trace
+    (state) => state.clientFunction?.dashboard?.subNavBar_trace,
   );
   const openIndex = useSelector(
-    (state) => state.clientFunction?.dashboard?.toggleNavDropdown
+    (state) => state.clientFunction?.dashboard?.toggleNavDropdown,
   );
   const currentTab = useSelector(
-    (state) => state.clientFunction?.dashboard?.toggleNavDropdown
+    (state) => state.clientFunction?.dashboard?.toggleNavDropdown,
   );
 
   // const [active, setActive] = useState("done");
@@ -202,6 +204,10 @@ export default function ClientsAccount() {
         return <CategoriesX breadcrumbs={breads} />;
       case "invoicing":
         return <Invoicing breadcrumbs={breads} />;
+      case "production":
+        return <Production breadcrumbs={breads} />;
+      case "reportsmain":
+        return <ReportsMain breadcrumbs={breads} />;
 
       // /.....................................
       case "setting":
@@ -228,140 +234,6 @@ export default function ClientsAccount() {
     }
   };
   console.log("Active Display:" + active_display);
-  // const menuItems = [
-  //   {
-  //     title: "Inventory",
-  //     icon: <VideoLibraryRoundedIcon fontSize="medium" />,
-  //     hooks: "inventory",
-  //     active: "inventory",
-  //     children: [
-  //       { title: "Sales", href: "/live/upcoming" },
-  //       { title: "Quatations", href: "/live/join" },
-  //       { title: "Discount", href: "/live/replays" },
-  //       { title: "Subscriptions", href: "/live/replays" },
-  //       { title: "Draft", href: "/live/replays" },
-  //       { title: "Sell Return", href: "/live/replays" },
-  //     ],
-  //   },
-  //   {
-  //     title: "Manage Products",
-  //     icon: <MenuBookRoundedIcon fontSize="medium" />,
-  //     hooks: "materials",
-  //     active: "materials",
-  //     children: [
-  //       { title: "ProductServices", href: "/materials/past-questions" },
-  //       { title: "Imports", href: "/materials/downloads" },
-  //       { title: "Pricegroups", href: "/materials/videos" },
-  //       { title: "Units", href: "/materials/formulas" },
-  //       { title: "Brands", href: "/materials/formulas" },
-  //       { title: "Categories", href: "/materials/formulas" },
-  //       { title: "Taxrate", href: "/materials/formulas" },
-  //       { title: "Variations", href: "/materials/formulas" },
-  //     ],
-  //   },
-  //   {
-  //     title: "Purchases",
-  //     icon: <EventRoundedIcon fontSize="medium" />,
-  //     hooks: "result",
-  //     active: "result",
-  //     children: [
-  //       { title: "Recieves", href: "/materials/past-questions" },
-  //       { title: "Returns", href: "/materials/downloads" },
-  //       { title: "Orders", href: "/materials/videos" },
-  //     ],
-  //   },
-
-  //   {
-  //     title: "Manage Stock",
-  //     icon: <InsightsRoundedIcon fontSize="medium" />,
-  //     hooks: "performance",
-  //     active: "performance",
-  //     children: [
-  //       { title: "Transfers", href: "/analytics/scores" },
-  //       { title: "openingstock", href: "Import Opening Stock" },
-  //       { title: "Reconciliation", href: "/analytics/time" },
-  //       { title: "Discripancies", href: "/analytics/ai" },
-  //       { title: "Adjusment", href: "/analytics/ai" },
-  //     ],
-  //   },
-
-  //   {
-  //     title: "Expanses",
-  //     icon: <ForumRoundedIcon fontSize="medium" />,
-  //     hooks: "community",
-  //     active: "community",
-  //     children: [
-  //       { title: "Expenses", href: "All Expensives" },
-  //       { title: "CategoriesX", href: "/community/groups" },
-  //     ],
-  //   },
-  //   {
-  //     title: "Invoicing",
-  //     icon: <EventRoundedIcon fontSize="medium" />,
-  //     hooks: "schedule",
-  //     active: "schedule",
-  //     children: [
-  //       { title: "Payments", href: "/schedule/timetable" },
-  //       { title: "Invoices", href: "/schedule/attendance" },
-  //       { title: "Billing Estimate", href: "/schedule/reminders" },
-  //     ],
-  //   },
-
-  //   {
-  //     title: "Production",
-  //     icon: <WorkspacePremiumRoundedIcon fontSize="medium" />,
-  //     hooks: "achievements",
-  //     active: "achievements",
-  //     children: [
-  //       { title: "Recipe", href: "/rewards/badges" },
-  //       { title: "Production", href: "/rewards/badges" },
-  //       { title: "Settings", href: "/rewards/certificates" },
-  //       { title: "Report", href: "/rewards/challenges" },
-  //     ],
-  //   },
-  //   {
-  //     title: "Reports",
-  //     icon: <WorkspacePremiumRoundedIcon fontSize="medium" />,
-  //     hooks: "achievements",
-  //     active: "achievements",
-  //     children: [
-  //       { title: "Stock", href: "/rewards/challenges" },
-  //       { title: "Expense & Account", href: "/rewards/badges" },
-  //       { title: "Contact & CRM", href: "/rewards/badges" },
-  //       { title: "Sales", href: "/rewards/certificates" },
-  //       { title: "Purchases", href: "/rewards/challenges" },
-  //       { title: "Profit/Loss", href: "/rewards/badges" },
-  //       { title: "Invoices", href: "/rewards/badges" },
-  //     ],
-  //   },
-
-  //   {
-  //     title: "Account",
-  //     icon: <AccountCircleRoundedIcon fontSize="medium" />,
-  //     hooks: "account",
-  //     active: "account",
-  //     children: [
-  //       { title: "Profile", href: "/account/profile" },
-  //       { title: "Settings", href: "/account/settings" },
-  //       { title: "Language", href: "/account/language" },
-  //       { title: "Logout", href: "/logout" },
-  //     ],
-  //   },
-
-  //   {
-  //     title: "Help & Support",
-  //     icon: <HelpCenterRoundedIcon fontSize="medium" />,
-  //     hooks: "support",
-  //     active: "support",
-  //     children: [
-  //       { title: "FAQs", href: "/support/faqs" },
-  //       { title: "Contact Support", href: "/support/contact" },
-  //       { title: "System Guide", href: "/support/guide" },
-  //     ],
-  //   },
-  // ];
-
-  // ___________________________________END_______________
 
   const menuItems = [
     {
@@ -556,73 +428,73 @@ export default function ClientsAccount() {
     {
       title: "Production",
       icon: <WorkspacePremiumRoundedIcon fontSize="medium" />,
-      hooks: "achievements",
-      active: "achievements",
-      children: [
-        {
-          title: "Recipe",
-          hook: "recipe",
-          tabs: ["main", "completed", "pending"],
-        },
-        {
-          title: "Production",
-          hook: "production",
-          tabs: ["main", "completed", "pending"],
-        },
-        {
-          title: "Settings",
-          hook: "settings",
-          tabs: ["main", "completed", "pending"],
-        },
-        {
-          title: "Report",
-          hook: "report",
-          tabs: ["main", "completed", "pending"],
-        },
-      ],
+      hooks: "production",
+      active: "production",
+      // children: [
+      //   {
+      //     title: "Recipe",
+      //     hook: "recipe",
+      //     tabs: ["main", "completed", "pending"],
+      //   },
+      //   {
+      //     title: "Production",
+      //     hook: "production",
+      //     tabs: ["main", "completed", "pending"],
+      //   },
+      //   {
+      //     title: "Settings",
+      //     hook: "settings",
+      //     tabs: ["main", "completed", "pending"],
+      //   },
+      //   {
+      //     title: "Report",
+      //     hook: "report",
+      //     tabs: ["main", "completed", "pending"],
+      //   },
+      // ],
     },
     {
       title: "Reports",
       icon: <WorkspacePremiumRoundedIcon fontSize="medium" />,
-      hooks: "achievements",
-      active: "achievements",
-      children: [
-        {
-          title: "Stock",
-          hook: "stock",
-          tabs: ["main", "completed", "pending"],
-        },
-        {
-          title: "Expense & Account",
-          hook: "expense&account",
-          tabs: ["main", "completed", "pending"],
-        },
-        {
-          title: "Contact & CRM",
-          hook: "contact&crm",
-          tabs: ["main", "completed", "pending"],
-        },
-        {
-          title: "Sales",
-          hook: "sales",
-          tabs: ["main", "completed", "pending"],
-        },
-        {
-          title: "Purchases",
-          hook: "purchases",
-          tabs: ["main", "completed", "pending"],
-        },
-        {
-          title: "Profit/Loss",
-          hook: "profit/loss",
-          tabs: ["main", "completed", "pending"],
-        },
-        {
-          title: "Invoices",
-          hook: "invoices",
-          tabs: ["main", "completed", "pending"],
-        },
-      ],
+      hooks: "reportsmain",
+      active: "reportsmain",
+      // children: [
+      //   {
+      //     title: "Stock",
+      //     hook: "stock",
+      //     tabs: ["main", "completed", "pending"],
+      //   },
+      //   {
+      //     title: "Expense & Account",
+      //     hook: "expense&account",
+      //     tabs: ["main", "completed", "pending"],
+      //   },
+      //   {
+      //     title: "Contact & CRM",
+      //     hook: "contact&crm",
+      //     tabs: ["main", "completed", "pending"],
+      //   },
+      //   {
+      //     title: "Sales",
+      //     hook: "sales",
+      //     tabs: ["main", "completed", "pending"],
+      //   },
+      //   {
+      //     title: "Purchases",
+      //     hook: "purchases",
+      //     tabs: ["main", "completed", "pending"],
+      //   },
+      //   {
+      //     title: "Profit/Loss",
+      //     hook: "profit/loss",
+      //     tabs: ["main", "completed", "pending"],
+      //   },
+      //   {
+      //     title: "Invoices",
+      //     hook: "invoices",
+      //     tabs: ["main", "completed", "pending"],
+      //   },
+      // ],
     },
     {
       title: "Account",

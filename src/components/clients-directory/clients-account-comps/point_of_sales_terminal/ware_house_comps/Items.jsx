@@ -41,9 +41,9 @@ export default function Items({ setChangeView, changeview }) {
       });
   }
 
-  useEffect(() => {
-    getApplicants();
-  }, []);
+  // useEffect(() => {
+  //   getApplicants();
+  // }, []);
 
   return (
     <>
@@ -60,35 +60,38 @@ function TableView() {
   }
 
   return (
-    <table className="fx-cl spacem">
-      <thead className="fx-cl spacem">
-        <tr>
-          <th>S/N</th>
-          <th>Item</th>
-          <th>Quantity</th>
-          <th>Price ₦</th>
-        </tr>
-      </thead>
-
-      <tbody className="fx-cl spacem">
-        {cart?.map((item, index) => {
-          return (
-            <tr key={index}>
-              <td>2</td>
-
-              <td>{item.name}</td>
-              <td>32 pieces</td>
-              <td className="fx-ac space1">
-                <span>₦{item.price} </span>
-                <button className="removeCart " onClick={() => popCart(index)}>
-                  <CloseIcon fontSize="medium" />
-                </button>
-              </td>
+    <>
+      {cart && cart.length > 0 ? (
+        <table className="fx-cl spacem">
+          <thead className="fx-cl spacem">
+            <tr>
+              <th>S/N</th>
+              <th>Item</th>
+              <th>Quantity</th>
+              <th>Price ₦</th>
             </tr>
-          );
-        })}
-      </tbody>
-    </table>
+          </thead>
+
+          <tbody className="fx-cl spacem">
+            {cart.map((item, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{item.name}</td>
+                <td>{item.qty}</td>
+                <td className="fx-ac space1">
+                  <span>₦{item.price}</span>
+                  <button className="removeCart" onClick={() => popCart(index)}>
+                    <CloseIcon fontSize="medium" />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p style={{ textAlign: "center" }}>No item in cart</p>
+      )}
+    </>
   );
 }
 

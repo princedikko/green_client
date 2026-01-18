@@ -273,3 +273,23 @@ button {
 }
 
 /* STYLING FOR SELECT OPTIONS */
+
+/* ===== SLIM SCROLLBAR (WebKit ONLY) ===== */
+
+*::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #3a83f886;
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #3a83f8;
+}

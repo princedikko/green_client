@@ -1,0 +1,534 @@
+#ea2fa6 .reportsmain_breadcrumbs {
+  text-transform: capitalize;
+}
+
+.reportsmain_export_btn {
+  background-color: #3a84f8;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.8rem;
+  font-size: 1.4rem;
+}
+
+.reportsmain_actionBar {
+  padding: 0rem 2rem;
+  border-radius: 1.2rem;
+  background-color: transparent;
+
+  box-shadow: 1.2rem 1rem 4rem -2.5rem rgba(0, 0, 0, 0.35);
+}
+.reportsmain_actionBar .right button {
+  background-color: transparent;
+  border: 1px solid #ccc;
+  color: #777;
+  padding: 0.3rem 0.7rem;
+  padding-right: 1.2rem;
+  border-radius: 0.8rem;
+  font-size: 1.2rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.reportsmain_actionBar .right button:hover {
+  background-color: #3a84f8;
+  color: #fff;
+  border: 1px solid #3a84f8;
+}
+
+.reportsmain_actionBar ul.left li {
+  padding: 1.2rem 0.8rem;
+  font-size: 1.2rem;
+  color: #bbb;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.reportsmain_actionBar ul.left li:hover {
+  /* color: #f85a38; */
+  color: #000;
+}
+.reportsmain_actionBar ul.left li.active:hover,
+.reportsmain_actionBar ul.left li.active {
+  box-shadow: inset 0rem -0.3rem 0rem 0rem rgb(58, 132, 248);
+  color: #3a84f8;
+}
+.reportsmain_actionBar ul.left li.active:hover {
+  opacity: 0.7;
+}
+.reportsmain_actionBar ul.left li figure {
+  display: flex;
+  justify-content: center;
+  width: 2.2rem;
+  height: 1.7rem;
+  background-color: #ddd;
+  color: #fff;
+  border-radius: 0.4rem;
+  padding: 0.3rem;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s ease-out;
+}
+.reportsmain_actionBar ul.left li.active:hover figure,
+.reportsmain_actionBar ul.left li.active figure {
+  background-color: #3a84f8;
+  color: #fff;
+}
+.reportsmain_actionBar ul.left li:hover figure {
+  background-color: #f85a38;
+  background-color: #000;
+}
+
+/* LIST GRID AND TABLE DECORATION BLOCKS */
+
+/* .reportsmain_row table {
+  padding: 2.4rem 0;
+} */
+.reportsmain table thead tr {
+  display: grid;
+  grid-template-columns: 4fr 2fr 3fr 2.5fr 2fr 1.5fr 1.5fr 1.5fr 1.5fr;
+  padding: 1.2rem 2.4rem;
+  /* background-color: #e3ecfd; */
+  background-color: #3a84f8;
+  border-radius: 1rem;
+  font-size: 1.2rem;
+  color: #fff;
+  text-align: left;
+}
+
+.reportsmain table tbody tr:nth-child(even) {
+  background-color: #e3ecfd;
+}
+.reportsmain table tbody tr {
+  display: grid;
+  /* gap: .6rem; */
+  grid-template-columns: 4fr 2fr 3fr 2.5fr 2fr 1.5fr 1.5fr 1.5fr 1.5fr;
+  border-radius: 1rem;
+  padding: 1.2rem 2.4rem;
+  background-color: #fff;
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: #0b3983;
+  transition: all 0.3s ease-in-out;
+}
+.reportsmain table tbody tr:hover,
+.reportsmain table tbody tr:active {
+  box-shadow: inset 0 0 0rem 0.1rem rgb(105, 157, 240);
+}
+.reportsmain_row table tbody tr .completed {
+  padding: 0.3rem 1.6rem;
+  border-radius: 0.4rem;
+  background-color: #eefef2;
+  color: #048e5b;
+}
+.reportsmain_row table tbody tr .pending {
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.4rem;
+  background-color: #ffe6e6;
+  color: #e30606;
+}
+.reportsmain_row table tbody tr td:nth-child(2) {
+  display: flex;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+.reportsmain_row table tbody tr td:nth-child(2) figure {
+  background-color: #48c798;
+  color: white;
+  border-radius: 55rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  overflow: hidden;
+}
+
+.reportsmain_row table tbody tr button {
+  background-color: transparent;
+  color: #12e095;
+}
+.reportsmain_row table tbody tr button:first-child {
+  background-color: transparent;
+  color: #999;
+}
+
+.reportsmain_row header select {
+  padding: 1rem 3rem;
+  border-radius: 0.8rem;
+  background-color: #fafaff;
+  color: #048e5b;
+}
+.reportsmain_row header button {
+  padding: 1rem 3rem;
+  border-radius: 0.8rem;
+  background-color: #048e5b;
+  color: #fff;
+}
+.reportsmain_headings .iconBtn {
+  padding: 0;
+  background-color: transparent;
+  color: #aaa;
+  transition: all 0.3s ease-in-out;
+}
+.reportsmain_headings .iconBtn:hover {
+  transform: scale(1.1);
+  color: black;
+}
+
+/* Grid views */
+.reportsmain_row .reportsmain_card_view {
+  border-radius: 1.2rem;
+  padding: 2.4rem;
+  position: relative;
+}
+.reportsmain_row .reportsmain_card_view .tag {
+  background-color: #e9f5f3;
+  color: #26bf89;
+  border-radius: 1.2rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 1rem;
+
+  position: absolute;
+  top: 1.6rem;
+  right: 1.6rem;
+}
+
+.girdViewCont {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 1.2rem;
+  row-gap: 3rem;
+  padding: 3rem;
+}
+
+.reportsmain-page-limit {
+  position: relative;
+}
+
+.reportsmain-page-limit-btn {
+  padding: 0.4rem 0.7rem;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.reportsmain-page-limit-arrow {
+  font-size: 12px;
+}
+
+.reportsmain-limit-dropdown {
+  position: absolute;
+  right: 0;
+  top: 110%;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 6px 0;
+  width: 140px;
+  z-index: 10;
+}
+
+.reportsmain-limit-item {
+  font-size: 1.2rem;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.reportsmain-limit-item:hover {
+  background: #f4f6ff;
+  color: #4f46e5;
+}
+
+.reportsmain_pagination {
+  background-color: #ffffff;
+  border-radius: 0.8rem;
+  padding: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.reportsmain_pagination button {
+  background-color: #fafaff;
+  border: none;
+  border-radius: 0.3rem;
+  color: #666;
+  font-size: 1.2rem;
+  padding: 0.4rem 0.8rem;
+  margin: 0 0.4rem;
+  cursor: pointer;
+  width: 7.5rem;
+}
+
+.reportsmain_pagination button:hover {
+  background-color: #3a84f8;
+  color: #fff;
+}
+
+.reportsmain_pagination button.reportsmain_jumpto {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0rem;
+  padding: 0.2rem;
+  background-color: #fafaff;
+  color: #666;
+  transition: all 0.3s ease-in-out;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.reportsmain_pagination button.reportsmain_jumpto.active {
+  background-color: #fff;
+  border: 1px solid #3a84f8;
+  color: #3a84f8;
+}
+.reportsmain_pagination button.reportsmain_jumpto:hover {
+  background-color: #ddd;
+}
+
+/* ??????????????/////////////////////////////////////////// */
+/* .reportsmainCardGrid {
+} */
+
+.reportsmainGridCard {
+  background: rgba(255, 255, 255, 0.431);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.cardHeader {
+  display: flex;
+  gap: 14px;
+}
+
+.avatar {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.cardInfo h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.cardInfo p {
+  font-size: 13px;
+  color: #777;
+  margin: 2px 0;
+}
+
+.ratingRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.rating {
+  background: #e7f9f0;
+  color: #14a06f;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.location {
+  font-size: 12px;
+  color: #666;
+}
+
+.tags {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.tags span {
+  background: #f2f2f2;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.price small {
+  font-size: 12px;
+  color: #777;
+}
+
+.reportsmainGridCard .cardBtn {
+  background: #ea2fda;
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+}
+
+.reportsmainGridCard .cardBtn:hover {
+  opacity: 0.7;
+}
+/* ??????????????/////////////////////////////////////////// */
+.reportsmain_filter_modal_overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+  padding: 80px 30px;
+}
+
+.reportsmain_filter_modal {
+  background: rgba(255, 255, 255, 0.69);
+  width: 84rem;
+  border-radius: 1.2rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  backdrop-filter: blur(12px);
+}
+
+/* LEFT */
+.reportsmain-airline {
+  min-width: 220px;
+}
+
+.reportsmain-airline-logo {
+  width: 7rem;
+  height: 7rem;
+  background: #0b3a82;
+  color: #fff;
+  border-radius: 50%;
+}
+
+.reportsmain-airline-name {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.reportsmain-refund-badge {
+  width: 14rem;
+  margin-top: 4px;
+  padding: 4px 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 20px;
+  background: #e8f7ee;
+  color: #1e7f4f;
+}
+
+/* CENTER */
+.reportsmain-flight-info {
+  flex: 1;
+}
+
+.reportsmain-time-block {
+  text-align: left;
+}
+
+.reportsmain-time {
+  font-weight: 700;
+  font-size: 3.4rem;
+}
+
+.reportsmain-location {
+  font-size: 12px;
+  color: #666;
+}
+
+.reportsmain-flight-line {
+  min-width: 120px;
+}
+
+.reportsmain-plane-icon {
+  font-size: 22px;
+  color: #555;
+}
+
+.reportsmain-duration {
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.reportsmain-stop {
+  font-size: 11px;
+  color: #888;
+}
+
+.reportsmain-place-icon {
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+/* RIGHT */
+.reportsmain-price-section {
+  text-align: right;
+  min-width: 160px;
+}
+
+.reportsmain-cheapest {
+  display: inline-block;
+  background: #e6f0ff;
+  color: #3a84f8;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin-bottom: 6px;
+}
+
+.reportsmain-price {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.reportsmain-class {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.reportsmain-book-btn {
+  background: #3a84f8;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.reportsmain-book-btn:hover {
+  background: #3a84f8;
+}
+
+.reportsmain_footer {
+  margin-bottom: 1rem;
+}
+
+/* ===== PRINT SETTINGS ===== */
+@media print {
+  .reportsmain_no-print {
+    display: none;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  .reportsmain_print-area {
+    width: 100%;
+  }
+}
