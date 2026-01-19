@@ -46,7 +46,7 @@ export default function Discount({ breadcrumbs }) {
   const currentRows = salesData.slice(start, end);
 
   const currentTab = useSelector(
-    (state) => state.clientFunction?.dashboard?.currentTab
+    (state) => state.clientFunction?.dashboard?.currentTab,
   );
 
   // /////////////////////////////////////////////////////////
@@ -261,7 +261,7 @@ export default function Discount({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -323,7 +323,7 @@ export default function Discount({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -509,7 +509,7 @@ export default function Discount({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -571,7 +571,7 @@ export default function Discount({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -708,7 +708,7 @@ export default function Discount({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -770,7 +770,7 @@ export default function Discount({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -791,7 +791,7 @@ export default function Discount({ breadcrumbs }) {
   }
   console.log(
     "PRINTING:",
-    useSelector((state) => state.clientFunction?.printData)
+    useSelector((state) => state.clientFunction?.printData),
   );
   return (
     <div className="discount2026CompContainer">

@@ -104,6 +104,7 @@ const cart_collection = {
       expiryDate: ISODate("2026-01-30"),
 
       subtotal: 2850,
+      available: 117,
     },
   ],
 

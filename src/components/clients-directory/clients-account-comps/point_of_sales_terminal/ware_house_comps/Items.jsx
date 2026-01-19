@@ -58,6 +58,13 @@ function TableView() {
   function popCart(index) {
     dispatch(Action.removeFromCart(index));
   }
+  function updateQty(index, qty, available) {
+    if (available > 0) {
+      dispatch(Action.updateQuantity({ index, qty }));
+    } else {
+      alert("Item out of stock");
+    }
+  }
 
   return (
     <>
@@ -74,12 +81,29 @@ function TableView() {
 
           <tbody className="fx-cl spacem">
             {cart.map((item, index) => (
-              <tr key={index}>
+              <tr key={index} id={item.productId}>
                 <td>{index + 1}</td>
                 <td>{item.name}</td>
-                <td>{item.qty}</td>
                 <td className="fx-ac space1">
-                  <span>₦{item.price}</span>
+                  <button
+                    onClick={() =>
+                      updateQty(index, item.quantity - 1, item.available)
+                    }
+                  >
+                    −
+                  </button>
+                  <input value={item.quantity} readOnly />
+                  <button
+                    onClick={() =>
+                      updateQty(index, item.quantity + 1, item.available)
+                    }
+                  >
+                    +
+                  </button>
+                </td>
+
+                <td className="fx-ac space1">
+                  <span>₦{item.unitPrice}</span>
                   <button className="removeCart" onClick={() => popCart(index)}>
                     <CloseIcon fontSize="medium" />
                   </button>
