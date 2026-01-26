@@ -7,7 +7,7 @@ import * as Action from "../../../../store/redux/hybrid_reducer.js";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import IsLoading from "../../../../isLoading.jsx";
-import Calculator from "./cbtClientComps/Calculator.jsx";
+import Calculator from "./modalBoxComps/Calculator.jsx";
 import Items from "./ware_house_comps/Items.jsx";
 // ------------------NEW IMPORTS---------------------
 
@@ -37,30 +37,21 @@ import BalanceIcon from "@mui/icons-material/Balance";
 import BackHandIcon from "@mui/icons-material/BackHand";
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
-
 import SchoolIcon from "@mui/icons-material/School";
-import PreviewQuestion from "./cbtClientComps/PreviewQuestion.jsx";
-import Counter, { CounterMini } from "./cbtClientComps/Counter.jsx";
-import Appeals from "./cbtClientComps/Appeals.jsx";
-import ExaminationLogs from "./cbtClientComps/ExaminationLogs.jsx";
+import Counter, { CounterMini } from "./modalBoxComps/Counter.jsx";
 
 let queue;
 
 function WarehouseTerminal() {
-  // INTEGRATIONS_-----------------------------
-  const [openLimit, setOpenLimit] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+  // HOOKS-----------------------------
+  const [openBrands, setOpenBrands] = useState(false);
   const [openCustomers, setOpenCustomers] = useState(false);
   const [brands, setBrands] = useState("All brands");
-  // END OF INTEGRATIONS_----------------------
-  const [showPassword, setShowPassword] = useState(false);
-  const [changeview, setChangeView] = useState("");
+  const [isIconButtons, setIsIconButtons] = useState(false);
   const [loading, setLoading] = useState(false);
   const redirect = useNavigate();
   const dispatch = useDispatch();
-  const [selectedSubject, setSelectedSubject] = useState(0);
-  const [selectedOption, setSelectedOption] = useState("");
-  const [score, setScore] = useState(0);
-  const [check, setCheck] = useState(undefined);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   // FULLSCREEN TOGGLE FUNCTION------------------
@@ -115,14 +106,18 @@ function WarehouseTerminal() {
 
     if (existingItem) {
       // If exists, update quantity
-      alert("Item already in cart, updating quantity.");
-
+      enqueueSnackbar(`Item already in cart`, {
+        variant: "success",
+        autoHideDuration: 3000,
+        ContentProps: {
+          style: { fontSize: "16px", fontWeight: "bold" },
+        },
+      });
       // dispatch(Action.addtoCart(updatedItem));
       // console.log("CART UPDATED:", updatedItem);
     } else {
       // If not exists, add new item
       dispatch(Action.addtoCart(item));
-      console.log("CART ADDED:", item);
     }
   }
 
@@ -139,17 +134,12 @@ function WarehouseTerminal() {
         return <Calculator setOpenModal={setOpenModal} />;
       case "itemList":
         return (
-          <Items
-            setOpenModal={setOpenModal}
-            selectedSubject={selectedSubject}
-            openCalculator={openCalculator}
-          />
+          <Items setOpenModal={setOpenModal} openCalculator={openCalculator} />
         );
       case "counter":
         return (
-          <Counter
-            setOpenModal={setOpenModal}
-            setOnTimeChange={setOnTimeChange}
+          <ShoppingCartCheckoutIcon
+            style={{ fontSize: "22rem", color: "#fff" }}
           />
         );
       case "warning":
@@ -157,9 +147,9 @@ function WarehouseTerminal() {
       case "submit":
         return <button>Clear data</button>;
       case "exams logs":
-        return <ExaminationLogs />;
+        return "something";
       case "appeals":
-        return <Appeals setOpenModal={setOpenModal} />;
+        return "someth";
       default:
         return null;
     }
@@ -172,9 +162,14 @@ function WarehouseTerminal() {
     setOpenModal(true);
     setShowModal("counter");
   }
-  function openSubmit() {
-    setOpenModal(true);
-    setShowModal("submit");
+  function cashPaidSubmit() {
+    enqueueSnackbar(`Product soled successfully`, {
+      variant: "success",
+      autoHideDuration: 3000,
+      ContentProps: {
+        style: { fontSize: "16px", fontWeight: "bold" },
+      },
+    });
   }
   function openWarning() {
     setOpenModal(true);
@@ -247,10 +242,12 @@ function WarehouseTerminal() {
               </div>
               <div className="fx-cl">
                 <p className="warehousehubHeading">
-                  <strong>Point of Sales Terminal:</strong> Sales Products
+                  <strong>Juwairiyyah Pharmacy:</strong> Sales Terminal
                 </p>
                 <div className="warehousehubStatusBar fx-ac spacem">
-                  <span>November, 23 2025</span>
+                  <span>
+                    <strong>User: </strong> Fahad
+                  </span>
                   <span
                     className="fx-ac spacem"
                     style={{
@@ -259,11 +256,9 @@ function WarehouseTerminal() {
                       padding: "0rem .4rem",
                     }}
                   >
-                    <PeopleAltRoundedIcon />
+                    <ShoppingCartCheckoutIcon />
                     <span>
-                      <strong>
-                        <em>263 </em>
-                      </strong>
+                      <strong> 263 </strong>
                       SOLD ITEMS
                     </span>
                   </span>
@@ -275,8 +270,8 @@ function WarehouseTerminal() {
               </div>
             </figure>
 
-            <figure className="warehouseHubRight fx-ac space2">
-              <strong>Halaalan Provision Store</strong>
+            <figure className="warehouseHubRight fx-ac spacem">
+              <CalculateIcon style={{ color: "#f85a38", fontSize: "3.2rem" }} />
               <div className="fx-ac">
                 <button
                   className="fx-ac fx-jc cbtdp"
@@ -289,27 +284,27 @@ function WarehouseTerminal() {
           </div>
         </div>
         <div className="warehouseHubMain fx-jc space1">
-          <div className="main fx-cl space3">
+          <div className="main fx-cl space1">
             <div className="fx-cl">
               <div className="warehouseHubSubjects fx-ac space2">
-                <div className="warehauseSearchCont fx-ac spacem">
-                  <div className="discount2026_entries-info fx-ac spacem">
-                    <h4>Customers: </h4>
-                    <div className="discount2026-page-limit">
+                <div className="warehauseCustomerCont fx-ac spacem">
+                  <div className="customers_entries-info fx-ac spacem">
+                    {/* <h4>Customer: </h4> */}
+                    <div className="customers-page-limit">
                       <button
-                        className="discount2026-page-limit-btn"
+                        className="customers-page-limit-btn"
                         onClick={() => setOpenCustomers(!openCustomers)}
                       >
                         {customer}
-                        <span className="discount2026-page-limit-arrow">▾</span>
+                        <span className="customers-page-limit-arrow">▾</span>
                       </button>
 
                       {openCustomers && (
-                        <ul className="discount2026-limit-dropdown">
+                        <ul className="customers-limit-dropdown">
                           {customerTypesArray.map((n) => (
                             <li
                               key={n}
-                              className="discount2026-limit-item"
+                              className="customers-limit-item"
                               onClick={() => {
                                 setCustomer(n);
                                 setOpenCustomers(false);
@@ -322,27 +317,39 @@ function WarehouseTerminal() {
                       )}
                     </div>
                   </div>
-                  <button onClick={() => clearCart()}>
-                    <SearchIcon fontSize="small" />
+                  <button style={{ width: "5rem" }} onClick={() => clearCart()}>
+                    +
                   </button>
                 </div>
               </div>
 
-              <div className="warehouseItemsCont fx-cl">
+              <div className="warehouseItemsCont fx-cl space1">
                 <div className="warehouseHubQuestionBtn fx-ac space2">
                   <button className="">
-                    <span className="tooltips">toggle pagination</span>
+                    <span className="tooltips">tooltips</span>
                     {/* QuestionMarkIcon */}
                     <QuestionMarkIcon fontSize="large" />
                   </button>
                   <button className="">
-                    <span className="tooltips">toggle pagination</span>
+                    <span className="tooltips">tooltips</span>
                     {/* Previews Question on Modal box */}
                     <VisibilityIcon fontSize="large" />
                   </button>
                 </div>
+
                 <div className="warehouseHubMiddleWare fx-ac fx-jb space4">
-                  <CounterMini openCounter={openCounter} />
+                  <button
+                    onClick={() => openCounter()}
+                    className="fx-ac spacem"
+                  >
+                    <figure className="counterIcon">&nbsp;</figure>
+                    <div className="fx-ac space2">
+                      <div className="fx-ac spacem">
+                        <span>TOTAL:</span>{" "}
+                        <strong> ₦ {cart?.unitPrice}</strong>
+                      </div>
+                    </div>
+                  </button>
                   <div className="fx-ac spacem">
                     <button
                       onClick={() => openCalculator()}
@@ -351,21 +358,19 @@ function WarehouseTerminal() {
                     >
                       <CalculateIcon fontSize="large" />
                     </button>
-                    <div className="discount2026_entries-info fx-ac spacem">
+                    <div className="brands_entries-info fx-ac spacem">
                       <h4>Brand: </h4>
-                      <div className="discount2026-page-limit">
+                      <div className="brands-page-limit">
                         <button
-                          className="discount2026-page-limit-btn"
-                          onClick={() => setOpenLimit(!openLimit)}
+                          className="brands-page-limit-btn"
+                          onClick={() => setOpenBrands(!openBrands)}
                         >
                           {brands}
-                          <span className="discount2026-page-limit-arrow">
-                            ▾
-                          </span>
+                          <span className="brands-page-limit-arrow">▾</span>
                         </button>
 
-                        {openLimit && (
-                          <ul className="discount2026-limit-dropdown">
+                        {openBrands && (
+                          <ul className="brands-limit-dropdown">
                             {[
                               "All",
                               "Samsung",
@@ -385,10 +390,10 @@ function WarehouseTerminal() {
                             ].map((n) => (
                               <li
                                 key={n}
-                                className="discount2026-limit-item"
+                                className="brands-limit-item"
                                 onClick={() => {
                                   setBrands(n);
-                                  setOpenLimit(false);
+                                  setOpenBrands(false);
                                 }}
                               >
                                 {n}
@@ -404,106 +409,110 @@ function WarehouseTerminal() {
                   <strong className="fx-jc" style={{ color: "#3a84f8" }}>
                     <ShoppingCartIcon fontSize="medium" /> Cart:
                   </strong>
-                  <span>
-                    23 <em>items</em>
-                  </span>
+                  {cart?.length < 1 ? (
+                    "empty"
+                  ) : (
+                    <span>
+                      {cart?.length} <em>items</em>
+                    </span>
+                  )}
                 </span>
 
                 {/* ____________CART ITEMS MAPPING___________ */}
                 <Items />
               </div>
             </div>
-
-            <div className="warehouseHubOperations fx-ac space3 fx-jb">
-              <div className="prev">
+            {isIconButtons ? (
+              <div className="warehouseHubOperations fx-ac space3 fx-jb">
+                <figure className="fx-jc fx-ac space1">
+                  <button onClick={() => alert("I got clicked")} className="">
+                    <span className="tooltips">tooltips</span>
+                    {/* NightMode */}
+                    <BedtimeOffIcon fontSize="large" />
+                  </button>
+                  <button
+                    onClick={toggleFullscreen}
+                    className={`${isFullscreen && "active"}`}
+                  >
+                    {isFullscreen ? (
+                      <FullscreenExitIcon fontSize="large" />
+                    ) : (
+                      <FullscreenIcon fontSize="large" />
+                    )}
+                  </button>
+                  <button
+                    onClick={() => openCounter()}
+                    className={`${showModal === "counter" && "active"}`}
+                  >
+                    <span className="tooltips">tooltips</span>
+                    {/* Count Down */}
+                    <HourglassTopIcon fontSize="large" />
+                  </button>
+                  <button
+                    onClick={() => cashPaidSubmit()}
+                    className="cashPaid fx-jc"
+                  >
+                    Cash payment
+                  </button>
+                  <button
+                    onClick={() => setTogglePagination(!togglePagination)}
+                    className={`${togglePagination && "active"}`}
+                  >
+                    <span className="tooltips">tooltips</span>
+                    {/* togglePagination */}
+                    <GrainIcon fontSize="large" />
+                  </button>
+                  <button
+                    onClick={() => openAppeals()}
+                    className={`${showModal === "appeals" && "active"}`}
+                  >
+                    <span className="tooltips">tooltips</span>
+                    {/* Appeal */}
+                    <BalanceIcon fontSize="large" />
+                  </button>
+                  <button onClick={() => alert("I got clicked")} className="">
+                    {/* RaisingHand */}
+                    <BackHandIcon fontSize="large" />
+                    <span className="tooltips"> tooltips</span>
+                  </button>
+                </figure>
+              </div>
+            ) : (
+              <div className="warehouseHubOperations btns fx-ac space1 fx-jc">
+                <button onClick={() => clearProducts()}>
+                  <AppsOutlinedIcon />
+                  <span>Prospond</span>
+                </button>
+                <button onClick={() => clearProducts()}>
+                  <AppsOutlinedIcon />
+                  <span>Suspend</span>
+                </button>
+                <button onClick={() => clearProducts()}>
+                  <AppsOutlinedIcon />
+                  <span>Credit sale</span>
+                </button>
+                <button
+                  onClick={() => cashPaidSubmit()}
+                  className="cashPaid fx-jc"
+                >
+                  Complete
+                </button>
                 <button onClick={() => clearProducts()}>
                   <SkipPreviousIcon />
-                  <span>Clear Products</span>
+                  <span>Multi-pay</span>
                 </button>
-
-                <button
-                  style={{
-                    backgroundColor: "transparent",
-                    color: "transparent",
-                    boxShadow: "none",
-                  }}
-                >
-                  &nbsp;
+                <button onClick={() => clearProducts()}>
+                  <SkipPreviousIcon />
+                  <span>Pay Online</span>
+                </button>
+                <button onClick={() => clearProducts()}>
+                  <SkipPreviousIcon />
+                  <span>Save draft</span>
                 </button>
               </div>
-              <figure className="fx-jc fx-ac space1">
-                <button onClick={() => alert("I got clicked")} className="">
-                  <span className="tooltips">toggle pagination</span>
-                  {/* NightMode */}
-                  <BedtimeOffIcon fontSize="large" />
-                </button>
-                <button
-                  onClick={toggleFullscreen}
-                  className={`${isFullscreen && "active"}`}
-                >
-                  {isFullscreen ? (
-                    <FullscreenExitIcon fontSize="large" />
-                  ) : (
-                    <FullscreenIcon fontSize="large" />
-                  )}
-                </button>
-                <button
-                  onClick={() => openCounter()}
-                  className={`${showModal === "counter" && "active"}`}
-                >
-                  <span className="tooltips">toggle pagination</span>
-                  {/* Count Down */}
-                  <HourglassTopIcon fontSize="large" />
-                </button>
-                <button onClick={() => openSubmit()} className="submit">
-                  Cash payment
-                </button>
-                <button
-                  onClick={() => setTogglePagination(!togglePagination)}
-                  className={`${togglePagination && "active"}`}
-                >
-                  <span className="tooltips">toggle pagination</span>
-                  {/* togglePagination */}
-                  <GrainIcon fontSize="large" />
-                </button>
-                <button
-                  onClick={() => openAppeals()}
-                  className={`${showModal === "appeals" && "active"}`}
-                >
-                  <span className="tooltips">toggle pagination</span>
-                  {/* Appeal */}
-                  <BalanceIcon fontSize="large" />
-                </button>
-                <button onClick={() => alert("I got clicked")} className="">
-                  <span className="tooltips">toggle pagination</span>
-                  {/* RaisingHand */}
-                  <BackHandIcon fontSize="large" />
-                </button>
-              </figure>
-              <div className="next">
-                <button
-                  className="next-button"
-                  onClick={() => {
-                    clearCart();
-                  }}
-                >
-                  <span>Clear Cart</span>
-                  <SkipNextIcon />
-                </button>
-
-                <button
-                  style={{
-                    backgroundColor: "transparent",
-                    color: "transparent",
-                    boxShadow: "none",
-                  }}
-                >
-                  &nbsp;
-                </button>
-              </div>
-            </div>
+            )}
           </div>
-          <div className="aside fx-cl space1">
+          <div className=" fx-cl space1">
             <div className="warehouseHubAsideNav fx-ac spacem">
               <button
                 onClick={() => setToggleAside("products")}
@@ -515,16 +524,18 @@ function WarehouseTerminal() {
                 onClick={() => setToggleAside("regulation")}
                 className={`${toggleAside === "regulation" && "active"}`}
               >
-                Regulations
+                Properties
               </button>
               <button
                 onClick={() => setToggleAside("guide")}
                 className={`${toggleAside === "guide" && "active"}`}
               >
-                Manual
+                Activity log
               </button>
             </div>
-            <div>{switchAsideComp()}</div>
+            <div className="aside fx-cl space1">
+              <div>{switchAsideComp()}</div>
+            </div>
           </div>
         </div>
         <div className="warehouseHubFooter fx-ac fx-jc">
@@ -547,7 +558,7 @@ function Regulations() {
           <span>Lorem ipsum dolor sit.</span>
         </div>
         <div className="g g4">
-          <figure className="clientDashboardCard productsCardWH fx-cl space1">
+          <figure className=" productsCardWH fx-cl space1">
             <img src="" alt="xt" />
             <h3>name</h3>
             <p>price</p>
@@ -559,17 +570,25 @@ function Regulations() {
 }
 function Products({ products, addToCart, clearCart }) {
   return (
-    <div className="fx-cl space3">
-      <div className="warehauseSearchCont fx-ac spacem">
-        <div className="warehauseSearch fx-jb">
-          <input
-            type="text"
-            name="application_number"
-            placeholder="Search products..."
-          />
+    <div className="fx-cl space1">
+      <div className="warehauseSearchCont fx-jb space3">
+        <div className=" fx-ac spacem">
+          <div className="warehauseSearch fx-jb">
+            <input
+              type="text"
+              name="application_number"
+              placeholder="Search products..."
+            />
+          </div>
+          <button onClick={() => clearCart()}>
+            <SearchIcon fontSize="large" />
+          </button>
         </div>
-        <button onClick={() => clearCart()}>
-          <SearchIcon fontSize="small" />
+        <button
+          className="wareHouseAddnewProd fx-ac fx-jc"
+          onClick={() => alert("Add New Product")}
+        >
+          +
         </button>
       </div>
 
@@ -593,9 +612,9 @@ function Products({ products, addToCart, clearCart }) {
                 });
               }}
               key={index}
-              className="clientDashboardCard productsCardWH fx-cl space1"
+              className=" productsCardWH fx-cl space1"
             >
-              <h3>{item.name}</h3>
+              <h4>{item.name}</h4>
               <p>₦{item.unitPrice}</p>
             </figure>
           );

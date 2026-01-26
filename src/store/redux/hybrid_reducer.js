@@ -29,6 +29,16 @@ export const hybridReducer = createSlice({
         state.warehouse.cart[index].quantity = qty;
       }
     },
+    insertQuantity: (state, action) => {
+      const { index, qty } = action.payload;
+
+      if (!state.warehouse) state.warehouse = { cart: [], products: [] };
+      if (!state.warehouse.cart) state.warehouse.cart = [];
+
+      if (state.warehouse.cart[index]) {
+        state.warehouse.cart[index].quantity = qty;
+      }
+    },
 
     removeFromCart: (state, action) => {
       const index = action.payload;
@@ -57,6 +67,7 @@ export const {
   removeFromCart,
   clearCartAction,
   clearProductsAction,
+  insertQuantity,
 } = hybridReducer.actions;
 
 export default hybridReducer.reducer;

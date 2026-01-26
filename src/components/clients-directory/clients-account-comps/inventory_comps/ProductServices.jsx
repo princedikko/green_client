@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useReducer, useState } from "react";
+import { useSnackbar } from "notistack";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./productServices.css";
@@ -27,6 +28,7 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 import ImgOne from "./img1.jpg";
 import ImgTwo from "./img2.jpg";
 
+let productsData;
 export default function ProductServices({ breadcrumbs }) {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
@@ -35,6 +37,38 @@ export default function ProductServices({ breadcrumbs }) {
   const [changeview, setChangeView] = useState("");
   const [productservicesFilterOpen, setproductservicesFilterOpen] =
     useState(false);
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/5sd4fg56we6r4d/products/fetch_product`,
+      );
+
+      if (response?.data?.status === 200) {
+        productsData = response.data.info;
+        console.log("Fetched products:", productsData);
+      } else {
+        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+
+      enqueueSnackbar("Server error while fetching products", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  };
 
   // Paginations Functions
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,7 +81,7 @@ export default function ProductServices({ breadcrumbs }) {
   const currentRows = salesData.slice(start, end);
 
   const currentTab = useSelector(
-    (state) => state.clientFunction?.dashboard?.currentTab
+    (state) => state.clientFunction?.dashboard?.currentTab,
   );
 
   // /////////////////////////////////////////////////////////
@@ -174,20 +208,20 @@ export default function ProductServices({ breadcrumbs }) {
             </thead>
             <tbody className="fx-cl spacem">
               {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
+                <tr key={item?.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item?.customerName}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
+                  <td>{item?.invoiceNo}</td>
+                  <td>{item?.paymentStatus}</td>
+                  <td>₦{item?.totalAmount.toLocaleString()}</td>
+                  <td>₦{item?.totalPaid.toLocaleString()}</td>
+                  <td>{item?.totalItems}</td>
+                  <td>₦{item?.sellDue.toLocaleString()}</td>
+                  <td>{item?.date}</td>
                   <td>
-                    <button>{item.action}</button>
+                    <button>{item?.action}</button>
                   </td>
                 </tr>
               ))}
@@ -201,23 +235,23 @@ export default function ProductServices({ breadcrumbs }) {
       return (
         <div className="productservicesCardGrid g g4 space2">
           {currentRows.map((item) => (
-            <div key={item.invoiceNo} className="productservicesGridCard">
+            <div key={item?.invoiceNo} className="productservicesGridCard">
               {/* Header */}
               <div className="cardHeader">
                 <img alt="customer" className="avatar" src={ImgOne} />
 
                 <div className="cardInfo">
-                  <h4>{item.customerName}</h4>
-                  <p>Invoice #{item.invoiceNo}</p>
+                  <h4>{item?.customerName}</h4>
+                  <p>Invoice #{item?.invoiceNo}</p>
 
                   <div className="ratingRow">
                     <span className="rating">
-                      ⭐ {item.paymentStatus === "Paid" ? "5.0" : "4.0"}
+                      ⭐ {item?.paymentStatus === "Paid" ? "5.0" : "4.0"}
                     </span>
-                    <span className="location">📍 {item.date}</span>
+                    <span className="location">📍 {item?.date}</span>
                   </div>
 
-                  <small>{item.totalItems} items</small>
+                  <small>{item?.totalItems} items</small>
                 </div>
               </div>
 
@@ -225,13 +259,13 @@ export default function ProductServices({ breadcrumbs }) {
               <div className="tags">
                 <span>Total</span>
                 <span>Paid</span>
-                <span>+{item.totalItems}</span>
+                <span>+{item?.totalItems}</span>
               </div>
 
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item?.totalAmount.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -262,7 +296,7 @@ export default function ProductServices({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -326,7 +360,7 @@ export default function ProductServices({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -426,20 +460,20 @@ export default function ProductServices({ breadcrumbs }) {
             </thead>
             <tbody className="fx-cl spacem">
               {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
+                <tr key={item?.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item?.customerName}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
+                  <td>{item?.invoiceNo}</td>
+                  <td>{item?.paymentStatus}</td>
+                  <td>₦{item?.totalAmount.toLocaleString()}</td>
+                  <td>₦{item?.totalPaid.toLocaleString()}</td>
+                  <td>{item?.totalItems}</td>
+                  <td>₦{item?.sellDue.toLocaleString()}</td>
+                  <td>{item?.date}</td>
                   <td>
-                    <button>{item.action}</button>
+                    <button>{item?.action}</button>
                   </td>
                 </tr>
               ))}
@@ -453,23 +487,23 @@ export default function ProductServices({ breadcrumbs }) {
       return (
         <div className="productservicesCardGrid g g4 space2">
           {currentRows.map((item) => (
-            <div key={item.invoiceNo} className="productservicesGridCard">
+            <div key={item?.invoiceNo} className="productservicesGridCard">
               {/* Header */}
               <div className="cardHeader">
                 <img alt="customer" className="avatar" src={ImgOne} />
 
                 <div className="cardInfo">
-                  <h4>{item.customerName}</h4>
-                  <p>Invoice #{item.invoiceNo}</p>
+                  <h4>{item?.customerName}</h4>
+                  <p>Invoice #{item?.invoiceNo}</p>
 
                   <div className="ratingRow">
                     <span className="rating">
-                      ⭐ {item.paymentStatus === "Paid" ? "5.0" : "4.0"}
+                      ⭐ {item?.paymentStatus === "Paid" ? "5.0" : "4.0"}
                     </span>
-                    <span className="location">📍 {item.date}</span>
+                    <span className="location">📍 {item?.date}</span>
                   </div>
 
-                  <small>{item.totalItems} items</small>
+                  <small>{item?.totalItems} items</small>
                 </div>
               </div>
 
@@ -477,13 +511,13 @@ export default function ProductServices({ breadcrumbs }) {
               <div className="tags">
                 <span>Total</span>
                 <span>Paid</span>
-                <span>+{item.totalItems}</span>
+                <span>+{item?.totalItems}</span>
               </div>
 
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item?.totalAmount.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -514,7 +548,7 @@ export default function ProductServices({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -578,7 +612,7 @@ export default function ProductServices({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -627,20 +661,20 @@ export default function ProductServices({ breadcrumbs }) {
             </thead>
             <tbody className="fx-cl spacem">
               {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
+                <tr key={item?.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item?.customerName}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
+                  <td>{item?.invoiceNo}</td>
+                  <td>{item?.paymentStatus}</td>
+                  <td>₦{item?.totalAmount.toLocaleString()}</td>
+                  <td>₦{item?.totalPaid.toLocaleString()}</td>
+                  <td>{item?.totalItems}</td>
+                  <td>₦{item?.sellDue.toLocaleString()}</td>
+                  <td>{item?.date}</td>
                   <td>
-                    <button>{item.action}</button>
+                    <button>{item?.action}</button>
                   </td>
                 </tr>
               ))}
@@ -654,23 +688,23 @@ export default function ProductServices({ breadcrumbs }) {
       return (
         <div className="productservicesCardGrid g g4 space2">
           {currentRows.map((item) => (
-            <div key={item.invoiceNo} className="productservicesGridCard">
+            <div key={item?.invoiceNo} className="productservicesGridCard">
               {/* Header */}
               <div className="cardHeader">
                 <img alt="customer" className="avatar" src={ImgOne} />
 
                 <div className="cardInfo">
-                  <h4>{item.customerName}</h4>
-                  <p>Invoice #{item.invoiceNo}</p>
+                  <h4>{item?.customerName}</h4>
+                  <p>Invoice #{item?.invoiceNo}</p>
 
                   <div className="ratingRow">
                     <span className="rating">
-                      ⭐ {item.paymentStatus === "Paid" ? "5.0" : "4.0"}
+                      ⭐ {item?.paymentStatus === "Paid" ? "5.0" : "4.0"}
                     </span>
-                    <span className="location">📍 {item.date}</span>
+                    <span className="location">📍 {item?.date}</span>
                   </div>
 
-                  <small>{item.totalItems} items</small>
+                  <small>{item?.totalItems} items</small>
                 </div>
               </div>
 
@@ -678,13 +712,13 @@ export default function ProductServices({ breadcrumbs }) {
               <div className="tags">
                 <span>Total</span>
                 <span>Paid</span>
-                <span>+{item.totalItems}</span>
+                <span>+{item?.totalItems}</span>
               </div>
 
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item?.totalAmount.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -715,7 +749,7 @@ export default function ProductServices({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -779,7 +813,7 @@ export default function ProductServices({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -800,8 +834,12 @@ export default function ProductServices({ breadcrumbs }) {
   }
   console.log(
     "PRINTING:",
-    useSelector((state) => state.clientFunction?.printData)
+    useSelector((state) => state.clientFunction?.printData),
   );
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, []);
+
   return (
     <div className="productservicesCompContainer">
       <div className="fx-cl space2">
@@ -931,7 +969,9 @@ export default function ProductServices({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        <div className="productservices_main">{switchActiveTab()}</div>
+        <div className="productservices_main">
+          {loading ? <IsLoading /> : switchActiveTab()}
+        </div>
       </div>
     </div>
   );

@@ -8,11 +8,14 @@ import * as Action from "../../../../../store/redux/hybrid_reducer.js";
 // import from MUI
 import IsLoading from "../../../../../isLoading";
 import CloseIcon from "@mui/icons-material/Close";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
 export default function Items({ setChangeView, changeview }) {
   const [loading, setLoading] = useState(false);
 
   const cart = useSelector((state) => state.hybridActions.warehouse?.cart);
+  const { products } = useSelector((state) => state.hybridActions.warehouse);
 
   const dispatch = useDispatch();
   console.log("CART", cart);
@@ -53,6 +56,9 @@ export default function Items({ setChangeView, changeview }) {
 }
 
 function TableView() {
+  const [openItemDrpdwn, setOpenItemDrpdwn] = useState(false);
+  const [brands, setBrands] = useState("All brands");
+  const [activeRow, setActiveRow] = useState(null);
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.hybridActions.warehouse?.cart);
   function popCart(index) {
@@ -65,6 +71,22 @@ function TableView() {
       alert("Item out of stock");
     }
   }
+  function insertQty(index, qty, available) {
+    if (available > 0) {
+      dispatch(Action.insertQuantity({ index, qty }));
+    } else {
+      alert("Insufficient items, pleas enter less quantity");
+    }
+  }
+
+  function handleItemDrpdwn(index) {
+    setOpenItemDrpdwn(!openItemDrpdwn);
+    if (activeRow === index) {
+      setActiveRow(null);
+    } else {
+      setActiveRow(index);
+    }
+  }
 
   return (
     <>
@@ -74,6 +96,7 @@ function TableView() {
             <tr>
               <th>S/N</th>
               <th>Item</th>
+              <th>Variety</th>
               <th>Quantity</th>
               <th>Price ₦</th>
             </tr>
@@ -81,31 +104,98 @@ function TableView() {
 
           <tbody className="fx-cl spacem">
             {cart.map((item, index) => (
-              <tr key={index} id={item.productId}>
+              <tr
+                key={index}
+                id={item.productId}
+                className={`${activeRow == index && "active_warehauseRow"}`}
+                onClick={() => setActiveRow(index)}
+              >
                 <td>{index + 1}</td>
                 <td>{item.name}</td>
-                <td className="fx-ac space1">
+                <td>
+                  <div className="item_row_entries-info fx-ac spacem">
+                    <div className="item_row-page-limit">
+                      <button
+                        className="item_row-page-limit-btn"
+                        onClick={() => handleItemDrpdwn()}
+                      >
+                        {brands}
+                        <span className="item_row-page-limit-arrow">▾</span>
+                      </button>
+
+                      {openItemDrpdwn & (activeRow == index) && (
+                        <ul className="item_row-limit-dropdown">
+                          {[
+                            "Pieces",
+                            "Bundle",
+                            "Dosen",
+                            "Cattom",
+                            "Rim",
+                            "Packet",
+                            "Torn",
+                          ].map((n) => (
+                            <li
+                              key={n}
+                              className="item_row-limit-item"
+                              onClick={() => {
+                                setBrands(n);
+                                setOpenItemDrpdwn(false);
+                              }}
+                            >
+                              {n}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  </div>
+                </td>
+                <td className="fx-ac spacem">
                   <button
                     onClick={() =>
-                      updateQty(index, item.quantity - 1, item.available)
+                      updateQty(
+                        index,
+                        Number(item.quantity - 1),
+                        item.available,
+                      )
                     }
                   >
-                    −
+                    <RemoveCircleOutlineIcon
+                      fontSize="medium"
+                      style={{ color: "#f35e6a" }}
+                    />
                   </button>
-                  <input value={item.quantity} readOnly />
+                  <input
+                    type="text"
+                    value={item.quantity}
+                    style={{ width: "3.5rem", backgroundColor: "transparent" }}
+                    onChange={(event) =>
+                      insertQty(
+                        index,
+                        Number(event.target.value),
+                        item.available,
+                      )
+                    }
+                  />
                   <button
                     onClick={() =>
-                      updateQty(index, item.quantity + 1, item.available)
+                      updateQty(
+                        index,
+                        Number(item.quantity + 1),
+                        item.available,
+                      )
                     }
                   >
-                    +
+                    <AddCircleOutlineIcon fontSize="medium" />
                   </button>
                 </td>
 
                 <td className="fx-ac space1">
                   <span>₦{item.unitPrice}</span>
+                </td>
+                <td className="fx-ac space1">
                   <button className="removeCart" onClick={() => popCart(index)}>
-                    <CloseIcon fontSize="medium" />
+                    <CloseIcon fontSize="large" />
                   </button>
                 </td>
               </tr>
@@ -113,7 +203,7 @@ function TableView() {
           </tbody>
         </table>
       ) : (
-        <p style={{ textAlign: "center" }}>No item in cart</p>
+        <p style={{ textAlign: "center" }}>... Scan bar code or add items</p>
       )}
     </>
   );
