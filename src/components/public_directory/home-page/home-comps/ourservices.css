@@ -1,0 +1,50 @@
+.our_serivces_cont h2 {
+  font-size: 4.6rem;
+  font-weight: 300;
+  font-family: "Times New Roman", Times, serif;
+}
+.OurSCardCont {
+  padding: 3.4rem 4.5rem;
+  gap: 1px;
+}
+.ourSCard {
+  cursor: pointer;
+  background-color: #eeece8;
+  padding: 2.4rem;
+  transition: all 0.3s ease-in-out;
+  font-size: 1.2rem;
+}
+.ourSCard:hover {
+  background-image: linear-gradient(rgb(116, 211, 135), rgb(44, 94, 54));
+  backdrop-filter: blur(15px);
+  color: #fff;
+}
+
+.ourSIcon {
+  background-color: #d0d8b8;
+  color: #658141;
+  height: 4.5rem;
+  width: 4.5rem;
+  border-radius: 555rem;
+}
+
+.ourSBtn button {
+  padding: 0.45rem 1.2rem;
+  border-radius: 50rem;
+  border: 1px solid #fafaff;
+  width: 14rem;
+}
+
+.ourSBtn button:last-child {
+  background-color: #4faa61;
+  color: #fff;
+}
+
+.tabors {
+  background-color: #fff;
+  color: #4faa61;
+  height: 2rem;
+  width: 2rem;
+  padding: 0.1rem;
+  border-radius: 55rem;
+}

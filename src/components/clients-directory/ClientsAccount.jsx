@@ -88,7 +88,7 @@ export default function ClientsAccount() {
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.toggleNavDropdown,
   );
-
+  const cart = useSelector((state) => state.hybridActions.warehouse?.cart);
   // const [active, setActive] = useState("done");
 
   function logOut() {
@@ -653,11 +653,8 @@ export default function ClientsAccount() {
           </div>
           <span className="clientDashboardHeadRight fx-ac fx-jc space1">
             <div className="clientDBSearchCont fx-ac space1">
-              <button
-                className="clientDashboardHeadBtn fx-ac fx-jc"
-                onClick={() => handleTerminal()}
-              >
-                <SearchIcon fontSize="medium" />
+              <button className=" fx-ac fx-jc" onClick={() => handleTerminal()}>
+                Warehouse
               </button>
             </div>
             <button

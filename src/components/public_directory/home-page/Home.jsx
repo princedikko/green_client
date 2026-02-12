@@ -13,6 +13,7 @@ import HomeComp8 from "./home-comps/HomeComp8";
 import GalleryStaff from "./home-comps/GalleryStaff";
 import Future from "./home-comps/Future";
 import Footer from "./home-comps/Footer";
+import Ourservices from "./home-comps/Ourservices";
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
@@ -25,6 +26,7 @@ export default function Home() {
       <HomeComp4 />
       <HomeComp5 />
       <HomeComp6 />
+      <Ourservices />
       <HomeComp8 />
       <HomeComp7 />
       <GalleryS />

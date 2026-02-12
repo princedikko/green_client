@@ -5,6 +5,7 @@ export const hybridReducer = createSlice({
   name: "hybrid_store",
   initialState: {
     isAuthenticated: false,
+    on_holded_sales: [],
     warehouse: {
       cart: [],
       products: [],
@@ -18,6 +19,11 @@ export const hybridReducer = createSlice({
       if (!state.warehouse) state.warehouse = { cart: [], products: [] };
       if (!state.warehouse.cart) state.warehouse.cart = [];
       state.warehouse.cart.unshift(action.payload);
+    },
+    prospondedPayload: (state, action) => {
+      const { prospondData } = action.payload;
+      if (!state.on_holded_sales) state.on_holded_sales = [];
+      state.on_holded_sales.unshift(prospondData);
     },
     updateQuantity: (state, action) => {
       const { index, qty } = action.payload;
@@ -68,6 +74,7 @@ export const {
   clearCartAction,
   clearProductsAction,
   insertQuantity,
+  prospondedPayload,
 } = hybridReducer.actions;
 
 export default hybridReducer.reducer;

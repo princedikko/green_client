@@ -123,7 +123,7 @@ function TableView() {
                         <span className="item_row-page-limit-arrow">▾</span>
                       </button>
 
-                      {openItemDrpdwn & (activeRow == index) && (
+                      {openItemDrpdwn && activeRow == index && (
                         <ul className="item_row-limit-dropdown">
                           {[
                             "Pieces",

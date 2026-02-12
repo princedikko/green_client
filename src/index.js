@@ -9,6 +9,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./store/front_end_data_base/store.js"; // Ensure you export persistor from your store
 
 // ____________________________________________________________
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
@@ -17,7 +18,7 @@ root.render(
         <App />
       </BrowserRouter>
     </PersistGate>
-  </Provider>
+  </Provider>,
 );
 
 // FUNCITON WITHOUT REDUX PERSIST *************************************

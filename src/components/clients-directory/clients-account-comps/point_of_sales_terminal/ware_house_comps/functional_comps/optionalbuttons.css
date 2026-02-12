@@ -1,0 +1,6 @@
+.OpBtnCont {
+  padding: 2.4rem;
+  background-color: rgba(255, 255, 255, 0.596);
+  backdrop-filter: blur(15px);
+  border-radius: 1.2rem;
+}

@@ -4,19 +4,19 @@ import GeneralRoutes from "./GeneralRoutes";
 
 export default function Authorization() {
   const systemAdminAuth = useSelector(
-    (state) => state.systemAdminFunction.isAuthenticated
+    (state) => state.systemAdminFunction.isAuthenticated,
   );
   const financeAuth = useSelector(
-    (state) => state.financeFunction.isAuthenticated
+    (state) => state.financeFunction.isAuthenticated,
   );
   const executiveAuth = useSelector(
-    (state) => state.executiveFunction.isAuthenticated
+    (state) => state.executiveFunction.isAuthenticated,
   );
   const instructorAuth = useSelector(
-    (state) => state.instructorFunction.isAuthenticated
+    (state) => state.instructorFunction.isAuthenticated,
   );
   const parentAuth = useSelector(
-    (state) => state.parentFunction.isAuthenticated
+    (state) => state.parentFunction.isAuthenticated,
   );
 
   const agentAuth = useSelector((state) => state.agentFunction.isAuthenticated);
@@ -24,10 +24,10 @@ export default function Authorization() {
   const adminAuth = useSelector((state) => state.adminFunction.isAuthenticated);
   const staffAuth = useSelector((state) => state.staffFunction.isAuthenticated);
   const applicantAuth = useSelector(
-    (state) => state.applictaionForm.isAuthenticated
+    (state) => state.applictaionForm.isAuthenticated,
   );
   const clientAuth = useSelector(
-    (state) => state.clientFunction.isAuthenticated
+    (state) => state.clientFunction.isAuthenticated,
   );
 
   return (
