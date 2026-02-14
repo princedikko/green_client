@@ -108,6 +108,8 @@
   margin: 0 2rem;
 }
 .warehauseSearchCont input {
+  max-width: 24rem;
+  width: 100%;
   margin: 0.4rem 0.8rem;
   color: #666;
 }
@@ -165,7 +167,7 @@
 }
 
 .warehouseHubCounts {
-  max-width: 15rem;
+  max-width: 22rem;
   background-color: #fff;
   border-radius: 1.2rem;
   padding: 0.5rem 1.2rem;
@@ -418,6 +420,7 @@ button.wareHouseAddnewProd {
   background-color: #0000006e;
   display: flex;
   align-items: center;
+  backdrop-filter: blur(4px);
   justify-content: center;
   position: absolute;
   top: 0;
@@ -445,17 +448,22 @@ button.wareHouseAddnewProd {
 }
 
 .productsCardWH {
+  height: 8rem;
   padding: 1rem;
-  background-color: #fff;
-  color: #666;
-  border-radius: 0.5rem;
+  background-color: #d9e8eb;
+  color: #167480;
+  border-radius: 1.8rem;
   /* box-shadow: 1.2rem 1rem 4rem -2.5rem rgba(0, 0, 0, 0.35); */
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  /* transition: all 0.3s ease-in-out; */
 }
 
 .productsCardWH:hover {
   background-color: #26bf89;
+  background-image: url("./images/bg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
   color: #fff;
 }
 
@@ -464,6 +472,10 @@ button.wareHouseAddnewProd {
   position: relative;
 }
 
+.productsCardWH h4 {
+  font-size: 1.1rem;
+  font-family: cursive;
+}
 .customers-page-limit-btn {
   padding: 0.4rem 0.7rem;
   border-radius: 8px;

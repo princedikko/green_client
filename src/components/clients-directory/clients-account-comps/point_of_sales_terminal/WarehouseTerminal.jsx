@@ -1,5 +1,5 @@
 import "./warehouseTerminal.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,11 +9,13 @@ import { useSnackbar } from "notistack";
 import IsLoading from "../../../../isLoading.jsx";
 import Calculator from "./modalBoxComps/Calculator.jsx";
 import Items from "./ware_house_comps/Items.jsx";
+import BannerImg from "./images/banner.avif";
 // ------------------NEW IMPORTS---------------------
 import LayersClearIcon from "@mui/icons-material/LayersClear";
 import SettingsRemoteTwoToneIcon from "@mui/icons-material/SettingsRemoteTwoTone";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
+import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import SearchIcon from "@mui/icons-material/Search";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CasesIcon from "@mui/icons-material/Cases";
@@ -67,11 +69,19 @@ import {
   OnHold,
   Quotation,
   SaveDraft,
+  Discount,
+  HoldedSales,
+  Subscriptions,
+  TransactionLog,
+  PaymentLogs,
+  Shipping,
+  Gifting,
 } from "./ware_house_comps/functional_comps/OptionalButtons.jsx";
 
 let queue;
 
 function WarehouseTerminal() {
+  const wrapperRef = useRef(null);
   const { enqueueSnackbar } = useSnackbar();
   // HOOKS-----------------------------
   const [openBrands, setOpenBrands] = useState(false);
@@ -155,14 +165,46 @@ function WarehouseTerminal() {
 
   function clearCart() {
     dispatch(Action.clearCartAction());
+    setOpenModal(!openModal);
   }
   function clearProducts() {
     dispatch(Action.clearProductsAction());
   }
   // Functional buttons methods of actions
-  function handleOnHold() {
+  function handleSaveDraft(note) {
+    const prospondData = {
+      status: "new-draft",
+      customer_name: customer,
+      note: note,
+      items: cart,
+      total: "234a",
+      date: new Date().toLocaleString(),
+    };
+    if (cart.length > 0) {
+      dispatch(Action.prospondedPayload({ prospondData }));
+      clearCart();
+      enqueueSnackbar(`Draft saved successfully`, {
+        variant: "success",
+        autoHideDuration: 3000,
+        ContentProps: {
+          style: { fontSize: "16px", fontWeight: "bold" },
+        },
+      });
+    } else {
+      enqueueSnackbar(`Nothing to put on-hold`, {
+        variant: "error",
+        autoHideDuration: 3000,
+        ContentProps: {
+          style: { fontSize: "16px", fontWeight: "bold" },
+        },
+      });
+    }
+    setOpenModal(!openModal);
+  }
+  function handleOnHold(note) {
     const prospondData = {
       customer_name: customer,
+      note: note,
       buyings: cart,
     };
     if (cart.length > 0) {
@@ -184,6 +226,7 @@ function WarehouseTerminal() {
         },
       });
     }
+    setOpenModal(!openModal);
   }
   // ...................////////
 
@@ -196,17 +239,13 @@ function WarehouseTerminal() {
       case "itemList":
         return <Items setOpenModal={setOpenModal} />;
       case "counter":
-        return (
-          <ShoppingCartCheckoutIcon
-            style={{ fontSize: "22rem", color: "#fff" }}
-          />
-        );
+        return <img src={BannerImg} style={{ width: "34%" }} />;
       case "add_new_product":
         return <AddNewProduct handleOnHold={handleOnHold} />;
       case "add_new_customer":
         return <AddNewCustomer handleOnHold={handleOnHold} />;
       case "save_draft":
-        return <SaveDraft handleOnHold={handleOnHold} />;
+        return <SaveDraft handleSaveDraft={handleSaveDraft} />;
       case "debit":
         return <Debit handleOnHold={handleOnHold} />;
       case "multi_pay":
@@ -215,12 +254,25 @@ function WarehouseTerminal() {
         return <CreditSale handleOnHold={handleOnHold} />;
       case "quotation":
         return <Quotation handleOnHold={handleOnHold} />;
-      case "on_hold":
-        return <OnHold handleOnHold={handleOnHold} />;
       case "clear_cart":
         return <ClearCart clearCart={clearCart} handleOnHold={handleOnHold} />;
-      case "testing":
-        return <button onClick={() => clearCart()}>TESTING TESTER</button>;
+      case "on_hold":
+        return <OnHold handleOnHold={handleOnHold} />;
+      case "gift":
+        return <Gifting handleOnHold={handleOnHold} />;
+      case "discount":
+        return <Discount clearCart={clearCart} handleOnHold={handleOnHold} />;
+      case "on_hold_sales":
+        return <HoldedSales />;
+      case "subscription":
+        return <Subscriptions />;
+      case "transactions":
+        return <TransactionLog />;
+      case "payments":
+        return <PaymentLogs />;
+      case "shipping":
+        return <Shipping />;
+
       default:
         return null;
     }
@@ -281,9 +333,26 @@ function WarehouseTerminal() {
   //   !isFullscreen && toggleFullscreen();
   // }, [isFullscreen]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        // clicked outside
+        // setFilteredProducts([]);
+        setOpenCustomers(false);
+        setOpenBrands(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   function Main() {
     return (
-      <div className="main fx-cl space1">
+      <div className="main fx-cl space1" onClick={(e) => e.stopPropagation()}>
         <div className="fx-cl">
           <div className="warehouseHubSubjects fx-jb fx-ac space2">
             <div className="warehauseCustomerCont fx-ac spacem">
@@ -299,7 +368,7 @@ function WarehouseTerminal() {
                   </button>
 
                   {openCustomers && (
-                    <ul className="customers-limit-dropdown">
+                    <ul ref={wrapperRef} className="customers-limit-dropdown">
                       {customerTypesArray.map((n) => (
                         <li
                           key={n}
@@ -334,7 +403,7 @@ function WarehouseTerminal() {
                       placeholder="Search products..."
                     />
                   </div>
-                  <button onClick={() => clearCart()}>
+                  <button>
                     <SearchIcon fontSize="large" />
                   </button>
                 </div>
@@ -350,18 +419,30 @@ function WarehouseTerminal() {
 
           <div className="warehouseItemsCont fx-cl space1">
             <div className="warehouseHubBtn fx-ac space2">
-              <button
-                className="fx-ac fx-jc"
-                onClick={() => handleModalSwitch("clear_cart")}
-              >
-                <span className="tooltips">Clear Cart</span>
-                {/* MarkIcon */}
+              {cart.length > 0 ? (
+                <button
+                  className="fx-ac fx-jc"
+                  onClick={() => handleModalSwitch("clear_cart")}
+                >
+                  <span className="tooltips">Clear Cart</span>
+                  {/* MarkIcon */}
 
-                <DeleteForeverIcon
-                  fontSize="large"
-                  style={{ color: "#f85a38" }}
-                />
-              </button>
+                  <DeleteForeverIcon
+                    fontSize="large"
+                    style={{ color: "#f85a38" }}
+                  />
+                </button>
+              ) : (
+                <button
+                  className="fx-ac fx-jc"
+                  style={{ color: "gray", cursor: "not-allowed" }}
+                >
+                  <span className="tooltips">Clear Cart</span>
+                  {/* MarkIcon */}
+
+                  <DeleteForeverIcon fontSize="large" />
+                </button>
+              )}
               {showModal == "main_view" ? (
                 <button
                   className="fx-ac fx-jc"
@@ -391,7 +472,17 @@ function WarehouseTerminal() {
                 <figure className="counterIcon">&nbsp;</figure>
                 <div className="fx-ac space2">
                   <div className="fx-ac spacem">
-                    <span>TOTAL:</span> <strong> ₦ {cart?.unitPrice}</strong>
+                    <span>TOTAL:</span>{" "}
+                    <strong>
+                      {" "}
+                      ₦{" "}
+                      {cart
+                        .reduce(
+                          (sum, item) => sum + item.unitPrice * item.quantity,
+                          0,
+                        )
+                        .toLocaleString()}
+                    </strong>
                   </div>
                 </div>
               </button>
@@ -450,18 +541,26 @@ function WarehouseTerminal() {
                 </div>
               </div>
             </div>
-            <span className="warehouseHubCounts fx-ac spacem">
+            <button
+              onClick={() => alert("i got printed")}
+              className="warehouseHubCounts fx-ac fx-jb space3"
+            >
+              <div className="fx-ac spacem">
+                <strong className="fx-jc" style={{ color: "#3a84f8" }}>
+                  <ShoppingCartIcon fontSize="medium" /> Cart:
+                </strong>
+                {cart?.length < 1 ? (
+                  "empty"
+                ) : (
+                  <span>
+                    {cart?.length} <em>items</em>
+                  </span>
+                )}
+              </div>
               <strong className="fx-jc" style={{ color: "#3a84f8" }}>
-                <ShoppingCartIcon fontSize="medium" /> Cart:
+                <LocalPrintshopIcon fontSize="medium" />
               </strong>
-              {cart?.length < 1 ? (
-                "empty"
-              ) : (
-                <span>
-                  {cart?.length} <em>items</em>
-                </span>
-              )}
-            </span>
+            </button>
 
             {/* ____________CART ITEMS MAPPING___________ */}
             <Items />
@@ -519,32 +618,105 @@ function WarehouseTerminal() {
         ) : (
           <div className="warehouseHubOperations btns fx-ac space1 fx-jc">
             <button
-              onClick={() => handleModalSwitch("on_hold")}
-              // onClick={() => handleOnHold()}
+              onClick={() => {
+                if (cart.length > 0) {
+                  handleModalSwitch("on_hold");
+                }
+              }}
+              style={{
+                cursor: cart.length > 0 ? "pointer" : "not-allowed",
+                opacity: cart.length > 0 ? 1 : 0.6, // optional, to show disabled look
+              }}
             >
               <PanToolIcon />
               <span>On-hold</span>
             </button>
-            <button onClick={() => handleModalSwitch("save_draft")}>
+            <button
+              onClick={() => {
+                if (cart.length > 0) {
+                  handleModalSwitch("save_draft");
+                }
+              }}
+              style={{
+                cursor: cart.length > 0 ? "pointer" : "not-allowed",
+                opacity: cart.length > 0 ? 1 : 0.6, // optional: show disabled look
+              }}
+            >
               <SaveAsIcon />
               <span>Save draft</span>
             </button>
-            <button onClick={() => handleModalSwitch("credit_sale")}>
+
+            <button
+              onClick={() => {
+                if (cart.length > 0) {
+                  handleModalSwitch("credit_sale");
+                }
+              }}
+              style={{
+                cursor: cart.length > 0 ? "pointer" : "not-allowed",
+                opacity: cart.length > 0 ? 1 : 0.6,
+              }}
+            >
               <SellIcon />
               <span>Credit sale</span>
             </button>
-            <button onClick={() => cashPaidSubmit()} className="cashPaid fx-jc">
+
+            <button
+              onClick={() => {
+                if (cart.length > 0) {
+                  cashPaidSubmit();
+                }
+              }}
+              className="cashPaid fx-jc"
+              style={{
+                cursor: cart.length > 0 ? "pointer" : "not-allowed",
+                opacity: cart.length > 0 ? 1 : 0.6,
+              }}
+            >
               Cash Paid
             </button>
-            <button onClick={() => handleModalSwitch("multi_pay")}>
+
+            <button
+              onClick={() => {
+                if (cart.length > 0) {
+                  handleModalSwitch("multi_pay");
+                }
+              }}
+              style={{
+                cursor: cart.length > 0 ? "pointer" : "not-allowed",
+                opacity: cart.length > 0 ? 1 : 0.6,
+              }}
+            >
               <LayersClearIcon />
               <span>Multi-pay</span>
             </button>
-            <button onClick={() => handleModalSwitch("debit")}>
+
+            <button
+              onClick={() => {
+                if (cart.length > 0) {
+                  handleModalSwitch("debit");
+                }
+              }}
+              style={{
+                cursor: cart.length > 0 ? "pointer" : "not-allowed",
+                opacity: cart.length > 0 ? 1 : 0.6,
+              }}
+            >
               <AssuredWorkloadIcon />
               <span>Debit</span>
             </button>
-            <button onClick={() => handleModalSwitch("gift")}>
+
+            <button
+              onClick={() => {
+                if (cart.length > 0) {
+                  handleModalSwitch("gift");
+                }
+              }}
+              style={{
+                cursor: cart.length > 0 ? "pointer" : "not-allowed",
+                opacity: cart.length > 0 ? 1 : 0.6,
+              }}
+            >
               <CardGiftcardIcon />
               <span>Gift</span>
             </button>
@@ -695,38 +867,38 @@ function Property({ handleModalSwitch }) {
 
         <div className="pptyBtnCont g g3 space1">
           <figure className="fx-cl spacem">
-            <button onClick={() => handleModalSwitch("testing")}>
+            <button onClick={() => handleModalSwitch("discount")}>
               <WorkspacePremiumRoundedIcon fontSize="large" />
             </button>
             <span>Discount</span>
           </figure>
 
           <figure className="fx-cl spacem">
-            <button onClick={() => handleModalSwitch("testing")}>
+            <button onClick={() => handleModalSwitch("on_hold_sales")}>
               <DiscountIcon fontSize="large" />
             </button>
             <span>On-hold</span>
           </figure>
           <figure className="fx-cl spacem">
-            <button onClick={() => handleModalSwitch("testing")}>
+            <button onClick={() => handleModalSwitch("shipping")}>
               <LocalShippingIcon fontSize="large" />
             </button>
             <span>Shipping</span>
           </figure>
           <figure className="fx-cl spacem">
-            <button onClick={() => handleModalSwitch("testing")}>
+            <button onClick={() => handleModalSwitch("subscription")}>
               <SubscriptionsIcon fontSize="large" />
             </button>
             <span>Subcribing</span>
           </figure>
           <figure className="fx-cl spacem">
-            <button onClick={() => handleModalSwitch("testing")}>
+            <button onClick={() => handleModalSwitch("transactions")}>
               <ReceiptLongIcon fontSize="large" />
             </button>
             <span>Transactions</span>
           </figure>
           <figure className="fx-cl spacem">
-            <button onClick={() => handleModalSwitch("testing")}>
+            <button onClick={() => handleModalSwitch("payments")}>
               <AccountBalanceIcon fontSize="large" />
             </button>
             <span>Payments</span>
@@ -737,20 +909,86 @@ function Property({ handleModalSwitch }) {
   );
 }
 function Products({ handleModalSwitch, products, addToCart, clearCart }) {
+  /////////////////////////////////////////////////////////////////////////
+  // SEARCH FILTER FUNCTOINS
+  /////////////////////////////////////////////////////////////////////////
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+  const handleSearch = (e) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+
+    if (term.trim() === "") {
+      setFilteredProducts([]);
+    } else {
+      const filtered = products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(term.toLowerCase()) ||
+          product.barcode.includes(term),
+      );
+      setFilteredProducts(filtered);
+    }
+  };
+
+  const handleSelect = (product) => {
+    console.log("Selected product:", product);
+    setSearchTerm(product.name);
+    setFilteredProducts([]); // close dropdown after selection
+  };
   return (
     <div className="fx-cl space1">
       <div className="warehauseSearchCont fx-jb space3">
         <div className=" fx-ac spacem">
-          <div className="warehauseSearch fx-jb">
+          <div
+            className="warehauseSearch fx-jb"
+            style={{ position: "relative" }}
+          >
             <input
               type="text"
-              name="application_number"
-              placeholder="Search products..."
+              placeholder="Search product..."
+              value={searchTerm}
+              onChange={handleSearch}
             />
+
+            {filteredProducts.length > 0 && (
+              <ul
+                style={{
+                  position: "absolute",
+                  top: "40px",
+                  left: 0,
+                  right: 0,
+                  background: "#fff",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  maxHeight: "200px",
+                  overflowY: "auto",
+                  zIndex: 10,
+                  listStyle: "none",
+                  margin: 0,
+                  padding: 0,
+                }}
+              >
+                {filteredProducts.map((product) => (
+                  <li
+                    key={product.productId}
+                    onClick={() => handleSelect(product)}
+                    style={{
+                      padding: "8px",
+                      cursor: "pointer",
+                      borderBottom: "1px solid #eee",
+                    }}
+                  >
+                    {product.name} — {product.barcode}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-          <button onClick={() => clearCart()}>
+          {/* <button>
             <SearchIcon fontSize="large" />
-          </button>
+          </button> */}
         </div>
         <button
           className="wareHouseAddnewProd fx-ac fx-jc"
@@ -780,10 +1018,12 @@ function Products({ handleModalSwitch, products, addToCart, clearCart }) {
                 });
               }}
               key={index}
-              className=" productsCardWH fx-cl space1"
+              className=" productsCardWH fx-cl space1 fx-jb"
             >
               <h4>{item.name}</h4>
-              <p>₦{item.unitPrice}</p>
+              <div>
+                <p>₦{item.unitPrice}</p>
+              </div>
             </figure>
           );
         })}

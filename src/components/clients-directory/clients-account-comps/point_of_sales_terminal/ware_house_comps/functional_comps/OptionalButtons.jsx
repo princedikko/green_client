@@ -1,17 +1,40 @@
+import { useReducer } from "react";
 import "./optionalbuttons.css";
-export function OnHold({ handleOnHold }) {
+
+import { useSnackbar } from "notistack";
+
+export function OnHold({ handleOnHold, handleHoldTransactio }) {
+  const [note, setNote] = useReducer((state, payload) => {
+    return ({ ...state, ...payload }, { note: "" });
+  });
   return (
-    <div className="OpBtnCont fx-cl space2">
+    <div
+      className="OpBtnCont fx-cl space2"
+      onClick={(e) => e.stopPropagation()}
+    >
       <h3>Are you sure you want to prospond this selling?</h3>
-      <p>You are about to temporarily save this transaction</p>
+      <p>You are about to temporarily put this transaction on holde</p>
+      <div className="fx-ac">
+        <textarea
+          name="onHold"
+          id="onhold"
+          rows={3}
+          style={{ width: "100%" }}
+          value={note?.note}
+          onChange={(e) => setNote({ note: e.target.value })}
+        ></textarea>
+      </div>
       <div className="fx-ac space3 fx-jb">
         <button>Cancel</button>
         <button
           onClick={() => {
-            handleOnHold();
+            handleOnHold(
+              "Please note that this transaction is on hold",
+              note?.note,
+            );
           }}
         >
-          Prospond
+          Hold sale
         </button>
       </div>
     </div>
@@ -19,7 +42,10 @@ export function OnHold({ handleOnHold }) {
 }
 export function AddNewCustomer({ handleOnHold }) {
   return (
-    <div className="OpBtnCont fx-cl space2">
+    <div
+      className="OpBtnCont fx-cl space2"
+      onClick={(e) => e.stopPropagation()}
+    >
       <h3>Are you sure you want to prospond this selling?</h3>
       <p>You are about to temporarily save this transaction</p>
       <div className="fx-ac space3 fx-jb">
@@ -37,7 +63,10 @@ export function AddNewCustomer({ handleOnHold }) {
 }
 export function AddNewProduct({ handleOnHold }) {
   return (
-    <div className="OpBtnCont fx-cl space2">
+    <div
+      className="OpBtnCont fx-cl space2"
+      onClick={(e) => e.stopPropagation()}
+    >
       <h3>Are you sure you want to prospond this selling?</h3>
       <p>You are about to temporarily save this transaction</p>
       <div className="fx-ac space3 fx-jb">
@@ -55,9 +84,12 @@ export function AddNewProduct({ handleOnHold }) {
 }
 export function ClearCart({ handleOnHold, clearCart }) {
   return (
-    <div className="OpBtnCont fx-cl space2">
-      <h3>Are you sure you want to prospond this selling?</h3>
-      <p>You are about to temporarily save this transaction</p>
+    <div
+      className="OpBtnCont fx-cl space2"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h3>Are you sure you want to Delete all items in CART</h3>
+      <p>You save this transaction</p>
       <div className="fx-ac space3 fx-jb">
         <button>Cancel</button>
         <button
@@ -73,7 +105,10 @@ export function ClearCart({ handleOnHold, clearCart }) {
 }
 export function Quotation({ handleOnHold }) {
   return (
-    <div className="OpBtnCont fx-cl space2">
+    <div
+      className="OpBtnCont fx-cl space2"
+      onClick={(e) => e.stopPropagation()}
+    >
       <h3>Are you sure you want to prospond this selling?</h3>
       <p>You are about to temporarily save this transaction</p>
       <div className="fx-ac space3 fx-jb">
@@ -91,7 +126,10 @@ export function Quotation({ handleOnHold }) {
 }
 export function CreditSale({ handleOnHold }) {
   return (
-    <div className="OpBtnCont fx-cl space2">
+    <div
+      className="OpBtnCont fx-cl space2"
+      onClick={(e) => e.stopPropagation()}
+    >
       <h3>Are you sure you want to prospond this selling?</h3>
       <p>You are about to temporarily save this transaction</p>
       <div className="fx-ac space3 fx-jb">
@@ -109,7 +147,10 @@ export function CreditSale({ handleOnHold }) {
 }
 export function MultiPay({ handleOnHold }) {
   return (
-    <div className="OpBtnCont fx-cl space2">
+    <div
+      className="OpBtnCont fx-cl space2"
+      onClick={(e) => e.stopPropagation()}
+    >
       <h3>Are you sure you want to prospond this selling?</h3>
       <p>You are about to temporarily save this transaction</p>
       <div className="fx-ac space3 fx-jb">
@@ -127,7 +168,10 @@ export function MultiPay({ handleOnHold }) {
 }
 export function Debit({ handleOnHold }) {
   return (
-    <div className="OpBtnCont fx-cl space2">
+    <div
+      className="OpBtnCont fx-cl space2"
+      onClick={(e) => e.stopPropagation()}
+    >
       <h3>Online Payment Coming Soon...!</h3>
       <p>Online Payment is currently under development</p>
       <div className="fx-ac space3 fx-jb">
@@ -145,16 +189,247 @@ export function Debit({ handleOnHold }) {
     </div>
   );
 }
-export function SaveDraft({ handleOnHold }) {
+export function Gifting({ handleSaveDraft }) {
+  const { enqueueSnackbar } = useSnackbar();
+
   return (
-    <div className="OpBtnCont fx-cl space2">
-      <h3>Are you sure you want to prospond this selling?</h3>
-      <p>You are about to temporarily save this transaction</p>
+    <div
+      className="OpBtnCont fx-cl space2"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h3>Save as Draft?</h3>
+      <p>This transaction will be stored as a draft for later completion.</p>
+
       <div className="fx-ac space3 fx-jb">
         <button>Cancel</button>
         <button
           onClick={() => {
-            handleOnHold();
+            handleSaveDraft();
+          }}
+        >
+          Prospond
+        </button>
+      </div>
+    </div>
+  );
+}
+export function SaveDraft({ handleOnHold }) {
+  const { enqueueSnackbar } = useSnackbar();
+
+  function handleSaveDraft() {
+    enqueueSnackbar(`Draft added successfully`, {
+      variant: "success",
+      autoHideDuration: 3000,
+      ContentProps: {
+        style: { fontSize: "16px", fontWeight: "bold" },
+      },
+    });
+  }
+  return (
+    <div
+      className="OpBtnCont fx-cl space2"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h3>Save billing as Draft?</h3>
+      <p>This transaction will be save as Draft</p>
+      <div className="fx-ac space3 fx-jb">
+        <button>Cancel</button>
+        <button
+          onClick={() => {
+            handleSaveDraft();
+          }}
+        >
+          Prospond
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export function Discount({ handleOnHold }) {
+  const { enqueueSnackbar } = useSnackbar();
+
+  function handleSaveDraft() {
+    enqueueSnackbar(`Draft added successfully`, {
+      variant: "success",
+      autoHideDuration: 3000,
+      ContentProps: {
+        style: { fontSize: "16px", fontWeight: "bold" },
+      },
+    });
+  }
+  return (
+    <div
+      className="OpBtnCont fx-cl space2"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h3>Save billing as Draft?</h3>
+      <p>This transaction will be save as Draft</p>
+      <div className="fx-ac space3 fx-jb">
+        <button>Cancel</button>
+        <button
+          onClick={() => {
+            handleSaveDraft();
+          }}
+        >
+          Prospond
+        </button>
+      </div>
+    </div>
+  );
+}
+export function HoldedSales({ handleOnHold }) {
+  const { enqueueSnackbar } = useSnackbar();
+
+  function handleSaveDraft() {
+    enqueueSnackbar(`Draft added successfully`, {
+      variant: "success",
+      autoHideDuration: 3000,
+      ContentProps: {
+        style: { fontSize: "16px", fontWeight: "bold" },
+      },
+    });
+  }
+  return (
+    <div
+      className="OpBtnCont fx-cl space2"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h3>Save billing as Draft?</h3>
+      <p>This transaction will be save as Draft</p>
+      <div className="fx-ac space3 fx-jb">
+        <button>Cancel</button>
+        <button
+          onClick={() => {
+            handleSaveDraft();
+          }}
+        >
+          Prospond
+        </button>
+      </div>
+    </div>
+  );
+}
+export function Subscriptions({ handleOnHold }) {
+  const { enqueueSnackbar } = useSnackbar();
+
+  function handleSaveDraft() {
+    enqueueSnackbar(`Draft added successfully`, {
+      variant: "success",
+      autoHideDuration: 3000,
+      ContentProps: {
+        style: { fontSize: "16px", fontWeight: "bold" },
+      },
+    });
+  }
+  return (
+    <div
+      className="OpBtnCont fx-cl space2"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h3>Save billing as Draft?</h3>
+      <p>This transaction will be save as Draft</p>
+      <div className="fx-ac space3 fx-jb">
+        <button>Cancel</button>
+        <button
+          onClick={() => {
+            handleSaveDraft();
+          }}
+        >
+          Prospond
+        </button>
+      </div>
+    </div>
+  );
+}
+export function TransactionLog({ handleOnHold }) {
+  const { enqueueSnackbar } = useSnackbar();
+
+  function handleSaveDraft() {
+    enqueueSnackbar(`Draft added successfully`, {
+      variant: "success",
+      autoHideDuration: 3000,
+      ContentProps: {
+        style: { fontSize: "16px", fontWeight: "bold" },
+      },
+    });
+  }
+  return (
+    <div
+      className="OpBtnCont fx-cl space2"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h3>Save billing as Draft?</h3>
+      <p>This transaction will be save as Draft</p>
+      <div className="fx-ac space3 fx-jb">
+        <button>Cancel</button>
+        <button
+          onClick={() => {
+            handleSaveDraft();
+          }}
+        >
+          Prospond
+        </button>
+      </div>
+    </div>
+  );
+}
+export function PaymentLogs({ handleOnHold }) {
+  const { enqueueSnackbar } = useSnackbar();
+
+  function handleSaveDraft() {
+    enqueueSnackbar(`Draft added successfully`, {
+      variant: "success",
+      autoHideDuration: 3000,
+      ContentProps: {
+        style: { fontSize: "16px", fontWeight: "bold" },
+      },
+    });
+  }
+  return (
+    <div
+      className="OpBtnCont fx-cl space2"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h3>Save billing as Draft?</h3>
+      <p>This transaction will be save as Draft</p>
+      <div className="fx-ac space3 fx-jb">
+        <button>Cancel</button>
+        <button
+          onClick={() => {
+            handleSaveDraft();
+          }}
+        >
+          Prospond
+        </button>
+      </div>
+    </div>
+  );
+}
+export function Shipping({ handleOnHold }) {
+  const { enqueueSnackbar } = useSnackbar();
+
+  function handleSaveDraft() {
+    enqueueSnackbar(`Draft added successfully`, {
+      variant: "success",
+      autoHideDuration: 3000,
+      ContentProps: {
+        style: { fontSize: "16px", fontWeight: "bold" },
+      },
+    });
+  }
+  return (
+    <div
+      className="OpBtnCont fx-cl space2"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h3>Save billing as Draft?</h3>
+      <p>This transaction will be save as Draft</p>
+      <div className="fx-ac space3 fx-jb">
+        <button>Cancel</button>
+        <button
+          onClick={() => {
+            handleSaveDraft();
           }}
         >
           Prospond
