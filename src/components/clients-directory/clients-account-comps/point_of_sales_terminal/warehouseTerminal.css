@@ -108,8 +108,8 @@
   margin: 0 2rem;
 }
 .warehauseSearchCont input {
-  max-width: 24rem;
-  width: 100%;
+  width: 23rem;
+  max-width: 100%;
   margin: 0.4rem 0.8rem;
   color: #666;
 }
@@ -325,41 +325,74 @@ div.warehouseHubOperations button.cashPaid:hover {
   border-radius: 1.2rem;
 }
 
-#modalContainer .main {
+#largeView {
+  background-image: url("./images/largeVbg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  position: relative;
+}
+
+#largeView .taskBar {
+  width: 5rem;
+  border-radius: 0.7rem;
+  /* background-color: rgba(51, 51, 51, 0.259); */
+  background-color: #3a84f8;
+  box-shadow: 0rem 0rem 2rem 0rem rgba(0, 0, 0, 0.35);
+  /* color: #fff; */
+  padding: 1.2rem 0.6rem;
+  backdrop-filter: blur(15px);
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translate(18%, -50%);
+  z-index: 9999;
+}
+
+#largeView .taskBar button {
+  color: #fff;
+  transition: all ease-in-out;
+}
+#largeView .taskBar button:hover {
+  transform: scale(1.2);
+}
+#largeView .main {
   background-color: rgba(255, 255, 255, 0.69);
   backdrop-filter: blur(15px);
-  padding: 2.3rem;
+  padding: 2.3rem 3.2rem;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
 }
-#modalContainer .warehouseItemsCont {
+#largeView .warehouseItemsCont {
   height: 77vh;
+
+  padding: 3.6rem;
 }
-#modalContainer .warehauseSearchCont input {
+#largeView .warehauseSearchCont input {
   width: 42rem;
 }
-#modalContainer .warehauseCustomerCont button {
+#largeView .warehauseCustomerCont button {
   width: 32rem;
 }
 .items_product_cont {
-  height: 57vh;
+  height: 43rem;
   overflow: scroll;
   overflow-x: hidden;
   padding: 0 2rem;
 }
 .warehouseHubAsideNav {
-  background-color: #fff;
-  padding: 0.8rem 1.2rem;
-  border-radius: 1.2rem;
+  background-color: #fafafa;
+  padding: 0.5rem 1.2rem;
+  /* border-radius: 1.2rem; */
   /* overflow-y: scroll; */
-  max-width: 26rem;
+  max-width: 32rem;
 }
 
 .warehouseHubAsideNav button {
   background-color: transparent;
   color: #26bf89;
-  padding: 0.8rem 1rem;
-  border-radius: 1rem;
+  padding: 0.6rem 1rem;
+  border-radius: 0.4rem;
   font-size: 1.1rem;
 }
 .warehouseHubAsideNav button:hover {
@@ -399,7 +432,6 @@ button.wareHouseAddnewProd {
   text-align: center;
   background-color: #e9f5f3;
   border-radius: 1.4rem;
-  margin: 3.4rem;
 }
 
 /* DEPENDENCIES DECORATIONS  */
@@ -536,6 +568,8 @@ button.wareHouseAddnewProd {
 }
 
 .brands-limit-dropdown {
+  max-height: 40rem;
+  overflow: auto;
   background-color: rgba(255, 255, 255, 0.741);
   backdrop-filter: blur(15px);
   position: absolute;
@@ -619,4 +653,22 @@ button.wareHouseAddnewProd {
   border-radius: 0.4rem;
   padding: 0.2rem 0.9rem;
   background-color: #fafafa;
+}
+
+.searched-products-dropdown {
+  background-color: rgba(255, 255, 255, 0.741);
+  color: #333;
+  backdrop-filter: blur(15px);
+  position: absolute;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 6px 0;
+  z-index: 10;
+  top: 40px;
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  overflow: auto;
 }

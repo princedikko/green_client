@@ -15,11 +15,11 @@ import ExportPDFButton from "./exports/SalesPDFExport";
 
 // import from MUI
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import ListAltIcon from "@mui/icons-material/ListAlt";
 import ExportExcelJSButton from "./exports/SalesExcelExport";
-import PrintIcon from "@mui/icons-material/Print";
 import FlightIcon from "@mui/icons-material/Flight";
 import PlaceIcon from "@mui/icons-material/Place";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import PrintIcon from "@mui/icons-material/Print";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
@@ -47,7 +47,7 @@ export default function Sales({ breadcrumbs }) {
   const currentRows = salesData.slice(start, end);
 
   const currentTab = useSelector(
-    (state) => state.clientFunction?.dashboard?.currentTab
+    (state) => state.clientFunction?.dashboard?.currentTab,
   );
 
   // /////////////////////////////////////////////////////////
@@ -262,7 +262,7 @@ export default function Sales({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -324,7 +324,7 @@ export default function Sales({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -508,7 +508,7 @@ export default function Sales({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -570,7 +570,7 @@ export default function Sales({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -707,7 +707,7 @@ export default function Sales({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -769,7 +769,7 @@ export default function Sales({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -790,7 +790,7 @@ export default function Sales({ breadcrumbs }) {
   }
   console.log(
     "PRINTING:",
-    useSelector((state) => state.clientFunction?.printData)
+    useSelector((state) => state.clientFunction?.printData),
   );
   return (
     <div className="salesCompContainer">

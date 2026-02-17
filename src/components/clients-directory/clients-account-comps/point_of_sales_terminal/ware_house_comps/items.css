@@ -1,5 +1,6 @@
 .item_row {
-  overflow: scroll;
+  /* height: 100%; */
+  overflow: auto;
   overflow-x: hidden;
   padding-right: 0.9rem;
 }

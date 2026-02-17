@@ -65,9 +65,22 @@ function TableView() {
   function popCart(index) {
     dispatch(Action.removeFromCart(index));
   }
-  function updateQty(index, qty, available) {
+  function updatePackage(index, pkg, available) {
     if (available > 0) {
-      dispatch(Action.updateQuantity({ index, qty }));
+      setBrands(pkg);
+      setOpenItemDrpdwn(false);
+      dispatch(Action.updateSwitchPackage({ index, pkg }));
+    } else {
+      alert("Item out of stock");
+    }
+  }
+  function updateQty(index, qty, available) {
+    if (available >= qty) {
+      if (qty > 0) {
+        dispatch(Action.updateQuantity({ index, qty }));
+      } else {
+        alert("Cannot be less than One item");
+      }
     } else {
       alert("Item out of stock");
     }
@@ -111,16 +124,18 @@ function TableView() {
                 className={`${activeRow == index && "active_warehauseRow"}`}
                 onClick={() => setActiveRow(index)}
               >
-                <td>{index + 1}</td>
+                <td>
+                  <strong>{index + 1}</strong>
+                </td>
                 <td>{item.name}</td>
                 <td>
                   <div className="item_row_entries-info fx-ac spacem">
                     <div className="item_row-page-limit">
                       <button
-                        className="item_row-page-limit-btn"
                         onClick={() => handleItemDrpdwn()}
+                        style={{ color: "#222", textTransform: "capitalize" }}
                       >
-                        {brands}
+                        {item.packaging}
                         <span className="item_row-page-limit-arrow">▾</span>
                       </button>
 
@@ -138,10 +153,9 @@ function TableView() {
                             <li
                               key={n}
                               className="item_row-limit-item"
-                              onClick={() => {
-                                setBrands(n);
-                                setOpenItemDrpdwn(false);
-                              }}
+                              onClick={() =>
+                                updatePackage(index, n, item.available)
+                              }
                             >
                               {n}
                             </li>
@@ -169,7 +183,11 @@ function TableView() {
                   <input
                     type="text"
                     value={item.quantity}
-                    style={{ width: "3.5rem", backgroundColor: "transparent" }}
+                    style={{
+                      width: "3.5rem",
+                      backgroundColor: "transparent",
+                      textAlign: "center",
+                    }}
                     onChange={(event) =>
                       insertQty(
                         index,

@@ -1,0 +1,41 @@
+.OnholdedTransCont {
+  width: 100%;
+  max-width: 90rem;
+  background-color: rgba(255, 255, 255, 0.549);
+  border-radius: 1.2rem;
+  padding: 3.2rem 2.8rem;
+}
+
+.OnholdedCardCont {
+  padding: 0 2.4rem;
+  height: 38rem;
+  overflow: auto;
+}
+
+.onholdTCard {
+  background-color: #fafafa;
+  border-radius: 1.2rem;
+  padding: 2.8rem;
+  transition: all 0.3s ease;
+}
+
+.onholdTCard:hover {
+  background-color: #f3f3f3;
+}
+
+.onholdTCard .tab {
+  padding: 0.1rem 1rem;
+  border-radius: 0.6rem;
+  background-color: #ffc4f0;
+  color: #666;
+}
+.onholdTCard .aside {
+  padding: 0.4rem 0.6rem;
+  border-radius: 1.4rem;
+  background-color: #eee;
+}
+.onholdTCard .aside figure {
+  padding: 0.4rem 0.6rem;
+  border-radius: 1rem;
+  background-color: #fff;
+}

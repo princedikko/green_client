@@ -1,0 +1,115 @@
+.debitsalecont {
+  width: 76rem;
+  display: grid;
+  grid-template-columns: 5fr 2.4fr;
+  padding: 4.4rem 3.2rem;
+  background-color: rgb(255 255 255 / 90%);
+  backdrop-filter: blur(15px);
+  border-radius: 1.2rem;
+}
+.debitsaleDisc {
+  background-color: transparent;
+  padding: 0.8rem;
+}
+.debitsaleAside {
+  background-color: transparent;
+}
+
+.multiTitleIcon {
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: 55rem;
+  background-color: #3a84f8;
+  color: #fff;
+  padding: 0.2rem;
+}
+
+.debitsaleDiscriptionInput {
+  background-color: transparent;
+}
+.debitsaleDiscriptionInput img {
+  width: 2.8rem;
+  border-radius: 0.8rem;
+}
+
+.debitsaleInputCont {
+  width: 100%;
+  border: 1px solid #ddd;
+  padding: 1.2rem 1.4rem;
+  border-radius: 0.6rem;
+  color: #666;
+}
+.multiColInp {
+  width: 58%;
+}
+.debitsaleInputCont input {
+  background-color: transparent;
+  font-size: 1.4rem;
+  padding: 0.2rem 0.4rem;
+  text-align: center;
+  background-color: transparent;
+  width: 21.5rem;
+}
+
+.debitsaleSubmit {
+  width: 100%;
+  padding: 1.2rem 1.6rem;
+  border-radius: 0.4rem;
+  background-color: #3a84f8;
+  color: #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.debitsaleSubmit:hover {
+  opacity: 0.7;
+}
+
+.multiSubHead {
+  font-size: 1.1rem;
+}
+
+.debitsaleAside .card {
+  background-color: #d9e8eb;
+  padding: 3.4rem 2.2rem;
+}
+.debitsaleAside .card:first-child {
+  position: relative;
+  height: 29rem;
+  border-top-left-radius: 1.9rem;
+  border-top-right-radius: 1.9rem;
+}
+
+.debitsaleAside .card:first-child .upperCard {
+  position: absolute;
+  top: -73px;
+  right: 31.3px;
+  background-color: #ffffffb5;
+  width: 17rem;
+  height: 23rem;
+  padding: 2.6rem;
+  border-radius: 1.2rem;
+  backdrop-filter: blur(15px);
+}
+.debitsaleAside .card:first-child .rghG,
+.debitsaleAside .card:first-child .lftG {
+  /* background-color: rgb(255 255 255 / 90%); */
+  background-image: url("../images/bvg.png");
+  background-size: cover;
+  backdrop-filter: blur(15px);
+  position: absolute;
+  bottom: 0;
+  transform: translateY(50%);
+  width: 1.56rem;
+  padding: 0.6rem;
+}
+
+.debitsaleAside .card:first-child .rghG {
+  right: 0;
+  border-top-left-radius: 42rem;
+  border-bottom-left-radius: 42rem;
+}
+.debitsaleAside .card:first-child .lftG {
+  left: 0;
+  border-top-right-radius: 42rem;
+  border-bottom-right-radius: 42rem;
+}

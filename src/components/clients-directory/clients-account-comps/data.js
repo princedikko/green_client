@@ -143,6 +143,7 @@ const productsData = [
     brand: "Maclean",
     unitPrice: 950,
     tax: 213.75,
+
     discount: 0,
     batchNo: "PK0124A",
     expiryDate: "2026-01-30",
@@ -738,9 +739,6 @@ const productsData = [
   },
 ];
 
-export default salesData;
-export { productsData };
-
 const brands = [
   "Samsung",
   "Apple",
@@ -781,3 +779,50 @@ const brands = [
   "Sharp",
   "Hitachi",
 ];
+
+const contacts = [
+  {
+    name: "Samira Abudullahi",
+    state: "minna",
+    address: "kajsdf klasdfjlkasdf",
+    tel: "24234455878",
+  },
+  {
+    name: "Samira Abudullahi",
+    state: "minna",
+    address: "kajsdf klasdfjlkasdf",
+    tel: "24234455878",
+  },
+  {
+    name: "Samira Abudullahi",
+    state: "minna",
+    address: "kajsdf klasdfjlkasdf",
+    tel: "24234455878",
+  },
+  {
+    name: "Samira Abudullahi",
+    state: "minna",
+    address: "kajsdf klasdfjlkasdf",
+    tel: "24234455878",
+  },
+  {
+    name: "Samira Abudullahi",
+    state: "minna",
+    address: "kajsdf klasdfjlkasdf",
+    tel: "24234455878",
+  },
+  {
+    name: "Samira Abudullahi",
+    state: "minna",
+    address: "kajsdf klasdfjlkasdf",
+    tel: "24234455878",
+  },
+  {
+    name: "Samira Abudullahi",
+    state: "minna",
+    address: "kajsdf klasdfjlkasdf",
+    tel: "24234455878",
+  },
+];
+export default salesData;
+export { productsData, contacts };

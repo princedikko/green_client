@@ -58,6 +58,7 @@ import SaveAsIcon from "@mui/icons-material/SaveAs";
 import SellIcon from "@mui/icons-material/Sell";
 import PanToolIcon from "@mui/icons-material/PanTool";
 
+import { contacts } from "../data.js";
 import Counter, { CounterMini } from "./modalBoxComps/Counter.jsx";
 import {
   AddNewCustomer,
@@ -108,15 +109,16 @@ function WarehouseTerminal() {
     }
   };
 
-  // REDUX STATE SELECTOR----------------------
+  // USE SELECTORS DATA TYPE SELECTOR----------------------
+  const { switchWarehouseView } = useSelector((state) => state.hybridActions);
   const products = useSelector(
     (state) => state.hybridActions.warehouse.products,
   );
   const cart = useSelector((state) => state.hybridActions.warehouse.cart);
-  const on_holded_sales = useSelector(
+  const onHoldData = useSelector(
     (state) => state.hybridActions.on_holded_sales,
   );
-  console.log("Suspended:", on_holded_sales);
+  console.log("On-Hold!:", onHoldData);
   // END OF MODAL FUNCTIONS------------------
   const [toggleAside, setToggleAside] = useState("instruction");
   const [showModal, setShowModal] = useState("");
@@ -124,22 +126,14 @@ function WarehouseTerminal() {
   const [onTimeChange, setOnTimeChange] = useState(false);
   const [togglePagination, setTogglePagination] = useState(true);
   const [customer, setCustomer] = useState("Walk-in Customer");
-  const customerTypesArray = [
-    "Walk-in Customer",
-    "Guest Customer",
-    "Cash Customer",
-    "Credit Customer",
-    "Wholesale Customer",
-    "Retail Customer",
-    "VIP Customer",
-    "Loyalty Customer",
-    "Registered Customer",
-    "Corporate Customer",
-  ];
 
   /////////////////////////////////////////////////////////////////////////
   // REDUX FUCNTIONS
   /////////////////////////////////////////////////////////////////////////
+  function toggleScreen() {
+    dispatch(Action.switchView(!switchWarehouseView));
+  }
+
   function addToCart(item) {
     // Check if item already exists in cart
     const existingItem = cart.find(
@@ -165,14 +159,40 @@ function WarehouseTerminal() {
 
   function clearCart() {
     dispatch(Action.clearCartAction());
-    setOpenModal(!openModal);
+    setOpenModal(false);
   }
+
+  function attendOnHold(data) {
+    // Check if item already exists in cart
+
+    if (cart.length > 0) {
+      // If exists, update quantity
+      enqueueSnackbar(
+        `Please clear or finish with the ongoing sales in the cart`,
+        {
+          variant: "error",
+          autoHideDuration: 3000,
+          ContentProps: {
+            style: { fontSize: "16px", fontWeight: "bold" },
+          },
+        },
+      );
+      // dispatch(Action.addtoCart(updatedItem));
+      // console.log("CART UPDATED:", updatedItem);
+    } else {
+      // If not exists, add new item
+      dispatch(Action.attandOnhold(data));
+      setCustomer(data?.customer_name);
+    }
+    setOpenModal(false);
+  }
+
   function clearProducts() {
     dispatch(Action.clearProductsAction());
   }
   // Functional buttons methods of actions
   function handleSaveDraft(note) {
-    const prospondData = {
+    const billDraft = {
       status: "new-draft",
       customer_name: customer,
       note: note,
@@ -181,7 +201,38 @@ function WarehouseTerminal() {
       date: new Date().toLocaleString(),
     };
     if (cart.length > 0) {
-      dispatch(Action.prospondedPayload({ prospondData }));
+      dispatch(Action.onHoldPayload({ billDraft }));
+      clearCart();
+      enqueueSnackbar(`Draft saved successfully`, {
+        variant: "success",
+        autoHideDuration: 3000,
+        ContentProps: {
+          style: { fontSize: "16px", fontWeight: "bold" },
+        },
+      });
+    } else {
+      enqueueSnackbar(`Nothing to put on-hold`, {
+        variant: "error",
+        autoHideDuration: 3000,
+        ContentProps: {
+          style: { fontSize: "16px", fontWeight: "bold" },
+        },
+      });
+    }
+    setOpenModal(false);
+  }
+
+  function moveOnHoldToDraft(note) {
+    const onHoldDatas = {
+      status: "new-draft",
+      customer_name: customer,
+      note: note,
+      items: cart,
+      total: "234a",
+      date: new Date().toLocaleString(),
+    };
+    if (cart.length > 0) {
+      dispatch(Action.onHoldPayload({ onHoldDatas }));
       clearCart();
       enqueueSnackbar(`Draft saved successfully`, {
         variant: "success",
@@ -202,13 +253,13 @@ function WarehouseTerminal() {
     setOpenModal(!openModal);
   }
   function handleOnHold(note) {
-    const prospondData = {
+    const onHoldDatas = {
       customer_name: customer,
       note: note,
       buyings: cart,
     };
     if (cart.length > 0) {
-      dispatch(Action.prospondedPayload({ prospondData }));
+      dispatch(Action.onHoldPayload(onHoldDatas));
       clearCart();
       enqueueSnackbar(`Sales on hold`, {
         variant: "success",
@@ -228,12 +279,13 @@ function WarehouseTerminal() {
     }
     setOpenModal(!openModal);
   }
+  function handleHoldedSale(note) {
+    setOpenModal(!openModal);
+  }
   // ...................////////
 
   function toggleModalBoxContents() {
     switch (showModal) {
-      case "main_view":
-        return <Main />;
       case "calculator":
         return <Calculator setOpenModal={setOpenModal} />;
       case "itemList":
@@ -263,7 +315,14 @@ function WarehouseTerminal() {
       case "discount":
         return <Discount clearCart={clearCart} handleOnHold={handleOnHold} />;
       case "on_hold_sales":
-        return <HoldedSales />;
+        return (
+          <HoldedSales
+            onHoldData={onHoldData}
+            handleHoldedSale={handleHoldedSale}
+            attendOnHold={attendOnHold}
+            moveOnHoldToDraft={moveOnHoldToDraft}
+          />
+        );
       case "subscription":
         return <Subscriptions />;
       case "transactions":
@@ -290,6 +349,7 @@ function WarehouseTerminal() {
         style: { fontSize: "16px", fontWeight: "bold" },
       },
     });
+    clearCart();
   }
 
   function closeModalDiv() {
@@ -313,9 +373,9 @@ function WarehouseTerminal() {
             clearCart={clearCart}
           />
         );
-      case "regulation":
+      case "properties":
         return <Property handleModalSwitch={handleModalSwitch} />;
-      case "guide":
+      case "activity_log":
         return <OperatingGuide />;
       default:
         return (
@@ -351,6 +411,78 @@ function WarehouseTerminal() {
   }, []);
 
   function Main() {
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [filteredContacts, setFilteredContacts] = useState([]);
+    const [searchTermContacts, setSearchTermContacts] = useState("");
+    const [searchTermBrands, setSearchTermBrands] = useState("");
+    const [filteredBrands, setFilteredBrands] = useState([]);
+
+    // ARRAYS
+    const customerTypesArray = [
+      "Walk-in Customer",
+      "Guest Customer",
+      "Cash Customer",
+      "Credit Customer",
+      "Wholesale Customer",
+      "Retail Customer",
+      "VIP Customer",
+      "Loyalty Customer",
+      "Registered Customer",
+      "Corporate Customer",
+    ];
+
+    const brandsArray = products.map((n) => n.brand);
+
+    // END OF ARRAYS
+    const handleSearch = (e) => {
+      const term = e.target.value;
+      setSearchTerm(term);
+
+      if (term.trim() === "") {
+        setFilteredProducts([]);
+      } else {
+        const filtered = products.filter(
+          (product) =>
+            product.name.toLowerCase().includes(term.toLowerCase()) ||
+            product.barcode.includes(term),
+        );
+        setFilteredProducts(filtered);
+      }
+    };
+    const handleSearchBrands = (e) => {
+      const term = e.target.value;
+      setSearchTermBrands(term);
+
+      if (term.trim() === "") {
+        setFilteredBrands([]);
+      } else {
+        const filtered = brandsArray.filter((brand) =>
+          brand.toLowerCase().includes(term.toLowerCase()),
+        );
+        setFilteredBrands(filtered);
+      }
+    };
+    const handleSearchContacts = (e) => {
+      const term = e.target.value;
+      setSearchTermContacts(term);
+
+      if (term.trim() === "") {
+        setFilteredContacts([]);
+      } else {
+        const filtered = contacts.filter((contact) =>
+          contact.toLowerCase().includes(term.toLowerCase()),
+        );
+        setFilteredContacts(filtered);
+      }
+    };
+
+    const handleSelect = (product) => {
+      console.log("Selected product:", product);
+      setSearchTerm(product.name);
+      setFilteredProducts([]); // close dropdown after selection
+    };
+
     return (
       <div className="main fx-cl space1" onClick={(e) => e.stopPropagation()}>
         <div className="fx-cl">
@@ -369,18 +501,45 @@ function WarehouseTerminal() {
 
                   {openCustomers && (
                     <ul ref={wrapperRef} className="customers-limit-dropdown">
-                      {customerTypesArray.map((n) => (
-                        <li
-                          key={n}
-                          className="customers-limit-item"
-                          onClick={() => {
-                            setCustomer(n);
-                            setOpenCustomers(false);
-                          }}
-                        >
-                          {n}
-                        </li>
-                      ))}
+                      <li>
+                        <input
+                          type="text"
+                          placeholder="Search product..."
+                          value={searchTerm}
+                          onChange={handleSearchContacts}
+                        />
+                      </li>
+
+                      {contacts.length > 0
+                        ? contacts.map((contact) => (
+                            <li
+                              key={contact.state}
+                              onClick={() => {
+                                setCustomer(contact.name);
+                                setFilteredContacts("");
+                                setSearchTermContacts("");
+                              }}
+                              style={{
+                                padding: "8px",
+                                cursor: "pointer",
+                                borderBottom: "1px solid #eee",
+                              }}
+                            >
+                              {contact.name} — {contact.state}
+                            </li>
+                          ))
+                        : customerTypesArray.map((n) => (
+                            <li
+                              key={n}
+                              className="customers-limit-item"
+                              onClick={() => {
+                                setCustomer(n);
+                                setOpenCustomers(false);
+                              }}
+                            >
+                              {n}
+                            </li>
+                          ))}
                     </ul>
                   )}
                 </div>
@@ -393,19 +552,45 @@ function WarehouseTerminal() {
               </button>
             </div>
 
-            {showModal == "main_view" && (
+            {!switchWarehouseView && (
               <div className="warehauseSearchCont fx-jb space3">
                 <div className=" fx-ac spacem">
-                  <div className="warehauseSearch fx-jb">
+                  <div
+                    className="warehauseSearch fx-jb"
+                    style={{ position: "relative" }}
+                  >
                     <input
                       type="text"
-                      name="application_number"
-                      placeholder="Search products..."
+                      placeholder="Search product..."
+                      value={searchTerm}
+                      onChange={handleSearch}
                     />
+
+                    {filteredProducts.length > 0 && (
+                      <ul className="searched-products-dropdown">
+                        {filteredProducts.map((product) => (
+                          <li
+                            key={product.productId}
+                            onClick={() => {
+                              addToCart(product);
+                              setFilteredProducts("");
+                              setSearchTerm("");
+                            }}
+                            style={{
+                              padding: "8px",
+                              cursor: "pointer",
+                              borderBottom: "1px solid #eee",
+                            }}
+                          >
+                            {product.name} — {product.barcode}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
-                  <button>
-                    <SearchIcon fontSize="large" />
-                  </button>
+                  {/* <button>
+            <SearchIcon fontSize="large" />
+          </button> */}
                 </div>
                 <button
                   className="wareHouseAddnewProd fx-ac fx-jc"
@@ -443,20 +628,14 @@ function WarehouseTerminal() {
                   <DeleteForeverIcon fontSize="large" />
                 </button>
               )}
-              {showModal == "main_view" ? (
-                <button
-                  className="fx-ac fx-jc"
-                  onClick={() => handleModalSwitch("")}
-                >
+              {!switchWarehouseView ? (
+                <button className="fx-ac fx-jc" onClick={() => toggleScreen()}>
                   <span className="tooltips">main previews</span>
                   {/* Previews  on Modal box */}
                   <FullscreenExitIcon fontSize="large" />
                 </button>
               ) : (
-                <button
-                  className="fx-ac fx-jc"
-                  onClick={() => handleModalSwitch("main_view")}
-                >
+                <button className="fx-ac fx-jc" onClick={() => toggleScreen()}>
                   <span className="tooltips">main previews</span>
                   {/* Previews  on Modal box */}
                   <VisibilityIcon fontSize="large" />
@@ -507,34 +686,44 @@ function WarehouseTerminal() {
 
                     {openBrands && (
                       <ul className="brands-limit-dropdown">
-                        {[
-                          "All",
-                          "Samsung",
-                          "Apple",
-                          "Sony",
-                          "LG",
-                          "Xiaomi",
-                          "Infinix",
-                          "Tecno",
-                          "Huawei",
-                          "Nokia",
-                          "HP",
-                          "Dell",
-                          "Lenovo",
-                          "Acer",
-                          "Asus",
-                        ].map((n) => (
-                          <li
-                            key={n}
-                            className="brands-limit-item"
-                            onClick={() => {
-                              setBrands(n);
-                              setOpenBrands(false);
-                            }}
-                          >
-                            {n}
-                          </li>
-                        ))}
+                        <li>
+                          <input
+                            type="text"
+                            placeholder="Search product..."
+                            value={searchTermBrands}
+                            onChange={handleSearchBrands}
+                          />
+                        </li>
+
+                        {filteredBrands.length > 0
+                          ? filteredBrands.map((brand) => (
+                              <li
+                                key={brand}
+                                onClick={() => {
+                                  setBrands(brand);
+                                  setOpenBrands(false);
+                                }}
+                                style={{
+                                  padding: "8px",
+                                  cursor: "pointer",
+                                  borderBottom: "1px solid #eee",
+                                }}
+                              >
+                                {brand}
+                              </li>
+                            ))
+                          : brandsArray.map((brand) => (
+                              <li
+                                key={brand}
+                                className="brands-limit-item"
+                                onClick={() => {
+                                  setBrands(brand);
+                                  setOpenBrands(false);
+                                }}
+                              >
+                                {brand}
+                              </li>
+                            ))}
                       </ul>
                     )}
                   </div>
@@ -722,6 +911,9 @@ function WarehouseTerminal() {
             </button>
           </div>
         )}
+        <div className="warehouseHubFooter fx-ac fx-jc">
+          <span>status bar contents</span>
+        </div>
       </div>
     );
   }
@@ -732,102 +924,125 @@ function WarehouseTerminal() {
           {toggleModalBoxContents()}
         </div>
       )}
-      <div className="warehouseHubCont">
-        <div className="warehouseHubHeader">
-          <div className="warehouseHubheaderCont fx-ac fx-jb space6">
-            <figure className="fx-ac space1">
-              <div
-                className="fx-ac fx-jc"
-                style={{
-                  backgroundColor: "#F5F5F5",
-                  borderRadius: "300rem",
-                  width: "4rem",
-                  height: "4rem",
-                  padding: ".5rem",
-                }}
-              >
-                <SchoolIcon fontSize="large" />
-              </div>
-              <div className="fx-cl">
-                <p className="warehousehubHeading">
-                  <strong>Juwairiyyah Pharmacy:</strong> Sales Terminal
-                </p>
-                <div className="warehousehubStatusBar fx-ac spacem">
-                  <span>
-                    <strong>User: </strong> Fahad
-                  </span>
-                  <span
-                    className="fx-ac spacem"
-                    style={{
-                      borderRight: "1px solid #999",
-                      borderLeft: "1px solid #999",
-                      padding: "0rem .4rem",
-                    }}
-                  >
-                    <ShoppingCartCheckoutIcon />
-                    <span>
-                      <strong> 263 </strong>
-                      SOLD ITEMS
-                    </span>
-                  </span>
-                  <span className="fx-ac spacem">
-                    <AccessTimeIcon />
-                    <span>02:36hours</span>
-                  </span>
-                </div>
-              </div>
-            </figure>
-
-            <figure className="warehouseHubRight fx-ac spacem">
-              <SettingsRemoteTwoToneIcon
-                style={{ color: "#f16b4c", fontSize: "2.8rem" }}
-              />
-              <div className="fx-ac">
-                <button
-                  className="fx-ac fx-jc cbtdp"
-                  onClick={() => handleCloseTerminal()}
+      {!switchWarehouseView ? (
+        <div className="warehouseHubCont fx-cl space2" id="largeView">
+          <div className="taskBar fx-cl space1">
+            <button onClick={() => handleModalSwitch("discount")}>
+              <WorkspacePremiumRoundedIcon fontSize="large" />
+            </button>
+            <button onClick={() => handleModalSwitch("on_hold_sales")}>
+              <DiscountIcon fontSize="large" />
+            </button>
+            <button onClick={() => handleModalSwitch("shipping")}>
+              <LocalShippingIcon fontSize="large" />
+            </button>
+            <button onClick={() => handleModalSwitch("subscription")}>
+              <SubscriptionsIcon fontSize="large" />
+            </button>
+            <button onClick={() => handleModalSwitch("transactions")}>
+              <ReceiptLongIcon fontSize="large" />
+            </button>
+            <button onClick={() => handleModalSwitch("payments")}>
+              <AccountBalanceIcon fontSize="large" />
+            </button>
+          </div>
+          <Main />
+        </div>
+      ) : (
+        <div className="warehouseHubCont">
+          <div className="warehouseHubHeader">
+            <div className="warehouseHubheaderCont fx-ac fx-jb space6">
+              <figure className="fx-ac space1">
+                <div
+                  className="fx-ac fx-jc"
+                  style={{
+                    backgroundColor: "#F5F5F5",
+                    borderRadius: "300rem",
+                    width: "4rem",
+                    height: "4rem",
+                    padding: ".5rem",
+                  }}
                 >
-                  <PowerSettingsNewIcon fontSize="large" />
+                  <SchoolIcon fontSize="large" />
+                </div>
+                <div className="fx-cl">
+                  <p className="warehousehubHeading">
+                    <strong>Juwairiyyah Pharmacy:</strong> Sales Terminal
+                  </p>
+                  <div className="warehousehubStatusBar fx-ac spacem">
+                    <span>
+                      <strong>User: </strong> Fahad
+                    </span>
+                    <span
+                      className="fx-ac spacem"
+                      style={{
+                        borderRight: "1px solid #999",
+                        borderLeft: "1px solid #999",
+                        padding: "0rem .4rem",
+                      }}
+                    >
+                      <ShoppingCartCheckoutIcon />
+                      <span>
+                        <strong> 263 </strong>
+                        SOLD ITEMS
+                      </span>
+                    </span>
+                    <span className="fx-ac spacem">
+                      <AccessTimeIcon />
+                      <span>02:36hours</span>
+                    </span>
+                  </div>
+                </div>
+              </figure>
+
+              <figure className="warehouseHubRight fx-ac spacem">
+                <SettingsRemoteTwoToneIcon
+                  style={{ color: "#f16b4c", fontSize: "2.8rem" }}
+                />
+                <div className="fx-ac">
+                  <button
+                    className="fx-ac fx-jc cbtdp"
+                    onClick={() => handleCloseTerminal()}
+                  >
+                    <PowerSettingsNewIcon fontSize="large" />
+                  </button>
+                </div>
+              </figure>
+            </div>
+          </div>
+          <div className="warehouseHubMain fx-jc space1">
+            <Main />
+            <div className=" fx-cl fx-ac">
+              <div className="warehouseHubAsideNav fx-ac spacem">
+                <button
+                  onClick={() => setToggleAside("products")}
+                  className={`fx-ac spacem ${toggleAside === "products" && "active"}`}
+                >
+                  <CasesIcon /> <span>Products</span>
+                </button>
+                <button
+                  onClick={() => setToggleAside("properties")}
+                  className={`fx-ac spacem ${toggleAside === "properties" && "active"}`}
+                >
+                  <VideoLibraryRoundedIcon /> <span>Properties </span>
+                </button>
+                <button
+                  onClick={() => setToggleAside("activity_log")}
+                  className={`fx-ac spacem ${toggleAside === "activity_log" && "active"}`}
+                >
+                  <EventRoundedIcon /> <span>Activity log</span>
                 </button>
               </div>
-            </figure>
-          </div>
-        </div>
-        <div className="warehouseHubMain fx-jc space1">
-          <Main />
-          <div className=" fx-cl space1">
-            <div className="warehouseHubAsideNav fx-ac spacem">
-              <button
-                onClick={() => setToggleAside("products")}
-                className={`${toggleAside === "instruction" && "active"}`}
-              >
-                Products
-              </button>
-              <button
-                onClick={() => setToggleAside("regulation")}
-                className={`${toggleAside === "regulation" && "active"}`}
-              >
-                Properties
-              </button>
-              <button
-                onClick={() => setToggleAside("guide")}
-                className={`${toggleAside === "guide" && "active"}`}
-              >
-                Activity log
-              </button>
-            </div>
-            <div className="aside fx-cl space1">
-              <div>{switchAsideComp()}</div>
+              <div className="aside fx-cl space1">
+                <div>{switchAsideComp()}</div>
+              </div>
             </div>
           </div>
+          {/* <div className="warehouseHubFooter fx-ac fx-jc">
+            <span>status bar contents</span>
+          </div> */}
         </div>
-        <div className="warehouseHubFooter fx-ac fx-jc">
-          <span>
-            copy right &copy; {new Date().getFullYear()} Universe Tech Industry,
-            all rights reserves
-          </span>
-        </div>
-      </div>
+      )}
     </section>
   );
 }
@@ -915,6 +1130,7 @@ function Products({ handleModalSwitch, products, addToCart, clearCart }) {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filteredContacts, setFilteredContacts] = useState([]);
 
   const handleSearch = (e) => {
     const term = e.target.value;
@@ -953,31 +1169,18 @@ function Products({ handleModalSwitch, products, addToCart, clearCart }) {
             />
 
             {filteredProducts.length > 0 && (
-              <ul
-                style={{
-                  position: "absolute",
-                  top: "40px",
-                  left: 0,
-                  right: 0,
-                  background: "#fff",
-                  border: "1px solid #ccc",
-                  borderRadius: "4px",
-                  maxHeight: "200px",
-                  overflowY: "auto",
-                  zIndex: 10,
-                  listStyle: "none",
-                  margin: 0,
-                  padding: 0,
-                }}
-              >
+              <ul className="searched-products-dropdown">
                 {filteredProducts.map((product) => (
                   <li
                     key={product.productId}
-                    onClick={() => handleSelect(product)}
+                    onClick={() => {
+                      addToCart(product);
+                      setFilteredProducts("");
+                      setSearchTerm("");
+                    }}
                     style={{
                       padding: "8px",
                       cursor: "pointer",
-                      borderBottom: "1px solid #eee",
                     }}
                   >
                     {product.name} — {product.barcode}
