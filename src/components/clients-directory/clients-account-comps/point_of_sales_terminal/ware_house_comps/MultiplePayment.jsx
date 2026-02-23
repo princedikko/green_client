@@ -11,7 +11,7 @@ export default function MultiplePayment() {
   return (
     <section className="sectionMultiPay" onClick={(e) => e.stopPropagation()}>
       <div className="multipaycont fx-cl space2">
-        <div className="fx-cl multipayDisc fx-cl space2">
+        <div className="fx-cl multipayDisc fx-cl space1">
           <div className="fx-ac space4 fx-jb">
             <div className="multiTitle fx-ac space1">
               <figure className="multiTitleIcon fx-ac fx-jc">

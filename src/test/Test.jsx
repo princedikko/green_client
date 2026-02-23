@@ -1,9 +1,18 @@
-import PostProduct from "../components/clients-directory/client_account_component/inventory_comps/add_products_comp/PostProducts";
+import React, { useState } from "react";
+import BarcodeScanner from "./Test2";
 
-export default function Test() {
+function Test() {
+  const [barcode, setBarcode] = useState("");
+
   return (
     <div>
-      <PostProduct />
+      <h2>Barcode Scanner</h2>
+
+      <BarcodeScanner onScan={(code) => setBarcode(code)} />
+
+      <h3>Result: {barcode}</h3>
     </div>
   );
 }
+
+export default Test;

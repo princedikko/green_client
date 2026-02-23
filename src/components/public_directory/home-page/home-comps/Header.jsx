@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./header.css";
 
-import Logo from "../logo/udus_logo_3d.png"; // Importing logo image
+import Logo from "../logo/green_logo.png"; // Importing logo image
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -16,14 +16,14 @@ export default function Header() {
         <div className="navbar-container fx-jb space4">
           <div className="navbar-logo fx-ac">
             <img src={Logo} alt="udupss logo" />
-            <span style={{ fontWeight: "400", fontSize: "2.5rem" }}>UDUPS</span>
+            <span style={{ fontWeight: "400", fontSize: "2.5rem" }}>Green</span>
           </div>
           <button className="mobile-menu-toggle" onClick={toggleMobileMenu}>
             ☰
           </button>
           <ul className={`nav-links ${mobileOpen ? "active" : ""}`}>
             <li className="dropdown">
-              <Link to="#">Administrations</Link>
+              <Link to="#">Features</Link>
               <ul className="dropdown-content">
                 <li>
                   <Link to="#">Principal</Link>
@@ -37,7 +37,7 @@ export default function Header() {
               </ul>
             </li>
             <li className="dropdown">
-              <Link to="#">Academics</Link>
+              <Link to="#">Solutions</Link>
               <ul className="dropdown-content">
                 <li>
                   <Link to="#">Programs</Link>
@@ -51,7 +51,7 @@ export default function Header() {
               </ul>
             </li>
             <li className="dropdown">
-              <Link to="#">Admission</Link>
+              <Link to="#">Enterprise</Link>
               <ul className="dropdown-content">
                 <li>
                   <Link to="#">Requirements</Link>
@@ -65,7 +65,7 @@ export default function Header() {
               </ul>
             </li>
             <li className="dropdown">
-              <Link to="#">Registration</Link>
+              <Link to="#">Courses</Link>
               <ul className="dropdown-content">
                 <li>
                   <Link to="/create_new_account">New Registration</Link>
@@ -76,22 +76,20 @@ export default function Header() {
               </ul>
             </li>
             <li>
-              <Link to="#">Library</Link>
+              <Link to="#">Pricing</Link>
             </li>
-          </ul>
-          <div className="navbar-buttons fx-ac fx-jb space2">
-            <div className="dropdown academicsLogin">
-              <Link to="#">Sign in</Link>
+            <li className="dropdown academicsLogin">
+              <Link to="#">Company</Link>
               <div className="dropdown-content fx-cl">
                 <Link to="/information-technology/system-administration/login">
-                  System admin
+                  Administration
                 </Link>
 
-                <Link to="/executive/login">Chief Executive</Link>
+                <Link to="/executive/login">About Company</Link>
 
-                <Link to="/administration/admin_login">Admin staff</Link>
+                <Link to="/administration/admin_login">Contact Us</Link>
 
-                <Link to="/institution/instructor-login">Instructor</Link>
+                <Link to="/institution/instructor-login">Career</Link>
 
                 <Link to="/learners/parent-login">Parents</Link>
 
@@ -99,6 +97,11 @@ export default function Header() {
 
                 <Link to="/agent_unit/login">agent</Link>
               </div>
+            </li>
+          </ul>
+          <div className="navbar-buttons fx-ac fx-jb space2">
+            <div>
+              <Link to="/create_new_account">Sign Up</Link>
             </div>
             <Link to="/clients_login" className="btn-student_portal">
               Login

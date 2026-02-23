@@ -3,60 +3,64 @@ import "./optionalbuttons.css";
 import Imgs from "../../images/Udupss_girl.png";
 import N1 from "../../images/n1.png";
 import { useSnackbar } from "notistack";
+import DebitSale from "../DebitSale";
+import OnholdTransactions from "../OnholdTransactions";
+import Payments from "../Payments";
+import RecentTransaction from "../RecentTransaction";
 import MultiplePayment from "../MultiplePayment";
-
 import ForumRoundedIcon from "@mui/icons-material/ForumRounded";
-import VideoLibraryRoundedIcon from "@mui/icons-material/VideoLibraryRounded";
 import EventRoundedIcon from "@mui/icons-material/EventRounded";
 import WorkspacePremiumRoundedIcon from "@mui/icons-material/WorkspacePremiumRounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
-import DebitSale from "../DebitSale";
-import OnholdTransactions from "../OnholdTransactions";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-export function OnHold({ handleOnHold }) {
+export function OnHold({ handleOnHold, cart, discount, customerName }) {
   const [note, setNote] = useReducer((state, payload) => {
     return ({ ...state, ...payload }, { note: "" });
   });
 
   return (
     <div
-      className="OpBtnCont putOnHoldCont fx-cl space2"
+      className="putOnHoldCont fx-cl space2"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="putOnHoldhead fx-ac spacem fx-jb">
         <figure>&nbsp;</figure>
-        <p>Grant Overview</p>
+        <p>Cart Overview</p>
         <figure>&nbsp;</figure>
       </div>
       <div className="putOnHoldDisc fx-cl">
         <div className="putOnHoldRow ">
           <div className="fx-ac spacem">
-            <VideoLibraryRoundedIcon fontSize="large" />{" "}
-            <span>Grand Category:</span>
+            <ShoppingCartIcon fontSize="large" /> <span>Products:</span>
           </div>
-          <p>Economic Support</p>
+          <p>{cart?.length} items</p>
         </div>
         <div className="putOnHoldRow ">
           <div className="fx-ac spacem">
             <EventRoundedIcon fontSize="large" /> <span>Grand Total:</span>
           </div>
           <p>
-            <strong>N643,000</strong>
+            <strong>
+              ₦{" "}
+              {cart
+                .reduce((sum, item) => sum + item.unitPrice * item.quantity, 0)
+                .toLocaleString()}
+            </strong>
           </p>
         </div>
         <div className="putOnHoldRow">
           <div className="fx-ac spacem">
             <WorkspacePremiumRoundedIcon fontSize="large" />{" "}
-            <span>Coverage:</span>
+            <span>Discount:</span>
           </div>
-          <p>Nationwide</p>
+          <p>None</p>
         </div>
         <div className="putOnHoldRow ">
           <div className="fx-ac spacem">
-            <AccountCircleRoundedIcon fontSize="large" />{" "}
-            <span>Bill Status:</span>
+            <AccountCircleRoundedIcon fontSize="large" /> <span>Customer:</span>
           </div>
-          <p>Open</p>
+          <p>{customerName}</p>
         </div>
       </div>
       <div className="putOnHoldButtom fx-cl space2 fx-jc">
@@ -198,23 +202,13 @@ export function CreditSale({ handleOnHold }) {
     </div>
   );
 }
-export function MultiPay({ handleOnHold }) {
+export function MultiPay() {
   return (
     <div
       className=" HoldSales fx-cl space2"
       onClick={(e) => e.stopPropagation()}
     >
       <MultiplePayment />
-      <div className="fx-ac space3 fx-jb">
-        <button>Cancel</button>
-        <button
-          onClick={() => {
-            handleOnHold();
-          }}
-        >
-          Prospond
-        </button>
-      </div>
     </div>
   );
 }
@@ -252,47 +246,41 @@ export function Gifting({ handleSaveDraft }) {
     </div>
   );
 }
-export function SaveDraft({ handleOnHold }) {
+export function SaveDraft({ handleSaveDraft }) {
   const { enqueueSnackbar } = useSnackbar();
 
-  function handleSaveDraft() {
-    enqueueSnackbar(`Draft added successfully`, {
-      variant: "success",
-      autoHideDuration: 3000,
-      ContentProps: {
-        style: { fontSize: "16px", fontWeight: "bold" },
-      },
-    });
-  }
-
   return (
-    <div
-      className="saveDraftCardCont fx-ac fx-jc"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div className="saveDraftCard fx-ae">
-        <div className="fx-cl space2">
-          <h3>Confidence that builds a long time with customer.</h3>
-          <p>Empowering kids with confidence to create a successful future</p>
-          <button
-            onClick={() => {
-              handleSaveDraft();
-            }}
-          >
-            Save Draft
-          </button>
-        </div>
-        <figure>
-          <img src={Imgs} alt="here" />
-        </figure>
+    <div className="saveDraftCard fx-ae" onClick={(e) => e.stopPropagation()}>
+      <div className="fx-cl space2">
+        <h3>Save This Transaction as DRAFT?.</h3>
+        <p>Empowering kids with confidence to create a successful future</p>
+        <button
+          onClick={() => {
+            handleSaveDraft();
+          }}
+        >
+          Save Draft
+        </button>
       </div>
+      <figure>
+        <img src={Imgs} alt="here" />
+      </figure>
     </div>
   );
 }
-
-export function Discount({ handleOnHold }) {
+export function Discount({ cart }) {
   const [discountInPercent, setDiscountInPercent] = useState(false);
   const [discountAmount, setDiscountAmount] = useState("");
+
+  const actualPrice = cart.reduce(
+    (sum, item) => sum + item.unitPrice * item.quantity,
+    0,
+  );
+
+  const discount = (actualPrice * discountAmount) / 100;
+  const estimate = actualPrice - discount;
+  const estimateInAmount = actualPrice - discountAmount;
+
   return (
     <div
       className="discountCont fx-cl space2"
@@ -348,7 +336,7 @@ export function Discount({ handleOnHold }) {
               </figure>
               <span>Actual</span>
             </div>
-            <span>₦234,343.00</span>
+            <span> ₦ {actualPrice.toLocaleString()}</span>
           </div>
           <div className="fx-cl space1">
             <div className="discountBar fx-ac fx-jb space2">
@@ -359,14 +347,20 @@ export function Discount({ handleOnHold }) {
                 </figure>
                 <span>Discount</span>
               </div>
-              <span>₦24,576.00</span>
+              <span>
+                {" "}
+                ₦{" "}
+                {discountInPercent
+                  ? discount.toLocaleString()
+                  : discountAmount.toLocaleString()}{" "}
+              </span>
             </div>
           </div>
         </div>
         <div className=" discountEstimation fx-ac space2 fx-jb">
           <span>Estimated fee</span>
           <span>
-            <strong>₦564</strong>
+            <strong> ₦ {estimate.toLocaleString()} </strong>
           </span>
         </div>
       </div>
@@ -447,18 +441,7 @@ export function TransactionLog({ handleOnHold }) {
       className="OpBtnCont fx-cl space2"
       onClick={(e) => e.stopPropagation()}
     >
-      <h3>Save billing as Draft?</h3>
-      <p>This transaction will be save as Draft</p>
-      <div className="fx-ac space3 fx-jb">
-        <button>Cancel</button>
-        <button
-          onClick={() => {
-            handleSaveDraft();
-          }}
-        >
-          Prospond
-        </button>
-      </div>
+      <RecentTransaction />
     </div>
   );
 }
@@ -479,18 +462,7 @@ export function PaymentLogs({ handleOnHold }) {
       className="OpBtnCont fx-cl space2"
       onClick={(e) => e.stopPropagation()}
     >
-      <h3>Save billing as Draft?</h3>
-      <p>This transaction will be save as Draft</p>
-      <div className="fx-ac space3 fx-jb">
-        <button>Cancel</button>
-        <button
-          onClick={() => {
-            handleSaveDraft();
-          }}
-        >
-          Prospond
-        </button>
-      </div>
+      <Payments />
     </div>
   );
 }

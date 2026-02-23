@@ -19,7 +19,10 @@ export default function Items({ setChangeView, changeview }) {
   const { products } = useSelector((state) => state.hybridActions.warehouse);
 
   const dispatch = useDispatch();
-  console.log("CART", cart);
+  console.log(
+    "CART",
+    useSelector((state) => state.hybridActions.warehouse?.cart),
+  );
 
   function switchView() {
     switch (changeview) {

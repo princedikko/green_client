@@ -2,11 +2,11 @@ import "./warehouseTerminal.css";
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Action from "../../../../store/redux/hybrid_reducer.js";
+import * as Mongodb from "../../../../store/redux/mongodb.js";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import IsLoading from "../../../../isLoading.jsx";
 import Calculator from "./modalBoxComps/Calculator.jsx";
 import Items from "./ware_house_comps/Items.jsx";
 import BannerImg from "./images/banner.avif";
@@ -16,7 +16,7 @@ import SettingsRemoteTwoToneIcon from "@mui/icons-material/SettingsRemoteTwoTone
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
-import SearchIcon from "@mui/icons-material/Search";
+// import SearchIcon from "@mui/icons-material/Search";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CasesIcon from "@mui/icons-material/Cases";
 
@@ -27,11 +27,8 @@ import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import VideoLibraryRoundedIcon from "@mui/icons-material/VideoLibraryRounded";
 import EventRoundedIcon from "@mui/icons-material/EventRounded";
 import WorkspacePremiumRoundedIcon from "@mui/icons-material/WorkspacePremiumRounded";
-import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import CloseIcon from "@mui/icons-material/Close";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
-import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
-import TocOutlinedIcon from "@mui/icons-material/TocOutlined";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
@@ -41,7 +38,6 @@ import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import BedtimeOffIcon from "@mui/icons-material/BedtimeOff";
-import BedtimeIcon from "@mui/icons-material/Bedtime";
 import GrainIcon from "@mui/icons-material/Grain";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import BalanceIcon from "@mui/icons-material/Balance";
@@ -83,13 +79,14 @@ let queue;
 
 function WarehouseTerminal() {
   const wrapperRef = useRef(null);
+
+  const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   // HOOKS-----------------------------
   const [openBrands, setOpenBrands] = useState(false);
   const [openCustomers, setOpenCustomers] = useState(false);
   const [brands, setBrands] = useState("All brands");
   const [isIconButtons, setIsIconButtons] = useState(false);
-  const [loading, setLoading] = useState(false);
   const redirect = useNavigate();
   const dispatch = useDispatch();
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -118,12 +115,13 @@ function WarehouseTerminal() {
   const onHoldData = useSelector(
     (state) => state.hybridActions.on_holded_sales,
   );
-  console.log("On-Hold!:", onHoldData);
+  const sold = useSelector((state) => state.mongodbActions.mongoSales);
+
+  console.log("Sold: ", sold);
   // END OF MODAL FUNCTIONS------------------
   const [toggleAside, setToggleAside] = useState("instruction");
   const [showModal, setShowModal] = useState("");
   const [openModal, setOpenModal] = useState(false);
-  const [onTimeChange, setOnTimeChange] = useState(false);
   const [togglePagination, setTogglePagination] = useState(true);
   const [customer, setCustomer] = useState("Walk-in Customer");
 
@@ -309,11 +307,23 @@ function WarehouseTerminal() {
       case "clear_cart":
         return <ClearCart clearCart={clearCart} handleOnHold={handleOnHold} />;
       case "on_hold":
-        return <OnHold handleOnHold={handleOnHold} />;
+        return (
+          <OnHold
+            handleOnHold={handleOnHold}
+            cart={cart}
+            customerName={customer}
+          />
+        );
       case "gift":
         return <Gifting handleOnHold={handleOnHold} />;
       case "discount":
-        return <Discount clearCart={clearCart} handleOnHold={handleOnHold} />;
+        return (
+          <Discount
+            cart={cart}
+            clearCart={clearCart}
+            handleOnHold={handleOnHold}
+          />
+        );
       case "on_hold_sales":
         return (
           <HoldedSales
@@ -341,16 +351,117 @@ function WarehouseTerminal() {
     setShowModal(event);
   }
 
-  function cashPaidSubmit() {
-    enqueueSnackbar(`Product soled successfully`, {
+  ///////////////////////////////////////////////////////////
+  // FUNCTIONS THAT CALLS AXIOS
+  ///////////////////////////////////////////////////////////
+
+  const cashPaidSubmit = async () => {
+    // setLoading(true);
+    // await axios
+    //   .post(
+    //     `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/warehouse/selling/7899dfg89sdf8g/cash_payment`,
+    //     payload,
+    //   )
+    //   .then((response) => {
+    //     if (response.data.status === 203) {
+    //       setLoading(false);
+    //       enqueueSnackbar(`${response.data.message}`, {
+    //         variant: "error",
+    //         autoHideDuration: 3000,
+    //         ContentProps: {
+    //           style: { fontSize: "16px", fontWeight: "bold" },
+    //         },
+    //       });
+    //     } else {
+    //       enqueueSnackbar(`${response.data.message}`, {
+    //         variant: "success",
+    //         autoHideDuration: 3000,
+    //         ContentProps: {
+    //           style: { fontSize: "16px", fontWeight: "bold" },
+    //         },
+    //       });
+    //       clearCart();
+    //       setLoading(false);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     enqueueSnackbar(`error: something went wrong!`, {
+    //       variant: "error",
+    //       autoHideDuration: 3000,
+    //       ContentProps: {
+    //         style: { fontSize: "16px", fontWeight: "bold" },
+    //       },
+    //     });
+    //     console.log(error);
+    //     setLoading(false);
+    //   });
+
+    const salestranscation_collection = {
+      _id: 57457647656,
+      receiptNo: "RCPT-00045321",
+      invoiceNo: "INV-00045321",
+      posTerminal: "POS-01",
+      cashier: {
+        id: 5676765,
+        name: "Amina Musa",
+      },
+
+      customer: {
+        id: 65466,
+        name: "Walk-in Customer",
+        phone: null,
+      },
+
+      items: [
+        {
+          productId: 67564,
+          sku: "MILK-PEAK-001",
+          barcode: "6224001234567",
+          name: "Peak Milk 170g",
+
+          quantity: 3,
+          unitPrice: 950,
+          costPrice: 820,
+
+          batchNo: "PK0124A",
+          expiryDate: "2026-01-30",
+
+          taxRate: 7.5,
+          taxAmount: 213.75,
+          discount: 0,
+
+          lineTotal: 2850,
+        },
+      ],
+
+      summary: {
+        subTotal: 2850,
+        taxTotal: 23.75,
+        discountTotal: 0,
+        grandTotal: 3063.75,
+      },
+
+      payment: {
+        method: "CASH", // CASH | POS | TRANSFER | WALLET
+        paidAmount: 3100,
+        change: 36.25,
+        reference: null,
+      },
+
+      stockEffected: true,
+
+      createdAt: 564,
+    };
+    dispatch(Mongodb.apipostCashPay(salestranscation_collection));
+    clearCart();
+    enqueueSnackbar(`Cash paid successfully`, {
       variant: "success",
       autoHideDuration: 3000,
       ContentProps: {
         style: { fontSize: "16px", fontWeight: "bold" },
       },
     });
-    clearCart();
-  }
+  };
 
   function closeModalDiv() {
     setOpenModal(!openModal);
@@ -471,16 +582,10 @@ function WarehouseTerminal() {
         setFilteredContacts([]);
       } else {
         const filtered = contacts.filter((contact) =>
-          contact.toLowerCase().includes(term.toLowerCase()),
+          contact?.name.toLowerCase().includes(term.toLowerCase()),
         );
         setFilteredContacts(filtered);
       }
-    };
-
-    const handleSelect = (product) => {
-      console.log("Selected product:", product);
-      setSearchTerm(product.name);
-      setFilteredProducts([]); // close dropdown after selection
     };
 
     return (
@@ -503,29 +608,26 @@ function WarehouseTerminal() {
                     <ul ref={wrapperRef} className="customers-limit-dropdown">
                       <li>
                         <input
+                          id="searchCustomer"
                           type="text"
                           placeholder="Search product..."
-                          value={searchTerm}
+                          value={searchTermContacts}
                           onChange={handleSearchContacts}
                         />
                       </li>
 
-                      {contacts.length > 0
-                        ? contacts.map((contact) => (
+                      {filteredContacts.length > 0
+                        ? filteredContacts.map((contact) => (
                             <li
-                              key={contact.state}
+                              key={contact?.state}
                               onClick={() => {
-                                setCustomer(contact.name);
+                                setCustomer(contact?.name);
                                 setFilteredContacts("");
                                 setSearchTermContacts("");
                               }}
-                              style={{
-                                padding: "8px",
-                                cursor: "pointer",
-                                borderBottom: "1px solid #eee",
-                              }}
+                              className="customers-limit-item"
                             >
-                              {contact.name} — {contact.state}
+                              {contact?.name}
                             </li>
                           ))
                         : customerTypesArray.map((n) => (
@@ -1206,22 +1308,10 @@ function Products({ handleModalSwitch, products, addToCart, clearCart }) {
           return (
             <figure
               onClick={() => {
-                addToCart({
-                  productId: item.productId,
-                  barcode: item.barcode,
-                  name: item.name,
-                  quantity: item.quantity,
-                  unitPrice: item.unitPrice,
-                  tax: item.tax,
-                  discount: item.discount,
-                  batchNo: item.batchNo,
-                  expiryDate: item.expiryDate,
-                  subtotal: item.subtotal,
-                  available: item.available,
-                });
+                addToCart(item);
               }}
               key={index}
-              className=" productsCardWH fx-cl space1 fx-jb"
+              className="productsCardWH fx-cl space1 fx-jb"
             >
               <h4>{item.name}</h4>
               <div>

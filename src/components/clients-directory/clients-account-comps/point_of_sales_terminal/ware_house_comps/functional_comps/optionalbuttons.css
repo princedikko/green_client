@@ -195,11 +195,9 @@
 /* //////////////////////////////////////////// */
 /* SAVE DRAFT COMPONENTS */
 
-.saveDraftCardCont {
-  width: 100%;
-  max-width: 120rem;
-}
 .saveDraftCard {
+  max-width: 75rem;
+  width: 100%;
   border-radius: 4.8rem;
   border-top-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -221,12 +219,12 @@
   bottom: 0;
 }
 
-.saveDraftCardCont h3 {
+.saveDraftCard h3 {
   font-size: 2.8rem;
   font-weight: 400;
 }
 
-.saveDraftCardCont button {
+.saveDraftCard button {
   background-color: #fff;
   padding: 1.2rem 1.2rem;
   border-radius: 1.8rem;
@@ -284,9 +282,10 @@
 .putOnHoldCont {
   width: 100%;
   max-width: 73rem;
-  padding: 2.4rem 3.2rem;
+  padding: 3.7rem 3.2rem;
   border-radius: 1.2rem;
   background-color: rgba(255, 255, 255, 0.692);
+  color: #3c5943;
   backdrop-filter: blur(15px);
   position: relative;
 }
@@ -296,7 +295,7 @@
   font-weight: 400;
 }
 .putOnHoldhead figure {
-  background-color: #0318033b;
+  background-color: #b5b5b5;
   width: 33%;
   height: 1px;
 }
@@ -307,11 +306,11 @@
 .putOnHoldRow {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  border-bottom: 1px solid #0318033b;
+  border-bottom: 1px solid #b5b5b5;
   padding: 0.8rem;
 }
 .putOnHoldRow p {
-  border-left: 1px solid #0318033b;
+  border-left: 1px solid #b5b5b5;
   padding-left: 1rem;
 }
 .putOnHoldRow p strong {
@@ -324,13 +323,21 @@
   background-color: transparent;
   font-size: 1.2rem;
   text-align: center;
+  border: 1px solid #b5b5b5;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.8rem;
 }
 .putOnHoldButtom button {
   width: 30rem;
-  background-color: rgb(3, 24, 3);
-  color: #fff;
+  background-color: #86a385;
+  background-image: repeating-linear-gradient(
+    45deg,
+    #3c5943,
+    transparent 100px
+  );
+  color: #ffffff;
   border-radius: 1rem;
-  padding: 1rem;
+  padding: 1.2rem;
   font-size: 1.5rem;
   font-weight: 300;
 }

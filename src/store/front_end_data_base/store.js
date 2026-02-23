@@ -18,6 +18,7 @@ import securityReducer from "../redux/security_reducer.js";
 import clientAssesmentReducer from "../redux_computer_base/client_computer_base_reducer.js";
 import adminAssesmentReducer from "../redux_computer_base/admin_computer_base_reducer.js";
 import staffAssesmentReducer from "../redux_computer_base/staff_computer_base_reducer.js";
+import mongodbReducer from "../redux/mongodb.js";
 
 // Combine reducers
 const rootReducer = combineReducers({
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
   securityFunction: securityReducer,
   applictaionForm: appFormReducer,
   hybridActions: hybridReducer,
+  mongodbActions: mongodbReducer,
   // storage for computer base assessment and evaluations
   adminAssesment: adminAssesmentReducer,
   staffAssesment: staffAssesmentReducer,

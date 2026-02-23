@@ -646,7 +646,8 @@ export default function ClientsAccount() {
               <p className="fx-cl spacem" style={{ fontSize: "1.6rem" }}>
                 <h3>Sokoto State Mall</h3>
                 <span className="date">
-                  <strong>Staff: </strong> {data?.first_Name || " Nana Othman"}
+                  <strong>General Manager: </strong>{" "}
+                  {data?.first_Name || " Othman Jool"}
                 </span>
               </p>
             </div>

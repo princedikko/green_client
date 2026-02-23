@@ -1,41 +1,81 @@
 .OnholdedTransCont {
   width: 100%;
   max-width: 90rem;
-  background-color: rgba(255, 255, 255, 0.549);
-  border-radius: 1.2rem;
-  padding: 3.2rem 2.8rem;
+  background-color: #d9e8eb;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 3.2rem 0rem;
+}
+
+.OnholdedHeadCont {
+  padding: 0 2.4rem;
+}
+.onHoldedBar {
+  border-radius: 0.8rem;
+  background-color: #eeeeee;
+  padding: 0.8rem 1.2rem;
+}
+
+.onHoldedBar button {
+  color: #777;
 }
 
 .OnholdedCardCont {
-  padding: 0 2.4rem;
-  height: 38rem;
+  padding: 1.2rem 2.4rem;
+  max-height: 38rem;
   overflow: auto;
 }
 
 .onholdTCard {
   background-color: #fafafa;
   border-radius: 1.2rem;
-  padding: 2.8rem;
-  transition: all 0.3s ease;
+  padding: 1.6rem;
+  transition: all 0.2s ease-in-out;
 }
 
 .onholdTCard:hover {
-  background-color: #f3f3f3;
+  /* background-color: #fff;
+  box-shadow: inset 0rem 0rem 0.2rem 0rem #bbb; */
+  transform: scale(1.072);
+  /* box-shadow: 0rem 0rem 2rem -1.42rem rgba(0, 0, 0, 0.35); */
 }
 
 .onholdTCard .tab {
   padding: 0.1rem 1rem;
   border-radius: 0.6rem;
-  background-color: #ffc4f0;
-  color: #666;
+  background-color: #3a84f8;
+  color: #fff;
 }
+.onholdTCard .actionBtns button {
+  color: #a7dbe5;
+  transition: all 0.2s ease-in-out;
+}
+.onholdTCard .actionBtns button:hover {
+  transform: scale(1.1);
+  color: #3a84f8;
+}
+
 .onholdTCard .aside {
   padding: 0.4rem 0.6rem;
-  border-radius: 1.4rem;
+  border-radius: 1.5rem;
   background-color: #eee;
+  color: #777;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.onholdTCard .aside:hover {
+  background-color: #3a84f8;
+  color: #fff;
+}
+.onholdTCard .aside:hover figure {
+  color: #3a84f8;
 }
 .onholdTCard .aside figure {
+  width: 3.5rem;
+  height: 3.5rem;
   padding: 0.4rem 0.6rem;
-  border-radius: 1rem;
+  border-radius: 66rem;
   background-color: #fff;
+  transition: all 0.3s ease-in-out;
 }

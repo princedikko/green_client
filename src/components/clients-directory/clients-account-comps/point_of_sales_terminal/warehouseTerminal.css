@@ -299,7 +299,7 @@ div.warehouseHubOperations button.cashPaid:hover {
   transition: all 0.3s;
 }
 .warehouseHubOperations.btns button:hover {
-  background-color: #333;
+  background-color: #0354d5;
 }
 .warehouseHubBtn button:hover .tooltips,
 .warehouseHubOperations button:hover .tooltips {
@@ -423,6 +423,11 @@ button.wareHouseAddnewProd {
   width: 5.2rem;
   height: 2.8rem;
 }
+
+button.wareHouseAddnewProd:hover {
+  background-color: #0354d5;
+}
+
 .warehouseHubFooter {
   padding: 1.4rem 4.5rem;
   font-family: serif;
@@ -546,6 +551,16 @@ button.wareHouseAddnewProd {
   background: rgba(153, 191, 251, 0.188);
   box-shadow: inset 0rem 0rem 0.2rem 0rem #ddd;
   color: #fff;
+}
+
+#searchCustomer {
+  width: 100%;
+  font-size: 1.2rem;
+  background: rgba(153, 191, 251, 0.188);
+  box-shadow: inset 0rem 0rem 0.2rem 0rem #ddd;
+  color: #fff;
+  padding: 0.6rem 0.8rem;
+  text-align: center;
 }
 
 /* BLALFJAKLJFLKSJF */

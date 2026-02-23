@@ -1,0 +1,137 @@
+/* Flex Container Styles */
+.invoice.flex-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2.22rem;
+  padding-right: 0.8rem;
+}
+
+/* First Container Styles */
+.invoice-first-container {
+  display: flex;
+  justify-content: space-between;
+  background-color: #1d2432;
+  color: white;
+  padding: 3.2rem 2.4rem;
+  border-radius: 1.2rem;
+}
+
+/* Flex Item Styles within First Container */
+.invoice-left-side {
+  flex: 1;
+}
+
+.invoice-right-side {
+  flex: 1;
+  text-align: right;
+}
+
+/* Second Container Styles */
+.invoice-second-container {
+  background-color: #fafaff;
+  padding: 3.2rem 2.4rem;
+  border-radius: 1.2rem;
+}
+
+/* Third Container Styles */
+.invoice-third-container {
+  background-color: white;
+  padding: 3.2rem 2.4rem;
+}
+
+.invoice {
+  overflow: scroll;
+  overflow-x: hidden;
+  max-height: 85vh;
+}
+
+.invoiceTable thead tr,
+.invoiceTable tbody tr {
+  display: grid;
+  grid-template-columns: 1fr 3fr 3fr 2fr;
+  gap: 2rem;
+  padding: 1.2rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.invoiceTable thead tr {
+  background-color: #1d2432;
+  color: #fff;
+}
+
+.invoiceTable tbody tr:nth-child(even) {
+  background-color: #fafaff;
+  color: #666;
+}
+
+.invoiceBottom {
+  background-color: #eefef2;
+  color: #87c7ac;
+  padding: 1.2rem;
+  border-radius: 0.8rem;
+  text-align: center;
+}
+.invoiceBottom button {
+  background-color: #0e794c;
+  color: #fff;
+  font-weight: 900;
+  padding: 1.2rem;
+  border-radius: 0.8rem;
+  width: 30%;
+  align-self: center;
+}
+.invoiceBottom button:hover,
+.invoiceBottom button:active {
+  background-color: rgb(31, 37, 31);
+}
+
+.payInvoice {
+  background: #0361f0;
+  min-width: 23rem;
+  height: 56px;
+  padding: 4px 14px;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.printInvoice {
+  background: #f00395;
+  min-width: 23rem;
+  height: 56px;
+  padding: 4px 14px;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.printInvoice:hover,
+.payInvoice:hover {
+  opacity: 0.7;
+}
+
+/* SCROLL BAR DECORATION BLOCKS */
+
+/* Scrollbar styles for WebKit browsers */
+::-webkit-scrollbar {
+  width: 4px; /* Adjust the width for vertical scrollbars */
+  height: 6px; /* Adjust the height for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(29, 36, 50, 0.726); /* Color of the scrollbar handle */
+  border-radius: 50rem; /* Rounded corners of the scrollbar handle */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f3f3f3; /* Color of the scrollbar track */
+  border-radius: 10px; /* Rounded corners of the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #2d5ecf; /* Color of the scrollbar handle on hover */
+  cursor: grab;
+}
+
+.invoiceLogo {
+  max-width: 8rem;
+}

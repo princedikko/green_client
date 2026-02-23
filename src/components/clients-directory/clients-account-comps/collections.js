@@ -19,7 +19,7 @@ const product_collection = {
   unit: "tin",
   costPrice: 820,
   sellingPrice: 950,
-  taxRate: 7.5, // VAT %
+  taxRate: 2.5, // VAT %
 
   stock: {
     quantity: 245,
@@ -163,7 +163,7 @@ const salestranscation_collection = {
 
   summary: {
     subTotal: 2850,
-    taxTotal: 213.75,
+    taxTotal: 23.75,
     discountTotal: 0,
     grandTotal: 3063.75,
   },

@@ -1,13 +1,8 @@
-import React, { useState } from "react";
 import { motion } from "framer-motion"; // Importing framer-motion for animations
 import CountUp from "react-countup"; // Importing CountUp for counting numbers
 import { Typewriter } from "react-simple-typewriter"; // Importing Typewriter for text animation
-import { Link } from "react-router-dom"; // Importing Link for navigation
 import "./Hero.css"; // Importing CSS for styling
 import HeroSwiper from "./hero_folder/HeroSwiper";
-import ManSitting from "./homepage_images/mansitting.png"; // Importing image for the hero section
-import GalSitting from "./homepage_images/girlsitting.png"; // Importing another image for the hero section
-import StuGalSitting from "./homepage_images/Udupss_girl.png"; // Importing another image for the hero section
 
 // importing icons from material user interface
 
@@ -15,8 +10,6 @@ import IsoIcon from "@mui/icons-material/Iso";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 const Hero = () => {
-  const [currentHero, setCurrentHero] = useState(1);
-
   return (
     <section className="hero-section g g2">
       <motion.div
@@ -31,18 +24,18 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          Welcome to UDUPSS
+          Green! Inventory Management.
         </motion.p>
 
         <h1 className="main-heading">
           <Typewriter
             words={[
-              "Usmanu Danfodiyo University Primary School Sokoto",
-              "Where Every Child is Seen, Heard, and Valued",
-              "Building Future Leaders from the Ground Up",
+              "The Best Software for Managing Business in Africa",
+              "Where Everybody is Seen, Heard, and Valued",
+              "Building Future Businesses from the Ground Up",
               "Strong Foundation, The Endless Possibilities",
-              "Usmanu Danfodiyo University Primary School Sokoto",
-              "Empowering Young Minds for a Brighter Tomorrow",
+              "The Green! Inventory Management Software",
+              "Empowering Businesses for a Brighter Tomorrow",
             ]}
             loop={Infinity}
             cursor
@@ -59,8 +52,9 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
         >
-          A leading institution committed to nurturing young learners through
-          quality education, moral values, and a safe learning environment.
+          A leading business management platform committed to nurturing best
+          business through quality software, moral values, and a safe
+          environment.
         </motion.p>
 
         <motion.div
