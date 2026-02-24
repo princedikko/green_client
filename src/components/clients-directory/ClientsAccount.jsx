@@ -654,8 +654,11 @@ export default function ClientsAccount() {
           </div>
           <span className="clientDashboardHeadRight fx-ac fx-jc space1">
             <div className="clientDBSearchCont fx-ac space1">
-              <button className=" fx-ac fx-jc" onClick={() => handleTerminal()}>
-                Warehouse
+              <button
+                className="invoicing_export_btn  fx-ac fx-jc"
+                onClick={() => handleTerminal()}
+              >
+                Point of Sale
               </button>
             </div>
             <button

@@ -53,6 +53,17 @@
   display: block;
 }
 
+.dropdown-content-full {
+  display: none;
+  position: absolute;
+  background-color: #fafafa;
+  color: #000;
+  width: 100vw;
+  top: 100%;
+  left: -50%;
+  z-index: 999;
+}
+
 .dropdown-content {
   display: none;
   position: absolute;
@@ -84,6 +95,9 @@
   background-color: #e55b23;
 }
 
+.dropdown:hover .dropdown-content-full {
+  display: block;
+}
 .dropdown:hover .dropdown-content {
   display: block;
 }

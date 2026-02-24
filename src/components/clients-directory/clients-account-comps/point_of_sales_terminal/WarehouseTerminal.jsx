@@ -73,6 +73,7 @@ import {
   PaymentLogs,
   Shipping,
   Gifting,
+  CashPayment,
 } from "./ware_house_comps/functional_comps/OptionalButtons.jsx";
 
 let queue;
@@ -134,9 +135,7 @@ function WarehouseTerminal() {
 
   function addToCart(item) {
     // Check if item already exists in cart
-    const existingItem = cart.find(
-      (cartItem) => cartItem.productId === item.productId,
-    );
+    const existingItem = cart.find((cartItem) => cartItem.sku === item.sku);
 
     if (existingItem) {
       // If exists, update quantity
@@ -306,6 +305,14 @@ function WarehouseTerminal() {
         return <Quotation handleOnHold={handleOnHold} />;
       case "clear_cart":
         return <ClearCart clearCart={clearCart} handleOnHold={handleOnHold} />;
+      case "cash_pay":
+        return (
+          <CashPayment
+            cashPaidSubmit={cashPaidSubmit}
+            cart={cart}
+            customerName={customer}
+          />
+        );
       case "on_hold":
         return (
           <OnHold
@@ -543,7 +550,9 @@ function WarehouseTerminal() {
       "Corporate Customer",
     ];
 
-    const brandsArray = products.map((n) => n.brand);
+    const brandsArray = [
+      ...new Set(products.map((n) => n.brand).filter(Boolean)),
+    ];
 
     // END OF ARRAYS
     const handleSearch = (e) => {
@@ -740,7 +749,7 @@ function WarehouseTerminal() {
                 <button className="fx-ac fx-jc" onClick={() => toggleScreen()}>
                   <span className="tooltips">main previews</span>
                   {/* Previews  on Modal box */}
-                  <VisibilityIcon fontSize="large" />
+                  <FullscreenIcon fontSize="large" />
                 </button>
               )}
             </div>
@@ -759,7 +768,9 @@ function WarehouseTerminal() {
                       ₦{" "}
                       {cart
                         .reduce(
-                          (sum, item) => sum + item.unitPrice * item.quantity,
+                          (sum, item) =>
+                            sum +
+                            item.pricing?.sellingPrice * item.sellingQuantity,
                           0,
                         )
                         .toLocaleString()}
@@ -832,26 +843,67 @@ function WarehouseTerminal() {
                 </div>
               </div>
             </div>
-            <button
-              onClick={() => alert("i got printed")}
-              className="warehouseHubCounts fx-ac fx-jb space3"
-            >
-              <div className="fx-ac spacem">
-                <strong className="fx-jc" style={{ color: "#3a84f8" }}>
-                  <ShoppingCartIcon fontSize="medium" /> Cart:
-                </strong>
-                {cart?.length < 1 ? (
-                  "empty"
-                ) : (
-                  <span>
-                    {cart?.length} <em>items</em>
-                  </span>
-                )}
+            <div className="fx-ac space1">
+              <button
+                onClick={() => alert("i got printed")}
+                className="warehouseHubCounts fx-ac fx-jb space3"
+              >
+                <div className="fx-ac spacem">
+                  <strong className="fx-jc" style={{ color: "#3a84f8" }}>
+                    <ShoppingCartIcon fontSize="medium" /> Cart:
+                  </strong>
+                  {cart?.length < 1 ? (
+                    "empty"
+                  ) : (
+                    <span>
+                      {cart?.length} <em>items</em>
+                    </span>
+                  )}
+                </div>
+              </button>
+              <div className="fx-ac space1">
+                <button
+                  className="controlButtons"
+                  style={{
+                    cursor: cart.length > 0 ? "pointer" : "not-allowed",
+                    opacity: cart.length > 0 ? 1 : 0.6, // optional, to show disabled look
+                  }}
+                >
+                  <LocalPrintshopIcon />
+                  <span>Print</span>
+                </button>
+                <button
+                  className="controlButtons"
+                  onClick={() => {
+                    if (cart.length > 0) {
+                      handleModalSwitch("on_hold");
+                    }
+                  }}
+                  style={{
+                    cursor: cart.length > 0 ? "pointer" : "not-allowed",
+                    opacity: cart.length > 0 ? 1 : 0.6, // optional, to show disabled look
+                  }}
+                >
+                  <PanToolIcon />
+                  <span>On-hold</span>
+                </button>
+                <button
+                  className="controlButtons"
+                  onClick={() => {
+                    if (cart.length > 0) {
+                      handleModalSwitch("save_draft");
+                    }
+                  }}
+                  style={{
+                    cursor: cart.length > 0 ? "pointer" : "not-allowed",
+                    opacity: cart.length > 0 ? 1 : 0.6, // optional: show disabled look
+                  }}
+                >
+                  <SaveAsIcon />
+                  <span>Save draft</span>
+                </button>
               </div>
-              <strong className="fx-jc" style={{ color: "#3a84f8" }}>
-                <LocalPrintshopIcon fontSize="medium" />
-              </strong>
-            </button>
+            </div>
 
             {/* ____________CART ITEMS MAPPING___________ */}
             <Items />
@@ -859,7 +911,8 @@ function WarehouseTerminal() {
         </div>
         {isIconButtons ? (
           <div className="warehouseHubOperations iconsBtnFx fx-ac space3 fx-jb">
-            <figure className="fx-jc fx-ac space1">
+            {/* Tender Types */}
+            <figure className="tenderTypesCont fx-jc fx-ac space1">
               <button onClick={() => alert("I got clicked")} className="">
                 <span className="tooltips">tooltips</span>
                 {/* NightMode */}
@@ -884,6 +937,11 @@ function WarehouseTerminal() {
                 onClick={() => cashPaidSubmit()}
                 className="cashPaid fx-jc"
               >
+                {/* 
+                Customer gives cash
+→ cashier enters amount received
+→ system calculates change
+→ sale closes immediately */}
                 Cash payment
               </button>
               <button
@@ -907,7 +965,7 @@ function WarehouseTerminal() {
             </figure>
           </div>
         ) : (
-          <div className="warehouseHubOperations btns fx-ac space1 fx-jc">
+          <div className="tenderTypesCont warehouseHubOperations btns fx-ac space1 fx-jc">
             <button
               onClick={() => {
                 if (cart.length > 0) {
@@ -919,22 +977,17 @@ function WarehouseTerminal() {
                 opacity: cart.length > 0 ? 1 : 0.6, // optional, to show disabled look
               }}
             >
-              <PanToolIcon />
-              <span>On-hold</span>
+              <AccountBalanceIcon />
+              <span>Account</span>
             </button>
             <button
-              onClick={() => {
-                if (cart.length > 0) {
-                  handleModalSwitch("save_draft");
-                }
-              }}
               style={{
                 cursor: cart.length > 0 ? "pointer" : "not-allowed",
                 opacity: cart.length > 0 ? 1 : 0.6, // optional: show disabled look
               }}
             >
-              <SaveAsIcon />
-              <span>Save draft</span>
+              <ReceiptLongIcon />
+              <span>Check</span>
             </button>
 
             <button
@@ -949,13 +1002,17 @@ function WarehouseTerminal() {
               }}
             >
               <SellIcon />
+              {/* Press CREDIT
+→ terminal charges card
+→ cashier confirms success
+→ sale completed */}
               <span>Credit sale</span>
             </button>
 
             <button
               onClick={() => {
                 if (cart.length > 0) {
-                  cashPaidSubmit();
+                  handleModalSwitch("cash_pay");
                 }
               }}
               className="cashPaid fx-jc"
@@ -964,8 +1021,18 @@ function WarehouseTerminal() {
                 opacity: cart.length > 0 ? 1 : 0.6,
               }}
             >
+              {/* 
+                Customer gives cash
+→ cashier enters amount received
+→ system calculates change
+→ sale closes immediately */}
               Cash Paid
             </button>
+            {/* <button> Cheque
+              Customer gives cheque
+→ cashier records cheque number
+→ sale marked pending clearance
+            </button> */}
 
             <button
               onClick={() => {
@@ -1009,6 +1076,9 @@ function WarehouseTerminal() {
               }}
             >
               <CardGiftcardIcon />
+              {/* Customer uses store balance
+→ system deducts gift balance
+→ sale completes */}
               <span>Gift</span>
             </button>
           </div>
@@ -1197,6 +1267,12 @@ function Property({ handleModalSwitch }) {
             <span>On-hold</span>
           </figure>
           <figure className="fx-cl spacem">
+            <button onClick={() => handleModalSwitch("on_hold_sales")}>
+              <DiscountIcon fontSize="large" />
+            </button>
+            <span>Accept Return</span>
+          </figure>
+          <figure className="fx-cl spacem">
             <button onClick={() => handleModalSwitch("shipping")}>
               <LocalShippingIcon fontSize="large" />
             </button>
@@ -1219,6 +1295,30 @@ function Property({ handleModalSwitch }) {
               <AccountBalanceIcon fontSize="large" />
             </button>
             <span>Payments</span>
+          </figure>
+          <figure className="fx-cl spacem">
+            <button onClick={() => handleModalSwitch("payments")}>
+              <AccountBalanceIcon fontSize="large" />
+            </button>
+            <span>Quick Pick Items</span>
+          </figure>
+          <figure className="fx-cl spacem">
+            <button onClick={() => handleModalSwitch("payments")}>
+              <AccountBalanceIcon fontSize="large" />
+            </button>
+            <span>Add New Item</span>
+          </figure>
+          <figure className="fx-cl spacem">
+            <button onClick={() => handleModalSwitch("payments")}>
+              <AccountBalanceIcon fontSize="large" />
+            </button>
+            <span>Cashier/Associate</span>
+          </figure>
+          <figure className="fx-cl spacem">
+            <button onClick={() => handleModalSwitch("payments")}>
+              <AccountBalanceIcon fontSize="large" />
+            </button>
+            <span>Messages</span>
           </figure>
         </div>
       </div>
@@ -1270,7 +1370,7 @@ function Products({ handleModalSwitch, products, addToCart, clearCart }) {
               onChange={handleSearch}
             />
 
-            {filteredProducts.length > 0 && (
+            {/* {filteredProducts.length > 0 && (
               <ul className="searched-products-dropdown">
                 {filteredProducts.map((product) => (
                   <li
@@ -1289,7 +1389,7 @@ function Products({ handleModalSwitch, products, addToCart, clearCart }) {
                   </li>
                 ))}
               </ul>
-            )}
+            )} */}
           </div>
           {/* <button>
             <SearchIcon fontSize="large" />
@@ -1302,25 +1402,46 @@ function Products({ handleModalSwitch, products, addToCart, clearCart }) {
           +
         </button>
       </div>
-
-      <div className="items_product_cont g g3 space1">
-        {products?.map((item, index) => {
-          return (
+      {filteredProducts.length > 0 ? (
+        <div className="items_product_cont g g3 space1">
+          {filteredProducts.map((item, index) => (
             <figure
               onClick={() => {
                 addToCart(item);
+
+                setFilteredProducts("");
+                setSearchTerm("");
               }}
               key={index}
               className="productsCardWH fx-cl space1 fx-jb"
             >
               <h4>{item.name}</h4>
               <div>
-                <p>₦{item.unitPrice}</p>
+                <p>₦{item?.pricing?.sellingPrice}</p>
               </div>
             </figure>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="items_product_cont g g3 space1">
+          {products?.map((item, index) => {
+            return (
+              <figure
+                onClick={() => {
+                  addToCart(item);
+                }}
+                key={index}
+                className="productsCardWH fx-cl space1 fx-jb"
+              >
+                <h4>{item.name}</h4>
+                <div>
+                  <p>₦{item?.pricing?.sellingPrice}</p>
+                </div>
+              </figure>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

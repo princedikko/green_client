@@ -161,18 +161,20 @@ const salestranscation_collection = {
     },
   ],
 
-  summary: {
+  payment: {
     subTotal: 2850,
     taxTotal: 23.75,
     discountTotal: 0,
     grandTotal: 3063.75,
-  },
-
-  payment: {
-    method: "CASH", // CASH | POS | TRANSFER | WALLET
-    paidAmount: 3100,
-    change: 36.25,
-    reference: null,
+    bills: [
+      {
+        method: "CASH", // CASH | POS | TRANSFER | WALLET
+        paidAmount: 3100,
+        change: 36.25,
+        reference: null,
+        tax: null,
+      },
+    ],
   },
 
   stockEffected: true,

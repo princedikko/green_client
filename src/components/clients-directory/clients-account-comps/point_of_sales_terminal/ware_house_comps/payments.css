@@ -109,29 +109,6 @@
   opacity: 0.7;
 }
 
-/* SCROLL BAR DECORATION BLOCKS */
-
-/* Scrollbar styles for WebKit browsers */
-::-webkit-scrollbar {
-  width: 4px; /* Adjust the width for vertical scrollbars */
-  height: 6px; /* Adjust the height for horizontal scrollbars */
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgba(29, 36, 50, 0.726); /* Color of the scrollbar handle */
-  border-radius: 50rem; /* Rounded corners of the scrollbar handle */
-}
-
-::-webkit-scrollbar-track {
-  background-color: #f3f3f3; /* Color of the scrollbar track */
-  border-radius: 10px; /* Rounded corners of the scrollbar track */
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #2d5ecf; /* Color of the scrollbar handle on hover */
-  cursor: grab;
-}
-
 .invoiceLogo {
   max-width: 8rem;
 }

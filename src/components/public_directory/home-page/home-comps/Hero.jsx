@@ -24,13 +24,13 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          Green! Inventory Management.
+          <strong>Green!</strong> Inventory Management.
         </motion.p>
 
         <h1 className="main-heading">
           <Typewriter
             words={[
-              "The Best Software for Managing Business in Africa",
+              "Manage Your Inventory & Sales Effortlessly",
               "Where Everybody is Seen, Heard, and Valued",
               "Building Future Businesses from the Ground Up",
               "Strong Foundation, The Endless Possibilities",
@@ -52,9 +52,12 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
         >
-          A leading business management platform committed to nurturing best
-          business through quality software, moral values, and a safe
+          {" "}
+          We’re a leading business management platform, empowering businesses to
+          grow through reliable software, integrity, and a safe, supportive
           environment.
+          {/* Green is the all-in-one POS and inventory system designed to help your
+          business track stock, streamline sales, and grow faster.” */}
         </motion.p>
 
         <motion.div

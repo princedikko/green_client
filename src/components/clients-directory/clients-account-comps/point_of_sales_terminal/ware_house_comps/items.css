@@ -7,7 +7,7 @@
 
 .item_row table thead tr {
   display: grid;
-  grid-template-columns: 1fr 4fr 3fr 2fr 1.5fr 0.6fr;
+  grid-template-columns: 1fr 4fr 3fr 2fr 1.5fr 1.5fr 0.6fr;
   padding: 1.2rem;
   background-color: #3a84f8;
   border-radius: 1rem;
@@ -19,7 +19,7 @@
 .item_row table tbody tr {
   display: grid;
   /* gap: .6rem; */
-  grid-template-columns: 1fr 4fr 3fr 2fr 1.5fr 0.6fr;
+  grid-template-columns: 1fr 4fr 3fr 2fr 1.5fr 1.5fr 0.6fr;
   align-items: center;
   border-radius: 1rem;
   padding: 1.2rem 2.4rem;
@@ -51,18 +51,7 @@
 .item_row table tbody tr .removeCart:hover {
   transform: scale(1.1);
 }
-.item_row table tbody tr .completed {
-  padding: 0.3rem 1.6rem;
-  border-radius: 0.4rem;
-  background-color: #eefef2;
-  color: #048e5b;
-}
-.item_row table tbody tr .pending {
-  padding: 0.3rem 0.6rem;
-  border-radius: 0.4rem;
-  background-color: #ffe6e6;
-  color: #e30606;
-}
+
 .item_row table tbody tr td:nth-child(2) {
   display: flex;
   gap: 0.4rem;
@@ -155,4 +144,39 @@
 .item_row-limit-item:hover {
   background: #f4f6ff;
   color: #4f46e5;
+}
+
+.itemAccordionOpen {
+  background-color: #fff;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.itemAccordionCont {
+  display: none;
+}
+table tbody .itemAccordionOpen .itemAccordionCont {
+  display: block;
+}
+
+.itemAccordionDisc {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  background-color: #fff;
+  padding: 2.2rem;
+  gap: 2rem;
+}
+
+.itemAccordionDisc figure {
+  height: 15rem;
+  width: 15rem;
+  border-radius: 1.2rem;
+  background-color: #fafafa;
+}
+
+.itemAccordionDetails {
+  row-gap: 2.4rem;
+}
+/* .itemAccordionDetails div:first-child, */
+.itemAccordionDetails div:last-child {
+  grid-column: span 2;
 }

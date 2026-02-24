@@ -167,7 +167,7 @@
 }
 
 .warehouseHubCounts {
-  max-width: 22rem;
+  width: 17rem;
   background-color: #fff;
   border-radius: 1.2rem;
   padding: 0.5rem 1.2rem;
@@ -319,6 +319,7 @@ div.warehouseHubOperations button.cashPaid:hover {
 /* ASIDE DECORATIONS BLOCKS */
 .warehouseHubMain .aside {
   width: 40rem;
+  min-height: 53rem;
   background-color: #fafafa;
   color: #333;
   padding: 1.8rem 0rem;
@@ -375,7 +376,7 @@ div.warehouseHubOperations button.cashPaid:hover {
   width: 32rem;
 }
 .items_product_cont {
-  height: 43rem;
+  max-height: 43rem;
   overflow: scroll;
   overflow-x: hidden;
   padding: 0 2rem;
@@ -686,4 +687,18 @@ button.wareHouseAddnewProd:hover {
   right: 0;
   max-height: 200px;
   overflow: auto;
+}
+
+.controlButtons {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 9rem;
+  height: 2rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.4rem;
+  background-color: #3a84f8;
+  color: #fff;
+  font-size: 1.2rem;
+  transition: all 0.3s;
 }

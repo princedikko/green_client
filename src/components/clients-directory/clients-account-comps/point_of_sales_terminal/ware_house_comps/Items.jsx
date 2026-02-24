@@ -11,6 +11,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 export default function Items({ setChangeView, changeview }) {
   const [loading, setLoading] = useState(false);
@@ -61,6 +62,7 @@ export default function Items({ setChangeView, changeview }) {
 
 function TableView() {
   const [openItemDrpdwn, setOpenItemDrpdwn] = useState(false);
+  const [accordion, setAccordion] = useState(null);
   const [brands, setBrands] = useState("All brands");
   const [activeRow, setActiveRow] = useState(null);
   const dispatch = useDispatch();
@@ -85,7 +87,8 @@ function TableView() {
         alert("Cannot be less than One item");
       }
     } else {
-      alert("Item out of stock");
+      alert("Item out of stock:", index);
+      console.log("index", index);
     }
   }
   function insertQty(index, qty, available) {
@@ -113,114 +116,276 @@ function TableView() {
             <tr>
               <th>S/N</th>
               <th>Item</th>
-              <th>Variety</th>
+              <th>Purchase Unit</th>
               <th>Quantity</th>
               <th>Price ₦</th>
+              <th>Estimate ₦</th>
             </tr>
           </thead>
 
           <tbody className="fx-cl spacem">
             {cart.map((item, index) => (
-              <tr
-                key={index}
-                id={item.productId}
-                className={`${activeRow == index && "active_warehauseRow"}`}
-                onClick={() => setActiveRow(index)}
-              >
-                <td>
-                  <strong>{index + 1}</strong>
-                </td>
-                <td>{item.name}</td>
-                <td>
-                  <div className="item_row_entries-info fx-ac spacem">
-                    <div className="item_row-page-limit">
-                      <button
-                        onClick={() => handleItemDrpdwn()}
-                        style={{ color: "#222", textTransform: "capitalize" }}
-                      >
-                        {item.packaging}
-                        <span className="item_row-page-limit-arrow">▾</span>
-                      </button>
+              <div className={`${accordion == index && "itemAccordionOpen"}`}>
+                <tr
+                  key={index}
+                  id={item.sku}
+                  className={`${activeRow == index && "active_warehauseRow"}`}
+                  onClick={() =>
+                    accordion == index
+                      ? setAccordion(null)
+                      : setAccordion(index)
+                  }
+                >
+                  <td>
+                    <strong>{index + 1}</strong>
+                  </td>
+                  <td>{item.name}</td>
+                  <td>
+                    <div className="item_row_entries-info fx-ac spacem">
+                      <div className="item_row-page-limit">
+                        <button
+                          onClick={() => handleItemDrpdwn()}
+                          style={{ color: "#222", textTransform: "capitalize" }}
+                        >
+                          {item.packaging}
+                          <span className="item_row-page-limit-arrow">▾</span>
+                        </button>
 
-                      {openItemDrpdwn && activeRow == index && (
-                        <ul className="item_row-limit-dropdown">
-                          {[
-                            "Pieces",
-                            "Bundle",
-                            "Dosen",
-                            "Cattom",
-                            "Rim",
-                            "Packet",
-                            "Torn",
-                          ].map((n) => (
-                            <li
-                              key={n}
-                              className="item_row-limit-item"
-                              onClick={() =>
-                                updatePackage(index, n, item.available)
-                              }
-                            >
-                              {n}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
+                        {openItemDrpdwn && activeRow == index && (
+                          <ul className="item_row-limit-dropdown">
+                            {[
+                              "Pieces",
+                              "Bundle",
+                              "Dosen",
+                              "Cattom",
+                              "Rim",
+                              "Packet",
+                              "Torn",
+                            ].map((n) => (
+                              <li
+                                key={n}
+                                className="item_row-limit-item"
+                                onClick={() =>
+                                  updatePackage(
+                                    index,
+                                    n,
+                                    item.batches[index]?.quantity,
+                                  )
+                                }
+                              >
+                                {n}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    className="fx-ac spacem"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <button
+                      onClick={() =>
+                        updateQty(
+                          index,
+                          Number(item.sellingQuantity - 1),
+                          item.batches[index]?.quantity,
+                        )
+                      }
+                    >
+                      <RemoveCircleOutlineIcon
+                        fontSize="medium"
+                        style={{ color: "#f35e6a" }}
+                      />
+                    </button>
+                    <input
+                      type="text"
+                      value={item.sellingQuantity}
+                      style={{
+                        width: "3.5rem",
+                        backgroundColor: "transparent",
+                        textAlign: "center",
+                      }}
+                      onChange={(event) =>
+                        insertQty(
+                          index,
+                          Number(event.target.value),
+                          item.batches[0]?.quantity,
+                        )
+                      }
+                    />
+                    <button
+                      onClick={() =>
+                        updateQty(
+                          index,
+                          Number(item.sellingQuantity + 1),
+                          item.batches[0]?.quantity,
+                        )
+                      }
+                    >
+                      <AddCircleOutlineIcon fontSize="medium" />
+                    </button>
+                  </td>
+
+                  <td className="fx-ac space1">
+                    <span>₦{item.pricing?.sellingPrice.toLocaleString()}</span>
+                  </td>
+                  <td className="fx-ac space1">
+                    <span>
+                      ₦
+                      {(
+                        item.pricing?.sellingPrice * item?.sellingQuantity
+                      ).toLocaleString()}
+                    </span>
+                  </td>
+                  <td
+                    className="fx-ac space1"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <button
+                      className="removeCart"
+                      onClick={() => popCart(index)}
+                    >
+                      <CloseIcon fontSize="large" />
+                    </button>
+                  </td>
+                </tr>
+                <div className="itemAccordionCont">
+                  <div className="itemAccordionDisc fx-ac space1">
+                    <figure className="fx-ac fx-jc">
+                      <ShoppingCartIcon
+                        style={{
+                          fontSize: "9.5rem",
+                          color: "rgb(233 245 243)",
+                        }}
+                      />
+                    </figure>
+                    <div className="itemAccordionDetails g g4 space1">
+                      <div className="fx-cl spacem ">
+                        <span>Brand</span>
+                        <p>
+                          <strong>{item.brand}</strong>
+                        </p>
+                      </div>
+                      <div className="fx-cl spacem">
+                        <span>Batch</span>
+                        <p>
+                          <strong>{item.batches[0].batchNo}</strong>
+                        </p>
+                      </div>
+                      <div className="fx-cl spacem ">
+                        <span>Item SKU</span>
+                        <p>
+                          <strong>{item.sku}</strong>
+                        </p>
+                      </div>
+
+                      <div className="fx-cl spacem">
+                        <span>Base Unit</span>
+                        <div className="item_row-page-limit">
+                          <button
+                            onClick={() => handleItemDrpdwn()}
+                            style={{
+                              color: "#222",
+                              textTransform: "capitalize",
+                            }}
+                          >
+                            {item.units.baseUnit}
+                            <span className="item_row-page-limit-arrow">▾</span>
+                          </button>
+
+                          {openItemDrpdwn && activeRow == index && (
+                            <ul className="item_row-limit-dropdown">
+                              {[
+                                "Pieces",
+                                "Bundle",
+                                "Dosen",
+                                "Cattom",
+                                "Rim",
+                                "Packet",
+                                "Torn",
+                              ].map((n) => (
+                                <li
+                                  key={n}
+                                  className="item_row-limit-item"
+                                  onClick={() =>
+                                    updatePackage(
+                                      index,
+                                      n,
+                                      item.batches[index]?.quantity,
+                                    )
+                                  }
+                                >
+                                  {n}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      </div>
+                      <div className="fx-cl spacem">
+                        <span>Expiry Date</span>
+                        <p>
+                          <strong>
+                            {item.batches[0].expiryDate.slice(0, 7)}
+                          </strong>
+                        </p>
+                      </div>
+                      <div className="fx-cl spacem ">
+                        <span>Size</span>
+                        <p>
+                          <strong>{item.barcode}</strong>
+                        </p>
+                      </div>
+                      <div className="fx-cl spacem ">
+                        <span>Attribute</span>
+                        <p>
+                          <strong>{item.barcode}</strong>
+                        </p>
+                      </div>
+                      <div className="fx-cl spacem ">
+                        <span>Bar Code</span>
+                        <p>
+                          <strong>{item.barcode}</strong>
+                        </p>
+                      </div>
+
+                      <div className="fx-ac space1">
+                        <button
+                          className="controlButtons"
+                          style={{
+                            cursor: cart.length > 0 ? "pointer" : "not-allowed",
+                            opacity: cart.length > 0 ? 1 : 0.6, // optional, to show disabled look
+                          }}
+                        >
+                          <span>Return item</span>
+                        </button>
+                        <button
+                          className="controlButtons"
+                          style={{
+                            cursor: cart.length > 0 ? "pointer" : "not-allowed",
+                            opacity: cart.length > 0 ? 1 : 0.6, // optional, to show disabled look
+                          }}
+                        >
+                          <RemoveCircleOutlineIcon />
+                          <span>Edit</span>
+                        </button>
+                        <button
+                          className="controlButtons"
+                          style={{
+                            cursor: cart.length > 0 ? "pointer" : "not-allowed",
+                            opacity: cart.length > 0 ? 1 : 0.6, // optional: show disabled look
+                          }}
+                        >
+                          <LocalPrintshopIcon />
+                          <span>Discount</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </td>
-                <td className="fx-ac spacem">
-                  <button
-                    onClick={() =>
-                      updateQty(
-                        index,
-                        Number(item.quantity - 1),
-                        item.available,
-                      )
-                    }
-                  >
-                    <RemoveCircleOutlineIcon
-                      fontSize="medium"
-                      style={{ color: "#f35e6a" }}
-                    />
-                  </button>
-                  <input
-                    type="text"
-                    value={item.quantity}
-                    style={{
-                      width: "3.5rem",
-                      backgroundColor: "transparent",
-                      textAlign: "center",
-                    }}
-                    onChange={(event) =>
-                      insertQty(
-                        index,
-                        Number(event.target.value),
-                        item.available,
-                      )
-                    }
-                  />
-                  <button
-                    onClick={() =>
-                      updateQty(
-                        index,
-                        Number(item.quantity + 1),
-                        item.available,
-                      )
-                    }
-                  >
-                    <AddCircleOutlineIcon fontSize="medium" />
-                  </button>
-                </td>
-
-                <td className="fx-ac space1">
-                  <span>₦{item.unitPrice}</span>
-                </td>
-                <td className="fx-ac space1">
-                  <button className="removeCart" onClick={() => popCart(index)}>
-                    <CloseIcon fontSize="large" />
-                  </button>
-                </td>
-              </tr>
+                </div>
+              </div>
             ))}
           </tbody>
         </table>

@@ -14,6 +14,100 @@ import WorkspacePremiumRoundedIcon from "@mui/icons-material/WorkspacePremiumRou
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
+export function CashPayment({ cashPaidSubmit, cart, discount, customerName }) {
+  const [cashCollected, setCashCollected] = useState(0);
+  const grandTotal = cart?.reduce(
+    (sum, item) => sum + item.pricing.sellingPrice * item.sellingQuantity,
+    0,
+  );
+
+  return (
+    <div
+      className="cashPaymentCont fx-cl space2"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="cashPaymenthead fx-ac fx-jc">
+        <figure>&nbsp;</figure>
+        <p>Cash Payment</p>
+        <figure>&nbsp;</figure>
+      </div>
+      <div className="cashPaymentDiscCont ">
+        <div className="cashPaymentDisc fx-cl">
+          <div className="cashPaymentRow ">
+            <div className="fx-ac spacem">
+              <ShoppingCartIcon fontSize="large" /> <span>Products:</span>
+            </div>
+            <p>{cart?.length} items</p>
+          </div>
+          <div className="cashPaymentRow ">
+            <div className="fx-ac spacem">
+              <EventRoundedIcon fontSize="large" /> <span>Grand Total:</span>
+            </div>
+            <p>
+              <strong>₦ {grandTotal.toLocaleString()}</strong>
+            </p>
+          </div>
+          <div className="cashPaymentRow">
+            <div className="fx-ac spacem">
+              <WorkspacePremiumRoundedIcon fontSize="large" />{" "}
+              <span>Cash:</span>
+            </div>
+            <p> ₦ {cashCollected.toLocaleString()}</p>
+          </div>
+          <div className="cashPaymentRow ">
+            <div className="fx-ac spacem">
+              <AccountCircleRoundedIcon fontSize="large" /> <span>Change:</span>
+            </div>
+            <p style={{ color: "#ed826b", fontWeight: "bold" }}>
+              {" "}
+              ₦ {(cashCollected - grandTotal).toLocaleString()}
+            </p>
+          </div>
+        </div>
+
+        <div className="g g3 spacem">
+          {[100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000].map((i) => {
+            return (
+              <figure
+                className="cashPaymentNotes"
+                onClick={() => setCashCollected(cashCollected + i)}
+              >
+                ₦{i.toLocaleString()}
+              </figure>
+            );
+          })}
+        </div>
+      </div>
+      <div className="cashPaymentButtom fx-cl space2 fx-jc">
+        <div className="fx-ac">
+          <input
+            type="number"
+            placeholder="Enter amount of cash"
+            value={cashCollected > 0 && cashCollected}
+            onChange={(x) => setCashCollected(Number(x.target.value))}
+          />
+        </div>
+
+        <div className="fx-ac space3 fx-jc">
+          <button
+            onClick={() => {
+              alert();
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => {
+              cashPaidSubmit();
+            }}
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 export function OnHold({ handleOnHold, cart, discount, customerName }) {
   const [note, setNote] = useReducer((state, payload) => {
     return ({ ...state, ...payload }, { note: "" });

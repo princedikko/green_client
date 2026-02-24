@@ -24,7 +24,7 @@ export default function Header() {
           <ul className={`nav-links ${mobileOpen ? "active" : ""}`}>
             <li className="dropdown">
               <Link to="#">Features</Link>
-              <ul className="dropdown-content">
+              <ul className="dropdown-content-full">
                 <li>
                   <Link to="#">Principal</Link>
                 </li>
@@ -38,7 +38,7 @@ export default function Header() {
             </li>
             <li className="dropdown">
               <Link to="#">Solutions</Link>
-              <ul className="dropdown-content">
+              <ul className="dropdown-content-full">
                 <li>
                   <Link to="#">Programs</Link>
                 </li>
@@ -52,17 +52,6 @@ export default function Header() {
             </li>
             <li className="dropdown">
               <Link to="#">Enterprise</Link>
-              <ul className="dropdown-content">
-                <li>
-                  <Link to="#">Requirements</Link>
-                </li>
-                <li>
-                  <Link to="#">Apply</Link>
-                </li>
-                <li>
-                  <Link to="#">Fees</Link>
-                </li>
-              </ul>
             </li>
             <li className="dropdown">
               <Link to="#">Courses</Link>
