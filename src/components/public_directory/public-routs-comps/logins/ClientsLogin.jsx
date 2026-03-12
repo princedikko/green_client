@@ -7,7 +7,7 @@ import axios from "axios";
 import IsLoading from "../../../../isLoading.jsx";
 import Lock from "@mui/icons-material/Lock";
 import Person from "@mui/icons-material/Person";
-import Logo3D from "../../home-page/logo/udus_logo.png";
+import Logo3D from "../../home-page/logo/green_logos.png";
 import { Link, useNavigate } from "react-router-dom";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -25,7 +25,7 @@ export default function ClientsLogin() {
     (reqest, response) => {
       return { ...reqest, ...response };
     },
-    { user_name: "", stud_password: "" }
+    { user_name: "", stud_password: "" },
   );
 
   const executeLogin = async () => {

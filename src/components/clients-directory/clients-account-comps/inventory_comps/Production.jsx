@@ -798,24 +798,37 @@ export default function Production({ breadcrumbs }) {
       <div className="fx-cl space2">
         <div className="production_breadcrumbs fx-ac">
           <Link className="fx-ac spacem">
-            <strong>{breadcrumbs.active && breadcrumbs.active}</strong>{" "}
+            <strong>{breadcrumbs.active && breadcrumbs.active_title}</strong>{" "}
             <KeyboardArrowRightIcon fontSize="small" />{" "}
           </Link>
           <Link className="fx-ac spacem">
-            <span>
-              {breadcrumbs.active_display && breadcrumbs.active_display}
-            </span>
-            <KeyboardArrowRightIcon fontSize="small" />
             <span>{currentTab && currentTab}</span>
           </Link>
         </div>
         <div className="production_headings fx-jb space4">
           <div className="fx-cl">
             <h2 style={{ textTransform: "capitalize" }}>
-              {breadcrumbs.active}
+              {breadcrumbs.active_title}
             </h2>
             <p style={{ fontSize: "1.2rem" }}>
-              Here is a list of production you have made
+              The Production module is used when a business manufactures or
+              creates products. Instead of buying products, the business
+              produces them using raw materials. <br />
+              Example business: bakery factory food processing beverage company
+              <br />
+              Example: Bakery To produce bread:
+              <br />| Ingredient | Quantity | | Flour | 5 kg | | Sugar | 1 kg |
+              | Yeast | 0.2 kg |
+              {/* {
+  productProduced: "Bread",
+  quantityProduced: 100,
+  materialsUsed: [
+    { material: "Flour", quantity: 5 },
+    { material: "Sugar", quantity: 1 },
+    { material: "Yeast", quantity: 0.2 }
+  ],
+  productionDate: ISODate()
+} */}
             </p>
           </div>
           <div className="fx-ac fx-jb spacem">

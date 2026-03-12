@@ -3,10 +3,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import { motion } from "framer-motion"; // Importing framer-motion for animations
 
-import ManSitting from "../homepage_images/mansitting.png"; // Importing image for the hero section
-import GalSitting from "../homepage_images/girlsitting.png"; // Importing another image for the hero section
-import StuGalSitting from "../homepage_images/Udupss_girl.png"; // Importing another image for the hero section
-import HoldingLogo from "../homepage_images/joolie.png"; // Importing another image for the hero section
+import ManSitting from "../homepage_images/Maps.png"; // Importing image for the hero section
+import GalSitting from "../homepage_images/untitled-0 (14).png"; // Importing another image for the hero section
+import StuGalSitting from "../homepage_images/aa.png"; // Importing another image for the hero section
+import HoldingLogo from "../homepage_images/images.png"; // Importing another image for the hero section
 import Logo3d from "../homepage_images/logo_3d.png"; // Importing another image for the hero section
 // Import Swiper styles
 import "swiper/css";

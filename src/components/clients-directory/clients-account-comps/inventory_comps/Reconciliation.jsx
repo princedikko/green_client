@@ -47,7 +47,7 @@ export default function Reconciliation({ breadcrumbs }) {
   const currentRows = salesData.slice(start, end);
 
   const currentTab = useSelector(
-    (state) => state.clientFunction?.dashboard?.currentTab
+    (state) => state.clientFunction?.dashboard?.currentTab,
   );
 
   // /////////////////////////////////////////////////////////
@@ -262,7 +262,7 @@ export default function Reconciliation({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -324,7 +324,7 @@ export default function Reconciliation({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -510,7 +510,7 @@ export default function Reconciliation({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -572,7 +572,7 @@ export default function Reconciliation({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -709,7 +709,7 @@ export default function Reconciliation({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -771,7 +771,7 @@ export default function Reconciliation({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -792,19 +792,20 @@ export default function Reconciliation({ breadcrumbs }) {
   }
   console.log(
     "PRINTING:",
-    useSelector((state) => state.clientFunction?.printData)
+    useSelector((state) => state.clientFunction?.printData),
   );
   return (
     <div className="reconciliationCompContainer">
       <div className="fx-cl space2">
         <div className="reconciliation_breadcrumbs fx-ac">
           <Link className="fx-ac spacem">
-            <strong>{breadcrumbs.active && breadcrumbs.active}</strong>{" "}
+            <strong>{breadcrumbs.active && breadcrumbs.active_title}</strong>{" "}
             <KeyboardArrowRightIcon fontSize="small" />{" "}
           </Link>
           <Link className="fx-ac spacem">
             <span>
-              {breadcrumbs.active_display && breadcrumbs.active_display}
+              {breadcrumbs.active_display_title &&
+                breadcrumbs.active_display_title}
             </span>
             <KeyboardArrowRightIcon fontSize="small" />
             <span>{currentTab && currentTab}</span>
@@ -813,10 +814,19 @@ export default function Reconciliation({ breadcrumbs }) {
         <div className="reconciliation_headings fx-jb space4">
           <div className="fx-cl">
             <h2 style={{ textTransform: "capitalize" }}>
-              {breadcrumbs.active}
+              {breadcrumbs.active_title}
             </h2>
             <p style={{ fontSize: "1.2rem" }}>
-              Here is a list of reconciliation you have made
+              Reconciliation means comparing system stock with physical stock.
+              Purpose: ✔ verify inventory accuracy ✔ detect theft ✔ detect
+              scanning errors Large supermarkets do this weekly or monthly.
+              {/* {
+  productId: "...",
+  systemStock: 120,
+  physicalStock: 115,
+  checkedBy: "warehouse_manager",
+  date: ISODate()
+} */}
             </p>
           </div>
           <div className="fx-ac fx-jb spacem">

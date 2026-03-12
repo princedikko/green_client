@@ -1,0 +1,48 @@
+.map-container {
+  height: 100vh;
+  overflow: auto;
+}
+
+.map-svg {
+  width: 85rem;
+  padding: 1.6rem;
+}
+.map-container svg.map-svg path {
+  fill: #e0e0e0;
+  stroke: #ffffff;
+  stroke-width: 1;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.map-container svg.map-svg path.active-state:hover {
+  fill: #fbc02d;
+}
+.map-container svg.map-svg path.active-state {
+  fill: #1cbf52;
+  stroke: #fff;
+  /* color: #fff; */
+}
+.map-container svg.map-svg path:hover {
+  fill: #d0d0d0;
+  stroke-width: 2;
+}
+
+.map-container svg.map-svg text {
+  position: relative;
+}
+
+.map-container svg.map-svg text .svg-tooltip {
+  display: none;
+  position: absolute;
+  top: 0;
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.3rem;
+  background-color: #1cbf526b;
+  color: #1cbf52;
+  z-index: 999999999999999999;
+}
+
+.map-container svg.map-svg text:hover .svg-tooltip {
+  display: block;
+}

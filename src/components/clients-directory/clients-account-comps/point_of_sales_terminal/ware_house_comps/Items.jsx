@@ -116,7 +116,7 @@ function TableView() {
             <tr>
               <th>S/N</th>
               <th>Item</th>
-              <th>Purchase Unit</th>
+              <th>Base Unit</th>
               <th>Quantity</th>
               <th>Price ₦</th>
               <th>Estimate ₦</th>
@@ -125,22 +125,25 @@ function TableView() {
 
           <tbody className="fx-cl spacem">
             {cart.map((item, index) => (
-              <div className={`${accordion == index && "itemAccordionOpen"}`}>
-                <tr
-                  key={index}
+              <tr
+                key={index}
+                id={`${accordion == index && "itemAccordionOpen"}`}
+                className="itemRowTdCont"
+              >
+                <td
                   id={item.sku}
-                  className={`${activeRow == index && "active_warehauseRow"}`}
+                  className={`itemRowTd ${activeRow == index && "active_warehauseRow"}`}
                   onClick={() =>
                     accordion == index
                       ? setAccordion(null)
                       : setAccordion(index)
                   }
                 >
-                  <td>
+                  <span>
                     <strong>{index + 1}</strong>
-                  </td>
-                  <td>{item.name}</td>
-                  <td>
+                  </span>
+                  <span>{item.name}</span>
+                  <span>
                     <div className="item_row_entries-info fx-ac spacem">
                       <div className="item_row-page-limit">
                         <button
@@ -148,7 +151,9 @@ function TableView() {
                           style={{ color: "#222", textTransform: "capitalize" }}
                         >
                           {item.packaging}
-                          <span className="item_row-page-limit-arrow">▾</span>
+                          <span className="item_row-page-limit-arrow">
+                            {item.units?.baseUnit}
+                          </span>
                         </button>
 
                         {openItemDrpdwn && activeRow == index && (
@@ -169,7 +174,7 @@ function TableView() {
                                   updatePackage(
                                     index,
                                     n,
-                                    item.batches[index]?.quantity,
+                                    item.batches[0]?.quantity,
                                   )
                                 }
                               >
@@ -180,8 +185,8 @@ function TableView() {
                         )}
                       </div>
                     </div>
-                  </td>
-                  <td
+                  </span>
+                  <span
                     className="fx-ac spacem"
                     onClick={(e) => e.stopPropagation()}
                   >
@@ -190,7 +195,7 @@ function TableView() {
                         updateQty(
                           index,
                           Number(item.sellingQuantity - 1),
-                          item.batches[index]?.quantity,
+                          item.batches[0]?.quantity,
                         )
                       }
                     >
@@ -226,20 +231,20 @@ function TableView() {
                     >
                       <AddCircleOutlineIcon fontSize="medium" />
                     </button>
-                  </td>
+                  </span>
 
-                  <td className="fx-ac space1">
+                  <span className="fx-ac space1">
                     <span>₦{item.pricing?.sellingPrice.toLocaleString()}</span>
-                  </td>
-                  <td className="fx-ac space1">
+                  </span>
+                  <span className="fx-ac space1">
                     <span>
                       ₦
                       {(
                         item.pricing?.sellingPrice * item?.sellingQuantity
                       ).toLocaleString()}
                     </span>
-                  </td>
-                  <td
+                  </span>
+                  <span
                     className="fx-ac space1"
                     onClick={(e) => e.stopPropagation()}
                   >
@@ -249,9 +254,9 @@ function TableView() {
                     >
                       <CloseIcon fontSize="large" />
                     </button>
-                  </td>
-                </tr>
-                <div className="itemAccordionCont">
+                  </span>
+                </td>
+                <span className="itemAccordionCont">
                   <div className="itemAccordionDisc fx-ac space1">
                     <figure className="fx-ac fx-jc">
                       <ShoppingCartIcon
@@ -271,7 +276,7 @@ function TableView() {
                       <div className="fx-cl spacem">
                         <span>Batch</span>
                         <p>
-                          <strong>{item.batches[0].batchNo}</strong>
+                          <strong>{item?.batches[0]?.batchNo}</strong>
                         </p>
                       </div>
                       <div className="fx-cl spacem ">
@@ -291,7 +296,7 @@ function TableView() {
                               textTransform: "capitalize",
                             }}
                           >
-                            {item.units.baseUnit}
+                            {item.units?.baseUnit}
                             <span className="item_row-page-limit-arrow">▾</span>
                           </button>
 
@@ -313,7 +318,7 @@ function TableView() {
                                     updatePackage(
                                       index,
                                       n,
-                                      item.batches[index]?.quantity,
+                                      item.batches[0]?.quantity,
                                     )
                                   }
                                 >
@@ -327,15 +332,13 @@ function TableView() {
                       <div className="fx-cl spacem">
                         <span>Expiry Date</span>
                         <p>
-                          <strong>
-                            {item.batches[0].expiryDate.slice(0, 7)}
-                          </strong>
+                          <strong>{item?.batches[0].expiryDate}</strong>
                         </p>
                       </div>
                       <div className="fx-cl spacem ">
                         <span>Size</span>
                         <p>
-                          <strong>{item.barcode}</strong>
+                          <strong>{item?.barcode}</strong>
                         </p>
                       </div>
                       <div className="fx-cl spacem ">
@@ -384,8 +387,8 @@ function TableView() {
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
+                </span>
+              </tr>
             ))}
           </tbody>
         </table>

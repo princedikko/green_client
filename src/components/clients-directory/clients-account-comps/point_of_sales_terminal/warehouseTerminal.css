@@ -140,6 +140,22 @@
   width: 100%;
   /* margin-top: 2.4rem; */
 }
+.warehouseHubMiddleWare button.detailsMini {
+  color: #333;
+  font-size: 1.2rem;
+  padding: 0.4rem 1rem;
+  border-radius: 0.6rem;
+  background-color: #ffffffa8;
+  min-width: 15rem;
+}
+.warehouseHubMiddleWare button.brands-page-limit-btn {
+  color: #333;
+  font-size: 1.2rem;
+  padding: 0.4rem 1rem;
+  border-radius: 0.6rem;
+  background-color: #ffffffa8;
+  min-width: 6rem;
+}
 .warehouseHubMiddleWare button {
   color: #999;
   font-size: 1.2rem;
@@ -161,7 +177,8 @@
   height: 40rem;
   padding: 3.6rem;
   border-radius: 1.2rem;
-  background-color: #fafafa;
+  background-color: #fafafab5;
+  backdrop-filter: blur(1px);
   color: #666;
   position: relative;
 }
@@ -211,7 +228,7 @@
   display: flex;
   align-items: center;
   background-color: #fff;
-  color: #777777;
+  color: #777;
   box-shadow: 0.4rem 0.4rem 2.3rem -1rem rgba(0, 0, 0, 0.35);
   font-size: 0.8rem;
   transition: all 0.3s;
@@ -223,9 +240,13 @@
   color: #fff;
   box-shadow: none;
 }
+
 .warehouseHubBtn button:first-child {
-  background-color: #fff;
-  color: #26bf89;
+  background-color: #f85a38;
+}
+
+.warehouseHubBtn button:hover {
+  opacity: 0.7;
 }
 
 .warehouseHubOperations button.active {
@@ -327,11 +348,10 @@ div.warehouseHubOperations button.cashPaid:hover {
 }
 
 #largeView {
-  background-image: url("./images/largeVbg.png");
+  background-image: url("./images/large.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: bottom;
-  position: relative;
 }
 
 #largeView .taskBar {
@@ -485,6 +505,12 @@ button.wareHouseAddnewProd:hover {
   color: #fff;
 }
 
+.no-products-found {
+  padding: 2.4rem;
+  text-align: center;
+  color: #333;
+  font-size: 1.4rem;
+}
 .productsCardWH {
   height: 8rem;
   padding: 1rem;
@@ -693,12 +719,17 @@ button.wareHouseAddnewProd:hover {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  width: 9rem;
+  width: 10rem;
   height: 2rem;
   padding: 0.5rem 0.7rem;
   border-radius: 0.4rem;
-  background-color: #3a84f8;
-  color: #fff;
+  background-color: #e6effe;
+  color: #3a84f8;
   font-size: 1.2rem;
   transition: all 0.3s;
+}
+
+.controlButtons:hover {
+  background-color: #3a84f8;
+  color: #fff;
 }

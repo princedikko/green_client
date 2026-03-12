@@ -18,13 +18,18 @@
 }
 .navbar {
   background-color: transparent;
-  color: #000;
+  color: #fff;
   padding: 10px 20px;
   position: sticky;
   top: 0;
   z-index: 1000;
 }
-
+.navbar a.navbar-logo:link,
+.navbar a.navbar-logo:visited {
+  font-weight: 600;
+  font-size: 3rem;
+  color: #fff;
+}
 .navbar-container {
   display: flex;
   justify-content: space-between;
@@ -46,22 +51,29 @@
   position: relative;
 }
 
-.nav-links a {
-  color: #000;
+.nav-links a:link,
+.nav-links a:visited {
+  color: #fff;
   text-decoration: none;
   padding: 8px;
   display: block;
 }
 
+.dropdown-content a:link,
+.dropdown-content a:visited {
+  color: #333;
+}
 .dropdown-content-full {
   display: none;
   position: absolute;
-  background-color: #fafafa;
+  background-color: #fafafa85;
   color: #000;
   width: 100vw;
   top: 100%;
-  left: -50%;
+  right: 50%;
+  transform: translateX(70%);
   z-index: 999;
+  backdrop-filter: 16px;
 }
 
 .dropdown-content {
@@ -84,7 +96,7 @@
 .academicsLogin .dropdown-content a:link,
 .academicsLogin .dropdown-content a:visited {
   width: 100%;
-  color: #000;
+  color: #fff;
   padding: 10px;
   border-bottom: 1px solid #eee;
   transition: all 0.3s;
@@ -107,17 +119,19 @@
 }
 .academicsLogin a:link,
 .academicsLogin a:visited {
-  color: #000;
+  color: #fff;
 }
 .btn-staff_portal:link,
 .btn-staff_portal:visited {
   color: #333;
 }
+
 .navbar-buttons a.btn-student_portal:link,
 .navbar-buttons a.btn-student_portal:visited {
-  background-color: #333e60;
-  color: #fff;
+  background-color: #fff;
+  color: #440297;
   padding: 0.6rem 2.2rem;
+  font-weight: bold;
   border-radius: 0.4rem;
   border-radius: 33rem;
 }

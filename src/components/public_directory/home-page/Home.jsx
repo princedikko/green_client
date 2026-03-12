@@ -14,6 +14,7 @@ import GalleryStaff from "./home-comps/GalleryStaff";
 import Future from "./home-comps/Future";
 import Footer from "./home-comps/Footer";
 import Ourservices from "./home-comps/Ourservices";
+import Test from "../../../test/Test";
 
 export default function Home() {
   const [loading, setLoading] = useState(false);

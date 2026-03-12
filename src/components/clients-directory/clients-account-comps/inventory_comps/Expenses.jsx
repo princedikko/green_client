@@ -46,7 +46,7 @@ export default function Expenses({ breadcrumbs }) {
   const currentRows = salesData.slice(start, end);
 
   const currentTab = useSelector(
-    (state) => state.clientFunction?.dashboard?.currentTab
+    (state) => state.clientFunction?.dashboard?.currentTab,
   );
 
   // /////////////////////////////////////////////////////////
@@ -261,7 +261,7 @@ export default function Expenses({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -323,7 +323,7 @@ export default function Expenses({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -507,7 +507,7 @@ export default function Expenses({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -569,7 +569,7 @@ export default function Expenses({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -706,7 +706,7 @@ export default function Expenses({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -768,7 +768,7 @@ export default function Expenses({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -789,19 +789,20 @@ export default function Expenses({ breadcrumbs }) {
   }
   console.log(
     "PRINTING:",
-    useSelector((state) => state.clientFunction?.printData)
+    useSelector((state) => state.clientFunction?.printData),
   );
   return (
     <div className="expensesCompContainer">
       <div className="fx-cl space2">
         <div className="expenses_breadcrumbs fx-ac">
           <Link className="fx-ac spacem">
-            <strong>{breadcrumbs.active && breadcrumbs.active}</strong>{" "}
+            <strong>{breadcrumbs.active && breadcrumbs.active_title}</strong>{" "}
             <KeyboardArrowRightIcon fontSize="small" />{" "}
           </Link>
           <Link className="fx-ac spacem">
             <span>
-              {breadcrumbs.active_display && breadcrumbs.active_display}
+              {breadcrumbs.active_display_title &&
+                breadcrumbs.active_display_title}
             </span>
             <KeyboardArrowRightIcon fontSize="small" />
             <span>{currentTab && currentTab}</span>
@@ -810,10 +811,13 @@ export default function Expenses({ breadcrumbs }) {
         <div className="expenses_headings fx-jb space4">
           <div className="fx-cl">
             <h2 style={{ textTransform: "capitalize" }}>
-              {breadcrumbs.active}
+              {breadcrumbs.active_title}
             </h2>
             <p style={{ fontSize: "1.2rem" }}>
-              Here is a list of expenses you have made
+              Expenses are costs the business pays to operate, not inventory
+              purchases. Examples: <br />| Expense | Example | | Electricity |
+              ₦45,000 | | Staff salary | ₦250,000 | | Internet | ₦15,000 | |
+              Fuel | ₦30,000 | | Shop rent | ₦500,000 |
             </p>
           </div>
           <div className="fx-ac fx-jb spacem">
@@ -862,25 +866,25 @@ export default function Expenses({ breadcrumbs }) {
                 currentTab == "expenses" && "active"
               }`}
             >
-              <span>Todo</span>
+              <span>Categories</span>
               <figure>34</figure>
             </li>
             <li
-              onClick={() => handleCurrentTAB("completed")}
+              onClick={() => handleCurrentTAB("expense_category")}
               className={`fx-ac  spacem ${
-                currentTab == "completed" && "active"
+                currentTab == "expense_category" && "active"
               }`}
             >
-              <span>Completed</span>
+              <span>Expenses</span>
               <figure>45</figure>
             </li>
             <li
-              onClick={() => handleCurrentTAB("progress")}
+              onClick={() => handleCurrentTAB("add_expenses")}
               className={`fx-ac  spacem ${
-                currentTab == "progress" && "active"
+                currentTab == "add_expenses" && "active"
               }`}
             >
-              <span>In Progress</span>
+              <span>Add new</span>
               <figure>89</figure>
             </li>
           </ul>

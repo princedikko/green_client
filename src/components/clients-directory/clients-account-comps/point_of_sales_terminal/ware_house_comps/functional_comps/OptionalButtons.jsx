@@ -226,23 +226,72 @@ export function AddNewProduct({ handleOnHold }) {
     </div>
   );
 }
-export function ClearCart({ handleOnHold, clearCart }) {
+export function ClearCart({ clearCart, cart, customer, setOpenModal }) {
+  const [cashCollected, setCashCollected] = useState(0);
+  const grandTotal = cart?.reduce(
+    (sum, item) => sum + item.pricing.sellingPrice * item.sellingQuantity,
+    0,
+  );
   return (
     <div
-      className="OpBtnCont fx-cl space2"
+      className="clearCartCont fx-cl space2"
       onClick={(e) => e.stopPropagation()}
     >
-      <h3>Are you sure you want to Delete all items in CART</h3>
-      <p>You save this transaction</p>
-      <div className="fx-ac space3 fx-jb">
-        <button>Cancel</button>
-        <button
-          onClick={() => {
-            clearCart();
-          }}
-        >
-          Clear cart
-        </button>
+      <div className="clearCarthead fx-ac fx-jc">
+        <figure>&nbsp;</figure>
+        <p>Are you sure?</p>
+        <figure>&nbsp;</figure>
+      </div>
+      <div className="clearCartDiscCont ">
+        <div className="clearCartDisc fx-cl">
+          <div className="clearCartRow">
+            <div className="fx-ac spacem">
+              <WorkspacePremiumRoundedIcon fontSize="large" />{" "}
+              <span>Customer:</span>
+            </div>
+            <p> {customer.toLocaleString()}</p>
+          </div>
+          <div className="clearCartRow ">
+            <div className="fx-ac spacem">
+              <ShoppingCartIcon fontSize="large" /> <span>Products:</span>
+            </div>
+            <p>{cart?.length} items</p>
+          </div>
+          <div className="clearCartRow ">
+            <div className="fx-ac spacem">
+              <EventRoundedIcon fontSize="large" /> <span>Grand Total:</span>
+            </div>
+            <p>
+              <strong>₦ {grandTotal.toLocaleString()}</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="clearCartButtom fx-cl space2 fx-jc">
+        <div className="fx-ac">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
+            repellendus vel ratione laudantium, eligendi maiores tenetur ea,
+            dignissimos perferendis, sequi totam qui.
+          </p>
+        </div>
+
+        <div className="fx-ac space3 fx-jc">
+          <button
+            onClick={() => {
+              setOpenModal(false);
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => {
+              clearCart();
+            }}
+          >
+            Clear all
+          </button>
+        </div>
       </div>
     </div>
   );

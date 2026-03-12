@@ -53,7 +53,7 @@ export default function Registration() {
       transaction_id: "",
       state_of_address: "",
       application_number: "",
-    }
+    },
   );
 
   const actions = useSelector((state) => state.applictaionForm);
@@ -62,7 +62,7 @@ export default function Registration() {
     await axios
       .post(
         `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/candidate_registration`,
-        payload
+        payload,
       )
       .then((response) => {
         applicationData = response.data.data;
@@ -84,7 +84,7 @@ export default function Registration() {
             },
           });
           navigateTo(
-            `/registrations/${response.data?.data?.auth.loginUsername}/print_reciept`
+            `/registrations/${response.data?.data?.auth.loginUsername}/print_reciept`,
           );
           setLoading(false);
         }
@@ -245,7 +245,7 @@ export default function Registration() {
         tel: "",
         course: "",
         ExaminationCouncil: "",
-      }
+      },
     );
 
     const [errors, setErrors] = useState({});
@@ -259,7 +259,7 @@ export default function Registration() {
       gender: Yup.string().required("Gender is required"),
       email: Yup.string().email("Invalid email").required("Email is required"),
       programme_of_study: Yup.string().required(
-        "Programme of study is required"
+        "Programme of study is required",
       ),
     });
 
@@ -725,7 +725,7 @@ function ProgrammeSelection({ selectedProgramme, setSelectedProgramme }) {
         // add it
         if (prev.length >= 9) {
           alert(
-            "You can only select up to 4 subjects for this examination session."
+            "You can only select up to 4 subjects for this examination session.",
           );
           return prev; // Do not add more than 3 subjects
         }
@@ -814,7 +814,7 @@ function CoursesSelection({ selectedSubjects, setSelectedSubjects }) {
         // add it
         if (prev.length >= 9) {
           alert(
-            "You can only select up to 4 subjects for this examination session."
+            "You can only select up to 4 subjects for this examination session.",
           );
           return prev; // Do not add more than 3 subjects
         }

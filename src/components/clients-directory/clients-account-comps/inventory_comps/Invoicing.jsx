@@ -46,7 +46,7 @@ export default function Invoicing({ breadcrumbs }) {
   const currentRows = salesData.slice(start, end);
 
   const currentTab = useSelector(
-    (state) => state.clientFunction?.dashboard?.currentTab
+    (state) => state.clientFunction?.dashboard?.currentTab,
   );
 
   // /////////////////////////////////////////////////////////
@@ -261,7 +261,7 @@ export default function Invoicing({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -323,7 +323,7 @@ export default function Invoicing({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -509,7 +509,7 @@ export default function Invoicing({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -571,7 +571,7 @@ export default function Invoicing({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -708,7 +708,7 @@ export default function Invoicing({ breadcrumbs }) {
                       ? "0 to 0 of 0 entries"
                       : `${start + 1} to ${Math.min(
                           end,
-                          salesData.length
+                          salesData.length,
                         )} of ${salesData.length} entries`}
                   </span>
                 </span>
@@ -770,7 +770,7 @@ export default function Invoicing({ breadcrumbs }) {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -791,31 +791,30 @@ export default function Invoicing({ breadcrumbs }) {
   }
   console.log(
     "PRINTING:",
-    useSelector((state) => state.clientFunction?.printData)
+    useSelector((state) => state.clientFunction?.printData),
   );
   return (
     <div className="invoicingCompContainer">
       <div className="fx-cl space2">
         <div className="invoicing_breadcrumbs fx-ac">
           <Link className="fx-ac spacem">
-            <strong>{breadcrumbs.active && breadcrumbs.active}</strong>{" "}
+            <strong>{breadcrumbs.active && breadcrumbs.active_title}</strong>{" "}
             <KeyboardArrowRightIcon fontSize="small" />{" "}
           </Link>
           <Link className="fx-ac spacem">
-            <span>
-              {breadcrumbs.active_display && breadcrumbs.active_display}
-            </span>
-            <KeyboardArrowRightIcon fontSize="small" />
             <span>{currentTab && currentTab}</span>
           </Link>
         </div>
         <div className="invoicing_headings fx-jb space4">
           <div className="fx-cl">
             <h2 style={{ textTransform: "capitalize" }}>
-              {breadcrumbs.active}
+              {breadcrumbs.active_title}
             </h2>
             <p style={{ fontSize: "1.2rem" }}>
-              Here is a list of invoicing you have made
+              Invoicing is the module used to create and manage invoices for
+              customers. An invoice is a document that shows: <br />
+              products sold quantity price tax total amount to pay <br />
+              It is usually generated after a sale.
             </p>
           </div>
           <div className="fx-ac fx-jb spacem">
@@ -859,7 +858,7 @@ export default function Invoicing({ breadcrumbs }) {
         <div className="invoicing_actionBar fx-jb space4">
           <ul className="left fx-ac">
             <li
-              onClick={() => handleCurrentTAB("invoicing")}
+              onClick={() => handleCurrentTAB("invoice")}
               className={`fx-ac  spacem ${
                 currentTab == "invoicing" && "active"
               }`}

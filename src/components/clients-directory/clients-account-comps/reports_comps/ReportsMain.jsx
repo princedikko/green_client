@@ -831,14 +831,10 @@ export default function ReportsMain({ breadcrumbs }) {
       <div className="fx-cl space2">
         <div className="reportsmain_breadcrumbs fx-ac">
           <Link className="fx-ac spacem">
-            <strong>{breadcrumbs.active && breadcrumbs.active}</strong>{" "}
+            <strong>{breadcrumbs.active && breadcrumbs.active_title}</strong>{" "}
             <KeyboardArrowRightIcon fontSize="small" />{" "}
           </Link>
           <Link className="fx-ac spacem">
-            <span>
-              {breadcrumbs.active_display && breadcrumbs.active_display}
-            </span>
-            <KeyboardArrowRightIcon fontSize="small" />
             <span>{currentTab && currentTab}</span>
           </Link>
         </div>

@@ -1,8 +1,3 @@
-// Below is a production-grade MongoDB document design used in POS / supermarket / mall systems (like Prokip, Odoo POS, Square, Lightspeed).
-// This is what gets saved when a barcode is scanned and a sale happens.
-
-// I’ll keep it advanced but clean, real-world level.
-
 // 1️⃣ Product Collection (Master Inventory)
 const product_collection = {
   _id: ObjectId("..."),

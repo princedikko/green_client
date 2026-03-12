@@ -25,6 +25,9 @@ import ClientEduTech from "./clients-account-comps/ClientEduTech.jsx";
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import CheckIcon from "@mui/icons-material/Check";
 import SearchIcon from "@mui/icons-material/Search";
+
+import DiscountIcon from "@mui/icons-material/Discount";
+import PanToolIcon from "@mui/icons-material/PanTool";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
@@ -40,7 +43,7 @@ import HelpCenterRoundedIcon from "@mui/icons-material/HelpCenterRounded";
 import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import Sales from "./clients-account-comps/inventory_comps/Sales.jsx";
-import Quatations from "./clients-account-comps/inventory_comps/Quatations.jsx";
+import Quotation from "./clients-account-comps/inventory_comps/Quotation.jsx";
 import Discount from "./clients-account-comps/inventory_comps/Discount.jsx";
 import Subscriptions from "./clients-account-comps/inventory_comps/Subscriptions.jsx";
 import Drafts from "./clients-account-comps/inventory_comps/Drafts.jsx";
@@ -64,7 +67,7 @@ import Discripancies from "./clients-account-comps/inventory_comps/Discripancies
 import FilterAdjustment from "./clients-account-comps/inventory_comps/filters/FilterAdjustment.jsx";
 import Adjustment from "./clients-account-comps/inventory_comps/Adjustment.jsx";
 import Expenses from "./clients-account-comps/inventory_comps/Expenses.jsx";
-import CategoriesX from "./clients-account-comps/inventory_comps/CategoriesX.jsx";
+import ExpenseCategory from "./clients-account-comps/inventory_comps/ExpenseCategory.jsx";
 import Invoicing from "./clients-account-comps/inventory_comps/Invoicing.jsx";
 import Production from "./clients-account-comps/inventory_comps/Production.jsx";
 import ReportsMain from "./clients-account-comps/reports_comps/ReportsMain.jsx";
@@ -76,8 +79,14 @@ export default function ClientsAccount() {
     (state) => state.clientFunction?.queue?.clientData?.info,
   );
 
+  const active_title = useSelector(
+    (state) => state.clientFunction?.dashboard?.nav_title,
+  );
   const active = useSelector(
     (state) => state.clientFunction?.dashboard?.nav_trace,
+  );
+  const active_display_title = useSelector(
+    (state) => state.clientFunction?.dashboard?.subNavBar_title,
   );
   const active_display = useSelector(
     (state) => state.clientFunction?.dashboard?.subNavBar_trace,
@@ -107,14 +116,35 @@ export default function ClientsAccount() {
     navigate("/clients/warehouse_terminal");
     handlePayload();
   }
+
   // Redux functions for dashboards navigation
-  function handleNavigator(item) {
-    dispatch(Action.dispathcDashboardNavigator({ item }));
+  function handleNavigator(item, index) {
+    const active = item?.active;
+    const title = item?.title;
+    const hooks = item?.hooks;
+    const main = item?.hooks;
+    const children = item?.children;
+    dispatch(
+      Action.dispathcDashboardNavigator({
+        active,
+        title,
+        hooks,
+        main,
+        children,
+      }),
+    );
+
+    if (openIndex == index) {
+      dispatch(DispatchOpenIndex(""));
+      return;
+    } else {
+      dispatch(DispatchOpenIndex(index));
+    }
   }
-  console.log("Products DATA: ", productsData);
+
   // Redux functions for sub-navigation
-  function handleSubNavigator(item) {
-    dispatch(Action.dispatchDashboardSubNavigator({ item }));
+  function handleSubNavigator(hook, title, main) {
+    dispatch(Action.dispatchDashboardSubNavigator({ hook, title, main }));
   }
 
   function handlePayload(item) {
@@ -129,7 +159,8 @@ export default function ClientsAccount() {
     }
   };
 
-  const breads = { active, active_display };
+  console.log("asdfasdf:", active_display);
+  const breads = { active, active_display, active_title, active_display_title };
   function switchComponents() {
     switch (active_display) {
       case "account":
@@ -141,18 +172,18 @@ export default function ClientsAccount() {
       case "sales":
         return <Sales breadcrumbs={breads} />;
       case "quatations":
-        return <Quatations breadcrumbs={breads} />;
+        return <Quotation breadcrumbs={breads} />;
       case "discount":
         return <Discount breadcrumbs={breads} />;
       case "subscriptions":
         return <Subscriptions breadcrumbs={breads} />;
       case "draft":
         return <Drafts breadcrumbs={breads} />;
-      case "productservices":
+      case "product_services":
         return <ProductServices breadcrumbs={breads} />;
       case "imports":
         return <Imports breadcrumbs={breads} />;
-      case "pricegroups":
+      case "price_groups":
         return <PriceGroups breadcrumbs={breads} />;
       case "units":
         return <Units breadcrumbs={breads} />;
@@ -168,6 +199,8 @@ export default function ClientsAccount() {
         return <Recives breadcrumbs={breads} />;
       case "returns":
         return <Returns breadcrumbs={breads} />;
+      case "sell_return":
+        return <SellReturn breadcrumbs={breads} />;
       case "orders":
         return <Orders breadcrumbs={breads} />;
       case "transfers":
@@ -182,13 +215,13 @@ export default function ClientsAccount() {
         return <Adjustment breadcrumbs={breads} />;
       case "expenses":
         return <Expenses breadcrumbs={breads} />;
-      case "categoriesx":
-        return <CategoriesX breadcrumbs={breads} />;
+      case "expense_category":
+        return <ExpenseCategory breadcrumbs={breads} />;
       case "invoicing":
         return <Invoicing breadcrumbs={breads} />;
       case "production":
         return <Production breadcrumbs={breads} />;
-      case "reportsmain":
+      case "reports_main":
         return <ReportsMain breadcrumbs={breads} />;
 
       // /.....................................
@@ -200,13 +233,7 @@ export default function ClientsAccount() {
   }
 
   // FUNCTION FOR SIDE NAVIGATION BAR ACCORDION
-  function toggleIndex(index) {
-    if (openIndex === index) {
-      dispatch(DispatchOpenIndex(""));
-      return;
-    }
-    dispatch(DispatchOpenIndex(index));
-  }
+
   const DispatchOpenIndex = (index) => async (dispatch) => {
     try {
       dispatch(Action.dispatchClientOpenIndex({ index }));
@@ -236,7 +263,7 @@ export default function ClientsAccount() {
           tabs: ["main", "completed", "pending"],
         },
         {
-          title: "Quatations",
+          title: "Quotation",
           hook: "quatations",
           tabs: ["main", "completed", "pending"],
         },
@@ -257,7 +284,7 @@ export default function ClientsAccount() {
         },
         {
           title: "Sell Return",
-          hook: "sellreturn",
+          hook: "sell_return",
           tabs: ["main", "completed", "pending"],
         },
       ],
@@ -265,12 +292,12 @@ export default function ClientsAccount() {
     {
       title: "Manage Products",
       icon: <MenuBookRoundedIcon fontSize="medium" />,
-      hooks: "materials",
-      active: "materials",
+      hooks: "manage_products",
+      active: "manage_products",
       children: [
         {
-          title: "ProductServices",
-          hook: "productservices",
+          title: "Product Services",
+          hook: "product_services",
           tabs: ["main", "completed", "pending"],
         },
         {
@@ -279,8 +306,8 @@ export default function ClientsAccount() {
           tabs: ["main", "completed", "pending"],
         },
         {
-          title: "Pricegroups",
-          hook: "pricegroups",
+          title: "Price Groups",
+          hook: "price_groups",
           tabs: ["main", "completed", "pending"],
         },
         {
@@ -313,8 +340,8 @@ export default function ClientsAccount() {
     {
       title: "Purchases",
       icon: <EventRoundedIcon fontSize="medium" />,
-      hooks: "result",
-      active: "result",
+      hooks: "purchases",
+      active: "purchases",
       children: [
         {
           title: "Recieves",
@@ -367,45 +394,28 @@ export default function ClientsAccount() {
       ],
     },
     {
-      title: "Expanses",
+      title: "Expense",
       icon: <ForumRoundedIcon fontSize="medium" />,
-      hooks: "community",
-      active: "community",
-      children: [
-        {
-          title: "Expenses",
-          hook: "expenses",
-          tabs: ["main", "completed", "pending"],
-        },
-        {
-          title: "CategoriesX",
-          hook: "categoriesx",
-          tabs: ["main", "completed", "pending"],
-        },
-      ],
+      hooks: "expenses",
+      active: "expenses",
+      // children: [
+      //   {
+      //     title: "Expenses",
+      //     hook: "expenses",
+      //     tabs: ["main", "completed", "pending"],
+      //   },
+      //   {
+      //     title: "Categories",
+      //     hook: "expense_category",
+      //     tabs: ["main", "completed", "pending"],
+      //   },
+      // ],
     },
     {
       title: "Invoicing",
       icon: <EventRoundedIcon fontSize="medium" />,
       hooks: "invoicing",
       active: "invoicing",
-      //   children: [
-      //     {
-      //       title: "Payments",
-      //       hook: "payments",
-      //       tabs: ["main", "completed", "pending"],
-      //     },
-      //     {
-      //       title: "Invoices",
-      //       hook: "invoices",
-      //       tabs: ["main", "completed", "pending"],
-      //     },
-      //     {
-      //       title: "Billing Estimate",
-      //       hook: "billingestimate",
-      //       tabs: ["main", "completed", "pending"],
-      //     },
-      //   ],
     },
     {
       title: "Production",
@@ -438,8 +448,8 @@ export default function ClientsAccount() {
     {
       title: "Reports",
       icon: <WorkspacePremiumRoundedIcon fontSize="medium" />,
-      hooks: "reportsmain",
-      active: "reportsmain",
+      hooks: "reports_main",
+      active: "reports_main",
       // children: [
       //   {
       //     title: "Stock",
@@ -557,8 +567,7 @@ export default function ClientsAccount() {
                           active === `${item.active}` ? "active-prl-tab" : null
                         }`}
                         onClick={() => {
-                          handleNavigator(item.active);
-                          toggleIndex(index);
+                          handleNavigator(item, index);
                         }}
                       >
                         <span className=" fx-ac spacem">
@@ -585,9 +594,7 @@ export default function ClientsAccount() {
                           active === `${item.active}` ? "active-prl-tab" : null
                         }`}
                         onClick={() => {
-                          handleNavigator(item.active);
-                          toggleIndex(index);
-                          handleSubNavigator(item.hooks);
+                          handleNavigator(item, index);
                         }}
                       >
                         <span className=" fx-ac spacem">
@@ -610,13 +617,17 @@ export default function ClientsAccount() {
                         {item?.children?.map((sub, idx) => (
                           <button
                             className={`clientDashboardSubMenu cb fx-ac space1  ${
-                              active_display === `${sub.title.toLowerCase()}`
+                              active_display == `${sub.hook}`
                                 ? "active-prl-submenu"
                                 : null
                             }`}
                             key={idx}
                             onClick={() => {
-                              handleSubNavigator(sub.title.toLowerCase());
+                              handleSubNavigator(
+                                sub.hook,
+                                sub.title,
+                                item.title,
+                              );
                             }}
                           >
                             <figure className="clientSubNavIcon fx-ac fx-jc">
@@ -653,14 +664,15 @@ export default function ClientsAccount() {
             </div>
           </div>
           <span className="clientDashboardHeadRight fx-ac fx-jc space1">
-            <div className="clientDBSearchCont fx-ac space1">
-              <button
-                className="invoicing_export_btn  fx-ac fx-jc"
-                onClick={() => handleTerminal()}
-              >
-                Point of Sale
-              </button>
-            </div>
+            <button
+              className="point_ofsales_btn  fx-ac spacem"
+              onClick={() => handleTerminal()}
+            >
+              <figure>
+                <DiscountIcon fontSize="large" />
+              </figure>
+              <span>Point of Sale</span>
+            </button>
             <button
               onClick={() => handlePayload()}
               className="notifBtn clientDashboardHeadBtn fx-ac fx-jc space1"

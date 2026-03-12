@@ -304,7 +304,15 @@ function WarehouseTerminal() {
       case "quotation":
         return <Quotation handleOnHold={handleOnHold} />;
       case "clear_cart":
-        return <ClearCart clearCart={clearCart} handleOnHold={handleOnHold} />;
+        return (
+          <ClearCart
+            cart={cart}
+            customer={customer}
+            clearCart={clearCart}
+            setOpenModal={setOpenModal}
+            handleOnHold={handleOnHold}
+          />
+        );
       case "cash_pay":
         return (
           <CashPayment
@@ -494,7 +502,7 @@ function WarehouseTerminal() {
       case "properties":
         return <Property handleModalSwitch={handleModalSwitch} />;
       case "activity_log":
-        return <OperatingGuide />;
+        return <ActivityLog />;
       default:
         return (
           <Products
@@ -665,56 +673,64 @@ function WarehouseTerminal() {
 
             {!switchWarehouseView && (
               <div className="warehauseSearchCont fx-jb space3">
-                <div className=" fx-ac spacem">
-                  <div
-                    className="warehauseSearch fx-jb"
-                    style={{ position: "relative" }}
-                  >
-                    <input
-                      type="text"
-                      placeholder="Search product..."
-                      value={searchTerm}
-                      onChange={handleSearch}
-                    />
+                <div className="fx-ac space1">
+                  <div className=" fx-ac spacem">
+                    <div
+                      className="warehauseSearch fx-jb"
+                      style={{ position: "relative" }}
+                    >
+                      <input
+                        type="text"
+                        placeholder="Search product..."
+                        value={searchTerm}
+                        onChange={handleSearch}
+                      />
 
-                    {filteredProducts.length > 0 && (
-                      <ul className="searched-products-dropdown">
-                        {filteredProducts.map((product) => (
-                          <li
-                            key={product.productId}
-                            onClick={() => {
-                              addToCart(product);
-                              setFilteredProducts("");
-                              setSearchTerm("");
-                            }}
-                            style={{
-                              padding: "8px",
-                              cursor: "pointer",
-                              borderBottom: "1px solid #eee",
-                            }}
-                          >
-                            {product.name} — {product.barcode}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                      {filteredProducts.length > 0 && (
+                        <ul className="searched-products-dropdown">
+                          {filteredProducts.map((product) => (
+                            <li
+                              key={product.productId}
+                              onClick={() => {
+                                addToCart(product);
+                                setFilteredProducts("");
+                                setSearchTerm("");
+                              }}
+                              style={{
+                                padding: "8px",
+                                cursor: "pointer",
+                                borderBottom: "1px solid #eee",
+                              }}
+                            >
+                              {product.name} — {product.barcode}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
                   </div>
-                  {/* <button>
-            <SearchIcon fontSize="large" />
-          </button> */}
+
+                  <button
+                    className="wareHouseAddnewProd fx-ac fx-jc"
+                    onClick={() => handleModalSwitch("add_new_product")}
+                  >
+                    +
+                  </button>
                 </div>
                 <button
                   className="wareHouseAddnewProd fx-ac fx-jc"
                   onClick={() => handleModalSwitch("add_new_product")}
                 >
-                  +
+                  <SettingsRemoteTwoToneIcon
+                    style={{ color: "#ffffff", fontSize: "2rem" }}
+                  />
                 </button>
               </div>
             )}
           </div>
 
           <div className="warehouseItemsCont fx-cl space1">
-            <div className="warehouseHubBtn fx-ac space2">
+            <div className="warehouseHubBtn fx-ac space1">
               {cart.length > 0 ? (
                 <button
                   className="fx-ac fx-jc"
@@ -725,7 +741,7 @@ function WarehouseTerminal() {
 
                   <DeleteForeverIcon
                     fontSize="large"
-                    style={{ color: "#f85a38" }}
+                    style={{ color: "#fff" }}
                   />
                 </button>
               ) : (
@@ -757,7 +773,7 @@ function WarehouseTerminal() {
             <div className="warehouseHubMiddleWare fx-ac fx-jb space4">
               <button
                 onClick={() => handleModalSwitch("counter")}
-                className="fx-ac spacem"
+                className="detailsMini fx-ac spacem"
               >
                 <figure className="counterIcon">&nbsp;</figure>
                 <div className="fx-ac space2">
@@ -779,13 +795,22 @@ function WarehouseTerminal() {
                 </div>
               </button>
               <div className="fx-ac spacem">
-                <button
-                  onClick={() => handleModalSwitch("calculator")}
-                  className="fx-ac spacem"
-                  style={{ color: "#26bf89", padding: ".2rem" }}
-                >
-                  <CalculateIcon fontSize="large" />
-                </button>
+                <div className="icontBtnMiddle fx-ac space1">
+                  <button
+                    onClick={() => handleModalSwitch("calculator")}
+                    className="fx-ac spacem"
+                    style={{ color: "#e2cd0e", padding: ".2rem" }}
+                  >
+                    <FullscreenIcon fontSize="large" />
+                  </button>
+                  <button
+                    onClick={() => handleModalSwitch("calculator")}
+                    className="fx-ac spacem"
+                    style={{ color: "#26bf89", padding: ".2rem" }}
+                  >
+                    <CalculateIcon fontSize="large" />
+                  </button>
+                </div>
                 <div className="brands_entries-info fx-ac spacem">
                   <h4>Brand: </h4>
                   <div className="brands-page-limit">
@@ -871,6 +896,7 @@ function WarehouseTerminal() {
                 >
                   <LocalPrintshopIcon />
                   <span>Print</span>
+                  {/* <span class="tooltips">Print Quatation</span> */}
                 </button>
                 <button
                   className="controlButtons"
@@ -944,10 +970,7 @@ function WarehouseTerminal() {
 → sale closes immediately */}
                 Cash payment
               </button>
-              <button
-                onClick={() => setTogglePagination(!togglePagination)}
-                className={`${togglePagination && "active"}`}
-              >
+              <button>
                 <span className="tooltips">tooltips</span>
                 {/* togglePagination */}
                 <GrainIcon fontSize="large" />
@@ -1355,6 +1378,56 @@ function Products({ handleModalSwitch, products, addToCart, clearCart }) {
     setSearchTerm(product.name);
     setFilteredProducts([]); // close dropdown after selection
   };
+
+  function switchProductView() {
+    if (filteredProducts.length > 0) {
+      return (
+        <div className="items_product_cont g g3 space1">
+          {filteredProducts.map((item, index) => (
+            <figure
+              onClick={() => {
+                addToCart(item);
+
+                setFilteredProducts("");
+                setSearchTerm("");
+              }}
+              key={index}
+              className="productsCardWH fx-cl space1 fx-jb"
+            >
+              <h4>{item.name}</h4>
+              <div>
+                <p>₦{item?.pricing?.sellingPrice}</p>
+              </div>
+            </figure>
+          ))}
+        </div>
+      );
+    } else if (searchTerm.trim() !== "") {
+      return <p className="no-products-found">No products found</p>;
+    } else {
+      return (
+        <div className="items_product_cont g g3 space1">
+          {products?.map((item, index) => {
+            return (
+              <figure
+                onClick={() => {
+                  addToCart(item);
+                }}
+                key={index}
+                className="productsCardWH fx-cl space1 fx-jb"
+              >
+                <h4>{item.name}</h4>
+                <div>
+                  <p>₦{item?.pricing?.sellingPrice}</p>
+                </div>
+              </figure>
+            );
+          })}
+        </div>
+      );
+    }
+  }
+
   return (
     <div className="fx-cl space1">
       <div className="warehauseSearchCont fx-jb space3">
@@ -1402,52 +1475,13 @@ function Products({ handleModalSwitch, products, addToCart, clearCart }) {
           +
         </button>
       </div>
-      {filteredProducts.length > 0 ? (
-        <div className="items_product_cont g g3 space1">
-          {filteredProducts.map((item, index) => (
-            <figure
-              onClick={() => {
-                addToCart(item);
-
-                setFilteredProducts("");
-                setSearchTerm("");
-              }}
-              key={index}
-              className="productsCardWH fx-cl space1 fx-jb"
-            >
-              <h4>{item.name}</h4>
-              <div>
-                <p>₦{item?.pricing?.sellingPrice}</p>
-              </div>
-            </figure>
-          ))}
-        </div>
-      ) : (
-        <div className="items_product_cont g g3 space1">
-          {products?.map((item, index) => {
-            return (
-              <figure
-                onClick={() => {
-                  addToCart(item);
-                }}
-                key={index}
-                className="productsCardWH fx-cl space1 fx-jb"
-              >
-                <h4>{item.name}</h4>
-                <div>
-                  <p>₦{item?.pricing?.sellingPrice}</p>
-                </div>
-              </figure>
-            );
-          })}
-        </div>
-      )}
+      {switchProductView()}
     </div>
   );
 }
-function OperatingGuide() {
+function ActivityLog() {
   return (
-    <div className="OperatingGuide fx-cl space3">
+    <div className="ActivityLog fx-cl space3">
       <div className="fx-cl">
         <strong>Computer Base Guide</strong>
         <span>Lorem ipsum dolor sit.</span>

@@ -7,7 +7,7 @@
 
 .item_row table thead tr {
   display: grid;
-  grid-template-columns: 1fr 4fr 3fr 2fr 1.5fr 1.5fr 0.6fr;
+  grid-template-columns: 0.7fr 4fr 1.5fr 2fr 1.5fr 1.8fr 0.6fr;
   padding: 1.2rem;
   background-color: #3a84f8;
   border-radius: 1rem;
@@ -16,27 +16,47 @@
   text-align: left;
 }
 
-.item_row table tbody tr {
+.item_row table tbody tr td.itemRowTd {
   display: grid;
   /* gap: .6rem; */
-  grid-template-columns: 1fr 4fr 3fr 2fr 1.5fr 1.5fr 0.6fr;
+  grid-template-columns: 0.7fr 4fr 1.5fr 2fr 1.5fr 1.8fr 0.6fr;
   align-items: center;
   border-radius: 1rem;
   padding: 1.2rem 2.4rem;
-  background-color: #fff;
+  background-color: transparent;
   font-size: 1.2rem;
   font-weight: 300;
   color: #0b3983;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
 }
-.item_row table tbody tr:hover,
-.item_row table tbody tr:active {
+
+.item_row table tbody tr.itemRowTdCont {
+  background-color: #fff;
+}
+
+.item_row table tbody tr.itemRowTdCont:hover {
+  background-color: #e3ecfd;
+  border-radius: 0.8rem;
+}
+.item_row table tbody tr.itemRowTdCont:hover .itemRowTd {
+  color: #3a84f8;
+  font-weight: bold;
+}
+
+/* .item_row table tbody tr .itemRowTd:hover {
   background-color: #e3ecfd;
   color: #3a84f8;
   font-weight: bold;
   border-radius: 0.8rem;
+} */
+
+#itemAccordionOpen:hover td.itemRowTd:hover {
+  background-color: #d9e8eb;
+  color: #3a84f8;
+  font-weight: bold;
 }
+
 .item_row table tbody tr .removeCart {
   background-color: transparent;
   color: #f35e6a;
@@ -48,17 +68,18 @@
   padding: 0.4rem;
   transition: all 0.3s ease-in-out;
 }
+
 .item_row table tbody tr .removeCart:hover {
   transform: scale(1.1);
 }
 
-.item_row table tbody tr td:nth-child(2) {
+.item_row table tbody tr td span:nth-child(2) {
   display: flex;
   gap: 0.4rem;
   align-items: center;
   font-weight: 600;
 }
-.item_row table tbody tr td:nth-child(2) figure {
+.item_row table tbody tr td span:nth-child(2) figure {
   background-color: #48c798;
   color: white;
   border-radius: 55rem;
@@ -146,7 +167,7 @@
   color: #4f46e5;
 }
 
-.itemAccordionOpen {
+#itemAccordionOpen {
   background-color: #fff;
   border-radius: 1rem;
   overflow: hidden;
@@ -154,14 +175,14 @@
 .itemAccordionCont {
   display: none;
 }
-table tbody .itemAccordionOpen .itemAccordionCont {
+table tbody #itemAccordionOpen .itemAccordionCont {
   display: block;
 }
 
 .itemAccordionDisc {
   display: grid;
   grid-template-columns: 1fr 5fr;
-  background-color: #fff;
+  background-color: transparent;
   padding: 2.2rem;
   gap: 2rem;
 }
@@ -179,4 +200,18 @@ table tbody .itemAccordionOpen .itemAccordionCont {
 /* .itemAccordionDetails div:first-child, */
 .itemAccordionDetails div:last-child {
   grid-column: span 2;
+}
+
+.item_row table tbody tr button.controlButtons {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 9rem;
+  height: 2rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.4rem;
+  background-color: #3a84f8;
+  color: #fff;
+  font-size: 1.2rem;
+  transition: all 0.3s;
 }

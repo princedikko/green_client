@@ -797,12 +797,13 @@ export default function Sales({ breadcrumbs }) {
       <div className="fx-cl space2">
         <div className="sales_breadcrumbs fx-ac">
           <Link className="fx-ac spacem">
-            <strong>{breadcrumbs.active && breadcrumbs.active}</strong>{" "}
+            <strong>{breadcrumbs.active && breadcrumbs.active_title}</strong>{" "}
             <KeyboardArrowRightIcon fontSize="small" />{" "}
           </Link>
           <Link className="fx-ac spacem">
             <span>
-              {breadcrumbs.active_display && breadcrumbs.active_display}
+              {breadcrumbs.active_display_title &&
+                breadcrumbs.active_display_title}
             </span>
             <KeyboardArrowRightIcon fontSize="small" />
             <span>{currentTab && currentTab}</span>
@@ -811,7 +812,7 @@ export default function Sales({ breadcrumbs }) {
         <div className="sales_headings fx-jb space4">
           <div className="fx-cl">
             <h2 style={{ textTransform: "capitalize" }}>
-              {breadcrumbs.active}
+              {breadcrumbs.active_title}
             </h2>
             <p style={{ fontSize: "1.2rem" }}>
               Here is a list of sales you have made

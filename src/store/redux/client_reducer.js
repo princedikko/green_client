@@ -7,7 +7,9 @@ export const clientReducer = createSlice({
     isAuthenticated: false,
     queue: {},
     dashboard: {
+      nav_title: "Dashboard",
       nav_trace: "dashboard",
+      subNavBar_title: "",
       subNavBar_trace: "",
       toggleNavDropdown: "",
       currentTab: "",
@@ -22,14 +24,28 @@ export const clientReducer = createSlice({
         isAuthenticated: true,
       };
     },
+
     dispathcDashboardNavigator: (state, action) => {
-      state.dashboard.nav_trace = action.payload.item;
+      // state.dashboard.nav_title = action.payload.title;
+      console.log("payload", action.payload);
+      if (action.payload?.children) {
+        state.dashboard.nav_trace = action.payload.active;
+      } else {
+        state.dashboard.nav_trace = action.payload.active;
+        state.dashboard.subNavBar_title = action.payload.title;
+        state.dashboard.subNavBar_trace = action.payload.active;
+        state.dashboard.currentTab = action.payload.active;
+        state.dashboard.nav_title = action.payload.title;
+      }
     },
 
     dispatchDashboardSubNavigator: (state, action) => {
-      state.dashboard.subNavBar_trace = action.payload.item;
-      state.dashboard.currentTab = action.payload.item;
+      state.dashboard.subNavBar_title = action.payload.title;
+      state.dashboard.subNavBar_trace = action.payload.hook;
+      state.dashboard.currentTab = action.payload.hook;
+      state.dashboard.nav_title = action.payload.main;
     },
+
     dispatchCurrentTAB: (state, action) => {
       state.dashboard.currentTab = action.payload.item;
     },
@@ -37,9 +53,11 @@ export const clientReducer = createSlice({
     dispatchClientOpenIndex: (state, action) => {
       state.dashboard.toggleNavDropdown = action.payload.index;
     },
+
     dispatchPrintData: (state, action) => {
       state.printData = action.payload.data;
     },
+
     logOut: (state, action) => {
       return {
         ...state,
