@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./expenses.css";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import * as Action from "../../../../store/redux/client_reducer.js";
+import { useSnackbar } from "notistack";
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 import salesData from "../data";
-import IsLoading from "../../../../isLoading";
+import IsLoading from "../../../../IsLoading.jsx";
 import FilterDiscount from "./filters/FilterExpenses.jsx";
 import ExportPDFButton from "./exports/ExpensesPDFExport.jsx";
 import ExportExcelJSButton from "./exports/DiscripanciesExcelExport.jsx";
@@ -27,7 +27,10 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 import ImgOne from "./img1.jpg";
 import ImgTwo from "./img2.jpg";
 
+let expensesData;
+
 export default function Expenses({ breadcrumbs }) {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -48,6 +51,48 @@ export default function Expenses({ breadcrumbs }) {
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
   );
+
+  const apiGetExpense = async () => {
+    setLoading(true);
+    await axios
+      .get(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+      )
+      .then((response) => {
+        expensesData = response.data.data;
+        console.log("expensesData: ", response);
+        if (response.data.status === 201) {
+          setLoading(false);
+          enqueueSnackbar(`${response.data.message}`, {
+            variant: "success",
+            autoHideDuration: 3000,
+            ContentProps: {
+              style: { fontSize: "16px", fontWeight: "bold" },
+            },
+          });
+        } else {
+          enqueueSnackbar(`${response.data.message}`, {
+            variant: "error",
+            autoHideDuration: 3000,
+            ContentProps: {
+              style: { fontSize: "16px", fontWeight: "bold" },
+            },
+          });
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        enqueueSnackbar(`error: something went wrong!`, {
+          variant: "error",
+          autoHideDuration: 3000,
+          ContentProps: {
+            style: { fontSize: "16px", fontWeight: "bold" },
+          },
+        });
+        console.log(error);
+        setLoading(false);
+      });
+  };
 
   // /////////////////////////////////////////////////////////
   // Redux functions for sub-navigation
@@ -787,10 +832,11 @@ export default function Expenses({ breadcrumbs }) {
       </div>
     );
   }
-  console.log(
-    "PRINTING:",
-    useSelector((state) => state.clientFunction?.printData),
-  );
+
+  useEffect(() => {
+    apiGetExpense();
+  }, []);
+
   return (
     <div className="expensesCompContainer">
       <div className="fx-cl space2">

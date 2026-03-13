@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import IsLoading from "../../../../isLoading";
+import IsLoading from "../../../../IsLoading.jsx";
 import axios from "axios";
 import * as Action from "../../../../store/redux/parent_reducer.js";
 import "./managementlogin.css";
@@ -29,7 +29,7 @@ export default function ParentLogin() {
     (reqest, response) => {
       return { ...reqest, ...response };
     },
-    { user_name: "", parent_password: "" }
+    { user_name: "", parent_password: "" },
   );
 
   const executeLogin = async () => {

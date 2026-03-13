@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./svgInteractiveMap.css";
-import { nigeria, nigeriaText } from "./test";
+import { nigeria, nigeriaText } from "./interactiveSvgData.js";
 import { useSnackbar } from "notistack";
 
 import EventRoundedIcon from "@mui/icons-material/EventRounded";

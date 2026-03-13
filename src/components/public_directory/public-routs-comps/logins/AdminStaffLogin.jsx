@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import IsLoading from "../../../../isLoading";
+import IsLoading from "../../../../IsLoading";
 import axios from "axios";
 import * as Action from "../../../../store/redux/admin_reducer";
 import "./managementlogin.css";
@@ -28,7 +28,7 @@ export default function AdminStaffLogin() {
     (reqest, response) => {
       return { ...reqest, ...response };
     },
-    { user_name: "", admin_password: "" }
+    { user_name: "", admin_password: "" },
   );
 
   const executeLogin = async () => {

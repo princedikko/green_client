@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import * as Action from "../../store/redux/system-admin_reducer.js";
 
 // importing components
-
 // Icons import
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import Logo from "../public_directory/public-routes-images/logos/Manga_Cons _Logo3.png";
@@ -34,10 +33,10 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 export default function SystemAdminAccount() {
   const dispatch = useDispatch();
   const data = useSelector(
-    (state) => state.systemAdminFunction.queue.systemAdminData
+    (state) => state.systemAdminFunction.queue.systemAdminData,
   );
   const active = useSelector(
-    (state) => state.systemAdminFunction.dashboard?.nav_trace
+    (state) => state.systemAdminFunction.dashboard?.nav_trace,
   );
   // const [active, setActive] = useState("done");
 

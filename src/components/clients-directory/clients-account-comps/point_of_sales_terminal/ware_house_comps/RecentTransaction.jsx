@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> >>>>>>>>>>>
 
 import salesData from "../../data.js";
-import IsLoading from "../../../../../isLoading.jsx";
+import IsLoading from "../../../../../IsLoading.jsx";
 import FilterRecentTrans from "../../inventory_comps/filters/FilterRecentTrans.jsx";
 import ExportPDFButton from "../../inventory_comps/exports/RecentTransPDFExport.jsx";
 import ExportExcelJSButton from "../../inventory_comps/exports/RecentTransExcelExport";

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
 import * as Action from "../../../../store/redux/client_reducer.js";
 import axios from "axios";
-import IsLoading from "../../../../isLoading.jsx";
+import IsLoading from "../../../../IsLoading.jsx";
 import Lock from "@mui/icons-material/Lock";
 import Person from "@mui/icons-material/Person";
 import Logo3D from "../../home-page/logo/green_logos.png";

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Routes, Route, Navigate } from "react-router-dom";
-import GeneralRoutes from "./GeneralRoutes";
+import greenRoutes from "./GeneralRoutes";
 
 export default function Authorization() {
   const systemAdminAuth = useSelector(
@@ -11,12 +11,6 @@ export default function Authorization() {
   );
   const executiveAuth = useSelector(
     (state) => state.executiveFunction.isAuthenticated,
-  );
-  const instructorAuth = useSelector(
-    (state) => state.instructorFunction.isAuthenticated,
-  );
-  const parentAuth = useSelector(
-    (state) => state.parentFunction.isAuthenticated,
   );
 
   const agentAuth = useSelector((state) => state.agentFunction.isAuthenticated);
@@ -32,7 +26,7 @@ export default function Authorization() {
 
   return (
     <Routes>
-      {GeneralRoutes.map((req, index) => {
+      {greenRoutes.map((req, index) => {
         if (req.isPublic) {
           return <Route path={req.path} element={req.element} key={index} />;
         } else if (req.isSystemAdmin) {
@@ -68,34 +62,6 @@ export default function Authorization() {
                   req.element
                 ) : (
                   <Navigate to="/administration/admin_login" />
-                )
-              }
-              key={index}
-            />
-          );
-        } else if (req.isInstructor) {
-          return (
-            <Route
-              path={req.path}
-              element={
-                instructorAuth ? (
-                  req.element
-                ) : (
-                  <Navigate to="/institution/instructor-login" />
-                )
-              }
-              key={index}
-            />
-          );
-        } else if (req.isParent) {
-          return (
-            <Route
-              path={req.path}
-              element={
-                parentAuth ? (
-                  req.element
-                ) : (
-                  <Navigate to="/learners/parent-login" />
                 )
               }
               key={index}

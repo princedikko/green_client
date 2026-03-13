@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import IsLoading from "../../../../isLoading";
+import IsLoading from "../../../../IsLoading.jsx";
 import axios from "axios";
 import * as Action from "../../../../store/redux/library_reducer.js";
 import "./managementlogin.css";
@@ -29,7 +29,7 @@ export default function LabrarianLogin() {
     (reqest, response) => {
       return { ...reqest, ...response };
     },
-    { user_name: "", library_password: "" }
+    { user_name: "", library_password: "" },
   );
 
   const executeLogin = async () => {
@@ -41,7 +41,7 @@ export default function LabrarianLogin() {
     await axios
       .post(
         `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/library-routes/login`,
-        data
+        data,
       )
       .then((response) => {
         libraryData = response.data.info;

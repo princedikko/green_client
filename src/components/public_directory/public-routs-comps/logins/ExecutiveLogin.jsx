@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import IsLoading from "../../../../isLoading";
+import IsLoading from "../../../../IsLoading.jsx";
 import axios from "axios";
 import * as Action from "../../../../store/redux/executive_reducer.js";
 import "./managementlogin.css";
@@ -29,7 +29,7 @@ export default function ExecutiveLogin() {
     (reqest, response) => {
       return { ...reqest, ...response };
     },
-    { user_name: "", executive_password: "" }
+    { user_name: "", executive_password: "" },
   );
 
   const executeLogin = async () => {
@@ -41,7 +41,7 @@ export default function ExecutiveLogin() {
     await axios
       .post(
         `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/head_of_school/login`,
-        data
+        data,
       )
       .then((response) => {
         executiveData = response.data.info;
@@ -55,7 +55,7 @@ export default function ExecutiveLogin() {
             },
           });
           redirect(
-            "/high_authority/executive_officer/dashboard/21df5g45f5d4gdf5dg"
+            "/high_authority/executive_officer/dashboard/21df5g45f5d4gdf5dg",
           );
         } else if (response?.data.status === 401) {
           enqueueSnackbar(`${response?.data.message}`, {

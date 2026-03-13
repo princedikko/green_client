@@ -1,4 +1,4 @@
-import "./isLoading.css";
+import "./isLoadings.css";
 
 export default function IsLoading() {
   return (

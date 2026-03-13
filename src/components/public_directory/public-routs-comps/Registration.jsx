@@ -10,7 +10,7 @@ import * as Action from "../../../store/redux/registrationReducer.js";
 import axios from "axios";
 import "./registration.css";
 import Logo from "../public-routes-images/logos/Manga_Cons _Logo3.png";
-import IsLoading from "../../../isLoading";
+import IsLoading from "../../../IsLoading";
 import { Link, useNavigate } from "react-router-dom";
 import { statesAndLgas } from "./registrationStatesAndLGA.js";
 

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import IsLoading from "../../../../isLoading";
+import IsLoading from "../../../../IsLoading";
 import axios from "axios";
 import * as Action from "../../../../store/redux/agent_reducer.js";
 import "./managementlogin.css";
@@ -29,7 +29,7 @@ export default function AgentLogin() {
     (reqest, response) => {
       return { ...reqest, ...response };
     },
-    { user_name: "", agent_password: "" }
+    { user_name: "", agent_password: "" },
   );
 
   const executeLogin = async () => {
@@ -41,7 +41,7 @@ export default function AgentLogin() {
     await axios
       .post(
         `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/tranport-routes/login`,
-        data
+        data,
       )
       .then((response) => {
         agentData = response.data.info;

@@ -8,7 +8,7 @@ import * as Action from "../../../../store/redux/client_reducer.js";
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 import salesData from "../data";
-import IsLoading from "../../../../isLoading";
+import IsLoading from "../../../../IsLoading.jsx";
 import FilterDiscount from "./reports_filters/ReportsFilters.jsx";
 import ExportPDFButton from "./reports_exportations/ReportsPDFExport.jsx";
 import ExportExcelJSButton from "./reports_exportations/ReportsExcelExport.jsx";

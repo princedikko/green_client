@@ -8,8 +8,8 @@
   color: #e60505;
   font-size: 3rem;
   z-index: 999999;
-  background-color: rgba(250, 250, 255, 0.781);
-  backdrop-filter: blur(15px);
+  background-color: transparent;
+  /* backdrop-filter: blur(15px); */
 }
 
 .loading-spinner {

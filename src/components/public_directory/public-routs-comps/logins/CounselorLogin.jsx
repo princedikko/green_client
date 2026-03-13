@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import IsLoading from "../../../../isLoading";
+import IsLoading from "../../../../IsLoading.jsx";
 import axios from "axios";
 import * as Action from "../../../../store/redux/counselor_reducer.js";
 import "./managementlogin.css";
@@ -29,7 +29,7 @@ export default function CounselorLogin() {
     (reqest, response) => {
       return { ...reqest, ...response };
     },
-    { user_name: "", counselor_password: "" }
+    { user_name: "", counselor_password: "" },
   );
 
   const executeLogin = async () => {
@@ -41,7 +41,7 @@ export default function CounselorLogin() {
     await axios
       .post(
         `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/guidance_and_counselling/staff/login`,
-        data
+        data,
       )
       .then((response) => {
         counselorData = response.data.info;

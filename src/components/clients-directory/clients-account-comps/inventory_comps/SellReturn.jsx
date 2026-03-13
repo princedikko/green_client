@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./sellReturn.css";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import * as Action from "../../../../store/redux/client_reducer.js";
+import { useSnackbar } from "notistack";
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 import salesData from "../data";
-import IsLoading from "../../../../isLoading";
+import IsLoading from "../../../../IsLoading.jsx";
 import FilterSellReturn from "./filters/FilterSellReturn.jsx";
 import ExportPDFButton from "./exports/SellReturnPDFExport.jsx";
 import ExportExcelJSButton from "./exports/SellReturnExcelExport.jsx";
@@ -27,7 +28,10 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 import ImgOne from "./img1.jpg";
 import ImgTwo from "./img2.jpg";
 
+let sellreturnData;
+
 export default function SellReturn({ breadcrumbs }) {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -48,6 +52,48 @@ export default function SellReturn({ breadcrumbs }) {
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
   );
+
+  const apiGetSales = async () => {
+    setLoading(true);
+    await axios
+      .get(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+      )
+      .then((response) => {
+        sellreturnData = response.data.data;
+        console.log("sellreturnData: ", response);
+        if (response.data.status === 201) {
+          setLoading(false);
+          enqueueSnackbar(`${response.data.message}`, {
+            variant: "success",
+            autoHideDuration: 3000,
+            ContentProps: {
+              style: { fontSize: "16px", fontWeight: "bold" },
+            },
+          });
+        } else {
+          enqueueSnackbar(`${response.data.message}`, {
+            variant: "error",
+            autoHideDuration: 3000,
+            ContentProps: {
+              style: { fontSize: "16px", fontWeight: "bold" },
+            },
+          });
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        enqueueSnackbar(`error: something went wrong!`, {
+          variant: "error",
+          autoHideDuration: 3000,
+          ContentProps: {
+            style: { fontSize: "16px", fontWeight: "bold" },
+          },
+        });
+        console.log(error);
+        setLoading(false);
+      });
+  };
 
   // /////////////////////////////////////////////////////////
   // Redux functions for sub-navigation
@@ -789,10 +835,10 @@ export default function SellReturn({ breadcrumbs }) {
       </div>
     );
   }
-  console.log(
-    "PRINTING:",
-    useSelector((state) => state.clientFunction?.printData),
-  );
+
+  useEffect(() => {
+    apiGetSales();
+  }, []);
   return (
     <div className="sellreturnCompContainer">
       <div className="fx-cl space2">
@@ -865,7 +911,7 @@ export default function SellReturn({ breadcrumbs }) {
                 currentTab == "sellreturn" && "active"
               }`}
             >
-              <span>Todo</span>
+              <span>Sell Returns</span>
               <figure>34</figure>
             </li>
             <li
@@ -874,7 +920,7 @@ export default function SellReturn({ breadcrumbs }) {
                 currentTab == "completed" && "active"
               }`}
             >
-              <span>Completed</span>
+              <span>This Week</span>
               <figure>45</figure>
             </li>
             <li
@@ -883,7 +929,7 @@ export default function SellReturn({ breadcrumbs }) {
                 currentTab == "progress" && "active"
               }`}
             >
-              <span>In Progress</span>
+              <span>This Month</span>
               <figure>89</figure>
             </li>
           </ul>

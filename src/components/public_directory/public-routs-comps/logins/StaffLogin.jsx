@@ -10,7 +10,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Logo from "../../home-page/logo/udus_logo_3d.png";
 import { Link, useNavigate } from "react-router-dom";
 
-import IsLoading from "../../../../isLoading.jsx";
+import IsLoading from "../../../../IsLoading.jsx";
 let staffData;
 export default function Stafflogin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,7 +23,7 @@ export default function Stafflogin() {
     (reqest, response) => {
       return { ...reqest, ...response };
     },
-    { user_name: "", staff_password: "" }
+    { user_name: "", staff_password: "" },
   );
 
   const executeLogin = async () => {

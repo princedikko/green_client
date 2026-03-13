@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import "./contactUs.css";
-import IsLoading from "../../../isLoading";
+import IsLoading from "../../../IsLoading";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SendIcon from "@mui/icons-material/Send";
 import CallIcon from "@mui/icons-material/Call";

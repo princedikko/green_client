@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./brands.css";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import * as Action from "../../../../store/redux/client_reducer.js";
+import { useSnackbar } from "notistack";
+
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 import salesData from "../data";
-import IsLoading from "../../../../isLoading";
+import IsLoading from "../../../../IsLoading.jsx";
 import FilterBrands from "./filters/FilterBrands.jsx";
 import ExportPDFButton from "./exports/BrandsPDFExport.jsx";
 import ExportExcelJSButton from "./exports/BrandsExcelExport.jsx";
@@ -27,7 +29,10 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 import ImgOne from "./img1.jpg";
 import ImgTwo from "./img2.jpg";
 
+let brandsData;
+
 export default function Brands({ breadcrumbs }) {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -48,6 +53,48 @@ export default function Brands({ breadcrumbs }) {
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
   );
+
+  const apiGetBrands = async () => {
+    setLoading(true);
+    await axios
+      .get(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+      )
+      .then((response) => {
+        brandsData = response.data.data;
+        console.log("brandsData: ", response);
+        if (response.data.status === 201) {
+          setLoading(false);
+          enqueueSnackbar(`${response.data.message}`, {
+            variant: "success",
+            autoHideDuration: 3000,
+            ContentProps: {
+              style: { fontSize: "16px", fontWeight: "bold" },
+            },
+          });
+        } else {
+          enqueueSnackbar(`${response.data.message}`, {
+            variant: "error",
+            autoHideDuration: 3000,
+            ContentProps: {
+              style: { fontSize: "16px", fontWeight: "bold" },
+            },
+          });
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        enqueueSnackbar(`error: something went wrong!`, {
+          variant: "error",
+          autoHideDuration: 3000,
+          ContentProps: {
+            style: { fontSize: "16px", fontWeight: "bold" },
+          },
+        });
+        console.log(error);
+        setLoading(false);
+      });
+  };
 
   // /////////////////////////////////////////////////////////
   // Redux functions for sub-navigation
@@ -787,10 +834,11 @@ export default function Brands({ breadcrumbs }) {
       </div>
     );
   }
-  console.log(
-    "PRINTING:",
-    useSelector((state) => state.clientFunction?.printData),
-  );
+
+  useEffect(() => {
+    apiGetBrands();
+  }, []);
+
   return (
     <div className="brandsCompContainer">
       <div className="fx-cl space2">
@@ -862,7 +910,7 @@ export default function Brands({ breadcrumbs }) {
               onClick={() => handleCurrentTAB("brands")}
               className={`fx-ac  spacem ${currentTab == "brands" && "active"}`}
             >
-              <span>Todo</span>
+              <span>All Brands</span>
               <figure>34</figure>
             </li>
             <li
@@ -871,7 +919,7 @@ export default function Brands({ breadcrumbs }) {
                 currentTab == "completed" && "active"
               }`}
             >
-              <span>Completed</span>
+              <span>Favourites</span>
               <figure>45</figure>
             </li>
             <li
@@ -880,7 +928,7 @@ export default function Brands({ breadcrumbs }) {
                 currentTab == "progress" && "active"
               }`}
             >
-              <span>In Progress</span>
+              <span>Important Brands</span>
               <figure>89</figure>
             </li>
           </ul>

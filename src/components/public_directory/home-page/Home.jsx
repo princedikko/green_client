@@ -1,5 +1,5 @@
 import { useState } from "react";
-import IsLoading from "../../../isLoading";
+import IsLoading from "../../../IsLoading";
 // IMPORTING COMPONENTS_______________________
 import Header from "./home-comps/Header";
 import Hero from "./home-comps/Hero";

@@ -19,7 +19,6 @@ import "swiper/css/scrollbar";
 import { FreeMode, Scrollbar, Mousewheel } from "swiper/modules";
 // importing components
 import ClientsDashboard from "./clients-account-comps/ClientsDashboard.jsx";
-import ClientEduTech from "./clients-account-comps/ClientEduTech.jsx";
 
 // Icons import
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
@@ -167,8 +166,6 @@ export default function ClientsAccount() {
         return "account";
       case "dashboard":
         return <ClientsDashboard />;
-      case "cbt":
-        return <ClientEduTech data={data} />;
       case "sales":
         return <Sales breadcrumbs={breads} />;
       case "quatations":

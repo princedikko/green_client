@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./discount.css";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import * as Action from "../../../../store/redux/client_reducer.js";
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+import { useSnackbar } from "notistack";
 
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 import salesData from "../data";
-import IsLoading from "../../../../isLoading";
+import IsLoading from "../../../../IsLoading.jsx";
 import FilterDiscount from "./filters/FilterDiscount";
 import ExportPDFButton from "./exports/DiscountPDFExport.jsx";
 import ExportExcelJSButton from "./exports/DiscountExcelExport.jsx";
@@ -27,7 +28,10 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 import ImgOne from "./img1.jpg";
 import ImgTwo from "./img2.jpg";
 
+let discountData;
+
 export default function Discount({ breadcrumbs }) {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -48,6 +52,48 @@ export default function Discount({ breadcrumbs }) {
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
   );
+
+  async function apiGetDiscount() {
+    setLoading(true);
+    await axios
+      .get(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+      )
+      .then((response) => {
+        discountData = response.data.data;
+        console.log("discountData: ", response);
+        if (response.data.status === 201) {
+          setLoading(false);
+          enqueueSnackbar(`${response.data.message}`, {
+            variant: "success",
+            autoHideDuration: 3000,
+            ContentProps: {
+              style: { fontSize: "16px", fontWeight: "bold" },
+            },
+          });
+        } else {
+          enqueueSnackbar(`${response.data.message}`, {
+            variant: "error",
+            autoHideDuration: 3000,
+            ContentProps: {
+              style: { fontSize: "16px", fontWeight: "bold" },
+            },
+          });
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        enqueueSnackbar(`error: something went wrong!`, {
+          variant: "error",
+          autoHideDuration: 3000,
+          ContentProps: {
+            style: { fontSize: "16px", fontWeight: "bold" },
+          },
+        });
+        console.log(error);
+        setLoading(false);
+      });
+  }
 
   // /////////////////////////////////////////////////////////
   // Redux functions for sub-navigation
@@ -789,10 +835,11 @@ export default function Discount({ breadcrumbs }) {
       </div>
     );
   }
-  console.log(
-    "PRINTING:",
-    useSelector((state) => state.clientFunction?.printData),
-  );
+
+  useEffect(() => {
+    apiGetDiscount();
+  }, []);
+
   return (
     <div className="discount2026CompContainer">
       <div className="fx-cl space2">
@@ -865,7 +912,7 @@ export default function Discount({ breadcrumbs }) {
                 currentTab == "discount2026" && "active"
               }`}
             >
-              <span>Todo</span>
+              <span>All Discount</span>
               <figure>34</figure>
             </li>
             <li
@@ -874,7 +921,7 @@ export default function Discount({ breadcrumbs }) {
                 currentTab == "completed" && "active"
               }`}
             >
-              <span>Completed</span>
+              <span>Today's Discount</span>
               <figure>45</figure>
             </li>
             <li
@@ -883,7 +930,7 @@ export default function Discount({ breadcrumbs }) {
                 currentTab == "progress" && "active"
               }`}
             >
-              <span>In Progress</span>
+              <span>This Week</span>
               <figure>89</figure>
             </li>
           </ul>

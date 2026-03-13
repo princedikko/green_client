@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./sales.css";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
 import * as Action from "../../../../store/redux/client_reducer.js";
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 import salesData from "../data";
 import FilterSales from "./filters/FilterSales";
-import IsLoading from "../../../../isLoading";
+import IsLoading from "../../../../IsLoading";
 import ExportPDFButton from "./exports/SalesPDFExport";
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -28,6 +29,8 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 import ImgOne from "./img1.jpg";
 import ImgTwo from "./img2.jpg";
 
+let salesAxios;
+
 export default function Sales({ breadcrumbs }) {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
@@ -39,17 +42,16 @@ export default function Sales({ breadcrumbs }) {
   // Paginations Functions
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-
   const [openLimit, setOpenLimit] = useState(false);
   const totalPages = Math.ceil(salesData.length / rowsPerPage);
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
   const currentRows = salesData.slice(start, end);
-
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
   );
 
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   // /////////////////////////////////////////////////////////
   // Redux functions for sub-navigation
   // /////////////////////////////////////////////////////////
@@ -76,6 +78,47 @@ export default function Sales({ breadcrumbs }) {
     }
   };
 
+  async function apiGetSales() {
+    setLoading(true);
+    await axios
+      .get(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+      )
+      .then((response) => {
+        salesAxios = response.data.data;
+        console.log("salesAxios: ", response);
+        if (response.data.status === 201) {
+          setLoading(false);
+          enqueueSnackbar(`${response.data.message}`, {
+            variant: "success",
+            autoHideDuration: 3000,
+            ContentProps: {
+              style: { fontSize: "16px", fontWeight: "bold" },
+            },
+          });
+        } else {
+          enqueueSnackbar(`${response.data.message}`, {
+            variant: "error",
+            autoHideDuration: 3000,
+            ContentProps: {
+              style: { fontSize: "16px", fontWeight: "bold" },
+            },
+          });
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        enqueueSnackbar(`error: something went wrong!`, {
+          variant: "error",
+          autoHideDuration: 3000,
+          ContentProps: {
+            style: { fontSize: "16px", fontWeight: "bold" },
+          },
+        });
+        console.log(error);
+        setLoading(false);
+      });
+  }
   // ////////////////////////////////////////////////////////////
   function getPagination(current, total) {
     if (total <= 7) {
@@ -244,101 +287,95 @@ export default function Sales({ breadcrumbs }) {
     }
     return (
       <div className="fx-cl space2">
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="fx-cl space2">
-            <div className="fx-cl spacem">
-              <div
-                className="fx-ac fx-jb space2"
-                style={{ fontSize: "1.2rem" }}
-              >
-                <span className="fx-ac spacem">
-                  <strong className="fx-jc" style={{ color: "#3a84f8" }}>
-                    Display:
-                  </strong>
-                  <span>
-                    {salesData.length === 0
-                      ? "0 to 0 of 0 entries"
-                      : `${start + 1} to ${Math.min(
-                          end,
-                          salesData.length,
-                        )} of ${salesData.length} entries`}
-                  </span>
+        <div className="fx-cl space2">
+          <div className="fx-cl spacem">
+            <div className="fx-ac fx-jb space2" style={{ fontSize: "1.2rem" }}>
+              <span className="fx-ac spacem">
+                <strong className="fx-jc" style={{ color: "#3a84f8" }}>
+                  Display:
+                </strong>
+                <span>
+                  {salesData.length === 0
+                    ? "0 to 0 of 0 entries"
+                    : `${start + 1} to ${Math.min(
+                        end,
+                        salesData.length,
+                      )} of ${salesData.length} entries`}
                 </span>
-                <div className="sales_entries-info fx-ac spacem">
-                  <h4>Rows</h4>
-                  <div className="sales-page-limit">
-                    <button
-                      className="sales-page-limit-btn"
-                      onClick={() => setOpenLimit(!openLimit)}
-                    >
-                      {rowsPerPage} / page
-                      <span className="sales-page-limit-arrow">▾</span>
-                    </button>
-
-                    {openLimit && (
-                      <ul className="sales-limit-dropdown">
-                        {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
-                          <li
-                            key={n}
-                            className="sales-limit-item"
-                            onClick={() => {
-                              setRowsPerPage(n);
-                              setCurrentPage(1);
-                              setOpenLimit(false);
-                            }}
-                          >
-                            {n} / page
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="sales_row" id="printable">
-                {switchView()}
-              </div>
-              <div className="fx-jc">
-                <div className="sales_pagination fx-ac space2">
+              </span>
+              <div className="sales_entries-info fx-ac spacem">
+                <h4>Rows</h4>
+                <div className="sales-page-limit">
                   <button
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((p) => p - 1)}
+                    className="sales-page-limit-btn"
+                    onClick={() => setOpenLimit(!openLimit)}
                   >
-                    Previous
+                    {rowsPerPage} / page
+                    <span className="sales-page-limit-arrow">▾</span>
                   </button>
-                  <div className="fx-ac">
-                    {getPagination(currentPage, totalPages).map((page, i) =>
-                      page === "..." ? (
-                        <span key={i} className="dots">
-                          …
-                        </span>
-                      ) : (
-                        <button
-                          key={i}
-                          className={`sales_jumpto ${
-                            currentPage === page ? "active" : ""
-                          }`}
-                          onClick={() => setCurrentPage(page)}
+
+                  {openLimit && (
+                    <ul className="sales-limit-dropdown">
+                      {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
+                        <li
+                          key={n}
+                          className="sales-limit-item"
+                          onClick={() => {
+                            setRowsPerPage(n);
+                            setCurrentPage(1);
+                            setOpenLimit(false);
+                          }}
                         >
-                          {page}
-                        </button>
-                      ),
-                    )}
-                  </div>
-
-                  <button
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage((p) => p + 1)}
-                  >
-                    Next
-                  </button>
+                          {n} / page
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </div>
             </div>
+            <div className="sales_row" id="printable">
+              {switchView()}
+            </div>
+            <div className="fx-jc">
+              <div className="sales_pagination fx-ac space2">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => p - 1)}
+                >
+                  Previous
+                </button>
+                <div className="fx-ac">
+                  {getPagination(currentPage, totalPages).map((page, i) =>
+                    page === "..." ? (
+                      <span key={i} className="dots">
+                        …
+                      </span>
+                    ) : (
+                      <button
+                        key={i}
+                        className={`sales_jumpto ${
+                          currentPage === page ? "active" : ""
+                        }`}
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page}
+                      </button>
+                    ),
+                  )}
+                </div>
+
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => p + 1)}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
           </div>
-        )}
+        </div>
+
         <div className="sales_footer">
           <div className="flight-card clientDashboardCard fx-jb fx-ac space2">
             {/* LEFT: Airline */}
@@ -490,101 +527,94 @@ export default function Sales({ breadcrumbs }) {
     }
     return (
       <div className="fx-cl space2">
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="fx-cl space2">
-            <div className="fx-cl spacem">
-              <div
-                className="fx-ac fx-jb space2"
-                style={{ fontSize: "1.2rem" }}
-              >
-                <span className="fx-ac spacem">
-                  <strong className="fx-jc" style={{ color: "#3a84f8" }}>
-                    Display:
-                  </strong>
-                  <span>
-                    {salesData.length === 0
-                      ? "0 to 0 of 0 entries"
-                      : `${start + 1} to ${Math.min(
-                          end,
-                          salesData.length,
-                        )} of ${salesData.length} entries`}
-                  </span>
+        <div className="fx-cl space2">
+          <div className="fx-cl spacem">
+            <div className="fx-ac fx-jb space2" style={{ fontSize: "1.2rem" }}>
+              <span className="fx-ac spacem">
+                <strong className="fx-jc" style={{ color: "#3a84f8" }}>
+                  Display:
+                </strong>
+                <span>
+                  {salesData.length === 0
+                    ? "0 to 0 of 0 entries"
+                    : `${start + 1} to ${Math.min(
+                        end,
+                        salesData.length,
+                      )} of ${salesData.length} entries`}
                 </span>
-                <div className="sales_entries-info fx-ac spacem">
-                  <h4>Rows</h4>
-                  <div className="sales-page-limit">
-                    <button
-                      className="sales-page-limit-btn"
-                      onClick={() => setOpenLimit(!openLimit)}
-                    >
-                      {rowsPerPage} / page
-                      <span className="sales-page-limit-arrow">▾</span>
-                    </button>
-
-                    {openLimit && (
-                      <ul className="sales-limit-dropdown">
-                        {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
-                          <li
-                            key={n}
-                            className="sales-limit-item"
-                            onClick={() => {
-                              setRowsPerPage(n);
-                              setCurrentPage(1);
-                              setOpenLimit(false);
-                            }}
-                          >
-                            {n} / page
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="sales_row" id="printable">
-                {switchView()}
-              </div>
-              <div className="fx-jc">
-                <div className="sales_pagination fx-ac space2">
+              </span>
+              <div className="sales_entries-info fx-ac spacem">
+                <h4>Rows</h4>
+                <div className="sales-page-limit">
                   <button
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((p) => p - 1)}
+                    className="sales-page-limit-btn"
+                    onClick={() => setOpenLimit(!openLimit)}
                   >
-                    Previous
+                    {rowsPerPage} / page
+                    <span className="sales-page-limit-arrow">▾</span>
                   </button>
-                  <div className="fx-ac">
-                    {getPagination(currentPage, totalPages).map((page, i) =>
-                      page === "..." ? (
-                        <span key={i} className="dots">
-                          …
-                        </span>
-                      ) : (
-                        <button
-                          key={i}
-                          className={`sales_jumpto ${
-                            currentPage === page ? "active" : ""
-                          }`}
-                          onClick={() => setCurrentPage(page)}
+
+                  {openLimit && (
+                    <ul className="sales-limit-dropdown">
+                      {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
+                        <li
+                          key={n}
+                          className="sales-limit-item"
+                          onClick={() => {
+                            setRowsPerPage(n);
+                            setCurrentPage(1);
+                            setOpenLimit(false);
+                          }}
                         >
-                          {page}
-                        </button>
-                      ),
-                    )}
-                  </div>
-
-                  <button
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage((p) => p + 1)}
-                  >
-                    Next
-                  </button>
+                          {n} / page
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </div>
             </div>
+            <div className="sales_row" id="printable">
+              {switchView()}
+            </div>
+            <div className="fx-jc">
+              <div className="sales_pagination fx-ac space2">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => p - 1)}
+                >
+                  Previous
+                </button>
+                <div className="fx-ac">
+                  {getPagination(currentPage, totalPages).map((page, i) =>
+                    page === "..." ? (
+                      <span key={i} className="dots">
+                        …
+                      </span>
+                    ) : (
+                      <button
+                        key={i}
+                        className={`sales_jumpto ${
+                          currentPage === page ? "active" : ""
+                        }`}
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page}
+                      </button>
+                    ),
+                  )}
+                </div>
+
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => p + 1)}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
           </div>
-        )}
+        </div>
         <div className="sales_footer">Footer here</div>
       </div>
     );
@@ -689,109 +719,103 @@ export default function Sales({ breadcrumbs }) {
     }
     return (
       <div className="fx-cl space2">
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="fx-cl space2">
-            <div className="fx-cl spacem">
-              <div
-                className="fx-ac fx-jb space2"
-                style={{ fontSize: "1.2rem" }}
-              >
-                <span className="fx-ac spacem">
-                  <strong className="fx-jc" style={{ color: "#3a84f8" }}>
-                    Display:
-                  </strong>
-                  <span>
-                    {salesData.length === 0
-                      ? "0 to 0 of 0 entries"
-                      : `${start + 1} to ${Math.min(
-                          end,
-                          salesData.length,
-                        )} of ${salesData.length} entries`}
-                  </span>
+        <div className="fx-cl space2">
+          <div className="fx-cl spacem">
+            <div className="fx-ac fx-jb space2" style={{ fontSize: "1.2rem" }}>
+              <span className="fx-ac spacem">
+                <strong className="fx-jc" style={{ color: "#3a84f8" }}>
+                  Display:
+                </strong>
+                <span>
+                  {salesData.length === 0
+                    ? "0 to 0 of 0 entries"
+                    : `${start + 1} to ${Math.min(
+                        end,
+                        salesData.length,
+                      )} of ${salesData.length} entries`}
                 </span>
-                <div className="sales_entries-info fx-ac spacem">
-                  <h4>Rows</h4>
-                  <div className="sales-page-limit">
-                    <button
-                      className="sales-page-limit-btn"
-                      onClick={() => setOpenLimit(!openLimit)}
-                    >
-                      {rowsPerPage} / page
-                      <span className="sales-page-limit-arrow">▾</span>
-                    </button>
-
-                    {openLimit && (
-                      <ul className="sales-limit-dropdown">
-                        {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
-                          <li
-                            key={n}
-                            className="sales-limit-item"
-                            onClick={() => {
-                              setRowsPerPage(n);
-                              setCurrentPage(1);
-                              setOpenLimit(false);
-                            }}
-                          >
-                            {n} / page
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="sales_row" id="printable">
-                {switchView()}
-              </div>
-              <div className="fx-jc">
-                <div className="sales_pagination fx-ac space2">
+              </span>
+              <div className="sales_entries-info fx-ac spacem">
+                <h4>Rows</h4>
+                <div className="sales-page-limit">
                   <button
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((p) => p - 1)}
+                    className="sales-page-limit-btn"
+                    onClick={() => setOpenLimit(!openLimit)}
                   >
-                    Previous
+                    {rowsPerPage} / page
+                    <span className="sales-page-limit-arrow">▾</span>
                   </button>
-                  <div className="fx-ac">
-                    {getPagination(currentPage, totalPages).map((page, i) =>
-                      page === "..." ? (
-                        <span key={i} className="dots">
-                          …
-                        </span>
-                      ) : (
-                        <button
-                          key={i}
-                          className={`sales_jumpto ${
-                            currentPage === page ? "active" : ""
-                          }`}
-                          onClick={() => setCurrentPage(page)}
+
+                  {openLimit && (
+                    <ul className="sales-limit-dropdown">
+                      {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
+                        <li
+                          key={n}
+                          className="sales-limit-item"
+                          onClick={() => {
+                            setRowsPerPage(n);
+                            setCurrentPage(1);
+                            setOpenLimit(false);
+                          }}
                         >
-                          {page}
-                        </button>
-                      ),
-                    )}
-                  </div>
-
-                  <button
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage((p) => p + 1)}
-                  >
-                    Next
-                  </button>
+                          {n} / page
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </div>
             </div>
+            <div className="sales_row" id="printable">
+              {switchView()}
+            </div>
+            <div className="fx-jc">
+              <div className="sales_pagination fx-ac space2">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => p - 1)}
+                >
+                  Previous
+                </button>
+                <div className="fx-ac">
+                  {getPagination(currentPage, totalPages).map((page, i) =>
+                    page === "..." ? (
+                      <span key={i} className="dots">
+                        …
+                      </span>
+                    ) : (
+                      <button
+                        key={i}
+                        className={`sales_jumpto ${
+                          currentPage === page ? "active" : ""
+                        }`}
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page}
+                      </button>
+                    ),
+                  )}
+                </div>
+
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => p + 1)}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
           </div>
-        )}
+        </div>
+
         <div className="sales_footer">Footer here</div>
       </div>
     );
   }
-  console.log(
-    "PRINTING:",
-    useSelector((state) => state.clientFunction?.printData),
-  );
+
+  useEffect(() => {
+    apiGetSales();
+  }, []);
   return (
     <div className="salesCompContainer">
       <div className="fx-cl space2">
@@ -809,118 +833,125 @@ export default function Sales({ breadcrumbs }) {
             <span>{currentTab && currentTab}</span>
           </Link>
         </div>
-        <div className="sales_headings fx-jb space4">
-          <div className="fx-cl">
-            <h2 style={{ textTransform: "capitalize" }}>
-              {breadcrumbs.active_title}
-            </h2>
-            <p style={{ fontSize: "1.2rem" }}>
-              Here is a list of sales you have made
-            </p>
-          </div>
-          <div className="fx-ac fx-jb spacem">
-            <div className=" fx-ac spacem">
-              <div>
-                {changeview === "grid" ? (
-                  <button
-                    className="iconBtn"
-                    onClick={() => setChangeView("table")}
-                  >
-                    <ListAltIcon fontSize="large" />
-                  </button>
-                ) : (
-                  <button
-                    className="iconBtn"
-                    onClick={() => setChangeView("grid")}
-                  >
-                    <AppsOutlinedIcon fontSize="large" />
-                  </button>
-                )}
-              </div>
-              <button
-                className="iconBtn printingBtn"
-                onClick={() =>
-                  handlePrint({
-                    currentRows: currentRows,
-                    tab: currentTab,
-                  })
-                }
-              >
-                <PrintIcon fontSize="large" />
-              </button>
-              <ExportPDFButton currentRows={currentRows} />
-            </div>
 
-            <div className="fx-ac space1">
-              <ExportExcelJSButton currentRows={currentRows} />
-            </div>
-          </div>
-        </div>
-        <div className="sales_actionBar fx-jb space4">
-          <ul className="left fx-ac">
-            <li
-              onClick={() => handleCurrentTAB("sales")}
-              className={`fx-ac  spacem ${currentTab == "sales" && "active"}`}
-            >
-              <span>Todo</span>
-              <figure>34</figure>
-            </li>
-            <li
-              onClick={() => handleCurrentTAB("completed")}
-              className={`fx-ac  spacem ${
-                currentTab == "completed" && "active"
-              }`}
-            >
-              <span>Completed</span>
-              <figure>45</figure>
-            </li>
-            <li
-              onClick={() => handleCurrentTAB("progress")}
-              className={`fx-ac  spacem ${
-                currentTab == "progress" && "active"
-              }`}
-            >
-              <span>In Progress</span>
-              <figure>89</figure>
-            </li>
-          </ul>
-          <div className="right fx-ac fx-jb space1">
-            <div className="fx-ac space1">
-              <button
-                className="sales_export_btn fx-ac spacem"
-                onClick={(e) => {
-                  e.stopPropagation(); // stop bubbling to document
-                  setSalesFilterOpen(!salesFilterOpen);
-                }}
-              >
-                <CandlestickChartIcon fontSize="large" />
-                <span>Filter & Sort</span>
-              </button>
-              {salesFilterOpen && (
-                <div
-                  className="sales_filter_modal_overlay fx-jc fx-ac"
-                  onClick={() => setSalesFilterOpen(false)} // click outside → close
-                >
-                  <div
-                    className="sales_filter_modal"
-                    onClick={(e) => e.stopPropagation()} // click inside → stay open
-                  >
-                    <FilterSales />
+        {loading ? (
+          <IsLoading />
+        ) : (
+          <div className="fx-cl space2">
+            <div className="sales_headings fx-jb space4">
+              <div className="fx-cl">
+                <h2 style={{ textTransform: "capitalize" }}>
+                  {breadcrumbs.active_title}
+                </h2>
+                <p style={{ fontSize: "1.2rem" }}>
+                  Here is a list of sales you have made
+                </p>
+              </div>
+              <div className="fx-ac fx-jb spacem">
+                <div className=" fx-ac spacem">
+                  <div>
+                    {changeview === "grid" ? (
+                      <button
+                        className="iconBtn"
+                        onClick={() => setChangeView("table")}
+                      >
+                        <ListAltIcon fontSize="large" />
+                      </button>
+                    ) : (
+                      <button
+                        className="iconBtn"
+                        onClick={() => setChangeView("grid")}
+                      >
+                        <AppsOutlinedIcon fontSize="large" />
+                      </button>
+                    )}
                   </div>
+                  <button
+                    className="iconBtn printingBtn"
+                    onClick={() =>
+                      handlePrint({
+                        currentRows: currentRows,
+                        tab: currentTab,
+                      })
+                    }
+                  >
+                    <PrintIcon fontSize="large" />
+                  </button>
+                  <ExportPDFButton currentRows={currentRows} />
                 </div>
-              )}
+
+                <div className="fx-ac space1">
+                  <ExportExcelJSButton currentRows={currentRows} />
+                </div>
+              </div>
             </div>
-            <div className="fx-ac space1">
-              <button
-                className="sales_export_btn fx-ac spacem"
-                onClick={() => navigate("/clients/warehouse_terminal")}
-              >
-                <AddIcon fontSize="large" /> <span>Add new</span>
-              </button>
+            <div className="sales_actionBar fx-jb space4">
+              <ul className="left fx-ac">
+                <li
+                  onClick={() => handleCurrentTAB("sales")}
+                  className={`fx-ac  spacem ${currentTab == "sales" && "active"}`}
+                >
+                  <span>All Sales</span>
+                  <figure>{salesData?.length}</figure>
+                </li>
+                <li
+                  onClick={() => handleCurrentTAB("completed")}
+                  className={`fx-ac  spacem ${
+                    currentTab == "completed" && "active"
+                  }`}
+                >
+                  <span>Today Sales</span>
+                  <figure>45</figure>
+                </li>
+                <li
+                  onClick={() => handleCurrentTAB("progress")}
+                  className={`fx-ac  spacem ${
+                    currentTab == "progress" && "active"
+                  }`}
+                >
+                  <span>This Month</span>
+                  <figure>89</figure>
+                </li>
+              </ul>
+              <div className="right fx-ac fx-jb space1">
+                <div className="fx-ac space1">
+                  <button
+                    className="sales_export_btn fx-ac spacem"
+                    onClick={(e) => {
+                      e.stopPropagation(); // stop bubbling to document
+                      setSalesFilterOpen(!salesFilterOpen);
+                    }}
+                  >
+                    <CandlestickChartIcon fontSize="large" />
+                    <span>Filter & Sort</span>
+                  </button>
+                  {salesFilterOpen && (
+                    <div
+                      className="sales_filter_modal_overlay fx-jc fx-ac"
+                      onClick={() => setSalesFilterOpen(false)} // click outside → close
+                    >
+                      <div
+                        className="sales_filter_modal"
+                        onClick={(e) => e.stopPropagation()} // click inside → stay open
+                      >
+                        <FilterSales />
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div className="fx-ac space1">
+                  <button
+                    className="sales_export_btn fx-ac spacem"
+                    onClick={() => navigate("/clients/warehouse_terminal")}
+                  >
+                    <AddIcon fontSize="large" /> <span>Add new</span>
+                  </button>
+                </div>
+              </div>
             </div>
+            <div className="sales_main">{switchActiveTab()}</div>
           </div>
-        </div>
-        <div className="sales_main">{switchActiveTab()}</div>
+        )}
       </div>
     </div>
   );

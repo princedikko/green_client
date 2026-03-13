@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import * as Action from "../../../../../store/redux/hybrid_reducer.js";
 // import from MUI
-import IsLoading from "../../../../../isLoading";
+import IsLoading from "../../../../../IsLoading";
 import CloseIcon from "@mui/icons-material/Close";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";

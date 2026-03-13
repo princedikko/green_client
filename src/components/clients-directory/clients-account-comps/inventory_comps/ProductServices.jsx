@@ -9,7 +9,7 @@ import * as Action from "../../../../store/redux/client_reducer.js";
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 import salesData from "../data";
-import IsLoading from "../../../../isLoading";
+import IsLoading from "../../../../IsLoading.jsx";
 import FilterProductServices from "./filters/FilterProductServices.jsx";
 import ExportPDFButton from "./exports/ProductServicesPDFExport.jsx";
 import ExportExcelJSButton from "./exports/ProductServicesExcelExport.jsx";
@@ -26,10 +26,10 @@ import AddIcon from "@mui/icons-material/Add";
 import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 // image imports
 import ImgOne from "./img1.jpg";
-import ImgTwo from "./img2.jpg";
 
 let productsData;
 export default function ProductServices({ breadcrumbs }) {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -38,9 +38,21 @@ export default function ProductServices({ breadcrumbs }) {
   const [productservicesFilterOpen, setproductservicesFilterOpen] =
     useState(false);
 
-  const { enqueueSnackbar } = useSnackbar();
+  // Paginations Functions
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const fetchProducts = async () => {
+  const [openLimit, setOpenLimit] = useState(false);
+  const totalPages = Math.ceil(salesData.length / rowsPerPage);
+  const start = (currentPage - 1) * rowsPerPage;
+  const end = start + rowsPerPage;
+  const currentRows = salesData.slice(start, end);
+
+  const currentTab = useSelector(
+    (state) => state.clientFunction?.dashboard?.currentTab,
+  );
+
+  async function apiGetServices() {
     try {
       setLoading(true);
 
@@ -68,21 +80,7 @@ export default function ProductServices({ breadcrumbs }) {
         autoHideDuration: 3000,
       });
     }
-  };
-
-  // Paginations Functions
-  const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  const [openLimit, setOpenLimit] = useState(false);
-  const totalPages = Math.ceil(salesData.length / rowsPerPage);
-  const start = (currentPage - 1) * rowsPerPage;
-  const end = start + rowsPerPage;
-  const currentRows = salesData.slice(start, end);
-
-  const currentTab = useSelector(
-    (state) => state.clientFunction?.dashboard?.currentTab,
-  );
+  }
 
   // /////////////////////////////////////////////////////////
   // Redux functions for sub-navigation
@@ -832,13 +830,10 @@ export default function ProductServices({ breadcrumbs }) {
       </div>
     );
   }
-  console.log(
-    "PRINTING:",
-    useSelector((state) => state.clientFunction?.printData),
-  );
-  // useEffect(() => {
-  //   fetchProducts();
-  // }, []);
+
+  useEffect(() => {
+    apiGetServices();
+  }, []);
 
   return (
     <div className="productservicesCompContainer">
