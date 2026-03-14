@@ -70,6 +70,7 @@ import ExpenseCategory from "./clients-account-comps/inventory_comps/ExpenseCate
 import Invoicing from "./clients-account-comps/inventory_comps/Invoicing.jsx";
 import Production from "./clients-account-comps/inventory_comps/Production.jsx";
 import ReportsMain from "./clients-account-comps/reports_comps/ReportsMain.jsx";
+import Products from "./clients-account-comps/inventory_comps/Products.jsx";
 
 export default function ClientsAccount() {
   const dispatch = useDispatch();
@@ -176,6 +177,8 @@ export default function ClientsAccount() {
         return <Subscriptions breadcrumbs={breads} />;
       case "draft":
         return <Drafts breadcrumbs={breads} />;
+      case "products":
+        return <Products breadcrumbs={breads} />;
       case "product_services":
         return <ProductServices breadcrumbs={breads} />;
       case "imports":
@@ -293,8 +296,8 @@ export default function ClientsAccount() {
       active: "manage_products",
       children: [
         {
-          title: "Product Services",
-          hook: "product_services",
+          title: "Products",
+          hook: "products",
           tabs: ["main", "completed", "pending"],
         },
         {
@@ -323,13 +326,18 @@ export default function ClientsAccount() {
           tabs: ["main", "completed", "pending"],
         },
         {
-          title: "Taxrate",
+          title: "Tax Setup",
           hook: "taxrate",
           tabs: ["main", "completed", "pending"],
         },
         {
           title: "Variations",
           hook: "variations",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Services",
+          hook: "product_services",
           tabs: ["main", "completed", "pending"],
         },
       ],
@@ -364,12 +372,17 @@ export default function ClientsAccount() {
       active: "performance",
       children: [
         {
+          title: "Delivery",
+          hook: "deliveries",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
           title: "Transfers",
           hook: "transfers",
           tabs: ["main", "completed", "pending"],
         },
         {
-          title: "openingstock",
+          title: "Opening Stock",
           hook: "openingstock",
           tabs: ["main", "completed", "pending"],
         },

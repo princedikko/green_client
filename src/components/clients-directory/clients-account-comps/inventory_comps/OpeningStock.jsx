@@ -52,6 +52,45 @@ export default function OpeningStock({ breadcrumbs }) {
     (state) => state.clientFunction?.dashboard?.currentTab,
   );
 
+  // /////////////////////////////////////////////////////////
+  // Cross Origin Resource Sharing CRUD - Functions
+  // /////////////////////////////////////////////////////////
+
+  const payload = {
+    name: "products array",
+  };
+
+  async function apiPostProducts() {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
+        payload,
+      );
+      if (response?.data?.status === 200) {
+        enqueueSnackbar(response?.data?.message, {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+      } else {
+        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+
+      enqueueSnackbar("Server error while fetching products", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  }
+
   async function apiGetSales() {
     setLoading(true);
     await axios
@@ -288,101 +327,94 @@ export default function OpeningStock({ breadcrumbs }) {
     }
     return (
       <div className="fx-cl space2">
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="fx-cl space2">
-            <div className="fx-cl spacem">
-              <div
-                className="fx-ac fx-jb space2"
-                style={{ fontSize: "1.2rem" }}
-              >
-                <span className="fx-ac spacem">
-                  <strong className="fx-jc" style={{ color: "#3a84f8" }}>
-                    Display:
-                  </strong>
-                  <span>
-                    {salesData.length === 0
-                      ? "0 to 0 of 0 entries"
-                      : `${start + 1} to ${Math.min(
-                          end,
-                          salesData.length,
-                        )} of ${salesData.length} entries`}
-                  </span>
+        <div className="fx-cl space2">
+          <div className="fx-cl spacem">
+            <div className="fx-ac fx-jb space2" style={{ fontSize: "1.2rem" }}>
+              <span className="fx-ac spacem">
+                <strong className="fx-jc" style={{ color: "#3a84f8" }}>
+                  Display:
+                </strong>
+                <span>
+                  {salesData.length === 0
+                    ? "0 to 0 of 0 entries"
+                    : `${start + 1} to ${Math.min(
+                        end,
+                        salesData.length,
+                      )} of ${salesData.length} entries`}
                 </span>
-                <div className="openingstock_entries-info fx-ac spacem">
-                  <h4>Rows</h4>
-                  <div className="openingstock-page-limit">
-                    <button
-                      className="openingstock-page-limit-btn"
-                      onClick={() => setOpenLimit(!openLimit)}
-                    >
-                      {rowsPerPage} / page
-                      <span className="openingstock-page-limit-arrow">▾</span>
-                    </button>
-
-                    {openLimit && (
-                      <ul className="openingstock-limit-dropdown">
-                        {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
-                          <li
-                            key={n}
-                            className="openingstock-limit-item"
-                            onClick={() => {
-                              setRowsPerPage(n);
-                              setCurrentPage(1);
-                              setOpenLimit(false);
-                            }}
-                          >
-                            {n} / page
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="openingstock_row" id="printable">
-                {switchView()}
-              </div>
-              <div className="fx-jc">
-                <div className="openingstock_pagination fx-ac space2">
+              </span>
+              <div className="openingstock_entries-info fx-ac spacem">
+                <h4>Rows</h4>
+                <div className="openingstock-page-limit">
                   <button
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((p) => p - 1)}
+                    className="openingstock-page-limit-btn"
+                    onClick={() => setOpenLimit(!openLimit)}
                   >
-                    Previous
+                    {rowsPerPage} / page
+                    <span className="openingstock-page-limit-arrow">▾</span>
                   </button>
-                  <div className="fx-ac">
-                    {getPagination(currentPage, totalPages).map((page, i) =>
-                      page === "..." ? (
-                        <span key={i} className="dots">
-                          …
-                        </span>
-                      ) : (
-                        <button
-                          key={i}
-                          className={`openingstock_jumpto ${
-                            currentPage === page ? "active" : ""
-                          }`}
-                          onClick={() => setCurrentPage(page)}
+
+                  {openLimit && (
+                    <ul className="openingstock-limit-dropdown">
+                      {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
+                        <li
+                          key={n}
+                          className="openingstock-limit-item"
+                          onClick={() => {
+                            setRowsPerPage(n);
+                            setCurrentPage(1);
+                            setOpenLimit(false);
+                          }}
                         >
-                          {page}
-                        </button>
-                      ),
-                    )}
-                  </div>
-
-                  <button
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage((p) => p + 1)}
-                  >
-                    Next
-                  </button>
+                          {n} / page
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </div>
             </div>
+            <div className="openingstock_row" id="printable">
+              {switchView()}
+            </div>
+            <div className="fx-jc">
+              <div className="openingstock_pagination fx-ac space2">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => p - 1)}
+                >
+                  Previous
+                </button>
+                <div className="fx-ac">
+                  {getPagination(currentPage, totalPages).map((page, i) =>
+                    page === "..." ? (
+                      <span key={i} className="dots">
+                        …
+                      </span>
+                    ) : (
+                      <button
+                        key={i}
+                        className={`openingstock_jumpto ${
+                          currentPage === page ? "active" : ""
+                        }`}
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page}
+                      </button>
+                    ),
+                  )}
+                </div>
+
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => p + 1)}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
           </div>
-        )}
+        </div>
         <div className="openingstock_footer">
           <div className="flight-card clientDashboardCard fx-jb fx-ac space2">
             {/* LEFT: Airline */}
@@ -536,101 +568,94 @@ export default function OpeningStock({ breadcrumbs }) {
     }
     return (
       <div className="fx-cl space2">
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="fx-cl space2">
-            <div className="fx-cl spacem">
-              <div
-                className="fx-ac fx-jb space2"
-                style={{ fontSize: "1.2rem" }}
-              >
-                <span className="fx-ac spacem">
-                  <strong className="fx-jc" style={{ color: "#3a84f8" }}>
-                    Display:
-                  </strong>
-                  <span>
-                    {salesData.length === 0
-                      ? "0 to 0 of 0 entries"
-                      : `${start + 1} to ${Math.min(
-                          end,
-                          salesData.length,
-                        )} of ${salesData.length} entries`}
-                  </span>
+        <div className="fx-cl space2">
+          <div className="fx-cl spacem">
+            <div className="fx-ac fx-jb space2" style={{ fontSize: "1.2rem" }}>
+              <span className="fx-ac spacem">
+                <strong className="fx-jc" style={{ color: "#3a84f8" }}>
+                  Display:
+                </strong>
+                <span>
+                  {salesData.length === 0
+                    ? "0 to 0 of 0 entries"
+                    : `${start + 1} to ${Math.min(
+                        end,
+                        salesData.length,
+                      )} of ${salesData.length} entries`}
                 </span>
-                <div className="openingstock_entries-info fx-ac spacem">
-                  <h4>Rows</h4>
-                  <div className="openingstock-page-limit">
-                    <button
-                      className="openingstock-page-limit-btn"
-                      onClick={() => setOpenLimit(!openLimit)}
-                    >
-                      {rowsPerPage} / page
-                      <span className="openingstock-page-limit-arrow">▾</span>
-                    </button>
-
-                    {openLimit && (
-                      <ul className="openingstock-limit-dropdown">
-                        {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
-                          <li
-                            key={n}
-                            className="openingstock-limit-item"
-                            onClick={() => {
-                              setRowsPerPage(n);
-                              setCurrentPage(1);
-                              setOpenLimit(false);
-                            }}
-                          >
-                            {n} / page
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="openingstock_row" id="printable">
-                {switchView()}
-              </div>
-              <div className="fx-jc">
-                <div className="openingstock_pagination fx-ac space2">
+              </span>
+              <div className="openingstock_entries-info fx-ac spacem">
+                <h4>Rows</h4>
+                <div className="openingstock-page-limit">
                   <button
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((p) => p - 1)}
+                    className="openingstock-page-limit-btn"
+                    onClick={() => setOpenLimit(!openLimit)}
                   >
-                    Previous
+                    {rowsPerPage} / page
+                    <span className="openingstock-page-limit-arrow">▾</span>
                   </button>
-                  <div className="fx-ac">
-                    {getPagination(currentPage, totalPages).map((page, i) =>
-                      page === "..." ? (
-                        <span key={i} className="dots">
-                          …
-                        </span>
-                      ) : (
-                        <button
-                          key={i}
-                          className={`openingstock_jumpto ${
-                            currentPage === page ? "active" : ""
-                          }`}
-                          onClick={() => setCurrentPage(page)}
+
+                  {openLimit && (
+                    <ul className="openingstock-limit-dropdown">
+                      {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
+                        <li
+                          key={n}
+                          className="openingstock-limit-item"
+                          onClick={() => {
+                            setRowsPerPage(n);
+                            setCurrentPage(1);
+                            setOpenLimit(false);
+                          }}
                         >
-                          {page}
-                        </button>
-                      ),
-                    )}
-                  </div>
-
-                  <button
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage((p) => p + 1)}
-                  >
-                    Next
-                  </button>
+                          {n} / page
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </div>
             </div>
+            <div className="openingstock_row" id="printable">
+              {switchView()}
+            </div>
+            <div className="fx-jc">
+              <div className="openingstock_pagination fx-ac space2">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => p - 1)}
+                >
+                  Previous
+                </button>
+                <div className="fx-ac">
+                  {getPagination(currentPage, totalPages).map((page, i) =>
+                    page === "..." ? (
+                      <span key={i} className="dots">
+                        …
+                      </span>
+                    ) : (
+                      <button
+                        key={i}
+                        className={`openingstock_jumpto ${
+                          currentPage === page ? "active" : ""
+                        }`}
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page}
+                      </button>
+                    ),
+                  )}
+                </div>
+
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => p + 1)}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
           </div>
-        )}
+        </div>
         <div className="openingstock_footer">Footer here</div>
       </div>
     );
@@ -735,101 +760,94 @@ export default function OpeningStock({ breadcrumbs }) {
     }
     return (
       <div className="fx-cl space2">
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="fx-cl space2">
-            <div className="fx-cl spacem">
-              <div
-                className="fx-ac fx-jb space2"
-                style={{ fontSize: "1.2rem" }}
-              >
-                <span className="fx-ac spacem">
-                  <strong className="fx-jc" style={{ color: "#3a84f8" }}>
-                    Display:
-                  </strong>
-                  <span>
-                    {salesData.length === 0
-                      ? "0 to 0 of 0 entries"
-                      : `${start + 1} to ${Math.min(
-                          end,
-                          salesData.length,
-                        )} of ${salesData.length} entries`}
-                  </span>
+        <div className="fx-cl space2">
+          <div className="fx-cl spacem">
+            <div className="fx-ac fx-jb space2" style={{ fontSize: "1.2rem" }}>
+              <span className="fx-ac spacem">
+                <strong className="fx-jc" style={{ color: "#3a84f8" }}>
+                  Display:
+                </strong>
+                <span>
+                  {salesData.length === 0
+                    ? "0 to 0 of 0 entries"
+                    : `${start + 1} to ${Math.min(
+                        end,
+                        salesData.length,
+                      )} of ${salesData.length} entries`}
                 </span>
-                <div className="openingstock_entries-info fx-ac spacem">
-                  <h4>Rows</h4>
-                  <div className="openingstock-page-limit">
-                    <button
-                      className="openingstock-page-limit-btn"
-                      onClick={() => setOpenLimit(!openLimit)}
-                    >
-                      {rowsPerPage} / page
-                      <span className="openingstock-page-limit-arrow">▾</span>
-                    </button>
-
-                    {openLimit && (
-                      <ul className="openingstock-limit-dropdown">
-                        {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
-                          <li
-                            key={n}
-                            className="openingstock-limit-item"
-                            onClick={() => {
-                              setRowsPerPage(n);
-                              setCurrentPage(1);
-                              setOpenLimit(false);
-                            }}
-                          >
-                            {n} / page
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="openingstock_row" id="printable">
-                {switchView()}
-              </div>
-              <div className="fx-jc">
-                <div className="openingstock_pagination fx-ac space2">
+              </span>
+              <div className="openingstock_entries-info fx-ac spacem">
+                <h4>Rows</h4>
+                <div className="openingstock-page-limit">
                   <button
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((p) => p - 1)}
+                    className="openingstock-page-limit-btn"
+                    onClick={() => setOpenLimit(!openLimit)}
                   >
-                    Previous
+                    {rowsPerPage} / page
+                    <span className="openingstock-page-limit-arrow">▾</span>
                   </button>
-                  <div className="fx-ac">
-                    {getPagination(currentPage, totalPages).map((page, i) =>
-                      page === "..." ? (
-                        <span key={i} className="dots">
-                          …
-                        </span>
-                      ) : (
-                        <button
-                          key={i}
-                          className={`openingstock_jumpto ${
-                            currentPage === page ? "active" : ""
-                          }`}
-                          onClick={() => setCurrentPage(page)}
+
+                  {openLimit && (
+                    <ul className="openingstock-limit-dropdown">
+                      {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
+                        <li
+                          key={n}
+                          className="openingstock-limit-item"
+                          onClick={() => {
+                            setRowsPerPage(n);
+                            setCurrentPage(1);
+                            setOpenLimit(false);
+                          }}
                         >
-                          {page}
-                        </button>
-                      ),
-                    )}
-                  </div>
-
-                  <button
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage((p) => p + 1)}
-                  >
-                    Next
-                  </button>
+                          {n} / page
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </div>
             </div>
+            <div className="openingstock_row" id="printable">
+              {switchView()}
+            </div>
+            <div className="fx-jc">
+              <div className="openingstock_pagination fx-ac space2">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => p - 1)}
+                >
+                  Previous
+                </button>
+                <div className="fx-ac">
+                  {getPagination(currentPage, totalPages).map((page, i) =>
+                    page === "..." ? (
+                      <span key={i} className="dots">
+                        …
+                      </span>
+                    ) : (
+                      <button
+                        key={i}
+                        className={`openingstock_jumpto ${
+                          currentPage === page ? "active" : ""
+                        }`}
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page}
+                      </button>
+                    ),
+                  )}
+                </div>
+
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => p + 1)}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
           </div>
-        )}
+        </div>
         <div className="openingstock_footer">Footer here</div>
       </div>
     );
@@ -969,7 +987,11 @@ export default function OpeningStock({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        <div className="openingstock_main">{switchActiveTab()}</div>
+        {loading ? (
+          <IsLoading />
+        ) : (
+          <div className="openingstock_main">{switchActiveTab()}</div>
+        )}
       </div>
     </div>
   );

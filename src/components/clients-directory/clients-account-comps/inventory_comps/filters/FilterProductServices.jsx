@@ -3,7 +3,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import CloseIcon from "@mui/icons-material/Close";
 import "./filterProductServices.css";
 
-export default function FilterDiscount() {
+export default function FilterProductServices() {
   return (
     <div className="productservices_advanced_search">
       {/* Header */}

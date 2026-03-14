@@ -1,18 +1,18 @@
-import { useState, useEffect } from "react";
+import { useEffect, useReducer, useState } from "react";
+import { useSnackbar } from "notistack";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import "./returns.css";
+import "./products.css";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import * as Action from "../../../../store/redux/client_reducer.js";
-import { useSnackbar } from "notistack";
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 import salesData from "../data";
 import IsLoading from "../../../../IsLoading.jsx";
-import FilterRuturns from "./filters/FilterReturn.jsx";
-import ExportPDFButton from "./exports/ReturnPDFExport.jsx";
-import ExportExcelJSButton from "./exports/ReturnsExcelExport.jsx";
+import FilterProducts from "./filters/FilterProducts.jsx";
+import ExportPDFButton from "./exports/ProductsPDFExport.jsx";
+import ExportExcelJSButton from "./exports/ProductsExcelExport.jsx";
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 // import from MUI
@@ -27,16 +27,15 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 // image imports
 import ImgOne from "./img1.jpg";
 
-let salesAxios;
-
-export default function Returns({ breadcrumbs }) {
+let productsData;
+export default function Products({ breadcrumbs }) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [changeview, setChangeView] = useState("");
-  const [returnsFilterOpen, setreturnsFilterOpen] = useState(false);
+  const [productsFilterOpen, setproductsFilterOpen] = useState(false);
 
   // Paginations Functions
   const [currentPage, setCurrentPage] = useState(1);
@@ -91,46 +90,34 @@ export default function Returns({ breadcrumbs }) {
     }
   }
 
-  async function apiGetSales() {
-    setLoading(true);
-    await axios
-      .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
-      )
-      .then((response) => {
-        salesAxios = response.data.data;
-        console.log("salesAxios: ", response);
-        if (response.data.status === 201) {
-          setLoading(false);
-          enqueueSnackbar(`${response.data.message}`, {
-            variant: "success",
-            autoHideDuration: 3000,
-            ContentProps: {
-              style: { fontSize: "16px", fontWeight: "bold" },
-            },
-          });
-        } else {
-          enqueueSnackbar(`${response.data.message}`, {
-            variant: "error",
-            autoHideDuration: 3000,
-            ContentProps: {
-              style: { fontSize: "16px", fontWeight: "bold" },
-            },
-          });
-          setLoading(false);
-        }
-      })
-      .catch((error) => {
-        enqueueSnackbar(`error: something went wrong!`, {
+  async function apiGetProducts() {
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/5sd4fg56we6r4d/products/fetch_product`,
+      );
+
+      if (response?.data?.status === 200) {
+        productsData = response.data.info;
+        console.log("Fetched products:", productsData);
+      } else {
+        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
           variant: "error",
           autoHideDuration: 3000,
-          ContentProps: {
-            style: { fontSize: "16px", fontWeight: "bold" },
-          },
         });
-        console.log(error);
-        setLoading(false);
+      }
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+
+      enqueueSnackbar("Server error while fetching products", {
+        variant: "error",
+        autoHideDuration: 3000,
       });
+    }
   }
 
   // /////////////////////////////////////////////////////////
@@ -178,7 +165,7 @@ export default function Returns({ breadcrumbs }) {
 
   function switchActiveTab() {
     switch (currentTab) {
-      case "returns":
+      case "products":
         return <ToDo />;
       case "completed":
         return <Completed />;
@@ -224,7 +211,7 @@ export default function Returns({ breadcrumbs }) {
     printWindow.document.close();
   };
   // //////////////////////////////////////////////////////////////////////////
-  // COMPONENTS OF returns PAGE
+  // COMPONENTS OF products PAGE
   // //////////////////////////////////////////////////////////////////////////
 
   function ToDo() {
@@ -240,7 +227,7 @@ export default function Returns({ breadcrumbs }) {
     }
     function TableView({ currentRows }) {
       return (
-        <div className="returns">
+        <div className="products">
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
@@ -257,20 +244,20 @@ export default function Returns({ breadcrumbs }) {
             </thead>
             <tbody className="fx-cl spacem">
               {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
+                <tr key={item?.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item?.customerName}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
+                  <td>{item?.invoiceNo}</td>
+                  <td>{item?.paymentStatus}</td>
+                  <td>₦{item?.totalAmount.toLocaleString()}</td>
+                  <td>₦{item?.totalPaid.toLocaleString()}</td>
+                  <td>{item?.totalItems}</td>
+                  <td>₦{item?.sellDue.toLocaleString()}</td>
+                  <td>{item?.date}</td>
                   <td>
-                    <button>{item.action}</button>
+                    <button>{item?.action}</button>
                   </td>
                 </tr>
               ))}
@@ -282,25 +269,25 @@ export default function Returns({ breadcrumbs }) {
 
     function CardView({ currentRows }) {
       return (
-        <div className="returnsCardGrid g g4 space2">
+        <div className="productsCardGrid g g4 space2">
           {currentRows.map((item) => (
-            <div key={item.invoiceNo} className="returnsGridCard">
+            <div key={item?.invoiceNo} className="productsGridCard">
               {/* Header */}
               <div className="cardHeader">
                 <img alt="customer" className="avatar" src={ImgOne} />
 
                 <div className="cardInfo">
-                  <h4>{item.customerName}</h4>
-                  <p>Invoice #{item.invoiceNo}</p>
+                  <h4>{item?.customerName}</h4>
+                  <p>Invoice #{item?.invoiceNo}</p>
 
                   <div className="ratingRow">
                     <span className="rating">
-                      ⭐ {item.paymentStatus === "Paid" ? "5.0" : "4.0"}
+                      ⭐ {item?.paymentStatus === "Paid" ? "5.0" : "4.0"}
                     </span>
-                    <span className="location">📍 {item.date}</span>
+                    <span className="location">📍 {item?.date}</span>
                   </div>
 
-                  <small>{item.totalItems} items</small>
+                  <small>{item?.totalItems} items</small>
                 </div>
               </div>
 
@@ -308,13 +295,13 @@ export default function Returns({ breadcrumbs }) {
               <div className="tags">
                 <span>Total</span>
                 <span>Paid</span>
-                <span>+{item.totalItems}</span>
+                <span>+{item?.totalItems}</span>
               </div>
 
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item?.totalAmount.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -343,23 +330,23 @@ export default function Returns({ breadcrumbs }) {
                       )} of ${salesData.length} entries`}
                 </span>
               </span>
-              <div className="returns_entries-info fx-ac spacem">
+              <div className="products_entries-info fx-ac spacem">
                 <h4>Rows</h4>
-                <div className="returns-page-limit">
+                <div className="products-page-limit">
                   <button
-                    className="returns-page-limit-btn"
+                    className="products-page-limit-btn"
                     onClick={() => setOpenLimit(!openLimit)}
                   >
                     {rowsPerPage} / page
-                    <span className="returns-page-limit-arrow">▾</span>
+                    <span className="products-page-limit-arrow">▾</span>
                   </button>
 
                   {openLimit && (
-                    <ul className="returns-limit-dropdown">
+                    <ul className="products-limit-dropdown">
                       {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
                         <li
                           key={n}
-                          className="returns-limit-item"
+                          className="products-limit-item"
                           onClick={() => {
                             setRowsPerPage(n);
                             setCurrentPage(1);
@@ -374,11 +361,11 @@ export default function Returns({ breadcrumbs }) {
                 </div>
               </div>
             </div>
-            <div className="returns_row" id="printable">
+            <div className="products_row" id="printable">
               {switchView()}
             </div>
             <div className="fx-jc">
-              <div className="returns_pagination fx-ac space2">
+              <div className="products_pagination fx-ac space2">
                 <button
                   disabled={currentPage === 1}
                   onClick={() => setCurrentPage((p) => p - 1)}
@@ -394,7 +381,7 @@ export default function Returns({ breadcrumbs }) {
                     ) : (
                       <button
                         key={i}
-                        className={`returns_jumpto ${
+                        className={`products_jumpto ${
                           currentPage === page ? "active" : ""
                         }`}
                         onClick={() => setCurrentPage(page)}
@@ -415,38 +402,38 @@ export default function Returns({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        <div className="returns_footer">
+        <div className="products_footer">
           <div className="flight-card clientDashboardCard fx-jb fx-ac space2">
             {/* LEFT: Airline */}
-            <div className="returns-airline fx-cl space1">
-              <div className="returns-airline-logo fx-ac fx-jc">✈️</div>
+            <div className="products-airline fx-cl space1">
+              <div className="products-airline-logo fx-ac fx-jc">✈️</div>
               <div className="fx-cl space3">
-                <div className="returns-airline-name">Inventory Summation</div>
-                <span className="returns-refund-badge">soled stuff</span>
+                <div className="products-airline-name">Inventory Summation</div>
+                <span className="products-refund-badge">soled stuff</span>
               </div>
             </div>
 
             {/* CENTER: Flight info */}
-            <div className="returns-flight-info fx-ac space2">
-              <div className="returns-time-block">
-                <div className="returns-time">12:10</div>
-                <div className="returns-location">
+            <div className="products-flight-info fx-ac space2">
+              <div className="products-time-block">
+                <div className="products-time">12:10</div>
+                <div className="products-location">
                   Moi Intl, Mombasa
                   <br />
                   Minna
                 </div>
               </div>
 
-              <div className="returns-flight-line fx-ac fx-jc space1">
-                <FlightIcon className="returns-plane-icon" />
-                <div className="returns-duration">3h 30min</div>
-                <div className="returns-stop">Non Stop</div>
+              <div className="products-flight-line fx-ac fx-jc space1">
+                <FlightIcon className="products-plane-icon" />
+                <div className="products-duration">3h 30min</div>
+                <div className="products-stop">Non Stop</div>
               </div>
 
-              <div className="returns-time-block">
-                <div className="returns-time">15:30</div>
-                <div className="returns-location">
-                  <PlaceIcon className="returns-place-icon" />
+              <div className="products-time-block">
+                <div className="products-time">15:30</div>
+                <div className="products-location">
+                  <PlaceIcon className="products-place-icon" />
                   JFK Terminal, Nairobi,
                   <br />
                   Kenya
@@ -455,11 +442,11 @@ export default function Returns({ breadcrumbs }) {
             </div>
 
             {/* RIGHT: Price */}
-            <div className="returns-price-section">
-              <span className="returns-cheapest">Cheapest</span>
-              <div className="returns-price">$110</div>
-              <div className="returns-class">Business Class</div>
-              <button className="returns-book-btn">Book Now</button>
+            <div className="products-price-section">
+              <span className="products-cheapest">Cheapest</span>
+              <div className="products-price">$110</div>
+              <div className="products-class">Business Class</div>
+              <button className="products-book-btn">Book Now</button>
             </div>
           </div>
         </div>
@@ -496,20 +483,20 @@ export default function Returns({ breadcrumbs }) {
             </thead>
             <tbody className="fx-cl spacem">
               {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
+                <tr key={item?.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item?.customerName}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
+                  <td>{item?.invoiceNo}</td>
+                  <td>{item?.paymentStatus}</td>
+                  <td>₦{item?.totalAmount.toLocaleString()}</td>
+                  <td>₦{item?.totalPaid.toLocaleString()}</td>
+                  <td>{item?.totalItems}</td>
+                  <td>₦{item?.sellDue.toLocaleString()}</td>
+                  <td>{item?.date}</td>
                   <td>
-                    <button>{item.action}</button>
+                    <button>{item?.action}</button>
                   </td>
                 </tr>
               ))}
@@ -521,25 +508,25 @@ export default function Returns({ breadcrumbs }) {
 
     function CardView({ currentRows }) {
       return (
-        <div className="returnsCardGrid g g4 space2">
+        <div className="productsCardGrid g g4 space2">
           {currentRows.map((item) => (
-            <div key={item.invoiceNo} className="returnsGridCard">
+            <div key={item?.invoiceNo} className="productsGridCard">
               {/* Header */}
               <div className="cardHeader">
                 <img alt="customer" className="avatar" src={ImgOne} />
 
                 <div className="cardInfo">
-                  <h4>{item.customerName}</h4>
-                  <p>Invoice #{item.invoiceNo}</p>
+                  <h4>{item?.customerName}</h4>
+                  <p>Invoice #{item?.invoiceNo}</p>
 
                   <div className="ratingRow">
                     <span className="rating">
-                      ⭐ {item.paymentStatus === "Paid" ? "5.0" : "4.0"}
+                      ⭐ {item?.paymentStatus === "Paid" ? "5.0" : "4.0"}
                     </span>
-                    <span className="location">📍 {item.date}</span>
+                    <span className="location">📍 {item?.date}</span>
                   </div>
 
-                  <small>{item.totalItems} items</small>
+                  <small>{item?.totalItems} items</small>
                 </div>
               </div>
 
@@ -547,13 +534,13 @@ export default function Returns({ breadcrumbs }) {
               <div className="tags">
                 <span>Total</span>
                 <span>Paid</span>
-                <span>+{item.totalItems}</span>
+                <span>+{item?.totalItems}</span>
               </div>
 
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item?.totalAmount.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -582,23 +569,23 @@ export default function Returns({ breadcrumbs }) {
                       )} of ${salesData.length} entries`}
                 </span>
               </span>
-              <div className="returns_entries-info fx-ac spacem">
+              <div className="products_entries-info fx-ac spacem">
                 <h4>Rows</h4>
-                <div className="returns-page-limit">
+                <div className="products-page-limit">
                   <button
-                    className="returns-page-limit-btn"
+                    className="products-page-limit-btn"
                     onClick={() => setOpenLimit(!openLimit)}
                   >
                     {rowsPerPage} / page
-                    <span className="returns-page-limit-arrow">▾</span>
+                    <span className="products-page-limit-arrow">▾</span>
                   </button>
 
                   {openLimit && (
-                    <ul className="returns-limit-dropdown">
+                    <ul className="products-limit-dropdown">
                       {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
                         <li
                           key={n}
-                          className="returns-limit-item"
+                          className="products-limit-item"
                           onClick={() => {
                             setRowsPerPage(n);
                             setCurrentPage(1);
@@ -613,11 +600,11 @@ export default function Returns({ breadcrumbs }) {
                 </div>
               </div>
             </div>
-            <div className="returns_row" id="printable">
+            <div className="products_row" id="printable">
               {switchView()}
             </div>
             <div className="fx-jc">
-              <div className="returns_pagination fx-ac space2">
+              <div className="products_pagination fx-ac space2">
                 <button
                   disabled={currentPage === 1}
                   onClick={() => setCurrentPage((p) => p - 1)}
@@ -633,7 +620,7 @@ export default function Returns({ breadcrumbs }) {
                     ) : (
                       <button
                         key={i}
-                        className={`returns_jumpto ${
+                        className={`products_jumpto ${
                           currentPage === page ? "active" : ""
                         }`}
                         onClick={() => setCurrentPage(page)}
@@ -654,7 +641,7 @@ export default function Returns({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        <div className="returns_footer">Footer here</div>
+        <div className="products_footer">Footer here</div>
       </div>
     );
   }
@@ -688,20 +675,20 @@ export default function Returns({ breadcrumbs }) {
             </thead>
             <tbody className="fx-cl spacem">
               {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
+                <tr key={item?.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item?.customerName}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
+                  <td>{item?.invoiceNo}</td>
+                  <td>{item?.paymentStatus}</td>
+                  <td>₦{item?.totalAmount.toLocaleString()}</td>
+                  <td>₦{item?.totalPaid.toLocaleString()}</td>
+                  <td>{item?.totalItems}</td>
+                  <td>₦{item?.sellDue.toLocaleString()}</td>
+                  <td>{item?.date}</td>
                   <td>
-                    <button>{item.action}</button>
+                    <button>{item?.action}</button>
                   </td>
                 </tr>
               ))}
@@ -713,25 +700,25 @@ export default function Returns({ breadcrumbs }) {
 
     function CardView({ currentRows }) {
       return (
-        <div className="returnsCardGrid g g4 space2">
+        <div className="productsCardGrid g g4 space2">
           {currentRows.map((item) => (
-            <div key={item.invoiceNo} className="returnsGridCard">
+            <div key={item?.invoiceNo} className="productsGridCard">
               {/* Header */}
               <div className="cardHeader">
                 <img alt="customer" className="avatar" src={ImgOne} />
 
                 <div className="cardInfo">
-                  <h4>{item.customerName}</h4>
-                  <p>Invoice #{item.invoiceNo}</p>
+                  <h4>{item?.customerName}</h4>
+                  <p>Invoice #{item?.invoiceNo}</p>
 
                   <div className="ratingRow">
                     <span className="rating">
-                      ⭐ {item.paymentStatus === "Paid" ? "5.0" : "4.0"}
+                      ⭐ {item?.paymentStatus === "Paid" ? "5.0" : "4.0"}
                     </span>
-                    <span className="location">📍 {item.date}</span>
+                    <span className="location">📍 {item?.date}</span>
                   </div>
 
-                  <small>{item.totalItems} items</small>
+                  <small>{item?.totalItems} items</small>
                 </div>
               </div>
 
@@ -739,13 +726,13 @@ export default function Returns({ breadcrumbs }) {
               <div className="tags">
                 <span>Total</span>
                 <span>Paid</span>
-                <span>+{item.totalItems}</span>
+                <span>+{item?.totalItems}</span>
               </div>
 
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item?.totalAmount.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -774,23 +761,23 @@ export default function Returns({ breadcrumbs }) {
                       )} of ${salesData.length} entries`}
                 </span>
               </span>
-              <div className="returns_entries-info fx-ac spacem">
+              <div className="products_entries-info fx-ac spacem">
                 <h4>Rows</h4>
-                <div className="returns-page-limit">
+                <div className="products-page-limit">
                   <button
-                    className="returns-page-limit-btn"
+                    className="products-page-limit-btn"
                     onClick={() => setOpenLimit(!openLimit)}
                   >
                     {rowsPerPage} / page
-                    <span className="returns-page-limit-arrow">▾</span>
+                    <span className="products-page-limit-arrow">▾</span>
                   </button>
 
                   {openLimit && (
-                    <ul className="returns-limit-dropdown">
+                    <ul className="products-limit-dropdown">
                       {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
                         <li
                           key={n}
-                          className="returns-limit-item"
+                          className="products-limit-item"
                           onClick={() => {
                             setRowsPerPage(n);
                             setCurrentPage(1);
@@ -805,11 +792,11 @@ export default function Returns({ breadcrumbs }) {
                 </div>
               </div>
             </div>
-            <div className="returns_row" id="printable">
+            <div className="products_row" id="printable">
               {switchView()}
             </div>
             <div className="fx-jc">
-              <div className="returns_pagination fx-ac space2">
+              <div className="products_pagination fx-ac space2">
                 <button
                   disabled={currentPage === 1}
                   onClick={() => setCurrentPage((p) => p - 1)}
@@ -825,7 +812,7 @@ export default function Returns({ breadcrumbs }) {
                     ) : (
                       <button
                         key={i}
-                        className={`returns_jumpto ${
+                        className={`products_jumpto ${
                           currentPage === page ? "active" : ""
                         }`}
                         onClick={() => setCurrentPage(page)}
@@ -846,17 +833,19 @@ export default function Returns({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        <div className="returns_footer">Footer here</div>
+        <div className="products_footer">Footer here</div>
       </div>
     );
   }
+
   useEffect(() => {
-    apiGetSales();
+    apiGetProducts();
   }, []);
+
   return (
-    <div className="returnsCompContainer">
+    <div className="productsCompContainer">
       <div className="fx-cl space2">
-        <div className="returns_breadcrumbs fx-ac">
+        <div className="products_breadcrumbs fx-ac">
           <Link className="fx-ac spacem">
             <strong>{breadcrumbs.active && breadcrumbs.active_title}</strong>{" "}
             <KeyboardArrowRightIcon fontSize="small" />{" "}
@@ -870,15 +859,14 @@ export default function Returns({ breadcrumbs }) {
             <span>{currentTab && currentTab}</span>
           </Link>
         </div>
-        <div className="returns_headings fx-jb space4">
+        <div className="products_headings fx-jb space4">
           <div className="fx-cl">
             <h2 style={{ textTransform: "capitalize" }}>
               {breadcrumbs.active_title}
             </h2>
             <p style={{ fontSize: "1.2rem" }}>
-              Returns means sending products back to the supplier. Reasons:
-              damaged goods expired products wrong items delivered quality
-              issues
+              This module stores services instead of physical products: A
+              service has no stock.
             </p>
           </div>
           <div className="fx-ac fx-jb spacem">
@@ -919,11 +907,13 @@ export default function Returns({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        <div className="returns_actionBar fx-jb space4">
+        <div className="products_actionBar fx-jb space4">
           <ul className="left fx-ac">
             <li
-              onClick={() => handleCurrentTAB("returns")}
-              className={`fx-ac  spacem ${currentTab == "returns" && "active"}`}
+              onClick={() => handleCurrentTAB("products")}
+              className={`fx-ac  spacem ${
+                currentTab == "products" && "active"
+              }`}
             >
               <span>Todo</span>
               <figure>34</figure>
@@ -950,32 +940,32 @@ export default function Returns({ breadcrumbs }) {
           <div className="right fx-ac fx-jb space1">
             <div className="fx-ac space1">
               <button
-                className="returns_export_btn fx-ac spacem"
+                className="products_export_btn fx-ac spacem"
                 onClick={(e) => {
                   e.stopPropagation(); // stop bubbling to document
-                  setreturnsFilterOpen(!returnsFilterOpen);
+                  setproductsFilterOpen(!productsFilterOpen);
                 }}
               >
                 <CandlestickChartIcon fontSize="large" />
                 <span>Filter & Sort</span>
               </button>
-              {returnsFilterOpen && (
+              {productsFilterOpen && (
                 <div
-                  className="returns_filter_modal_overlay fx-jc fx-ac"
-                  onClick={() => setreturnsFilterOpen(false)} // click outside → close
+                  className="products_filter_modal_overlay fx-jc fx-ac"
+                  onClick={() => setproductsFilterOpen(false)} // click outside → close
                 >
                   <div
-                    className="returns_filter_modal"
+                    className="products_filter_modal"
                     onClick={(e) => e.stopPropagation()} // click inside → stay open
                   >
-                    <FilterRuturns />
+                    <FilterProducts />
                   </div>
                 </div>
               )}
             </div>
             <div className="fx-ac space1">
               <button
-                className="returns_export_btn fx-ac spacem"
+                className="products_export_btn fx-ac spacem"
                 onClick={() => navigate("/clients/warehouse_terminal")}
               >
                 <AddIcon fontSize="large" /> <span>Add new</span>
@@ -986,7 +976,7 @@ export default function Returns({ breadcrumbs }) {
         {loading ? (
           <IsLoading />
         ) : (
-          <div className="returns_main">{switchActiveTab()}</div>
+          <div className="products_main">{switchActiveTab()}</div>
         )}
       </div>
     </div>

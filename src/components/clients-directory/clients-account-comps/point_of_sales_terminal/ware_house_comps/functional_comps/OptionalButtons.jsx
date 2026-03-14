@@ -1,5 +1,6 @@
 import { useReducer, useState } from "react";
 import "./optionalbuttons.css";
+import axios from "axios";
 import Imgs from "../../images/Udupss_girl.png";
 import N1 from "../../images/n1.png";
 import { useSnackbar } from "notistack";
@@ -185,6 +186,47 @@ export function OnHold({ handleOnHold, cart, discount, customerName }) {
   );
 }
 export function AddNewCustomer({ handleOnHold }) {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
+  // /////////////////////////////////////////////////////////
+  // Cross Origin Resource Sharing CRUD - Functions
+  // /////////////////////////////////////////////////////////
+
+  const payload = {
+    name: "products array",
+  };
+
+  async function postNewCustomer() {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
+        payload,
+      );
+      if (response?.data?.status === 200) {
+        enqueueSnackbar(response?.data?.message, {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+
+      enqueueSnackbar("Server error while fetching products", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  }
+  // -------------------------------------------------------------------
+
   return (
     <div
       className="OpBtnCont fx-cl space2"
@@ -297,6 +339,48 @@ export function ClearCart({ clearCart, cart, customer, setOpenModal }) {
   );
 }
 export function Quotation({ handleOnHold }) {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
+
+  // /////////////////////////////////////////////////////////
+  // Cross Origin Resource Sharing CRUD - Functions
+  // /////////////////////////////////////////////////////////
+
+  const payload = {
+    name: "products array",
+  };
+
+  async function postNewQuotes() {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
+        payload,
+      );
+      if (response?.data?.status === 200) {
+        enqueueSnackbar(response?.data?.message, {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+
+      enqueueSnackbar("Server error while fetching products", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  }
+  // -------------------------------------------------------------------
+
   return (
     <div
       className="OpBtnCont fx-cl space2"
@@ -363,7 +447,47 @@ export function Debit({ handleOnHold }) {
   );
 }
 export function Gifting({ handleSaveDraft }) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
+
+  // /////////////////////////////////////////////////////////
+  // Cross Origin Resource Sharing CRUD - Functions
+  // /////////////////////////////////////////////////////////
+
+  const payload = {
+    name: "products array",
+  };
+
+  async function executeGift() {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
+        payload,
+      );
+      if (response?.data?.status === 200) {
+        enqueueSnackbar(response?.data?.message, {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+
+      enqueueSnackbar("Server error while fetching products", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  }
+  // -------------------------------------------------------------------
 
   return (
     <div
@@ -390,7 +514,47 @@ export function Gifting({ handleSaveDraft }) {
   );
 }
 export function SaveDraft({ handleSaveDraft }) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
+
+  // /////////////////////////////////////////////////////////
+  // Cross Origin Resource Sharing CRUD - Functions
+  // /////////////////////////////////////////////////////////
+
+  const payload = {
+    name: "products array",
+  };
+
+  async function saveDraft() {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
+        payload,
+      );
+      if (response?.data?.status === 200) {
+        enqueueSnackbar(response?.data?.message, {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+
+      enqueueSnackbar("Server error while fetching products", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  }
+  // -------------------------------------------------------------------
 
   return (
     <div className="saveDraftCard fx-ae" onClick={(e) => e.stopPropagation()}>
@@ -536,17 +700,48 @@ export function HoldedSales({
   );
 }
 export function Subscriptions({ handleOnHold }) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
 
-  function handleSaveDraft() {
-    enqueueSnackbar(`Draft added successfully`, {
-      variant: "success",
-      autoHideDuration: 3000,
-      ContentProps: {
-        style: { fontSize: "16px", fontWeight: "bold" },
-      },
-    });
+  // /////////////////////////////////////////////////////////
+  // Cross Origin Resource Sharing CRUD - Functions
+  // /////////////////////////////////////////////////////////
+
+  const payload = {
+    name: "products array",
+  };
+
+  async function postSubscribe() {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
+        payload,
+      );
+      if (response?.data?.status === 200) {
+        enqueueSnackbar(response?.data?.message, {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+
+      enqueueSnackbar("Server error while fetching products", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
   }
+  // -------------------------------------------------------------------
+
   return (
     <div
       className="OpBtnCont fx-cl space2"
@@ -558,7 +753,7 @@ export function Subscriptions({ handleOnHold }) {
         <button>Cancel</button>
         <button
           onClick={() => {
-            handleSaveDraft();
+            postSubscribe();
           }}
         >
           Save
@@ -611,6 +806,46 @@ export function PaymentLogs({ handleOnHold }) {
 }
 export function Shipping({ handleOnHold }) {
   const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
+
+  // /////////////////////////////////////////////////////////
+  // Cross Origin Resource Sharing CRUD - Functions
+  // /////////////////////////////////////////////////////////
+
+  const payload = {
+    name: "products array",
+  };
+
+  async function executeShipping() {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
+        payload,
+      );
+      if (response?.data?.status === 200) {
+        enqueueSnackbar(response?.data?.message, {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+
+      enqueueSnackbar("Server error while fetching products", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  }
+  // -------------------------------------------------------------------
 
   function handleSaveDraft() {
     enqueueSnackbar(`Draft added successfully`, {
@@ -632,7 +867,7 @@ export function Shipping({ handleOnHold }) {
         <button>Cancel</button>
         <button
           onClick={() => {
-            handleSaveDraft();
+            executeShipping();
           }}
         >
           Prospond

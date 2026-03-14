@@ -7,7 +7,7 @@ const ExportExcelJSButton = ({ currentRows }) => {
   const exportToExcel = async () => {
     // 1. Create a new workbook
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Products Services Table");
+    const worksheet = workbook.addWorksheet("Products Table");
 
     // 2. Define columns
     worksheet.columns = [
@@ -75,7 +75,7 @@ const ExportExcelJSButton = ({ currentRows }) => {
 
   return (
     <button
-      className="productservices_export_btn fx-ac spacem"
+      className="products_export_btn fx-ac spacem"
       onClick={exportToExcel}
       style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}
     >

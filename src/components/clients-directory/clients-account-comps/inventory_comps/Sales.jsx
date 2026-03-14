@@ -834,124 +834,124 @@ export default function Sales({ breadcrumbs }) {
           </Link>
         </div>
 
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="fx-cl space2">
-            <div className="sales_headings fx-jb space4">
-              <div className="fx-cl">
-                <h2 style={{ textTransform: "capitalize" }}>
-                  {breadcrumbs.active_title}
-                </h2>
-                <p style={{ fontSize: "1.2rem" }}>
-                  Here is a list of sales you have made
-                </p>
-              </div>
-              <div className="fx-ac fx-jb spacem">
-                <div className=" fx-ac spacem">
-                  <div>
-                    {changeview === "grid" ? (
-                      <button
-                        className="iconBtn"
-                        onClick={() => setChangeView("table")}
-                      >
-                        <ListAltIcon fontSize="large" />
-                      </button>
-                    ) : (
-                      <button
-                        className="iconBtn"
-                        onClick={() => setChangeView("grid")}
-                      >
-                        <AppsOutlinedIcon fontSize="large" />
-                      </button>
-                    )}
-                  </div>
-                  <button
-                    className="iconBtn printingBtn"
-                    onClick={() =>
-                      handlePrint({
-                        currentRows: currentRows,
-                        tab: currentTab,
-                      })
-                    }
-                  >
-                    <PrintIcon fontSize="large" />
-                  </button>
-                  <ExportPDFButton currentRows={currentRows} />
-                </div>
-
-                <div className="fx-ac space1">
-                  <ExportExcelJSButton currentRows={currentRows} />
-                </div>
-              </div>
+        <div className="fx-cl space2">
+          <div className="sales_headings fx-jb space4">
+            <div className="fx-cl">
+              <h2 style={{ textTransform: "capitalize" }}>
+                {breadcrumbs.active_title}
+              </h2>
+              <p style={{ fontSize: "1.2rem" }}>
+                Here is a list of sales you have made
+              </p>
             </div>
-            <div className="sales_actionBar fx-jb space4">
-              <ul className="left fx-ac">
-                <li
-                  onClick={() => handleCurrentTAB("sales")}
-                  className={`fx-ac  spacem ${currentTab == "sales" && "active"}`}
-                >
-                  <span>All Sales</span>
-                  <figure>{salesData?.length}</figure>
-                </li>
-                <li
-                  onClick={() => handleCurrentTAB("completed")}
-                  className={`fx-ac  spacem ${
-                    currentTab == "completed" && "active"
-                  }`}
-                >
-                  <span>Today Sales</span>
-                  <figure>45</figure>
-                </li>
-                <li
-                  onClick={() => handleCurrentTAB("progress")}
-                  className={`fx-ac  spacem ${
-                    currentTab == "progress" && "active"
-                  }`}
-                >
-                  <span>This Month</span>
-                  <figure>89</figure>
-                </li>
-              </ul>
-              <div className="right fx-ac fx-jb space1">
-                <div className="fx-ac space1">
-                  <button
-                    className="sales_export_btn fx-ac spacem"
-                    onClick={(e) => {
-                      e.stopPropagation(); // stop bubbling to document
-                      setSalesFilterOpen(!salesFilterOpen);
-                    }}
-                  >
-                    <CandlestickChartIcon fontSize="large" />
-                    <span>Filter & Sort</span>
-                  </button>
-                  {salesFilterOpen && (
-                    <div
-                      className="sales_filter_modal_overlay fx-jc fx-ac"
-                      onClick={() => setSalesFilterOpen(false)} // click outside → close
+            <div className="fx-ac fx-jb spacem">
+              <div className=" fx-ac spacem">
+                <div>
+                  {changeview === "grid" ? (
+                    <button
+                      className="iconBtn"
+                      onClick={() => setChangeView("table")}
                     >
-                      <div
-                        className="sales_filter_modal"
-                        onClick={(e) => e.stopPropagation()} // click inside → stay open
-                      >
-                        <FilterSales />
-                      </div>
-                    </div>
+                      <ListAltIcon fontSize="large" />
+                    </button>
+                  ) : (
+                    <button
+                      className="iconBtn"
+                      onClick={() => setChangeView("grid")}
+                    >
+                      <AppsOutlinedIcon fontSize="large" />
+                    </button>
                   )}
                 </div>
-                <div className="fx-ac space1">
-                  <button
-                    className="sales_export_btn fx-ac spacem"
-                    onClick={() => navigate("/clients/warehouse_terminal")}
-                  >
-                    <AddIcon fontSize="large" /> <span>Add new</span>
-                  </button>
-                </div>
+                <button
+                  className="iconBtn printingBtn"
+                  onClick={() =>
+                    handlePrint({
+                      currentRows: currentRows,
+                      tab: currentTab,
+                    })
+                  }
+                >
+                  <PrintIcon fontSize="large" />
+                </button>
+                <ExportPDFButton currentRows={currentRows} />
+              </div>
+
+              <div className="fx-ac space1">
+                <ExportExcelJSButton currentRows={currentRows} />
               </div>
             </div>
-            <div className="sales_main">{switchActiveTab()}</div>
           </div>
-        )}
+          <div className="sales_actionBar fx-jb space4">
+            <ul className="left fx-ac">
+              <li
+                onClick={() => handleCurrentTAB("sales")}
+                className={`fx-ac  spacem ${currentTab == "sales" && "active"}`}
+              >
+                <span>All Sales</span>
+                <figure>{salesData?.length}</figure>
+              </li>
+              <li
+                onClick={() => handleCurrentTAB("completed")}
+                className={`fx-ac  spacem ${
+                  currentTab == "completed" && "active"
+                }`}
+              >
+                <span>Today Sales</span>
+                <figure>45</figure>
+              </li>
+              <li
+                onClick={() => handleCurrentTAB("progress")}
+                className={`fx-ac  spacem ${
+                  currentTab == "progress" && "active"
+                }`}
+              >
+                <span>This Month</span>
+                <figure>89</figure>
+              </li>
+            </ul>
+            <div className="right fx-ac fx-jb space1">
+              <div className="fx-ac space1">
+                <button
+                  className="sales_export_btn fx-ac spacem"
+                  onClick={(e) => {
+                    e.stopPropagation(); // stop bubbling to document
+                    setSalesFilterOpen(!salesFilterOpen);
+                  }}
+                >
+                  <CandlestickChartIcon fontSize="large" />
+                  <span>Filter & Sort</span>
+                </button>
+                {salesFilterOpen && (
+                  <div
+                    className="sales_filter_modal_overlay fx-jc fx-ac"
+                    onClick={() => setSalesFilterOpen(false)} // click outside → close
+                  >
+                    <div
+                      className="sales_filter_modal"
+                      onClick={(e) => e.stopPropagation()} // click inside → stay open
+                    >
+                      <FilterSales />
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="fx-ac space1">
+                <button
+                  className="sales_export_btn fx-ac spacem"
+                  onClick={() => navigate("/clients/warehouse_terminal")}
+                >
+                  <AddIcon fontSize="large" /> <span>Add new</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="sales_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -27,7 +27,7 @@ import FinanceLogin from "./components/public_directory/public-routs-comps/login
 import AgentLogin from "./components/public_directory/public-routs-comps/logins/AgentLogin";
 import SystemAdminLogin from "./components/public_directory/public-routs-comps/logins/SystemAdminLogin";
 import AdminStaffAccount from "./components/staff_directory/AdminStaffAccount";
-import CLIENTPrinting from "./components/clients-directory/clients-account-comps/CLIENTPrinting";
+import CLIENTPrinting from "./components/clients-directory/clients-account-comps/printing/CLIENTPrinting";
 
 const greenRoutes = [
   // PUBLIC ROUTES

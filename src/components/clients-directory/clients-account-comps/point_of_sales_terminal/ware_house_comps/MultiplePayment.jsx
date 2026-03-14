@@ -1,13 +1,56 @@
+import { useState } from "react";
 import "./multiplePayment.css";
-
 import Im from "../images/im.png";
 import Mi from "../images/mi.png";
 import Mm from "../images/mm.png";
-
+import axios from "axios";
+import { useSnackbar } from "notistack";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import LayersClearIcon from "@mui/icons-material/LayersClear";
 
 export default function MultiplePayment() {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState;
+
+  // /////////////////////////////////////////////////////////
+  // Cross Origin Resource Sharing CRUD - Functions
+  // /////////////////////////////////////////////////////////
+
+  const payload = {
+    name: "products array",
+  };
+
+  async function executeSale() {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
+        payload,
+      );
+      if (response?.data?.status === 200) {
+        enqueueSnackbar(response?.data?.message, {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+
+      enqueueSnackbar("Server error while fetching products", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  }
+  // -------------------------------------------------------------------
+
   return (
     <section className="sectionMultiPay" onClick={(e) => e.stopPropagation()}>
       <div className="multipaycont fx-cl space2">
