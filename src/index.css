@@ -316,3 +316,17 @@ button {
 *::-webkit-scrollbar-thumb:hover {
   background-color: #3a83f8;
 }
+
+button.btnTemporary {
+  background-color: #3a83f8;
+  color: #fff;
+  border-radius: 0.3rem;
+  padding: 0.5rem 3rem;
+  font-size: 1.8rem;
+  text-transform: capitalize;
+  transition: all 0.3s ease;
+}
+
+button.btnTemporary:hover {
+  background-color: #26bf89;
+}

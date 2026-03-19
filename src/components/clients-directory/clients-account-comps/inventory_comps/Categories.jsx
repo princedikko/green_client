@@ -181,13 +181,13 @@ export default function Categories({ breadcrumbs }) {
   function switchActiveTab() {
     switch (currentTab) {
       case "categories":
-        return <ToDo />;
+        return <AllCategories />;
       case "completed":
         return <Completed />;
-      case "progress":
-        return <Progress />;
+      case "create":
+        return <CreateCategory />;
       default:
-        return <ToDo />;
+        return <AllCategories />;
     }
   }
 
@@ -229,7 +229,7 @@ export default function Categories({ breadcrumbs }) {
   // COMPONENTS OF categories PAGE
   // //////////////////////////////////////////////////////////////////////////
 
-  function ToDo() {
+  function AllCategories() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -662,7 +662,79 @@ export default function Categories({ breadcrumbs }) {
       </div>
     );
   }
-  function Progress() {
+  function CreateCategory() {
+    // /////////////////////////////////////////////////////////
+    // Cross Origin Resource Sharing CRUD - Functions
+    // /////////////////////////////////////////////////////////
+
+    const payload = {
+      sku: "MILK-PEAK-001",
+      barcode: "6224001234567", // EAN / UPC
+      name: "Peak Milk 170g",
+      brand: "Peak",
+      category: {
+        name: "Dairy",
+      },
+
+      unit: "tin",
+      costPrice: 820,
+      sellingPrice: 950,
+      taxRate: 2.5, // VAT %
+
+      stock: {
+        quantity: 245,
+        minLevel: 20,
+        reorderLevel: 50,
+      },
+
+      batchTracking: true,
+      expiryTracking: true,
+
+      batches: [
+        {
+          batchNo: "PK0124A",
+          costPrice: 800,
+        },
+      ],
+
+      supplier: {
+        name: "UAC Foods",
+      },
+
+      status: "ACTIVE",
+    };
+
+    async function createCategory() {
+      try {
+        setLoading(true);
+        const response = await axios.post(
+          `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_products/create-category`,
+          payload,
+        );
+        if (response?.data?.status === 201) {
+          enqueueSnackbar(response?.data?.message, {
+            variant: "success",
+            autoHideDuration: 3000,
+          });
+        } else {
+          enqueueSnackbar(response?.data?.message, {
+            variant: "error",
+            autoHideDuration: 3000,
+          });
+        }
+
+        console.log("Price-Groups :", response);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+
+        enqueueSnackbar("Server error while fetching products", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+    }
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -676,6 +748,9 @@ export default function Categories({ breadcrumbs }) {
     function TableView({ currentRows }) {
       return (
         <div className="prog">
+          <button onClick={() => createCategory()} className="btnTemporary">
+            Create Category
+          </button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
@@ -931,7 +1006,7 @@ export default function Categories({ breadcrumbs }) {
                 currentTab == "categories" && "active"
               }`}
             >
-              <span>Todo</span>
+              <span>Categories</span>
               <figure>34</figure>
             </li>
             <li
@@ -944,12 +1019,10 @@ export default function Categories({ breadcrumbs }) {
               <figure>45</figure>
             </li>
             <li
-              onClick={() => handleCurrentTAB("progress")}
-              className={`fx-ac  spacem ${
-                currentTab == "progress" && "active"
-              }`}
+              onClick={() => handleCurrentTAB("create")}
+              className={`fx-ac  spacem ${currentTab == "create" && "active"}`}
             >
-              <span>In Progress</span>
+              <span>Add New</span>
               <figure>89</figure>
             </li>
           </ul>

@@ -181,13 +181,11 @@ export default function Brands({ breadcrumbs }) {
   function switchActiveTab() {
     switch (currentTab) {
       case "brands":
-        return <ToDo />;
-      case "completed":
-        return <Completed />;
-      case "progress":
-        return <Progress />;
+        return <AllBrands />;
+      case "add-new-brand":
+        return <AddNewBrand />;
       default:
-        return <ToDo />;
+        return <AllBrands />;
     }
   }
 
@@ -229,7 +227,7 @@ export default function Brands({ breadcrumbs }) {
   // COMPONENTS OF brands PAGE
   // //////////////////////////////////////////////////////////////////////////
 
-  function ToDo() {
+  function AllBrands() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -468,7 +466,80 @@ export default function Brands({ breadcrumbs }) {
       </div>
     );
   }
-  function Completed() {
+  function AddNewBrand() {
+    // /////////////////////////////////////////////////////////
+    // Cross Origin Resource Sharing CRUD - Functions
+    // /////////////////////////////////////////////////////////
+
+    const payload = {
+      sku: "MILK-PEAK-001",
+      barcode: "6224001234567", // EAN / UPC
+      name: "Peak Milk 170g",
+      brand: "Peak",
+      category: {
+        name: "Dairy",
+      },
+
+      unit: "tin",
+      costPrice: 820,
+      sellingPrice: 950,
+      taxRate: 2.5, // VAT %
+
+      stock: {
+        quantity: 245,
+        minLevel: 20,
+        reorderLevel: 50,
+      },
+
+      batchTracking: true,
+      expiryTracking: true,
+
+      batches: [
+        {
+          batchNo: "PK0124A",
+          costPrice: 800,
+        },
+      ],
+
+      supplier: {
+        name: "UAC Foods",
+      },
+
+      status: "ACTIVE",
+    };
+
+    async function createUnit() {
+      try {
+        setLoading(true);
+        const response = await axios.post(
+          `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_products/create-brand`,
+          payload,
+        );
+        if (response?.data?.status === 201) {
+          enqueueSnackbar(response?.data?.message, {
+            variant: "success",
+            autoHideDuration: 3000,
+          });
+        } else {
+          enqueueSnackbar(response?.data?.message, {
+            variant: "error",
+            autoHideDuration: 3000,
+          });
+        }
+
+        console.log("Price-Groups :", response);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+
+        enqueueSnackbar("Server error while fetching products", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+    }
+
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -481,199 +552,10 @@ export default function Brands({ breadcrumbs }) {
     }
     function TableView({ currentRows }) {
       return (
-        <div className="completed">
-          <table className="fx-cl spacem">
-            <thead className="fx-cl spacem">
-              <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
-                  <td>
-                    <strong>{item.customerName}</strong>
-                  </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
-                  <td>
-                    <button>{item.action}</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      );
-    }
-
-    function CardView({ currentRows }) {
-      return (
-        <div className="brandsCardGrid g g4 space2">
-          {currentRows.map((item) => (
-            <div key={item.invoiceNo} className="brandsGridCard">
-              {/* Header */}
-              <div className="cardHeader">
-                <img alt="customer" className="avatar" src={ImgOne} />
-
-                <div className="cardInfo">
-                  <h4>{item.customerName}</h4>
-                  <p>Invoice #{item.invoiceNo}</p>
-
-                  <div className="ratingRow">
-                    <span className="rating">
-                      ⭐ {item.paymentStatus === "Paid" ? "5.0" : "4.0"}
-                    </span>
-                    <span className="location">📍 {item.date}</span>
-                  </div>
-
-                  <small>{item.totalItems} items</small>
-                </div>
-              </div>
-
-              {/* Tags */}
-              <div className="tags">
-                <span>Total</span>
-                <span>Paid</span>
-                <span>+{item.totalItems}</span>
-              </div>
-
-              {/* Footer */}
-              <div className="cardFooter">
-                <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
-                  <small> / sale</small>
-                </div>
-
-                <button className="cardBtn">View Sale</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      );
-    }
-    return (
-      <div className="fx-cl space2">
-        <div className="fx-cl space2">
-          <div className="fx-cl spacem">
-            <div className="fx-ac fx-jb space2" style={{ fontSize: "1.2rem" }}>
-              <span className="fx-ac spacem">
-                <strong className="fx-jc" style={{ color: "#3a84f8" }}>
-                  Display:
-                </strong>
-                <span>
-                  {salesData.length === 0
-                    ? "0 to 0 of 0 entries"
-                    : `${start + 1} to ${Math.min(
-                        end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
-                </span>
-              </span>
-              <div className="brands_entries-info fx-ac spacem">
-                <h4>Rows</h4>
-                <div className="brands-page-limit">
-                  <button
-                    className="brands-page-limit-btn"
-                    onClick={() => setOpenLimit(!openLimit)}
-                  >
-                    {rowsPerPage} / page
-                    <span className="brands-page-limit-arrow">▾</span>
-                  </button>
-
-                  {openLimit && (
-                    <ul className="brands-limit-dropdown">
-                      {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
-                        <li
-                          key={n}
-                          className="brands-limit-item"
-                          onClick={() => {
-                            setRowsPerPage(n);
-                            setCurrentPage(1);
-                            setOpenLimit(false);
-                          }}
-                        >
-                          {n} / page
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="brands_row" id="printable">
-              {switchView()}
-            </div>
-            <div className="fx-jc">
-              <div className="brands_pagination fx-ac space2">
-                <button
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage((p) => p - 1)}
-                >
-                  Previous
-                </button>
-                <div className="fx-ac">
-                  {getPagination(currentPage, totalPages).map((page, i) =>
-                    page === "..." ? (
-                      <span key={i} className="dots">
-                        …
-                      </span>
-                    ) : (
-                      <button
-                        key={i}
-                        className={`brands_jumpto ${
-                          currentPage === page ? "active" : ""
-                        }`}
-                        onClick={() => setCurrentPage(page)}
-                      >
-                        {page}
-                      </button>
-                    ),
-                  )}
-                </div>
-
-                <button
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage((p) => p + 1)}
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="brands_footer">Footer here</div>
-      </div>
-    );
-  }
-  function Progress() {
-    function switchView() {
-      switch (changeview) {
-        case "grid":
-          return <CardView currentRows={currentRows} />;
-        case "table":
-          return <TableView currentRows={currentRows} />;
-        default:
-          return <TableView currentRows={currentRows} />;
-      }
-    }
-    function TableView({ currentRows }) {
-      return (
-        <div className="prog">
+        <div className="new-brand">
+          <button onClick={() => createUnit()} className="btnTemporary">
+            Add new brand
+          </button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
@@ -932,18 +814,18 @@ export default function Brands({ breadcrumbs }) {
               <figure>34</figure>
             </li>
             <li
-              onClick={() => handleCurrentTAB("completed")}
+              onClick={() => handleCurrentTAB("new-brand")}
               className={`fx-ac  spacem ${
-                currentTab == "completed" && "active"
+                currentTab == "new-brand" && "active"
               }`}
             >
               <span>Favourites</span>
               <figure>45</figure>
             </li>
             <li
-              onClick={() => handleCurrentTAB("progress")}
+              onClick={() => handleCurrentTAB("add-new-brand")}
               className={`fx-ac  spacem ${
-                currentTab == "progress" && "active"
+                currentTab == "add-new-brand" && "active"
               }`}
             >
               <span>Important Brands</span>

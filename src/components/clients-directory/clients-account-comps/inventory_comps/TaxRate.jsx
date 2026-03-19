@@ -141,13 +141,13 @@ export default function TaxRate({ breadcrumbs }) {
   function switchActiveTab() {
     switch (currentTab) {
       case "taxrate":
-        return <ToDo />;
+        return <TaxRates />;
       case "completed":
         return <Completed />;
-      case "progress":
-        return <Progress />;
+      case "new-record":
+        return <AddNew />;
       default:
-        return <ToDo />;
+        return <TaxRates />;
     }
   }
 
@@ -189,7 +189,7 @@ export default function TaxRate({ breadcrumbs }) {
   // COMPONENTS OF taxrate PAGE
   // //////////////////////////////////////////////////////////////////////////
 
-  function ToDo() {
+  function TaxRates() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -620,7 +620,81 @@ export default function TaxRate({ breadcrumbs }) {
       </div>
     );
   }
-  function Progress() {
+
+  function AddNew() {
+    // /////////////////////////////////////////////////////////
+    // Cross Origin Resource Sharing CRUD - Functions
+    // /////////////////////////////////////////////////////////
+
+    const payload = {
+      sku: "MILK-PEAK-001",
+      barcode: "6224001234567", // EAN / UPC
+      name: "Peak Milk 170g",
+      brand: "Peak",
+      category: {
+        name: "Dairy",
+      },
+
+      unit: "tin",
+      costPrice: 820,
+      sellingPrice: 950,
+      taxRate: 2.5, // VAT %
+
+      stock: {
+        quantity: 245,
+        minLevel: 20,
+        reorderLevel: 50,
+      },
+
+      batchTracking: true,
+      expiryTracking: true,
+
+      batches: [
+        {
+          batchNo: "PK0124A",
+          costPrice: 800,
+        },
+      ],
+
+      supplier: {
+        name: "UAC Foods",
+      },
+
+      status: "ACTIVE",
+    };
+
+    async function addNewTaxRecord() {
+      try {
+        setLoading(true);
+        const response = await axios.post(
+          `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_products/create-tax`,
+          payload,
+        );
+        if (response?.data?.status === 201) {
+          enqueueSnackbar(response?.data?.message, {
+            variant: "success",
+            autoHideDuration: 3000,
+          });
+        } else {
+          enqueueSnackbar(response?.data?.message, {
+            variant: "error",
+            autoHideDuration: 3000,
+          });
+        }
+
+        console.log("Price-Groups :", response);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+
+        enqueueSnackbar("Server error while fetching products", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+    }
+
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -634,6 +708,9 @@ export default function TaxRate({ breadcrumbs }) {
     function TableView({ currentRows }) {
       return (
         <div className="prog">
+          <button onClick={() => addNewTaxRecord()} className="btnTemporary">
+            Add New Tax{" "}
+          </button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
@@ -886,7 +963,7 @@ export default function TaxRate({ breadcrumbs }) {
               onClick={() => handleCurrentTAB("taxrate")}
               className={`fx-ac  spacem ${currentTab == "taxrate" && "active"}`}
             >
-              <span>Todo</span>
+              <span>Tax Rates</span>
               <figure>34</figure>
             </li>
             <li
@@ -899,12 +976,12 @@ export default function TaxRate({ breadcrumbs }) {
               <figure>45</figure>
             </li>
             <li
-              onClick={() => handleCurrentTAB("progress")}
+              onClick={() => handleCurrentTAB("new-record")}
               className={`fx-ac  spacem ${
-                currentTab == "progress" && "active"
+                currentTab == "new-record" && "active"
               }`}
             >
-              <span>In Progress</span>
+              <span>Add New Record</span>
               <figure>89</figure>
             </li>
           </ul>

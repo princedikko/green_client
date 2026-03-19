@@ -169,13 +169,13 @@ export default function ProductServices({ breadcrumbs }) {
   function switchActiveTab() {
     switch (currentTab) {
       case "productservices":
-        return <ToDo />;
+        return <Services />;
       case "completed":
         return <Completed />;
-      case "progress":
-        return <Progress />;
+      case "add-record":
+        return <AddRecords />;
       default:
-        return <ToDo />;
+        return <Services />;
     }
   }
 
@@ -217,7 +217,7 @@ export default function ProductServices({ breadcrumbs }) {
   // COMPONENTS OF productservices PAGE
   // //////////////////////////////////////////////////////////////////////////
 
-  function ToDo() {
+  function Services() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -652,7 +652,80 @@ export default function ProductServices({ breadcrumbs }) {
       </div>
     );
   }
-  function Progress() {
+  function AddRecords() {
+    // /////////////////////////////////////////////////////////
+    // Cross Origin Resource Sharing CRUD - Functions
+    // /////////////////////////////////////////////////////////
+
+    const payload = {
+      sku: "MILK-PEAK-001",
+      barcode: "6224001234567", // EAN / UPC
+      name: "Peak Milk 170g",
+      brand: "Peak",
+      category: {
+        name: "Dairy",
+      },
+
+      unit: "tin",
+      costPrice: 820,
+      sellingPrice: 950,
+      taxRate: 2.5, // VAT %
+
+      stock: {
+        quantity: 245,
+        minLevel: 20,
+        reorderLevel: 50,
+      },
+
+      batchTracking: true,
+      expiryTracking: true,
+
+      batches: [
+        {
+          batchNo: "PK0124A",
+          costPrice: 800,
+        },
+      ],
+
+      supplier: {
+        name: "UAC Foods",
+      },
+
+      status: "ACTIVE",
+    };
+
+    async function postServices() {
+      try {
+        setLoading(true);
+        const response = await axios.post(
+          `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_products/post-service`,
+          payload,
+        );
+        if (response?.data?.status === 201) {
+          enqueueSnackbar(response?.data?.message, {
+            variant: "success",
+            autoHideDuration: 3000,
+          });
+        } else {
+          enqueueSnackbar(response?.data?.message, {
+            variant: "error",
+            autoHideDuration: 3000,
+          });
+        }
+
+        console.log("Price-Groups :", response);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+
+        enqueueSnackbar("Server error while fetching products", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+    }
+
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -666,6 +739,10 @@ export default function ProductServices({ breadcrumbs }) {
     function TableView({ currentRows }) {
       return (
         <div className="prog">
+          <button
+            onClick={() => postServices()}
+            className="btnTemporary"
+          ></button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
@@ -935,9 +1012,9 @@ export default function ProductServices({ breadcrumbs }) {
               <figure>45</figure>
             </li>
             <li
-              onClick={() => handleCurrentTAB("progress")}
+              onClick={() => handleCurrentTAB("add-record")}
               className={`fx-ac  spacem ${
-                currentTab == "progress" && "active"
+                currentTab == "add-record" && "active"
               }`}
             >
               <span>New Record</span>

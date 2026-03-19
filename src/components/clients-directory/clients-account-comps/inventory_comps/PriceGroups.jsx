@@ -178,14 +178,14 @@ export default function PriceGroups({ breadcrumbs }) {
 
   function switchActiveTab() {
     switch (currentTab) {
-      case "pricegroups":
-        return <ToDo />;
-      case "completed":
-        return <Completed />;
-      case "progress":
-        return <Progress />;
+      case "product-price-group":
+        return <ProductsPGroup />;
+      case "production-price-group":
+        return <ProductionsPGroup />;
+      case "create-price-group":
+        return <CreatePGroup />;
       default:
-        return <ToDo />;
+        return <ProductsPGroup />;
     }
   }
 
@@ -227,7 +227,7 @@ export default function PriceGroups({ breadcrumbs }) {
   // COMPONENTS OF pricegroups PAGE
   // //////////////////////////////////////////////////////////////////////////
 
-  function ToDo() {
+  function ProductsPGroup() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -468,7 +468,7 @@ export default function PriceGroups({ breadcrumbs }) {
       </div>
     );
   }
-  function Completed() {
+  function ProductionsPGroup() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -481,7 +481,7 @@ export default function PriceGroups({ breadcrumbs }) {
     }
     function TableView({ currentRows }) {
       return (
-        <div className="completed">
+        <div className="pricegroups">
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
@@ -660,7 +660,8 @@ export default function PriceGroups({ breadcrumbs }) {
       </div>
     );
   }
-  function Progress() {
+
+  function CreatePGroup() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -671,9 +672,86 @@ export default function PriceGroups({ breadcrumbs }) {
           return <TableView currentRows={currentRows} />;
       }
     }
+
+    // /////////////////////////////////////////////////////////
+    // Cross Origin Resource Sharing CRUD - Functions
+    // /////////////////////////////////////////////////////////
+
+    const payload = {
+      sku: "MILK-PEAK-001",
+      barcode: "6224001234567", // EAN / UPC
+      name: "Peak Milk 170g",
+      brand: "Peak",
+      category: {
+        name: "Dairy",
+      },
+
+      unit: "tin",
+      costPrice: 820,
+      sellingPrice: 950,
+      taxRate: 2.5, // VAT %
+
+      stock: {
+        quantity: 245,
+        minLevel: 20,
+        reorderLevel: 50,
+      },
+
+      batchTracking: true,
+      expiryTracking: true,
+
+      batches: [
+        {
+          batchNo: "PK0124A",
+          costPrice: 800,
+        },
+      ],
+
+      supplier: {
+        name: "UAC Foods",
+      },
+
+      status: "ACTIVE",
+    };
+
+    async function createPriceGroup() {
+      try {
+        setLoading(true);
+        const response = await axios.post(
+          `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_products/create_price_group`,
+          payload,
+        );
+        if (response?.data?.status === 201) {
+          enqueueSnackbar(response?.data?.message, {
+            variant: "success",
+            autoHideDuration: 3000,
+          });
+        } else {
+          enqueueSnackbar(response?.data?.message, {
+            variant: "error",
+            autoHideDuration: 3000,
+          });
+        }
+
+        console.log("Price-Groups :", response);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+
+        enqueueSnackbar("Server error while fetching products", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+    }
+
     function TableView({ currentRows }) {
       return (
         <div className="prog">
+          <button onClick={() => createPriceGroup()} className="btnTemporary">
+            Create Price-group
+          </button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
@@ -923,30 +1001,30 @@ export default function PriceGroups({ breadcrumbs }) {
         <div className="pricegroups_actionBar fx-jb space4">
           <ul className="left fx-ac">
             <li
-              onClick={() => handleCurrentTAB("pricegroups")}
+              onClick={() => handleCurrentTAB("product-price-group")}
               className={`fx-ac  spacem ${
-                currentTab == "pricegroups" && "active"
+                currentTab == "product-price-group" && "active"
               }`}
             >
-              <span>Todo</span>
+              <span>Products</span>
               <figure>34</figure>
             </li>
             <li
-              onClick={() => handleCurrentTAB("completed")}
+              onClick={() => handleCurrentTAB("production-price-group")}
               className={`fx-ac  spacem ${
-                currentTab == "completed" && "active"
+                currentTab == "production-price-group" && "active"
               }`}
             >
-              <span>Completed</span>
+              <span>Productions</span>
               <figure>45</figure>
             </li>
             <li
-              onClick={() => handleCurrentTAB("progress")}
+              onClick={() => handleCurrentTAB("create-price-group")}
               className={`fx-ac  spacem ${
-                currentTab == "progress" && "active"
+                currentTab == "create-price-group" && "active"
               }`}
             >
-              <span>In Progress</span>
+              <span>Add New Price-Group</span>
               <figure>89</figure>
             </li>
           </ul>

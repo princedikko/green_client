@@ -52,44 +52,6 @@ export default function Units({ breadcrumbs }) {
     (state) => state.clientFunction?.dashboard?.currentTab,
   );
 
-  // /////////////////////////////////////////////////////////
-  // Cross Origin Resource Sharing CRUD - Functions
-  // /////////////////////////////////////////////////////////
-
-  const payload = {
-    name: "products array",
-  };
-
-  async function apiPostProducts() {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
-        payload,
-      );
-      if (response?.data?.status === 200) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
-      }
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-
-      enqueueSnackbar("Server error while fetching products", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  }
-
   async function apiGetSales() {
     setLoading(true);
     await axios
@@ -178,13 +140,11 @@ export default function Units({ breadcrumbs }) {
   function switchActiveTab() {
     switch (currentTab) {
       case "units":
-        return <ToDo />;
-      case "completed":
-        return <Completed />;
+        return <AllUnits />;
       case "progress":
-        return <Progress />;
+        return <CreateUnit />;
       default:
-        return <ToDo />;
+        return <AllUnits />;
     }
   }
 
@@ -226,7 +186,7 @@ export default function Units({ breadcrumbs }) {
   // COMPONENTS OF units PAGE
   // //////////////////////////////////////////////////////////////////////////
 
-  function ToDo() {
+  function AllUnits() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -465,199 +425,81 @@ export default function Units({ breadcrumbs }) {
       </div>
     );
   }
-  function Completed() {
-    function switchView() {
-      switch (changeview) {
-        case "grid":
-          return <CardView currentRows={currentRows} />;
-        case "table":
-          return <TableView currentRows={currentRows} />;
-        default:
-          return <TableView currentRows={currentRows} />;
+
+  function CreateUnit() {
+    // /////////////////////////////////////////////////////////
+    // Cross Origin Resource Sharing CRUD - Functions
+    // /////////////////////////////////////////////////////////
+
+    const payload = {
+      sku: "MILK-PEAK-001",
+      barcode: "6224001234567", // EAN / UPC
+      name: "Peak Milk 170g",
+      brand: "Peak",
+      category: {
+        name: "Dairy",
+      },
+
+      unit: "tin",
+      costPrice: 820,
+      sellingPrice: 950,
+      taxRate: 2.5, // VAT %
+
+      stock: {
+        quantity: 245,
+        minLevel: 20,
+        reorderLevel: 50,
+      },
+
+      batchTracking: true,
+      expiryTracking: true,
+
+      batches: [
+        {
+          batchNo: "PK0124A",
+          costPrice: 800,
+        },
+      ],
+
+      supplier: {
+        name: "UAC Foods",
+      },
+
+      status: "ACTIVE",
+    };
+
+    async function createUnit() {
+      try {
+        setLoading(true);
+        const response = await axios.post(
+          `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_products/create-unit`,
+          payload,
+        );
+        if (response?.data?.status === 201) {
+          enqueueSnackbar(response?.data?.message, {
+            variant: "success",
+            autoHideDuration: 3000,
+          });
+        } else {
+          enqueueSnackbar(response?.data?.message, {
+            variant: "error",
+            autoHideDuration: 3000,
+          });
+        }
+
+        console.log("Price-Groups :", response);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+
+        enqueueSnackbar("Server error while fetching products", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
       }
     }
-    function TableView({ currentRows }) {
-      return (
-        <div className="completed">
-          <table className="fx-cl spacem">
-            <thead className="fx-cl spacem">
-              <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
-                  <td>
-                    <strong>{item.customerName}</strong>
-                  </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
-                  <td>
-                    <button>{item.action}</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      );
-    }
 
-    function CardView({ currentRows }) {
-      return (
-        <div className="unitsCardGrid g g4 space2">
-          {currentRows.map((item) => (
-            <div key={item.invoiceNo} className="unitsGridCard">
-              {/* Header */}
-              <div className="cardHeader">
-                <img alt="customer" className="avatar" src={ImgOne} />
-
-                <div className="cardInfo">
-                  <h4>{item.customerName}</h4>
-                  <p>Invoice #{item.invoiceNo}</p>
-
-                  <div className="ratingRow">
-                    <span className="rating">
-                      ⭐ {item.paymentStatus === "Paid" ? "5.0" : "4.0"}
-                    </span>
-                    <span className="location">📍 {item.date}</span>
-                  </div>
-
-                  <small>{item.totalItems} items</small>
-                </div>
-              </div>
-
-              {/* Tags */}
-              <div className="tags">
-                <span>Total</span>
-                <span>Paid</span>
-                <span>+{item.totalItems}</span>
-              </div>
-
-              {/* Footer */}
-              <div className="cardFooter">
-                <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
-                  <small> / sale</small>
-                </div>
-
-                <button className="cardBtn">View Sale</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      );
-    }
-    return (
-      <div className="fx-cl space2">
-        <div className="fx-cl space2">
-          <div className="fx-cl spacem">
-            <div className="fx-ac fx-jb space2" style={{ fontSize: "1.2rem" }}>
-              <span className="fx-ac spacem">
-                <strong className="fx-jc" style={{ color: "#3a84f8" }}>
-                  Display:
-                </strong>
-                <span>
-                  {salesData.length === 0
-                    ? "0 to 0 of 0 entries"
-                    : `${start + 1} to ${Math.min(
-                        end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
-                </span>
-              </span>
-              <div className="units_entries-info fx-ac spacem">
-                <h4>Rows</h4>
-                <div className="units-page-limit">
-                  <button
-                    className="units-page-limit-btn"
-                    onClick={() => setOpenLimit(!openLimit)}
-                  >
-                    {rowsPerPage} / page
-                    <span className="units-page-limit-arrow">▾</span>
-                  </button>
-
-                  {openLimit && (
-                    <ul className="units-limit-dropdown">
-                      {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
-                        <li
-                          key={n}
-                          className="units-limit-item"
-                          onClick={() => {
-                            setRowsPerPage(n);
-                            setCurrentPage(1);
-                            setOpenLimit(false);
-                          }}
-                        >
-                          {n} / page
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="units_row" id="printable">
-              {switchView()}
-            </div>
-            <div className="fx-jc">
-              <div className="units_pagination fx-ac space2">
-                <button
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage((p) => p - 1)}
-                >
-                  Previous
-                </button>
-                <div className="fx-ac">
-                  {getPagination(currentPage, totalPages).map((page, i) =>
-                    page === "..." ? (
-                      <span key={i} className="dots">
-                        …
-                      </span>
-                    ) : (
-                      <button
-                        key={i}
-                        className={`units_jumpto ${
-                          currentPage === page ? "active" : ""
-                        }`}
-                        onClick={() => setCurrentPage(page)}
-                      >
-                        {page}
-                      </button>
-                    ),
-                  )}
-                </div>
-
-                <button
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage((p) => p + 1)}
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="units_footer">Footer here</div>
-      </div>
-    );
-  }
-  function Progress() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -671,6 +513,9 @@ export default function Units({ breadcrumbs }) {
     function TableView({ currentRows }) {
       return (
         <div className="prog">
+          <button onClick={() => createUnit()} className="btnTemporary">
+            Create Unit
+          </button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
@@ -924,25 +769,17 @@ export default function Units({ breadcrumbs }) {
               onClick={() => handleCurrentTAB("units")}
               className={`fx-ac  spacem ${currentTab == "units" && "active"}`}
             >
-              <span>Todo</span>
+              <span>Units</span>
               <figure>34</figure>
             </li>
-            <li
-              onClick={() => handleCurrentTAB("completed")}
-              className={`fx-ac  spacem ${
-                currentTab == "completed" && "active"
-              }`}
-            >
-              <span>Completed</span>
-              <figure>45</figure>
-            </li>
+
             <li
               onClick={() => handleCurrentTAB("progress")}
               className={`fx-ac  spacem ${
                 currentTab == "progress" && "active"
               }`}
             >
-              <span>In Progress</span>
+              <span>Create Unit</span>
               <figure>89</figure>
             </li>
           </ul>

@@ -658,8 +658,8 @@ export default function Products({ breadcrumbs }) {
     function TableView({ currentRows }) {
       return (
         <div className="prog">
-          <button onClick={() => apiPostProducts()}>
-            <h2>add product</h2>
+          <button className="btnTemporary" onClick={() => apiPostProducts()}>
+            add product
           </button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
