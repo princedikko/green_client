@@ -75,7 +75,7 @@ const PDFDocument = ({ data }) => (
         </View>
 
         {/* Rows */}
-        {data.map((item, index) => (
+        {data?.map((item, index) => (
           <View
             style={[
               styles.tableRow,

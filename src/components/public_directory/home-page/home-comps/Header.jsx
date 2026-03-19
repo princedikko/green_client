@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./header.css";
 
-import Logo from "../logo/greenlg.png"; // Importing logo image
+import Logo from "../logo/grd.png"; // Importing logo image
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 

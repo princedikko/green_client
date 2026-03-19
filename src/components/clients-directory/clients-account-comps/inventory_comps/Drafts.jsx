@@ -57,10 +57,10 @@ export default function Drafts({ breadcrumbs }) {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/drafts`,
       )
       .then((response) => {
-        draftData = response.data.data;
+        draftData = response.data.info;
         console.log("draftData: ", response);
         if (response.data.status === 201) {
           setLoading(false);

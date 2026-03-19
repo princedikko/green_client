@@ -92,15 +92,14 @@ export default function Quotation({ breadcrumbs }) {
     }
   }
 
-  async function apiGetSales() {
+  async function apiGetQuotation() {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/quotation`,
       )
       .then((response) => {
-        salesAxios = response.data.data;
-        console.log("salesAxios: ", response);
+        console.log("quots: ", response);
         if (response.data.status === 201) {
           setLoading(false);
           enqueueSnackbar(`${response.data.message}`, {
@@ -133,7 +132,6 @@ export default function Quotation({ breadcrumbs }) {
         setLoading(false);
       });
   }
-
   // /////////////////////////////////////////////////////////
   // Redux functions for sub-navigation
   // /////////////////////////////////////////////////////////
@@ -898,7 +896,7 @@ export default function Quotation({ breadcrumbs }) {
   }
 
   useEffect(() => {
-    apiGetQuotes();
+    apiGetQuotation();
   }, []);
 
   return (

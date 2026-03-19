@@ -74,42 +74,42 @@ const PDFDocument = ({ data }) => (
         </View>
 
         {/* Rows */}
-        {data.map((item, index) => (
+        {data?.map((item, index) => (
           <View
             style={[
               styles.tableRow,
               index % 2 === 0 ? styles.evenRow : styles.oddRow, // alternate colors
             ]}
-            key={item.invoiceNo}
+            key={item?.invoiceNo}
           >
             <Text style={[styles.tableCol, { width: 140, fontWeight: "bold" }]}>
               {" "}
-              {item.customerName}{" "}
+              {item?.customerName}{" "}
             </Text>
             <Text style={[styles.tableCol, { width: 70 }]}>
               {" "}
-              {item.invoiceNo}{" "}
+              {item?.invoiceNo}{" "}
             </Text>
             <Text style={[styles.tableCol, { width: 60, textAlign: "center" }]}>
-              {item.quantity}{" "}
+              {item?.quantity}{" "}
             </Text>
 
             <Text style={[styles.tableCol, { width: 100 }]}>
               {" "}
-              ₦{item.totalAmount.toLocaleString()}{" "}
+              ₦{item?.totalAmount?.toLocaleString()}{" "}
             </Text>
             <Text style={[styles.tableCol, { width: 100 }]}>
               {" "}
-              ₦{item.totalPaid.toLocaleString()}{" "}
+              ₦{item?.totalPaid?.toLocaleString()}{" "}
             </Text>
 
             <Text style={[styles.tableCol, { width: 80 }]}>
-              ₦{item.sellDue.toLocaleString()}{" "}
+              ₦{item?.sellDue?.toLocaleString()}{" "}
             </Text>
-            <Text style={[styles.tableCol, { width: 80 }]}>{item.date}</Text>
+            <Text style={[styles.tableCol, { width: 80 }]}>{item?.date}</Text>
             <Text style={[styles.tableCol, { width: 80 }]}>
               {" "}
-              {item.paymentStatus}{" "}
+              {item?.paymentStatus}{" "}
             </Text>
           </View>
         ))}

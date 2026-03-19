@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSnackbar } from "notistack";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 import * as Action from "../../../../store/redux/client_reducer.js";
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-import salesData from "../data";
 import IsLoading from "../../../../IsLoading.jsx";
 import FilterProducts from "./filters/FilterProducts.jsx";
 import ExportPDFButton from "./exports/ProductsPDFExport.jsx";
@@ -42,10 +41,10 @@ export default function Products({ breadcrumbs }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [openLimit, setOpenLimit] = useState(false);
-  const totalPages = Math.ceil(salesData.length / rowsPerPage);
+  const totalPages = Math.ceil(productsData?.length / rowsPerPage);
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
-  const currentRows = salesData.slice(start, end);
+  const currentRows = productsData?.slice(start, end);
 
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
@@ -56,17 +55,50 @@ export default function Products({ breadcrumbs }) {
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    name: "products array",
+    sku: "MILK-PEAK-001",
+    barcode: "6224001234567", // EAN / UPC
+    name: "Peak Milk 170g",
+    brand: "Peak",
+    category: {
+      name: "Dairy",
+    },
+
+    unit: "tin",
+    costPrice: 820,
+    sellingPrice: 950,
+    taxRate: 2.5, // VAT %
+
+    stock: {
+      quantity: 245,
+      minLevel: 20,
+      reorderLevel: 50,
+    },
+
+    batchTracking: true,
+    expiryTracking: true,
+
+    batches: [
+      {
+        batchNo: "PK0124A",
+        costPrice: 800,
+      },
+    ],
+
+    supplier: {
+      name: "UAC Foods",
+    },
+
+    status: "ACTIVE",
   };
 
   async function apiPostProducts() {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_products/add_product`,
         payload,
       );
-      if (response?.data?.status === 200) {
+      if (response?.data?.status === 201) {
         enqueueSnackbar(response?.data?.message, {
           variant: "success",
           autoHideDuration: 3000,
@@ -78,6 +110,7 @@ export default function Products({ breadcrumbs }) {
         });
       }
 
+      console.log("Add product response:", response);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -95,7 +128,7 @@ export default function Products({ breadcrumbs }) {
       setLoading(true);
 
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/5sd4fg56we6r4d/products/fetch_product`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/products/fetch_product`,
       );
 
       if (response?.data?.status === 200) {
@@ -166,55 +199,21 @@ export default function Products({ breadcrumbs }) {
   function switchActiveTab() {
     switch (currentTab) {
       case "products":
-        return <ToDo />;
-      case "completed":
-        return <Completed />;
-      case "progress":
-        return <Progress />;
+        return <AllProducts />;
+      case "codes":
+        return <ProductCode />;
+      case "add_product":
+        return <AddProduct />;
       default:
-        return <ToDo />;
+        return <AllProducts />;
     }
   }
 
-  const printElement = (id) => {
-    const element = document.getElementById(id);
-    if (!element) return;
-
-    const printWindow = window.open("", "_blank", "width=900,height=650");
-
-    printWindow.document.write(`
-    <html>
-      <head>
-        <title>Print</title>
-        <style>
-          body { font-family: Arial; padding: 20px; }
-        </style>
-      </head>
-
-      <body>
-        ${element.innerHTML}
-
-        <script>
-          window.onload = function () {
-            window.print();
-
-            // close after print dialog finishes
-            window.onafterprint = function () {
-              window.close();
-            };
-          };
-        </script>
-      </body>
-    </html>
-  `);
-
-    printWindow.document.close();
-  };
   // //////////////////////////////////////////////////////////////////////////
   // COMPONENTS OF products PAGE
   // //////////////////////////////////////////////////////////////////////////
 
-  function ToDo() {
+  function AllProducts() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -243,18 +242,18 @@ export default function Products({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item?.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item?.customerName}</strong>
+                    <strong>{item?.name}</strong>
                   </td>
-                  <td>{item?.invoiceNo}</td>
-                  <td>{item?.paymentStatus}</td>
-                  <td>₦{item?.totalAmount.toLocaleString()}</td>
-                  <td>₦{item?.totalPaid.toLocaleString()}</td>
-                  <td>{item?.totalItems}</td>
-                  <td>₦{item?.sellDue.toLocaleString()}</td>
+                  <td>{item?.barcode}</td>
+                  <td>{item?.brand}</td>
+                  <td>₦{item?.sellingPrice}</td>
+                  <td>₦{item?.sellingPrice}</td>
+                  <td>{item?.unit}</td>
+                  <td>₦{item?.costPrice}</td>
                   <td>{item?.date}</td>
                   <td>
                     <button>{item?.action}</button>
@@ -270,21 +269,21 @@ export default function Products({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="productsCardGrid g g4 space2">
-          {currentRows.map((item) => (
-            <div key={item?.invoiceNo} className="productsGridCard">
+          {currentRows?.map((item) => (
+            <div key={item?.barcode} className="productsGridCard">
               {/* Header */}
               <div className="cardHeader">
                 <img alt="customer" className="avatar" src={ImgOne} />
 
                 <div className="cardInfo">
-                  <h4>{item?.customerName}</h4>
-                  <p>Invoice #{item?.invoiceNo}</p>
+                  <h4>{item?.name}</h4>
+                  <p>Invoice #{item?.barcode}</p>
 
                   <div className="ratingRow">
                     <span className="rating">
                       ⭐ {item?.paymentStatus === "Paid" ? "5.0" : "4.0"}
                     </span>
-                    <span className="location">📍 {item?.date}</span>
+                    <span className="location">📍 {item?.sku}</span>
                   </div>
 
                   <small>{item?.totalItems} items</small>
@@ -301,7 +300,7 @@ export default function Products({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item?.totalAmount.toLocaleString()}
+                  ₦{item?.sellingPrice}
                   <small> / sale</small>
                 </div>
 
@@ -322,12 +321,12 @@ export default function Products({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {productsData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        productsData?.length,
+                      )} of ${productsData?.length} entries`}
                 </span>
               </span>
               <div className="products_entries-info fx-ac spacem">
@@ -373,7 +372,7 @@ export default function Products({ breadcrumbs }) {
                   Previous
                 </button>
                 <div className="fx-ac">
-                  {getPagination(currentPage, totalPages).map((page, i) =>
+                  {getPagination(currentPage, totalPages)?.map((page, i) =>
                     page === "..." ? (
                       <span key={i} className="dots">
                         …
@@ -453,7 +452,7 @@ export default function Products({ breadcrumbs }) {
       </div>
     );
   }
-  function Completed() {
+  function ProductCode() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -466,7 +465,7 @@ export default function Products({ breadcrumbs }) {
     }
     function TableView({ currentRows }) {
       return (
-        <div className="completed">
+        <div className="codes">
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
@@ -482,18 +481,18 @@ export default function Products({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item?.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item?.customerName}</strong>
+                    <strong>{item?.name}</strong>
                   </td>
-                  <td>{item?.invoiceNo}</td>
-                  <td>{item?.paymentStatus}</td>
-                  <td>₦{item?.totalAmount.toLocaleString()}</td>
-                  <td>₦{item?.totalPaid.toLocaleString()}</td>
-                  <td>{item?.totalItems}</td>
-                  <td>₦{item?.sellDue.toLocaleString()}</td>
+                  <td>{item?.barcode}</td>
+                  <td>{item?.brand}</td>
+                  <td>₦{item?.sellingPrice}</td>
+                  <td>₦{item?.sellingPrice}</td>
+                  <td>{item?.unit}</td>
+                  <td>₦{item?.costPrice}</td>
                   <td>{item?.date}</td>
                   <td>
                     <button>{item?.action}</button>
@@ -509,21 +508,21 @@ export default function Products({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="productsCardGrid g g4 space2">
-          {currentRows.map((item) => (
-            <div key={item?.invoiceNo} className="productsGridCard">
+          {currentRows?.map((item) => (
+            <div key={item?.barcode} className="productsGridCard">
               {/* Header */}
               <div className="cardHeader">
                 <img alt="customer" className="avatar" src={ImgOne} />
 
                 <div className="cardInfo">
-                  <h4>{item?.customerName}</h4>
-                  <p>Invoice #{item?.invoiceNo}</p>
+                  <h4>{item?.name}</h4>
+                  <p>Invoice #{item?.barcode}</p>
 
                   <div className="ratingRow">
                     <span className="rating">
                       ⭐ {item?.paymentStatus === "Paid" ? "5.0" : "4.0"}
                     </span>
-                    <span className="location">📍 {item?.date}</span>
+                    <span className="location">📍 {item?.sku}</span>
                   </div>
 
                   <small>{item?.totalItems} items</small>
@@ -540,7 +539,7 @@ export default function Products({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item?.totalAmount.toLocaleString()}
+                  ₦{item?.sellingPrice}
                   <small> / sale</small>
                 </div>
 
@@ -561,12 +560,12 @@ export default function Products({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {productsData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        productsData?.length,
+                      )} of ${productsData?.length} entries`}
                 </span>
               </span>
               <div className="products_entries-info fx-ac spacem">
@@ -612,7 +611,7 @@ export default function Products({ breadcrumbs }) {
                   Previous
                 </button>
                 <div className="fx-ac">
-                  {getPagination(currentPage, totalPages).map((page, i) =>
+                  {getPagination(currentPage, totalPages)?.map((page, i) =>
                     page === "..." ? (
                       <span key={i} className="dots">
                         …
@@ -645,7 +644,7 @@ export default function Products({ breadcrumbs }) {
       </div>
     );
   }
-  function Progress() {
+  function AddProduct() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -659,6 +658,9 @@ export default function Products({ breadcrumbs }) {
     function TableView({ currentRows }) {
       return (
         <div className="prog">
+          <button onClick={() => apiPostProducts()}>
+            <h2>add product</h2>
+          </button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
@@ -674,18 +676,18 @@ export default function Products({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item?.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item?.customerName}</strong>
+                    <strong>{item?.name}</strong>
                   </td>
-                  <td>{item?.invoiceNo}</td>
-                  <td>{item?.paymentStatus}</td>
-                  <td>₦{item?.totalAmount.toLocaleString()}</td>
-                  <td>₦{item?.totalPaid.toLocaleString()}</td>
-                  <td>{item?.totalItems}</td>
-                  <td>₦{item?.sellDue.toLocaleString()}</td>
+                  <td>{item?.barcode}</td>
+                  <td>{item?.brand}</td>
+                  <td>₦{item?.sellingPrice}</td>
+                  <td>₦{item?.sellingPrice}</td>
+                  <td>{item?.unit}</td>
+                  <td>₦{item?.costPrice}</td>
                   <td>{item?.date}</td>
                   <td>
                     <button>{item?.action}</button>
@@ -701,21 +703,21 @@ export default function Products({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="productsCardGrid g g4 space2">
-          {currentRows.map((item) => (
-            <div key={item?.invoiceNo} className="productsGridCard">
+          {currentRows?.map((item) => (
+            <div key={item?.barcode} className="productsGridCard">
               {/* Header */}
               <div className="cardHeader">
                 <img alt="customer" className="avatar" src={ImgOne} />
 
                 <div className="cardInfo">
-                  <h4>{item?.customerName}</h4>
-                  <p>Invoice #{item?.invoiceNo}</p>
+                  <h4>{item?.name}</h4>
+                  <p>Invoice #{item?.barcode}</p>
 
                   <div className="ratingRow">
                     <span className="rating">
                       ⭐ {item?.paymentStatus === "Paid" ? "5.0" : "4.0"}
                     </span>
-                    <span className="location">📍 {item?.date}</span>
+                    <span className="location">📍 {item?.sku}</span>
                   </div>
 
                   <small>{item?.totalItems} items</small>
@@ -732,7 +734,7 @@ export default function Products({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item?.totalAmount.toLocaleString()}
+                  ₦{item?.sellingPrice}
                   <small> / sale</small>
                 </div>
 
@@ -753,12 +755,12 @@ export default function Products({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {productsData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        productsData?.length,
+                      )} of ${productsData?.length} entries`}
                 </span>
               </span>
               <div className="products_entries-info fx-ac spacem">
@@ -804,7 +806,7 @@ export default function Products({ breadcrumbs }) {
                   Previous
                 </button>
                 <div className="fx-ac">
-                  {getPagination(currentPage, totalPages).map((page, i) =>
+                  {getPagination(currentPage, totalPages)?.map((page, i) =>
                     page === "..." ? (
                       <span key={i} className="dots">
                         …
@@ -915,26 +917,24 @@ export default function Products({ breadcrumbs }) {
                 currentTab == "products" && "active"
               }`}
             >
-              <span>Todo</span>
+              <span>All Products</span>
               <figure>34</figure>
             </li>
             <li
-              onClick={() => handleCurrentTAB("completed")}
-              className={`fx-ac  spacem ${
-                currentTab == "completed" && "active"
-              }`}
+              onClick={() => handleCurrentTAB("codes")}
+              className={`fx-ac  spacem ${currentTab == "codes" && "active"}`}
             >
-              <span>Completed</span>
+              <span>Product Codes</span>
               <figure>45</figure>
             </li>
             <li
-              onClick={() => handleCurrentTAB("progress")}
+              onClick={() => handleCurrentTAB("add_product")}
               className={`fx-ac  spacem ${
-                currentTab == "progress" && "active"
+                currentTab == "add_product" && "active"
               }`}
             >
-              <span>In Progress</span>
-              <figure>89</figure>
+              <span>Add New Product</span>
+              <figure>+</figure>
             </li>
           </ul>
           <div className="right fx-ac fx-jb space1">

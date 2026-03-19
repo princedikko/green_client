@@ -7,7 +7,7 @@ import Mm from "../images/mm.png";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import LayersClearIcon from "@mui/icons-material/LayersClear";
 
-export default function DebitSale() {
+export default function DebitSale({ executeDebitPay }) {
   return (
     <section className="sectiondebitsale" onClick={(e) => e.stopPropagation()}>
       <div className="debitsalecont fx-cl space2">
@@ -83,7 +83,7 @@ export default function DebitSale() {
           <div className="fx-ac">
             <button
               className="debitsaleSubmit"
-              onClick={() => alert("Success!")}
+              onClick={() => executeDebitPay()}
             >
               Pay Now
             </button>

@@ -1,115 +1,17 @@
 import { useReducer, useState } from "react";
 import "./optionalbuttons.css";
 import axios from "axios";
-import Imgs from "../../images/Udupss_girl.png";
-import N1 from "../../images/n1.png";
 import { useSnackbar } from "notistack";
-import DebitSale from "../DebitSale";
+import Imgs from "../../images/Udupss_girl.png";
 import OnholdTransactions from "../OnholdTransactions";
-import Payments from "../Payments";
-import RecentTransaction from "../RecentTransaction";
-import MultiplePayment from "../MultiplePayment";
 import ForumRoundedIcon from "@mui/icons-material/ForumRounded";
 import EventRoundedIcon from "@mui/icons-material/EventRounded";
 import WorkspacePremiumRoundedIcon from "@mui/icons-material/WorkspacePremiumRounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { isDraft } from "@reduxjs/toolkit";
 
-export function CashPayment({ cashPaidSubmit, cart, discount, customerName }) {
-  const [cashCollected, setCashCollected] = useState(0);
-  const grandTotal = cart?.reduce(
-    (sum, item) => sum + item.pricing.sellingPrice * item.sellingQuantity,
-    0,
-  );
-
-  return (
-    <div
-      className="cashPaymentCont fx-cl space2"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div className="cashPaymenthead fx-ac fx-jc">
-        <figure>&nbsp;</figure>
-        <p>Cash Payment</p>
-        <figure>&nbsp;</figure>
-      </div>
-      <div className="cashPaymentDiscCont ">
-        <div className="cashPaymentDisc fx-cl">
-          <div className="cashPaymentRow ">
-            <div className="fx-ac spacem">
-              <ShoppingCartIcon fontSize="large" /> <span>Products:</span>
-            </div>
-            <p>{cart?.length} items</p>
-          </div>
-          <div className="cashPaymentRow ">
-            <div className="fx-ac spacem">
-              <EventRoundedIcon fontSize="large" /> <span>Grand Total:</span>
-            </div>
-            <p>
-              <strong>₦ {grandTotal.toLocaleString()}</strong>
-            </p>
-          </div>
-          <div className="cashPaymentRow">
-            <div className="fx-ac spacem">
-              <WorkspacePremiumRoundedIcon fontSize="large" />{" "}
-              <span>Cash:</span>
-            </div>
-            <p> ₦ {cashCollected.toLocaleString()}</p>
-          </div>
-          <div className="cashPaymentRow ">
-            <div className="fx-ac spacem">
-              <AccountCircleRoundedIcon fontSize="large" /> <span>Change:</span>
-            </div>
-            <p style={{ color: "#ed826b", fontWeight: "bold" }}>
-              {" "}
-              ₦ {(cashCollected - grandTotal).toLocaleString()}
-            </p>
-          </div>
-        </div>
-
-        <div className="g g3 spacem">
-          {[100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000].map((i) => {
-            return (
-              <figure
-                className="cashPaymentNotes"
-                onClick={() => setCashCollected(cashCollected + i)}
-              >
-                ₦{i.toLocaleString()}
-              </figure>
-            );
-          })}
-        </div>
-      </div>
-      <div className="cashPaymentButtom fx-cl space2 fx-jc">
-        <div className="fx-ac">
-          <input
-            type="number"
-            placeholder="Enter amount of cash"
-            value={cashCollected > 0 && cashCollected}
-            onChange={(x) => setCashCollected(Number(x.target.value))}
-          />
-        </div>
-
-        <div className="fx-ac space3 fx-jc">
-          <button
-            onClick={() => {
-              alert();
-            }}
-          >
-            Cancel
-          </button>
-          <button
-            onClick={() => {
-              cashPaidSubmit();
-            }}
-          >
-            Submit
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-export function OnHold({ handleOnHold, cart, discount, customerName }) {
+export function OnHold({ handleOnHold, cart, customerName }) {
   const [note, setNote] = useReducer((state, payload) => {
     return ({ ...state, ...payload }, { note: "" });
   });
@@ -181,68 +83,6 @@ export function OnHold({ handleOnHold, cart, discount, customerName }) {
             Put Sale On-Hold
           </button>
         </div>
-      </div>
-    </div>
-  );
-}
-export function AddNewCustomer({ handleOnHold }) {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [loading, setLoading] = useState(false);
-  // /////////////////////////////////////////////////////////
-  // Cross Origin Resource Sharing CRUD - Functions
-  // /////////////////////////////////////////////////////////
-
-  const payload = {
-    name: "products array",
-  };
-
-  async function postNewCustomer() {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
-        payload,
-      );
-      if (response?.data?.status === 200) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
-      }
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-
-      enqueueSnackbar("Server error while fetching products", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  }
-  // -------------------------------------------------------------------
-
-  return (
-    <div
-      className="OpBtnCont fx-cl space2"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <h3>Are you sure you want to prospond this selling?</h3>
-      <p>You are about to temporarily save this transaction</p>
-      <div className="fx-ac space3 fx-jb">
-        <button>Cancel</button>
-        <button
-          onClick={() => {
-            handleOnHold();
-          }}
-        >
-          Prospond
-        </button>
       </div>
     </div>
   );
@@ -338,217 +178,56 @@ export function ClearCart({ clearCart, cart, customer, setOpenModal }) {
     </div>
   );
 }
-export function Quotation({ handleOnHold }) {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [loading, setLoading] = useState(false);
+export function SaveDraft({
+  cart,
+  discount,
+  customerName,
+  setLoading,
+  secondaryFunction,
+}) {
+  const { enqueueSnackbar } = useSnackbar();
 
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    name: "products array",
-  };
-
-  async function postNewQuotes() {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
-        payload,
-      );
-      if (response?.data?.status === 200) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
-      }
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-
-      enqueueSnackbar("Server error while fetching products", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  }
-  // -------------------------------------------------------------------
-
-  return (
-    <div
-      className="OpBtnCont fx-cl space2"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <h3>Are you sure you want to prospond this selling?</h3>
-      <p>You are about to temporarily save this transaction</p>
-      <div className="fx-ac space3 fx-jb">
-        <button>Cancel</button>
-        <button
-          onClick={() => {
-            handleOnHold();
-          }}
-        >
-          Prospond
-        </button>
-      </div>
-    </div>
-  );
-}
-export function CreditSale({ handleOnHold }) {
-  return (
-    <div className="creditSalesCont" onClick={(e) => e.stopPropagation()}>
-      <div className="creditSalesLeft fx-ac">
-        <div className="fx-cl space2">
-          <h3>Confidence that builds a long time with customer.</h3>
-          <p>Empowering kids with confidence to create a successful future</p>
-          <button>Submit Sale</button>
-        </div>
-        <div>
-          <img src={Imgs} alt="here" />
-        </div>
-      </div>
-      <div className="creditSalesRight">
-        <div className="fx-cl space2">
-          <h3>Costomize this Credit Selling.</h3>
-          <p>
-            Inspiring kids to aim <strong>achieve</strong>
-          </p>
-          <button>Custome!</button>
-        </div>
-        <div>
-          <img src={N1} alt="here" />
-        </div>
-      </div>
-    </div>
-  );
-}
-export function MultiPay() {
-  return (
-    <div
-      className=" HoldSales fx-cl space2"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <MultiplePayment />
-    </div>
-  );
-}
-export function Debit({ handleOnHold }) {
-  return (
-    <>
-      <DebitSale />
-    </>
-  );
-}
-export function Gifting({ handleSaveDraft }) {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [loading, setLoading] = useState(false);
-
-  // /////////////////////////////////////////////////////////
-  // Cross Origin Resource Sharing CRUD - Functions
-  // /////////////////////////////////////////////////////////
-
-  const payload = {
-    name: "products array",
-  };
-
-  async function executeGift() {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
-        payload,
-      );
-      if (response?.data?.status === 200) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
-      }
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-
-      enqueueSnackbar("Server error while fetching products", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  }
-  // -------------------------------------------------------------------
-
-  return (
-    <div
-      className="giftingCardCont fx-ac fx-jc"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div className="giftingtCard fx-ae">
-        <div className="fx-cl space2">
-          <h3>Confidence that builds a long time with customer.</h3>
-          <p>Empowering kids with confidence to create a successful future</p>
-          <button
-            onClick={() => {
-              handleSaveDraft();
-            }}
-          >
-            Save Draft
-          </button>
-        </div>
-        <figure>
-          <img src={Imgs} alt="here" />
-        </figure>
-      </div>
-    </div>
-  );
-}
-export function SaveDraft({ handleSaveDraft }) {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [loading, setLoading] = useState(false);
-
-  // /////////////////////////////////////////////////////////
-  // Cross Origin Resource Sharing CRUD - Functions
-  // /////////////////////////////////////////////////////////
-
-  const payload = {
-    name: "products array",
+    isDraft: true,
+    draftId: "JDRTY3453453",
+    paymentType: "nill",
+    items: cart,
+    discount: discount,
+    customerName: customerName,
+    date: new Date().toISOString(),
   };
 
   async function saveDraft() {
     try {
       setLoading(true);
+      secondaryFunction();
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/:id/point_of_sales/save_draft`,
         payload,
       );
-      if (response?.data?.status === 200) {
+      if (response?.data?.status === 201) {
         enqueueSnackbar(response?.data?.message, {
           variant: "success",
           autoHideDuration: 3000,
         });
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
+      } else {
+        enqueueSnackbar(response?.data?.message, {
           variant: "error",
           autoHideDuration: 3000,
         });
       }
 
+      console.log("Credit sale response:", response);
       setLoading(false);
     } catch (error) {
       setLoading(false);
       console.log(error);
 
-      enqueueSnackbar("Server error while fetching products", {
+      enqueueSnackbar("An error occurred while submitting the cash payment", {
         variant: "error",
         autoHideDuration: 3000,
       });
@@ -563,10 +242,85 @@ export function SaveDraft({ handleSaveDraft }) {
         <p>Empowering kids with confidence to create a successful future</p>
         <button
           onClick={() => {
-            handleSaveDraft();
+            saveDraft();
           }}
         >
           Save Draft
+        </button>
+      </div>
+      <figure>
+        <img src={Imgs} alt="here" />
+      </figure>
+    </div>
+  );
+}
+export function Quotation({
+  cart,
+  discount,
+  customerName,
+  setLoading,
+  secondaryFunction,
+}) {
+  const { enqueueSnackbar } = useSnackbar();
+
+  // /////////////////////////////////////////////////////////
+  // Cross Origin Resource Sharing CRUD - Functions
+  // /////////////////////////////////////////////////////////
+
+  const payload = {
+    quotationId: "JDRTY3453453",
+    paymentType: "nill",
+    items: cart,
+    discount: discount,
+    customerName: customerName,
+    date: new Date().toISOString(),
+  };
+
+  async function saveQuotation() {
+    try {
+      setLoading(true);
+      secondaryFunction();
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/:id/point_of_sales/quotation`,
+        payload,
+      );
+      if (response?.data?.status === 201) {
+        enqueueSnackbar(response?.data?.message, {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+      } else {
+        enqueueSnackbar(response?.data?.message, {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+
+      console.log("Quotation response:", response);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+
+      enqueueSnackbar("An error occurred while submitting the quotation", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  }
+  // -------------------------------------------------------------------
+
+  return (
+    <div className="saveDraftCard fx-ae" onClick={(e) => e.stopPropagation()}>
+      <div className="fx-cl space2">
+        <h3>Save This Transaction as DRAFT?.</h3>
+        <p>Empowering kids with confidence to create a successful future</p>
+        <button
+          onClick={() => {
+            saveQuotation();
+          }}
+        >
+          Save Quotation
         </button>
       </div>
       <figure>
@@ -699,42 +453,66 @@ export function HoldedSales({
     </>
   );
 }
-export function Subscriptions({ handleOnHold }) {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [loading, setLoading] = useState(false);
+export function Subscriptions({
+  cart,
+  discount,
+  customerName,
+  setLoading,
+  secondaryFunction,
+}) {
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [cashCollected, setCashCollected] = useState(0);
+  const grandTotal = cart?.reduce(
+    (sum, item) => sum + item.pricing.sellingPrice * item.sellingQuantity,
+    0,
+  );
 
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    name: "products array",
+    subscriptionId: "JDRTY3453453",
+
+    customer: {
+      name: customerName,
+    },
+    products: {
+      items: cart,
+      discount: discount,
+    },
+
+    paymentType: "cash payment",
   };
 
   async function postSubscribe() {
     try {
       setLoading(true);
+      secondaryFunction();
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/${"dfgsdf6h4f8g7hj9g"}/point_of_sales/subscribe`,
         payload,
       );
-      if (response?.data?.status === 200) {
+      if (response?.data?.status === 201) {
         enqueueSnackbar(response?.data?.message, {
           variant: "success",
           autoHideDuration: 3000,
         });
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
+      } else {
+        enqueueSnackbar(response?.data?.message, {
           variant: "error",
           autoHideDuration: 3000,
         });
       }
 
+      console.log("Subscribe response:", response);
       setLoading(false);
     } catch (error) {
       setLoading(false);
       console.log(error);
 
-      enqueueSnackbar("Server error while fetching products", {
+      enqueueSnackbar("An error occurred while submitting the cash payment", {
         variant: "error",
         autoHideDuration: 3000,
       });
@@ -747,8 +525,8 @@ export function Subscriptions({ handleOnHold }) {
       className="OpBtnCont fx-cl space2"
       onClick={(e) => e.stopPropagation()}
     >
-      <h3>Save billing as Draft?</h3>
-      <p>This transaction will be save as Draft</p>
+      <h3>Subscribe </h3>
+      <p>Subscribe to the customer's profile</p>
       <div className="fx-ac space3 fx-jb">
         <button>Cancel</button>
         <button
@@ -756,79 +534,42 @@ export function Subscriptions({ handleOnHold }) {
             postSubscribe();
           }}
         >
-          Save
+          Subscribe
         </button>
       </div>
     </div>
   );
 }
-export function TransactionLog({ handleOnHold }) {
-  const { enqueueSnackbar } = useSnackbar();
 
-  function handleSaveDraft() {
-    enqueueSnackbar(`Draft added successfully`, {
-      variant: "success",
-      autoHideDuration: 3000,
-      ContentProps: {
-        style: { fontSize: "16px", fontWeight: "bold" },
-      },
-    });
-  }
-  return (
-    <div
-      className="OpBtnCont fx-cl space2"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <RecentTransaction />
-    </div>
-  );
-}
-export function PaymentLogs({ handleOnHold }) {
+export function AddContacts({ customerName, setLoading, secondaryFunction }) {
   const { enqueueSnackbar } = useSnackbar();
-
-  function handleSaveDraft() {
-    enqueueSnackbar(`Draft added successfully`, {
-      variant: "success",
-      autoHideDuration: 3000,
-      ContentProps: {
-        style: { fontSize: "16px", fontWeight: "bold" },
-      },
-    });
-  }
-  return (
-    <div
-      className="OpBtnCont fx-cl space2"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <Payments />
-    </div>
-  );
-}
-export function Shipping({ handleOnHold }) {
-  const { enqueueSnackbar } = useSnackbar();
-  const [loading, setLoading] = useState(false);
 
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    name: "products array",
+    name: "Contact Name",
+    email: "Contact Email",
+    additionalInfo: "Additional contact information",
   };
 
-  async function executeShipping() {
+  async function addContact() {
     try {
       setLoading(true);
+      secondaryFunction();
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/:id/contacts/:contact_id/add_contact`,
         payload,
       );
-      if (response?.data?.status === 200) {
+      console.log("Add contact response:", response);
+      if (response?.data?.status === 201) {
         enqueueSnackbar(response?.data?.message, {
           variant: "success",
           autoHideDuration: 3000,
         });
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
+      } else {
+        enqueueSnackbar(response?.data?.message || "Failed to add contact", {
           variant: "error",
           autoHideDuration: 3000,
         });
@@ -839,7 +580,7 @@ export function Shipping({ handleOnHold }) {
       setLoading(false);
       console.log(error);
 
-      enqueueSnackbar("Server error while fetching products", {
+      enqueueSnackbar("Server error while adding contact", {
         variant: "error",
         autoHideDuration: 3000,
       });
@@ -847,30 +588,21 @@ export function Shipping({ handleOnHold }) {
   }
   // -------------------------------------------------------------------
 
-  function handleSaveDraft() {
-    enqueueSnackbar(`Draft added successfully`, {
-      variant: "success",
-      autoHideDuration: 3000,
-      ContentProps: {
-        style: { fontSize: "16px", fontWeight: "bold" },
-      },
-    });
-  }
   return (
     <div
       className="OpBtnCont fx-cl space2"
       onClick={(e) => e.stopPropagation()}
     >
-      <h3>Save billing as Draft?</h3>
-      <p>This transaction will be save as Draft</p>
+      <h3>Add Contact</h3>
+      <p>Add a new contact to the customer's profile</p>
       <div className="fx-ac space3 fx-jb">
         <button>Cancel</button>
         <button
           onClick={() => {
-            executeShipping();
+            addContact();
           }}
         >
-          Prospond
+          Save Contact
         </button>
       </div>
     </div>

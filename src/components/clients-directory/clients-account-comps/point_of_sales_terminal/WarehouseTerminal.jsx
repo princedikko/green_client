@@ -1,6 +1,5 @@
 import "./warehouseTerminal.css";
-import React, { useEffect, useState, useRef } from "react";
-import axios from "axios";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as Action from "../../../../store/redux/hybrid_reducer.js";
@@ -60,21 +59,28 @@ import {
   AddNewCustomer,
   AddNewProduct,
   ClearCart,
-  CreditSale,
-  MultiPay,
-  Debit,
   OnHold,
   Quotation,
   SaveDraft,
   Discount,
   HoldedSales,
   Subscriptions,
+  AddContacts,
+} from "./ware_house_comps/functional_comps/OptionalButtons.jsx";
+
+import {
+  CashPayment,
+  CreditSale,
+  MultiPay,
+  Debit,
+  Gifting,
   TransactionLog,
   PaymentLogs,
   Shipping,
-  Gifting,
-  CashPayment,
-} from "./ware_house_comps/functional_comps/OptionalButtons.jsx";
+  Check,
+  Account,
+} from "./ware_house_comps/payment_buttons/PaymentComps.jsx";
+import IsLoading from "../../../../IsLoading.jsx";
 
 let queue;
 
@@ -118,9 +124,8 @@ function WarehouseTerminal() {
   );
   const sold = useSelector((state) => state.mongodbActions.mongoSales);
 
-  console.log("Sold: ", sold);
   // END OF MODAL FUNCTIONS------------------
-  const [toggleAside, setToggleAside] = useState("instruction");
+  const [toggleAside, setToggleAside] = useState("productsf");
   const [showModal, setShowModal] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [togglePagination, setTogglePagination] = useState(true);
@@ -147,7 +152,6 @@ function WarehouseTerminal() {
         },
       });
       // dispatch(Action.addtoCart(updatedItem));
-      // console.log("CART UPDATED:", updatedItem);
     } else {
       // If not exists, add new item
       dispatch(Action.addtoCart(item));
@@ -279,6 +283,11 @@ function WarehouseTerminal() {
   function handleHoldedSale(note) {
     setOpenModal(!openModal);
   }
+  function secondaryFunction() {
+    clearCart();
+    setOpenModal(false);
+  }
+
   // ...................////////
 
   function toggleModalBoxContents() {
@@ -291,18 +300,60 @@ function WarehouseTerminal() {
         return <img src={BannerImg} style={{ width: "34%" }} />;
       case "add_new_product":
         return <AddNewProduct handleOnHold={handleOnHold} />;
-      case "add_new_customer":
-        return <AddNewCustomer handleOnHold={handleOnHold} />;
       case "save_draft":
-        return <SaveDraft handleSaveDraft={handleSaveDraft} />;
+        return (
+          <SaveDraft
+            cart={cart}
+            customerName={customer}
+            setLoading={setLoading}
+            secondaryFunction={secondaryFunction}
+          />
+        );
       case "debit":
-        return <Debit handleOnHold={handleOnHold} />;
+        return (
+          <Debit
+            cart={cart}
+            customerName={customer}
+            setLoading={setLoading}
+            secondaryFunction={secondaryFunction}
+          />
+        );
       case "multi_pay":
-        return <MultiPay handleOnHold={handleOnHold} />;
+        return (
+          <MultiPay
+            cart={cart}
+            customerName={customer}
+            setLoading={setLoading}
+            secondaryFunction={secondaryFunction}
+          />
+        );
       case "credit_sale":
-        return <CreditSale handleOnHold={handleOnHold} />;
+        return (
+          <CreditSale
+            cart={cart}
+            customerName={customer}
+            setLoading={setLoading}
+            secondaryFunction={secondaryFunction}
+          />
+        );
       case "quotation":
-        return <Quotation handleOnHold={handleOnHold} />;
+        return (
+          <Quotation
+            cart={cart}
+            customerName={customer}
+            setLoading={setLoading}
+            secondaryFunction={secondaryFunction}
+          />
+        );
+      case "add-new-contact":
+        return (
+          <AddContacts
+            cart={cart}
+            customerName={customer}
+            setLoading={setLoading}
+            secondaryFunction={secondaryFunction}
+          />
+        );
       case "clear_cart":
         return (
           <ClearCart
@@ -316,9 +367,28 @@ function WarehouseTerminal() {
       case "cash_pay":
         return (
           <CashPayment
-            cashPaidSubmit={cashPaidSubmit}
             cart={cart}
             customerName={customer}
+            setLoading={setLoading}
+            secondaryFunction={secondaryFunction}
+          />
+        );
+      case "check":
+        return (
+          <Check
+            cart={cart}
+            customerName={customer}
+            setLoading={setLoading}
+            secondaryFunction={secondaryFunction}
+          />
+        );
+      case "account":
+        return (
+          <Account
+            cart={cart}
+            customerName={customer}
+            setLoading={setLoading}
+            secondaryFunction={secondaryFunction}
           />
         );
       case "on_hold":
@@ -330,7 +400,14 @@ function WarehouseTerminal() {
           />
         );
       case "gift":
-        return <Gifting handleOnHold={handleOnHold} />;
+        return (
+          <Gifting
+            cart={cart}
+            customerName={customer}
+            setLoading={setLoading}
+            secondaryFunction={secondaryFunction}
+          />
+        );
       case "discount":
         return (
           <Discount
@@ -349,7 +426,14 @@ function WarehouseTerminal() {
           />
         );
       case "subscription":
-        return <Subscriptions />;
+        return (
+          <Subscriptions
+            cart={cart}
+            customerName={customer}
+            setLoading={setLoading}
+            secondaryFunction={secondaryFunction}
+          />
+        );
       case "transactions":
         return <TransactionLog />;
       case "payments":
@@ -369,114 +453,6 @@ function WarehouseTerminal() {
   ///////////////////////////////////////////////////////////
   // FUNCTIONS THAT CALLS AXIOS
   ///////////////////////////////////////////////////////////
-
-  const cashPaidSubmit = async () => {
-    // setLoading(true);
-    // await axios
-    //   .post(
-    //     `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/warehouse/selling/7899dfg89sdf8g/cash_payment`,
-    //     payload,
-    //   )
-    //   .then((response) => {
-    //     if (response.data.status === 203) {
-    //       setLoading(false);
-    //       enqueueSnackbar(`${response.data.message}`, {
-    //         variant: "error",
-    //         autoHideDuration: 3000,
-    //         ContentProps: {
-    //           style: { fontSize: "16px", fontWeight: "bold" },
-    //         },
-    //       });
-    //     } else {
-    //       enqueueSnackbar(`${response.data.message}`, {
-    //         variant: "success",
-    //         autoHideDuration: 3000,
-    //         ContentProps: {
-    //           style: { fontSize: "16px", fontWeight: "bold" },
-    //         },
-    //       });
-    //       clearCart();
-    //       setLoading(false);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     enqueueSnackbar(`error: something went wrong!`, {
-    //       variant: "error",
-    //       autoHideDuration: 3000,
-    //       ContentProps: {
-    //         style: { fontSize: "16px", fontWeight: "bold" },
-    //       },
-    //     });
-    //     console.log(error);
-    //     setLoading(false);
-    //   });
-
-    const salestranscation_collection = {
-      _id: 57457647656,
-      receiptNo: "RCPT-00045321",
-      invoiceNo: "INV-00045321",
-      posTerminal: "POS-01",
-      cashier: {
-        id: 5676765,
-        name: "Amina Musa",
-      },
-
-      customer: {
-        id: 65466,
-        name: "Walk-in Customer",
-        phone: null,
-      },
-
-      items: [
-        {
-          productId: 67564,
-          sku: "MILK-PEAK-001",
-          barcode: "6224001234567",
-          name: "Peak Milk 170g",
-
-          quantity: 3,
-          unitPrice: 950,
-          costPrice: 820,
-
-          batchNo: "PK0124A",
-          expiryDate: "2026-01-30",
-
-          taxRate: 7.5,
-          taxAmount: 213.75,
-          discount: 0,
-
-          lineTotal: 2850,
-        },
-      ],
-
-      summary: {
-        subTotal: 2850,
-        taxTotal: 23.75,
-        discountTotal: 0,
-        grandTotal: 3063.75,
-      },
-
-      payment: {
-        method: "CASH", // CASH | POS | TRANSFER | WALLET
-        paidAmount: 3100,
-        change: 36.25,
-        reference: null,
-      },
-
-      stockEffected: true,
-
-      createdAt: 564,
-    };
-    dispatch(Mongodb.apipostCashPay(salestranscation_collection));
-    clearCart();
-    enqueueSnackbar(`Cash paid successfully`, {
-      variant: "success",
-      autoHideDuration: 3000,
-      ContentProps: {
-        style: { fontSize: "16px", fontWeight: "bold" },
-      },
-    });
-  };
 
   function closeModalDiv() {
     setOpenModal(!openModal);
@@ -665,7 +641,7 @@ function WarehouseTerminal() {
               </div>
               <button
                 style={{ width: "5rem" }}
-                onClick={() => handleModalSwitch("add_new_customer")}
+                onClick={() => handleModalSwitch("add-new-contact")}
               >
                 +
               </button>
@@ -889,13 +865,18 @@ function WarehouseTerminal() {
               <div className="fx-ac space1">
                 <button
                   className="controlButtons"
+                  onClick={() => {
+                    if (cart.length > 0) {
+                      handleModalSwitch("quotation");
+                    }
+                  }}
                   style={{
                     cursor: cart.length > 0 ? "pointer" : "not-allowed",
                     opacity: cart.length > 0 ? 1 : 0.6, // optional, to show disabled look
                   }}
                 >
                   <LocalPrintshopIcon />
-                  <span>Print</span>
+                  <span>Quotes</span>
                   {/* <span class="tooltips">Print Quatation</span> */}
                 </button>
                 <button
@@ -959,10 +940,7 @@ function WarehouseTerminal() {
                 {/* Count Down */}
                 <HourglassTopIcon fontSize="large" />
               </button>
-              <button
-                onClick={() => cashPaidSubmit()}
-                className="cashPaid fx-jc"
-              >
+              <button className="cashPaid fx-jc">
                 {/* 
                 Customer gives cash
 → cashier enters amount received
@@ -992,7 +970,7 @@ function WarehouseTerminal() {
             <button
               onClick={() => {
                 if (cart.length > 0) {
-                  handleModalSwitch("on_hold");
+                  handleModalSwitch("account");
                 }
               }}
               style={{
@@ -1004,6 +982,11 @@ function WarehouseTerminal() {
               <span>Account</span>
             </button>
             <button
+              onClick={() => {
+                if (cart.length > 0) {
+                  handleModalSwitch("check");
+                }
+              }}
               style={{
                 cursor: cart.length > 0 ? "pointer" : "not-allowed",
                 opacity: cart.length > 0 ? 1 : 0.6, // optional: show disabled look
@@ -1114,6 +1097,7 @@ function WarehouseTerminal() {
   }
   return (
     <section className="sectionwarehouseHub fx-cl">
+      {loading && <IsLoading />}
       {openModal && (
         <div id="modalContainer" onClick={() => closeModalDiv()}>
           {toggleModalBoxContents()}
@@ -1374,7 +1358,6 @@ function Products({ handleModalSwitch, products, addToCart, clearCart }) {
   };
 
   const handleSelect = (product) => {
-    console.log("Selected product:", product);
     setSearchTerm(product.name);
     setFilteredProducts([]); // close dropdown after selection
   };

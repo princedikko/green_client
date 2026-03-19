@@ -402,7 +402,7 @@ div.warehouseHubOperations button.cashPaid:hover {
   padding: 0 2rem;
 }
 .warehouseHubAsideNav {
-  background-color: #fafafa;
+  background-color: transparent;
   padding: 0.5rem 1.2rem;
   /* border-radius: 1.2rem; */
   /* overflow-y: scroll; */
@@ -410,7 +410,7 @@ div.warehouseHubOperations button.cashPaid:hover {
 }
 
 .warehouseHubAsideNav button {
-  background-color: transparent;
+  background-color: #fafafa;
   color: #26bf89;
   padding: 0.6rem 1rem;
   border-radius: 0.4rem;
@@ -423,6 +423,9 @@ div.warehouseHubOperations button.cashPaid:hover {
 .warehouseHubAsideNav button.active {
   background-color: #26bf89;
   color: #fff;
+}
+.warehouseHubAsideNav button.active:hover {
+  opacity: 0.7;
 }
 
 .Instructions,
@@ -645,6 +648,9 @@ button.wareHouseAddnewProd:hover {
   padding: 1.6rem 2.3rem;
   background-color: transparent;
   row-gap: 2.8rem;
+  max-height: 25rem;
+  height: 100%;
+  overflow: auto;
 }
 .pptyBtnCont figure {
   max-width: 15rem;

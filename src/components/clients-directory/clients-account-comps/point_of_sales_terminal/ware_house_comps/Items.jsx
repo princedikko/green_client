@@ -20,10 +20,6 @@ export default function Items({ setChangeView, changeview }) {
   const { products } = useSelector((state) => state.hybridActions.warehouse);
 
   const dispatch = useDispatch();
-  console.log(
-    "CART",
-    useSelector((state) => state.hybridActions.warehouse?.cart),
-  );
 
   function switchView() {
     switch (changeview) {
@@ -88,7 +84,6 @@ function TableView() {
       }
     } else {
       alert("Item out of stock:", index);
-      console.log("index", index);
     }
   }
   function insertQty(index, qty, available) {

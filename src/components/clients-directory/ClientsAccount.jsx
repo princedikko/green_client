@@ -562,12 +562,11 @@ export default function ClientsAccount() {
                 }}
               >
                 <figure className="dashboardLogo fx-ac space2 fx-jc">SP</figure>
-                <span>Skill Point</span>
+                <span>Green&copy;</span>
               </div>
               <div>
                 <span style={{ textTransform: "capitalize" }}>{active}</span>
               </div>
-
               <div className="clientProfileItemsCont fx-cl spacem">
                 {menuItems.map((item, index) => (
                   <div className="fx-cl" key={index}>
