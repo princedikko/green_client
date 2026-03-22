@@ -21,10 +21,8 @@ export function OnHold({ handleOnHold, cart, customerName }) {
       className="putOnHoldCont fx-cl space2"
       onClick={(e) => e.stopPropagation()}
     >
-      <div className="putOnHoldhead fx-ac spacem fx-jb">
-        <figure>&nbsp;</figure>
-        <p>Cart Overview</p>
-        <figure>&nbsp;</figure>
+      <div className="putOnHoldhead fx-ac spacem fx-jc">
+        <p>Hold Transaction</p>
       </div>
       <div className="putOnHoldDisc fx-cl">
         <div className="putOnHoldRow ">
@@ -80,7 +78,7 @@ export function OnHold({ handleOnHold, cart, customerName }) {
               );
             }}
           >
-            Put Sale On-Hold
+            Put On-hold
           </button>
         </div>
       </div>

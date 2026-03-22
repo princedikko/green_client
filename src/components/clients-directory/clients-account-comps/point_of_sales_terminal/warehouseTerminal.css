@@ -105,10 +105,10 @@
   height: 2.2rem;
 }
 .warehauseSearchCont {
-  margin: 0 2rem;
+  margin: 0 5rem;
 }
 .warehauseSearchCont input {
-  width: 23rem;
+  width: 19rem;
   max-width: 100%;
   margin: 0.4rem 0.8rem;
   color: #666;
@@ -139,6 +139,9 @@
   left: 0;
   width: 100%;
   /* margin-top: 2.4rem; */
+}
+.warehouseHubMiddleWare {
+  padding-right: 5rem;
 }
 .warehouseHubMiddleWare button.detailsMini {
   color: #333;
@@ -378,6 +381,7 @@ div.warehouseHubOperations button.cashPaid:hover {
   transform: scale(1.2);
 }
 #largeView .main {
+  position: relative;
   background-color: rgba(255, 255, 255, 0.69);
   backdrop-filter: blur(15px);
   padding: 2.3rem 3.2rem;
@@ -559,7 +563,7 @@ button.wareHouseAddnewProd:hover {
   backdrop-filter: blur(15px);
   color: #fff;
   position: absolute;
-  left: 6.4rem;
+  left: 14.4rem;
   top: 110%;
   background: rgba(13, 66, 104, 0.56);
   border-radius: 10px;
@@ -591,6 +595,11 @@ button.wareHouseAddnewProd:hover {
   color: #fff;
   padding: 0.6rem 0.8rem;
   text-align: center;
+}
+
+#searchCustomer::placeholder {
+  color: #fff;
+  font-weight: 300;
 }
 
 /* BLALFJAKLJFLKSJF */
@@ -626,7 +635,7 @@ button.wareHouseAddnewProd:hover {
   list-style: none;
   padding: 6px 0;
   width: 140px;
-  z-index: 10;
+  z-index: 99999;
 }
 
 .brands-limit-item {

@@ -709,7 +709,7 @@ export default function TaxRate({ breadcrumbs }) {
       return (
         <div className="prog">
           <button onClick={() => addNewTaxRecord()} className="btnTemporary">
-            Add New Tax{" "}
+            Add New Tax
           </button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">

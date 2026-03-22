@@ -90,6 +90,14 @@ export const hybridReducer = createSlice({
     clearProductsAction: (state) => {
       state.warehouse.products = [];
     },
+    dispatchCloseRegister: (state) => {
+      state.warehouse.cart = [];
+      state.on_holded_sales = [];
+      state.warehouse.products = [];
+      state.warehouse.products = [];
+      state.warehouse.products = [];
+      state.switchWarehouseView = false;
+    },
     attandOnhold: (state, action) => {
       const { buyings } = action.payload;
       if (!state.warehouse) state.warehouse = { cart: [], products: [] };
@@ -112,6 +120,7 @@ export const {
   onHoldPayload,
   attandOnhold,
   deleteOnholdDispatch,
+  dispatchCloseRegister,
 } = hybridReducer.actions;
 
 export default hybridReducer.reducer;

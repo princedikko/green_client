@@ -747,10 +747,9 @@ export default function Variations({ breadcrumbs }) {
     function TableView({ currentRows }) {
       return (
         <div className="prog">
-          <button
-            onClick={() => postNewVariation()}
-            className="btnTemporary"
-          ></button>
+          <button onClick={() => postNewVariation()} className="btnTemporary">
+            Create Variable
+          </button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>

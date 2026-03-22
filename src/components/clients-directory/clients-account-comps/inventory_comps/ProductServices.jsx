@@ -739,10 +739,9 @@ export default function ProductServices({ breadcrumbs }) {
     function TableView({ currentRows }) {
       return (
         <div className="prog">
-          <button
-            onClick={() => postServices()}
-            className="btnTemporary"
-          ></button>
+          <button onClick={() => postServices()} className="btnTemporary">
+            Create Service
+          </button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>

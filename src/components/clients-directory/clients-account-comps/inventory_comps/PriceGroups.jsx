@@ -718,7 +718,7 @@ export default function PriceGroups({ breadcrumbs }) {
       try {
         setLoading(true);
         const response = await axios.post(
-          `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_products/create_price_group`,
+          `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_products/create-price-group`,
           payload,
         );
         if (response?.data?.status === 201) {

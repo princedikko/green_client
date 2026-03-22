@@ -44,11 +44,14 @@ export default function Calculator({ setOpenModal }) {
 
   return (
     <div
-      className="calculator-calcu"
+      className="calculator-calcu fx-cl space3"
       onClick={(e) => e.stopPropagation()}
       draggable
     >
-      <div className="display-calcu">{input || "0"}</div>
+      <div className="fx-cl space2">
+        <p>{input}</p>
+        <div className="display-calcu">{input || "0"}</div>
+      </div>
       <div className="buttons-calcu">
         {buttons.map((btn) =>
           btn === "←" ? (
@@ -71,7 +74,7 @@ export default function Calculator({ setOpenModal }) {
             >
               {btn}
             </button>
-          )
+          ),
         )}
       </div>
     </div>

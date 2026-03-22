@@ -137,7 +137,6 @@
   color: #999;
 }
 
-
 /* //////////////////////////////////////////// */
 /* SAVE DRAFT COMPONENTS */
 
@@ -185,10 +184,13 @@
 .putOnHoldCont {
   width: 100%;
   max-width: 73rem;
-  padding: 3.7rem 3.2rem;
+  padding: 4.7rem 6.2rem;
   border-radius: 1.2rem;
-  background-color: rgba(255, 255, 255, 0.692);
-  color: #3c5943;
+  /* background-color: rgba(255, 255, 255, 0.692); */
+  background-color: rgb(27 35 44 / 63%);
+  /* backdrop-filter: blur(24px) saturate(240%);
+    background-color: rgba(27, 35, 44, .7); */
+  color: #ffffff;
   backdrop-filter: blur(15px);
   position: relative;
 }
@@ -224,6 +226,7 @@
 .putOnHoldButtom textarea {
   width: 100%;
   background-color: transparent;
+  color: #fff;
   font-size: 1.2rem;
   text-align: center;
   border: 1px solid #b5b5b5;
@@ -232,13 +235,9 @@
 }
 .putOnHoldButtom button {
   width: 30rem;
-  background-color: #86a385;
-  background-image: repeating-linear-gradient(
-    45deg,
-    #3c5943,
-    transparent 100px
-  );
-  color: #ffffff;
+  background-color: #3a84f8;
+  /* background-image: repeating-linear-gradient(45deg, #fff, transparent 100px); */
+  color: #fff;
   border-radius: 1rem;
   padding: 1.2rem;
   font-size: 1.5rem;

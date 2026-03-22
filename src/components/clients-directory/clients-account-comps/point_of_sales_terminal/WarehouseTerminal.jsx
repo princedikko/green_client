@@ -13,6 +13,8 @@ import BannerImg from "./images/banner.avif";
 import LayersClearIcon from "@mui/icons-material/LayersClear";
 import SettingsRemoteTwoToneIcon from "@mui/icons-material/SettingsRemoteTwoTone";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import AddIcon from "@mui/icons-material/Add";
+import DevicesOtherIcon from "@mui/icons-material/DevicesOther";
 
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 // import SearchIcon from "@mui/icons-material/Search";
@@ -35,9 +37,9 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import BedtimeOffIcon from "@mui/icons-material/BedtimeOff";
 import GrainIcon from "@mui/icons-material/Grain";
+import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import BalanceIcon from "@mui/icons-material/Balance";
 import BackHandIcon from "@mui/icons-material/BackHand";
@@ -81,6 +83,7 @@ import {
   Account,
 } from "./ware_house_comps/payment_buttons/PaymentComps.jsx";
 import IsLoading from "../../../../IsLoading.jsx";
+import SpecialWorkFlow from "./SpecialWorkFlow.jsx";
 
 let queue;
 
@@ -190,6 +193,11 @@ function WarehouseTerminal() {
 
   function clearProducts() {
     dispatch(Action.clearProductsAction());
+  }
+
+  function handleCloseRegister() {
+    dispatch(Action.dispatchCloseRegister());
+    redirect(`/clients/691a663dc9f64e6b9b8be48e/account`);
   }
   // Functional buttons methods of actions
   function handleSaveDraft(note) {
@@ -459,11 +467,6 @@ function WarehouseTerminal() {
     setShowModal("");
   }
 
-  function handleCloseTerminal() {
-    clearCart();
-    clearProducts();
-    redirect(`/clients/691a663dc9f64e6b9b8be48e/account`);
-  }
   function switchAsideComp() {
     switch (toggleAside) {
       case "products":
@@ -643,13 +646,13 @@ function WarehouseTerminal() {
                 style={{ width: "5rem" }}
                 onClick={() => handleModalSwitch("add-new-contact")}
               >
-                +
+                <AddIcon fontSize="large" />
               </button>
             </div>
 
             {!switchWarehouseView && (
-              <div className="warehauseSearchCont fx-jb space3">
-                <div className="fx-ac space1">
+              <div className="warehauseSearchCont fx-jb space1">
+                <div className="fx-ac spacem">
                   <div className=" fx-ac spacem">
                     <div
                       className="warehauseSearch fx-jb"
@@ -690,61 +693,48 @@ function WarehouseTerminal() {
                     className="wareHouseAddnewProd fx-ac fx-jc"
                     onClick={() => handleModalSwitch("add_new_product")}
                   >
-                    +
+                    <AddIcon fontSize="large" />
                   </button>
                 </div>
-                <button
-                  className="wareHouseAddnewProd fx-ac fx-jc"
-                  onClick={() => handleModalSwitch("add_new_product")}
-                >
-                  <SettingsRemoteTwoToneIcon
-                    style={{ color: "#ffffff", fontSize: "2rem" }}
-                  />
-                </button>
               </div>
             )}
           </div>
 
           <div className="warehouseItemsCont fx-cl space1">
-            <div className="warehouseHubBtn fx-ac space1">
-              {cart.length > 0 ? (
-                <button
-                  className="fx-ac fx-jc"
-                  onClick={() => handleModalSwitch("clear_cart")}
-                >
-                  <span className="tooltips">Clear Cart</span>
-                  {/* MarkIcon */}
+            {switchWarehouseView && (
+              <div className="warehouseHubBtn fx-ac space1">
+                {cart.length > 0 ? (
+                  <button
+                    className="fx-ac fx-jc"
+                    onClick={() => handleModalSwitch("clear_cart")}
+                  >
+                    <span className="tooltips">Clear Cart</span>
+                    {/* MarkIcon */}
 
-                  <DeleteForeverIcon
-                    fontSize="large"
-                    style={{ color: "#fff" }}
-                  />
-                </button>
-              ) : (
-                <button
-                  className="fx-ac fx-jc"
-                  style={{ color: "gray", cursor: "not-allowed" }}
-                >
-                  <span className="tooltips">Clear Cart</span>
-                  {/* MarkIcon */}
+                    <DeleteForeverIcon
+                      fontSize="large"
+                      style={{ color: "#fff" }}
+                    />
+                  </button>
+                ) : (
+                  <button
+                    className="fx-ac fx-jc"
+                    style={{ color: "gray", cursor: "not-allowed" }}
+                  >
+                    <span className="tooltips">Clear Cart</span>
+                    {/* MarkIcon */}
 
-                  <DeleteForeverIcon fontSize="large" />
-                </button>
-              )}
-              {!switchWarehouseView ? (
+                    <DeleteForeverIcon fontSize="large" />
+                  </button>
+                )}
                 <button className="fx-ac fx-jc" onClick={() => toggleScreen()}>
                   <span className="tooltips">main previews</span>
                   {/* Previews  on Modal box */}
-                  <FullscreenExitIcon fontSize="large" />
+
+                  <DevicesOtherIcon fontSize="large" />
                 </button>
-              ) : (
-                <button className="fx-ac fx-jc" onClick={() => toggleScreen()}>
-                  <span className="tooltips">main previews</span>
-                  {/* Previews  on Modal box */}
-                  <FullscreenIcon fontSize="large" />
-                </button>
-              )}
-            </div>
+              </div>
+            )}
 
             <div className="warehouseHubMiddleWare fx-ac fx-jb space4">
               <button
@@ -772,13 +762,6 @@ function WarehouseTerminal() {
               </button>
               <div className="fx-ac spacem">
                 <div className="icontBtnMiddle fx-ac space1">
-                  <button
-                    onClick={() => handleModalSwitch("calculator")}
-                    className="fx-ac spacem"
-                    style={{ color: "#e2cd0e", padding: ".2rem" }}
-                  >
-                    <FullscreenIcon fontSize="large" />
-                  </button>
                   <button
                     onClick={() => handleModalSwitch("calculator")}
                     className="fx-ac spacem"
@@ -916,179 +899,128 @@ function WarehouseTerminal() {
             <Items />
           </div>
         </div>
-        {isIconButtons ? (
-          <div className="warehouseHubOperations iconsBtnFx fx-ac space3 fx-jb">
-            {/* Tender Types */}
-            <figure className="tenderTypesCont fx-jc fx-ac space1">
-              <button onClick={() => alert("I got clicked")} className="">
-                <span className="tooltips">tooltips</span>
-                {/* NightMode */}
-                <BedtimeOffIcon fontSize="large" />
-              </button>
-              <button
-                onClick={toggleFullscreen}
-                className={`${isFullscreen && "active"}`}
-              >
-                {isFullscreen ? (
-                  <FullscreenExitIcon fontSize="large" />
-                ) : (
-                  <FullscreenIcon fontSize="large" />
-                )}
-              </button>
-              <button className={`${showModal === "counter" && "active"}`}>
-                <span className="tooltips">tooltips</span>
-                {/* Count Down */}
-                <HourglassTopIcon fontSize="large" />
-              </button>
-              <button className="cashPaid fx-jc">
-                {/* 
-                Customer gives cash
-→ cashier enters amount received
-→ system calculates change
-→ sale closes immediately */}
-                Cash payment
-              </button>
-              <button>
-                <span className="tooltips">tooltips</span>
-                {/* togglePagination */}
-                <GrainIcon fontSize="large" />
-              </button>
-              <button className={`${showModal === "appeals" && "active"}`}>
-                <span className="tooltips">tooltips</span>
-                {/* Appeal */}
-                <BalanceIcon fontSize="large" />
-              </button>
-              <button onClick={() => alert("I got clicked")} className="">
-                {/* RaisingHand */}
-                <BackHandIcon fontSize="large" />
-                <span className="tooltips"> tooltips</span>
-              </button>
-            </figure>
-          </div>
-        ) : (
-          <div className="tenderTypesCont warehouseHubOperations btns fx-ac space1 fx-jc">
-            <button
-              onClick={() => {
-                if (cart.length > 0) {
-                  handleModalSwitch("account");
-                }
-              }}
-              style={{
-                cursor: cart.length > 0 ? "pointer" : "not-allowed",
-                opacity: cart.length > 0 ? 1 : 0.6, // optional, to show disabled look
-              }}
-            >
-              <AccountBalanceIcon />
-              <span>Account</span>
-            </button>
-            <button
-              onClick={() => {
-                if (cart.length > 0) {
-                  handleModalSwitch("check");
-                }
-              }}
-              style={{
-                cursor: cart.length > 0 ? "pointer" : "not-allowed",
-                opacity: cart.length > 0 ? 1 : 0.6, // optional: show disabled look
-              }}
-            >
-              <ReceiptLongIcon />
-              <span>Check</span>
-            </button>
+        <div className="tenderTypesCont warehouseHubOperations btns fx-ac space1 fx-jc">
+          <button
+            onClick={() => {
+              if (cart.length > 0) {
+                handleModalSwitch("account");
+              }
+            }}
+            style={{
+              cursor: cart.length > 0 ? "pointer" : "not-allowed",
+              opacity: cart.length > 0 ? 1 : 0.6, // optional, to show disabled look
+            }}
+          >
+            <AccountBalanceIcon />
+            <span>Account</span>
+          </button>
+          <button
+            onClick={() => {
+              if (cart.length > 0) {
+                handleModalSwitch("check");
+              }
+            }}
+            style={{
+              cursor: cart.length > 0 ? "pointer" : "not-allowed",
+              opacity: cart.length > 0 ? 1 : 0.6, // optional: show disabled look
+            }}
+          >
+            <ReceiptLongIcon />
+            <span>Check</span>
+          </button>
 
-            <button
-              onClick={() => {
-                if (cart.length > 0) {
-                  handleModalSwitch("credit_sale");
-                }
-              }}
-              style={{
-                cursor: cart.length > 0 ? "pointer" : "not-allowed",
-                opacity: cart.length > 0 ? 1 : 0.6,
-              }}
-            >
-              <SellIcon />
-              {/* Press CREDIT
+          <button
+            onClick={() => {
+              if (cart.length > 0) {
+                handleModalSwitch("credit_sale");
+              }
+            }}
+            style={{
+              cursor: cart.length > 0 ? "pointer" : "not-allowed",
+              opacity: cart.length > 0 ? 1 : 0.6,
+            }}
+          >
+            <SellIcon />
+            {/* Press CREDIT
 → terminal charges card
 → cashier confirms success
 → sale completed */}
-              <span>Credit sale</span>
-            </button>
+            <span>Credit sale</span>
+          </button>
 
-            <button
-              onClick={() => {
-                if (cart.length > 0) {
-                  handleModalSwitch("cash_pay");
-                }
-              }}
-              className="cashPaid fx-jc"
-              style={{
-                cursor: cart.length > 0 ? "pointer" : "not-allowed",
-                opacity: cart.length > 0 ? 1 : 0.6,
-              }}
-            >
-              {/* 
+          <button
+            onClick={() => {
+              if (cart.length > 0) {
+                handleModalSwitch("cash_pay");
+              }
+            }}
+            className="cashPaid fx-jc"
+            style={{
+              cursor: cart.length > 0 ? "pointer" : "not-allowed",
+              opacity: cart.length > 0 ? 1 : 0.6,
+            }}
+          >
+            {/* 
                 Customer gives cash
 → cashier enters amount received
 → system calculates change
 → sale closes immediately */}
-              Cash Paid
-            </button>
-            {/* <button> Cheque
+            Cash Paid
+          </button>
+          {/* <button> Cheque
               Customer gives cheque
 → cashier records cheque number
 → sale marked pending clearance
             </button> */}
 
-            <button
-              onClick={() => {
-                if (cart.length > 0) {
-                  handleModalSwitch("multi_pay");
-                }
-              }}
-              style={{
-                cursor: cart.length > 0 ? "pointer" : "not-allowed",
-                opacity: cart.length > 0 ? 1 : 0.6,
-              }}
-            >
-              <LayersClearIcon />
-              <span>Multi-pay</span>
-            </button>
+          <button
+            onClick={() => {
+              if (cart.length > 0) {
+                handleModalSwitch("multi_pay");
+              }
+            }}
+            style={{
+              cursor: cart.length > 0 ? "pointer" : "not-allowed",
+              opacity: cart.length > 0 ? 1 : 0.6,
+            }}
+          >
+            <LayersClearIcon />
+            <span>Multi-pay</span>
+          </button>
 
-            <button
-              onClick={() => {
-                if (cart.length > 0) {
-                  handleModalSwitch("debit");
-                }
-              }}
-              style={{
-                cursor: cart.length > 0 ? "pointer" : "not-allowed",
-                opacity: cart.length > 0 ? 1 : 0.6,
-              }}
-            >
-              <AssuredWorkloadIcon />
-              <span>Debit</span>
-            </button>
+          <button
+            onClick={() => {
+              if (cart.length > 0) {
+                handleModalSwitch("debit");
+              }
+            }}
+            style={{
+              cursor: cart.length > 0 ? "pointer" : "not-allowed",
+              opacity: cart.length > 0 ? 1 : 0.6,
+            }}
+          >
+            <AssuredWorkloadIcon />
+            <span>Debit</span>
+          </button>
 
-            <button
-              onClick={() => {
-                if (cart.length > 0) {
-                  handleModalSwitch("gift");
-                }
-              }}
-              style={{
-                cursor: cart.length > 0 ? "pointer" : "not-allowed",
-                opacity: cart.length > 0 ? 1 : 0.6,
-              }}
-            >
-              <CardGiftcardIcon />
-              {/* Customer uses store balance
+          <button
+            onClick={() => {
+              if (cart.length > 0) {
+                handleModalSwitch("gift");
+              }
+            }}
+            style={{
+              cursor: cart.length > 0 ? "pointer" : "not-allowed",
+              opacity: cart.length > 0 ? 1 : 0.6,
+            }}
+          >
+            <CardGiftcardIcon />
+            {/* Customer uses store balance
 → system deducts gift balance
 → sale completes */}
-              <span>Gift</span>
-            </button>
-          </div>
-        )}
+            <span>Gift</span>
+          </button>
+        </div>
         <div className="warehouseHubFooter fx-ac fx-jc">
           <span>status bar contents</span>
         </div>
@@ -1125,6 +1057,12 @@ function WarehouseTerminal() {
               <AccountBalanceIcon fontSize="large" />
             </button>
           </div>
+          <SpecialWorkFlow
+            handleCloseRegister={handleCloseRegister}
+            addToCart={addToCart}
+            handleModalSwitch={handleModalSwitch}
+            toggleScreen={toggleScreen}
+          />
           <Main />
         </div>
       ) : (
@@ -1181,7 +1119,7 @@ function WarehouseTerminal() {
                 <div className="fx-ac">
                   <button
                     className="fx-ac fx-jc cbtdp"
-                    onClick={() => handleCloseTerminal()}
+                    onClick={() => handleCloseRegister()}
                   >
                     <PowerSettingsNewIcon fontSize="large" />
                   </button>
@@ -1455,7 +1393,7 @@ function Products({ handleModalSwitch, products, addToCart, clearCart }) {
           className="wareHouseAddnewProd fx-ac fx-jc"
           onClick={() => handleModalSwitch("add_new_product")}
         >
-          +
+          <AddIcon fontSize="large" />
         </button>
       </div>
       {switchProductView()}
