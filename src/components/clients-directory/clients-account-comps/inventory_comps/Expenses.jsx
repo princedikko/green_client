@@ -57,17 +57,50 @@ export default function Expenses({ breadcrumbs }) {
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    name: "products array",
+    sku: "MILK-PEAK-001",
+    barcode: "6224001234567", // EAN / UPC
+    name: "Peak Milk 170g",
+    brand: "Peak",
+    category: {
+      name: "Dairy",
+    },
+
+    unit: "tin",
+    costPrice: 820,
+    sellingPrice: 950,
+    taxRate: 2.5, // VAT %
+
+    stock: {
+      quantity: 245,
+      minLevel: 20,
+      reorderLevel: 50,
+    },
+
+    batchTracking: true,
+    expiryTracking: true,
+
+    batches: [
+      {
+        batchNo: "PK0124A",
+        costPrice: 800,
+      },
+    ],
+
+    supplier: {
+      name: "UAC Foods",
+    },
+
+    status: "ACTIVE",
   };
 
-  async function apiPostProducts() {
+  async function apiPostExpense() {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/expenses/post`,
         payload,
       );
-      if (response?.data?.status === 200) {
+      if (response?.data?.status === 201) {
         enqueueSnackbar(response?.data?.message, {
           variant: "success",
           autoHideDuration: 3000,
@@ -79,6 +112,7 @@ export default function Expenses({ breadcrumbs }) {
         });
       }
 
+      console.log("Expense response:", response);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -179,13 +213,13 @@ export default function Expenses({ breadcrumbs }) {
   function switchActiveTab() {
     switch (currentTab) {
       case "expenses":
-        return <ToDo />;
-      case "completed":
-        return <Completed />;
-      case "progress":
-        return <Progress />;
+        return <AllCategory />;
+      case "expense_category":
+        return <ExpensesList />;
+      case "add-new":
+        return <AddNewExpense />;
       default:
-        return <ToDo />;
+        return <AllCategory />;
     }
   }
 
@@ -227,7 +261,7 @@ export default function Expenses({ breadcrumbs }) {
   // COMPONENTS OF expenses PAGE
   // //////////////////////////////////////////////////////////////////////////
 
-  function ToDo() {
+  function AllCategory() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -466,7 +500,7 @@ export default function Expenses({ breadcrumbs }) {
       </div>
     );
   }
-  function Completed() {
+  function ExpensesList() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -658,7 +692,7 @@ export default function Expenses({ breadcrumbs }) {
       </div>
     );
   }
-  function Progress() {
+  function AddNewExpense() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -672,6 +706,9 @@ export default function Expenses({ breadcrumbs }) {
     function TableView({ currentRows }) {
       return (
         <div className="prog">
+          <button className="btnTemporary" onClick={() => apiPostExpense()}>
+            Post Expense
+          </button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
@@ -943,10 +980,8 @@ export default function Expenses({ breadcrumbs }) {
               <figure>45</figure>
             </li>
             <li
-              onClick={() => handleCurrentTAB("add_expenses")}
-              className={`fx-ac  spacem ${
-                currentTab == "add_expenses" && "active"
-              }`}
+              onClick={() => handleCurrentTAB("add-new")}
+              className={`fx-ac  spacem ${currentTab == "add-new" && "active"}`}
             >
               <span>Add new</span>
               <figure>89</figure>

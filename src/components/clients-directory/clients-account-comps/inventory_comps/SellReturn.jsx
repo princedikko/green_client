@@ -53,6 +53,79 @@ export default function SellReturn({ breadcrumbs }) {
     (state) => state.clientFunction?.dashboard?.currentTab,
   );
 
+  // /////////////////////////////////////////////////////////
+  // Cross Origin Resource Sharing CRUD - Functions
+  // /////////////////////////////////////////////////////////
+
+  const payload = {
+    sku: "MILK-PEAK-001",
+    barcode: "6224001234567", // EAN / UPC
+    name: "Peak Milk 170g",
+    brand: "Peak",
+    category: {
+      name: "Dairy",
+    },
+
+    unit: "tin",
+    costPrice: 820,
+    sellingPrice: 950,
+    taxRate: 2.5, // VAT %
+
+    stock: {
+      quantity: 245,
+      minLevel: 20,
+      reorderLevel: 50,
+    },
+
+    batchTracking: true,
+    expiryTracking: true,
+
+    batches: [
+      {
+        batchNo: "PK0124A",
+        costPrice: 800,
+      },
+    ],
+
+    supplier: {
+      name: "UAC Foods",
+    },
+
+    status: "ACTIVE",
+  };
+
+  async function acceptSellReturn() {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/inventory/sellreturn/post`,
+        payload,
+      );
+      if (response?.data?.status === 201) {
+        enqueueSnackbar(response?.data?.message, {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+      } else {
+        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+
+      console.log("Production response:", response);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+
+      enqueueSnackbar("Server error while fetching products", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  }
+
   const apiGetSales = async () => {
     setLoading(true);
     await axios
@@ -941,7 +1014,7 @@ export default function SellReturn({ breadcrumbs }) {
             <div className="fx-ac space1">
               <button
                 className="sellreturn_export_btn fx-ac spacem"
-                onClick={() => navigate("/clients/warehouse_terminal")}
+                onClick={() => acceptSellReturn()}
               >
                 <AddIcon fontSize="large" /> <span>Accept Returns</span>
               </button>

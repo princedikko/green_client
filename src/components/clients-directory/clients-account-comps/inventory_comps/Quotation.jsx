@@ -27,8 +27,6 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 // image imports
 import ImgOne from "./img1.jpg";
 
-let salesAxios;
-
 let quotesData;
 export default function Quotation({ breadcrumbs }) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -44,10 +42,10 @@ export default function Quotation({ breadcrumbs }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [openLimit, setOpenLimit] = useState(false);
-  const totalPages = Math.ceil(salesData.length / rowsPerPage);
+  const totalPages = Math.ceil(quotesData?.length / rowsPerPage);
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
-  const currentRows = salesData.slice(start, end);
+  const currentRows = quotesData?.slice(start, end);
 
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
@@ -56,41 +54,6 @@ export default function Quotation({ breadcrumbs }) {
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
-
-  const payload = {
-    name: "products array",
-  };
-
-  async function apiPostProducts() {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
-        payload,
-      );
-      if (response?.data?.status === 200) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-      } else {
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
-      }
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-
-      enqueueSnackbar("Server error while fetching products", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  }
 
   async function apiGetQuotation() {
     setLoading(true);
@@ -101,6 +64,7 @@ export default function Quotation({ breadcrumbs }) {
       .then((response) => {
         console.log("quots: ", response);
         if (response.data.status === 201) {
+          quotesData = response.data.quotesData;
           setLoading(false);
           enqueueSnackbar(`${response.data.message}`, {
             variant: "success",
@@ -175,58 +139,16 @@ export default function Quotation({ breadcrumbs }) {
     return [1, "...", current - 1, current, current + 1, "...", total];
   }
 
-  const apiGetQuotes = async () => {
-    setLoading(true);
-    await axios
-      .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/quotations`,
-      )
-      .then((response) => {
-        quotesData = response.data.data;
-        console.log("quotesData: ", response);
-        if (response.data.status === 201) {
-          setLoading(false);
-          enqueueSnackbar(`${response.data.message}`, {
-            variant: "success",
-            autoHideDuration: 3000,
-            ContentProps: {
-              style: { fontSize: "16px", fontWeight: "bold" },
-            },
-          });
-        } else {
-          enqueueSnackbar(`${response.data.message}`, {
-            variant: "error",
-            autoHideDuration: 3000,
-            ContentProps: {
-              style: { fontSize: "16px", fontWeight: "bold" },
-            },
-          });
-          setLoading(false);
-        }
-      })
-      .catch((error) => {
-        enqueueSnackbar(`error: something went wrong!`, {
-          variant: "error",
-          autoHideDuration: 3000,
-          ContentProps: {
-            style: { fontSize: "16px", fontWeight: "bold" },
-          },
-        });
-        console.log(error);
-        setLoading(false);
-      });
-  };
-
   function switchActiveTab() {
     switch (currentTab) {
       case "quatations":
-        return <ToDo />;
+        return <Quotes />;
       case "completed":
         return <Completed />;
       case "progress":
         return <Progress />;
       default:
-        return <ToDo />;
+        return <Quotes />;
     }
   }
 
@@ -268,7 +190,7 @@ export default function Quotation({ breadcrumbs }) {
   // COMPONENTS OF quatations PAGE
   // //////////////////////////////////////////////////////////////////////////
 
-  function ToDo() {
+  function Quotes() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -285,33 +207,41 @@ export default function Quotation({ breadcrumbs }) {
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
+                <th>Customer Name</th>
+                <th>Quotation No.</th>
+                <th>Status</th>
+                <th>Subtotal</th>
+                <th>Total</th>
+                <th>Items</th>
+                <th>Quoted By</th>
                 <th>Date</th>
                 <th>Action</th>
               </tr>
             </thead>
+
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
+              {currentRows?.map((item) => (
+                <tr key={item?.quoteId}>
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item?.customer_name}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
+
+                  <td>{item?.quoteId}</td>
+
+                  <td>{item?.status}</td>
+
+                  <td>₦{item?.totals?.subtotal?.toLocaleString()}</td>
+
+                  <td>₦{item?.totals?.total?.toLocaleString()}</td>
+
+                  <td>{item?.soldItems?.length}</td>
+
+                  <td>{item?.quotBy?.name}</td>
+
+                  <td>{item?.createdAt}</td>
+
                   <td>
-                    <button>{item.action}</button>
+                    <button>View</button>
                   </td>
                 </tr>
               ))}
@@ -324,24 +254,24 @@ export default function Quotation({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="quatationsCardGrid g g4 space2">
-          {currentRows.map((item) => (
-            <div key={item.invoiceNo} className="quatationsGridCard">
+          {currentRows?.map((item) => (
+            <div key={item?.invoiceNo} className="quatationsGridCard">
               {/* Header */}
               <div className="cardHeader">
                 <img alt="customer" className="avatar" src={ImgOne} />
 
                 <div className="cardInfo">
-                  <h4>{item.customerName}</h4>
-                  <p>Invoice #{item.invoiceNo}</p>
+                  <h4>{item?.customerName}</h4>
+                  <p>Invoice #{item?.invoiceNo}</p>
 
                   <div className="ratingRow">
                     <span className="rating">
-                      ⭐ {item.paymentStatus === "Paid" ? "5.0" : "4.0"}
+                      ⭐ {item?.paymentStatus === "Paid" ? "5.0" : "4.0"}
                     </span>
-                    <span className="location">📍 {item.date}</span>
+                    <span className="location">📍 {item?.date}</span>
                   </div>
 
-                  <small>{item.totalItems} items</small>
+                  <small>{item?.totalItems} items</small>
                 </div>
               </div>
 
@@ -349,13 +279,13 @@ export default function Quotation({ breadcrumbs }) {
               <div className="tags">
                 <span>Total</span>
                 <span>Paid</span>
-                <span>+{item.totalItems}</span>
+                <span>+{item?.totalItems}</span>
               </div>
 
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item?.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -376,12 +306,12 @@ export default function Quotation({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {quotesData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        quotesData?.length,
+                      )} of ${quotesData?.length} entries`}
                 </span>
               </span>
               <div className="quatations_entries-info fx-ac spacem">
@@ -539,21 +469,21 @@ export default function Quotation({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
+              {currentRows?.map((item, index) => (
+                <tr key={item?.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item?.customerName}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
+                  <td>{item?.invoiceNo}</td>
+                  <td>{item?.paymentStatus}</td>
+                  <td>₦{item?.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item?.totalPaid?.toLocaleString()}</td>
+                  <td>{item?.totalItems}</td>
+                  <td>₦{item?.sellDue?.toLocaleString()}</td>
+                  <td>{item?.date}</td>
                   <td>
-                    <button>{item.action}</button>
+                    <button>{item?.action}</button>
                   </td>
                 </tr>
               ))}
@@ -566,24 +496,24 @@ export default function Quotation({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="quatationsCardGrid g g4 space2">
-          {currentRows.map((item) => (
-            <div key={item.invoiceNo} className="quatationsGridCard">
+          {currentRows?.map((item) => (
+            <div key={item?.invoiceNo} className="quatationsGridCard">
               {/* Header */}
               <div className="cardHeader">
                 <img alt="customer" className="avatar" src={ImgOne} />
 
                 <div className="cardInfo">
-                  <h4>{item.customerName}</h4>
-                  <p>Invoice #{item.invoiceNo}</p>
+                  <h4>{item?.customerName}</h4>
+                  <p>Invoice #{item?.invoiceNo}</p>
 
                   <div className="ratingRow">
                     <span className="rating">
-                      ⭐ {item.paymentStatus === "Paid" ? "5.0" : "4.0"}
+                      ⭐ {item?.paymentStatus === "Paid" ? "5.0" : "4.0"}
                     </span>
-                    <span className="location">📍 {item.date}</span>
+                    <span className="location">📍 {item?.date}</span>
                   </div>
 
-                  <small>{item.totalItems} items</small>
+                  <small>{item?.totalItems} items</small>
                 </div>
               </div>
 
@@ -591,13 +521,13 @@ export default function Quotation({ breadcrumbs }) {
               <div className="tags">
                 <span>Total</span>
                 <span>Paid</span>
-                <span>+{item.totalItems}</span>
+                <span>+{item?.totalItems}</span>
               </div>
 
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item?.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -618,12 +548,12 @@ export default function Quotation({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {quotesData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        quotesData?.length,
+                      )} of ${quotesData?.length} entries`}
                 </span>
               </span>
               <div className="quatations_entries-info fx-ac spacem">
@@ -731,21 +661,21 @@ export default function Quotation({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
+              {currentRows?.map((item, index) => (
+                <tr key={item?.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item?.customerName}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
+                  <td>{item?.invoiceNo}</td>
+                  <td>{item?.paymentStatus}</td>
+                  <td>₦{item?.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item?.totalPaid?.toLocaleString()}</td>
+                  <td>{item?.totalItems}</td>
+                  <td>₦{item?.sellDue?.toLocaleString()}</td>
+                  <td>{item?.date}</td>
                   <td>
-                    <button>{item.action}</button>
+                    <button>{item?.action}</button>
                   </td>
                 </tr>
               ))}
@@ -758,24 +688,24 @@ export default function Quotation({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="quatationsCardGrid g g4 space2">
-          {currentRows.map((item) => (
-            <div key={item.invoiceNo} className="quatationsGridCard">
+          {currentRows?.map((item) => (
+            <div key={item?.invoiceNo} className="quatationsGridCard">
               {/* Header */}
               <div className="cardHeader">
                 <img alt="customer" className="avatar" src={ImgOne} />
 
                 <div className="cardInfo">
-                  <h4>{item.customerName}</h4>
-                  <p>Invoice #{item.invoiceNo}</p>
+                  <h4>{item?.customerName}</h4>
+                  <p>Invoice #{item?.invoiceNo}</p>
 
                   <div className="ratingRow">
                     <span className="rating">
-                      ⭐ {item.paymentStatus === "Paid" ? "5.0" : "4.0"}
+                      ⭐ {item?.paymentStatus === "Paid" ? "5.0" : "4.0"}
                     </span>
-                    <span className="location">📍 {item.date}</span>
+                    <span className="location">📍 {item?.date}</span>
                   </div>
 
-                  <small>{item.totalItems} items</small>
+                  <small>{item?.totalItems} items</small>
                 </div>
               </div>
 
@@ -783,13 +713,13 @@ export default function Quotation({ breadcrumbs }) {
               <div className="tags">
                 <span>Total</span>
                 <span>Paid</span>
-                <span>+{item.totalItems}</span>
+                <span>+{item?.totalItems}</span>
               </div>
 
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item?.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -810,12 +740,12 @@ export default function Quotation({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {quotesData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        quotesData?.length,
+                      )} of ${quotesData?.length} entries`}
                 </span>
               </span>
               <div className="quatations_entries-info fx-ac spacem">

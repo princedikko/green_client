@@ -29,7 +29,7 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 import ImgOne from "./img1.jpg";
 import ImgTwo from "./img2.jpg";
 
-let salesAxios;
+let salesAxios, soldItems;
 
 export default function Sales({ breadcrumbs }) {
   const { id } = useParams();
@@ -43,10 +43,10 @@ export default function Sales({ breadcrumbs }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openLimit, setOpenLimit] = useState(false);
-  const totalPages = Math.ceil(salesData.length / rowsPerPage);
+  const totalPages = Math.ceil(soldItems?.length / rowsPerPage);
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
-  const currentRows = salesData.slice(start, end);
+  const currentRows = soldItems?.slice(start, end);
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
   );
@@ -82,11 +82,11 @@ export default function Sales({ breadcrumbs }) {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sold_items`,
       )
       .then((response) => {
-        salesAxios = response.data.data;
-        console.log("salesAxios: ", response);
+        soldItems = response.data.soldItems;
+        console.log("soldItems: ", soldItems);
         if (response.data.status === 201) {
           setLoading(false);
           enqueueSnackbar(`${response.data.message}`, {
@@ -139,13 +139,13 @@ export default function Sales({ breadcrumbs }) {
   function switchActiveTab() {
     switch (currentTab) {
       case "sales":
-        return <ToDo />;
+        return <SoldItems />;
       case "completed":
         return <Completed />;
       case "progress":
         return <Progress />;
       default:
-        return <ToDo />;
+        return <SoldItems />;
     }
   }
 
@@ -187,7 +187,7 @@ export default function Sales({ breadcrumbs }) {
   // COMPONENTS OF SALES PAGE
   // //////////////////////////////////////////////////////////////////////////
 
-  function ToDo() {
+  function SoldItems() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -204,7 +204,7 @@ export default function Sales({ breadcrumbs }) {
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
+                <th>Customer </th>
                 <th>Invoice No.</th>
                 <th>Payment status</th>
                 <th>Total amount</th>
@@ -216,21 +216,28 @@ export default function Sales({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
+              {currentRows?.map((item) => (
+                <tr key={item?.saleId || item?._id}>
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item?.customer_name}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
+
+                  <td>{item?.payment?.method}</td>
+
+                  <td>{item?.status}</td>
+
+                  <td>₦{item?.totals?.subtotal?.toLocaleString()}</td>
+
+                  <td>₦{item?.totals?.total?.toLocaleString()}</td>
+
+                  <td>{item?.soldItems?.length}</td>
+
+                  <td>₦{item?.totals?.total?.toLocaleString()}</td>
+
+                  <td>{item?.createdAt}</td>
+
                   <td>
-                    <button>{item.action}</button>
+                    <button>{item?.soldBy?.name}</button>
                   </td>
                 </tr>
               ))}
@@ -243,24 +250,24 @@ export default function Sales({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="salesCardGrid g g4 space2">
-          {currentRows.map((item) => (
-            <div key={item.invoiceNo} className="salesGridCard">
+          {currentRows?.map((item) => (
+            <div key={item?.invoiceNo} className="salesGridCard">
               {/* Header */}
               <div className="cardHeader">
                 <img alt="customer" className="avatar" src={ImgOne} />
 
                 <div className="cardInfo">
-                  <h4>{item.customerName}</h4>
-                  <p>Invoice #{item.invoiceNo}</p>
+                  <h4>{item?.customerName}</h4>
+                  <p>Invoice #{item?.invoiceNo}</p>
 
                   <div className="ratingRow">
                     <span className="rating">
-                      ⭐ {item.paymentStatus === "Paid" ? "5.0" : "4.0"}
+                      ⭐ {item?.paymentStatus === "Paid" ? "5.0" : "4.0"}
                     </span>
-                    <span className="location">📍 {item.date}</span>
+                    <span className="location">📍 {item?.date}</span>
                   </div>
 
-                  <small>{item.totalItems} items</small>
+                  <small>{item?.totalItems} items</small>
                 </div>
               </div>
 
@@ -268,13 +275,13 @@ export default function Sales({ breadcrumbs }) {
               <div className="tags">
                 <span>Total</span>
                 <span>Paid</span>
-                <span>+{item.totalItems}</span>
+                <span>+{item?.totalItems}</span>
               </div>
 
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item?.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -295,12 +302,12 @@ export default function Sales({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {soldItems?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        soldItems?.length,
+                      )} of ${soldItems?.length} entries`}
                 </span>
               </span>
               <div className="sales_entries-info fx-ac spacem">
@@ -455,26 +462,7 @@ export default function Sales({ breadcrumbs }) {
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
-                  <td>
-                    <strong>{item.customerName}</strong>
-                  </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
-                  <td>
-                    <button>{item.action}</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+            <tbody className="fx-cl spacem"></tbody>
           </table>
         </div>
       );
@@ -483,24 +471,24 @@ export default function Sales({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="salesCardGrid g g4 space2">
-          {currentRows.map((item) => (
-            <div key={item.invoiceNo} className="salesGridCard">
+          {currentRows?.map((item, index) => (
+            <div key={index} className="salesGridCard">
               {/* Header */}
               <div className="cardHeader">
                 <img alt="customer" className="avatar" src={ImgOne} />
 
                 <div className="cardInfo">
-                  <h4>{item.customerName}</h4>
-                  <p>Invoice #{item.invoiceNo}</p>
+                  <h4>DFASDSDF</h4>
+                  <p>Invoice #ASFDSDF</p>
 
                   <div className="ratingRow">
                     <span className="rating">
-                      ⭐ {item.paymentStatus === "Paid" ? "5.0" : "4.0"}
+                      ⭐ {item?.status === "Paid" ? "5.0" : "4.0"}
                     </span>
-                    <span className="location">📍 {item.date}</span>
+                    <span className="location">📍 GF</span>
                   </div>
 
-                  <small>{item.totalItems} items</small>
+                  <small>43 items</small>
                 </div>
               </div>
 
@@ -508,13 +496,13 @@ export default function Sales({ breadcrumbs }) {
               <div className="tags">
                 <span>Total</span>
                 <span>Paid</span>
-                <span>+{item.totalItems}</span>
+                <span>+232</span>
               </div>
 
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{[654234].toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -535,12 +523,12 @@ export default function Sales({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {soldItems?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        soldItems?.length,
+                      )} of ${soldItems?.length} entries`}
                 </span>
               </span>
               <div className="sales_entries-info fx-ac spacem">
@@ -648,21 +636,21 @@ export default function Sales({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
+              {currentRows?.map((item, index) => (
+                <tr key={item?.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item?.customerName}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
+                  <td>{item?.invoiceNo}</td>
+                  <td>{item?.paymentStatus}</td>
+                  <td>₦{item?.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item?.totalPaid?.toLocaleString()}</td>
+                  <td>{item?.totalItems}</td>
+                  <td>₦{item?.sellDue?.toLocaleString()}</td>
+                  <td>{item?.date}</td>
                   <td>
-                    <button>{item.action}</button>
+                    <button>{item?.action}</button>
                   </td>
                 </tr>
               ))}
@@ -675,24 +663,24 @@ export default function Sales({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="salesCardGrid g g4 space2">
-          {currentRows.map((item) => (
-            <div key={item.invoiceNo} className="salesGridCard">
+          {currentRows?.map((item) => (
+            <div key={item?.invoiceNo} className="salesGridCard">
               {/* Header */}
               <div className="cardHeader">
                 <img alt="customer" className="avatar" src={ImgOne} />
 
                 <div className="cardInfo">
-                  <h4>{item.customerName}</h4>
-                  <p>Invoice #{item.invoiceNo}</p>
+                  <h4>{item?.customerName}</h4>
+                  <p>Invoice #{item?.invoiceNo}</p>
 
                   <div className="ratingRow">
                     <span className="rating">
-                      ⭐ {item.paymentStatus === "Paid" ? "5.0" : "4.0"}
+                      ⭐ {item?.paymentStatus === "Paid" ? "5.0" : "4.0"}
                     </span>
-                    <span className="location">📍 {item.date}</span>
+                    <span className="location">📍 {item?.date}</span>
                   </div>
 
-                  <small>{item.totalItems} items</small>
+                  <small>{item?.totalItems} items</small>
                 </div>
               </div>
 
@@ -700,13 +688,13 @@ export default function Sales({ breadcrumbs }) {
               <div className="tags">
                 <span>Total</span>
                 <span>Paid</span>
-                <span>+{item.totalItems}</span>
+                <span>+{item?.totalItems}</span>
               </div>
 
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item?.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -727,12 +715,12 @@ export default function Sales({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {soldItems?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        soldItems?.length,
+                      )} of ${soldItems?.length} entries`}
                 </span>
               </span>
               <div className="sales_entries-info fx-ac spacem">
@@ -889,7 +877,7 @@ export default function Sales({ breadcrumbs }) {
                 className={`fx-ac  spacem ${currentTab == "sales" && "active"}`}
               >
                 <span>All Sales</span>
-                <figure>{salesData?.length}</figure>
+                <figure>{soldItems?.length}</figure>
               </li>
               <li
                 onClick={() => handleCurrentTAB("completed")}

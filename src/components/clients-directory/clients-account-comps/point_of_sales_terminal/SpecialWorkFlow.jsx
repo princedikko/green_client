@@ -21,6 +21,9 @@ import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import ShareIcon from "@mui/icons-material/Share";
 import SatelliteAltIcon from "@mui/icons-material/SatelliteAlt";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+// import BarcodeReaderIcon from "@mui/icons-material/BarcodeReader";
+import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
 
 import ViewInArIcon from "@mui/icons-material/ViewInAr";
 export default function SpecialWorkFlow({
@@ -28,6 +31,7 @@ export default function SpecialWorkFlow({
   handleModalSwitch,
   toggleScreen,
   handleCloseRegister,
+  setAlert,
 }) {
   const [reveal, setReveal] = useState("");
 
@@ -71,7 +75,7 @@ export default function SpecialWorkFlow({
               )}
             </button>
             <aside className="workflowDisplayCont">
-              <AllProducts addToCart={addToCart} />
+              <AllProducts addToCart={addToCart} setAlert={setAlert} />
             </aside>
             <div className="workflowItemTooltip">View Products</div>
           </div>
@@ -100,10 +104,10 @@ export default function SpecialWorkFlow({
                 {reveal === "layer6" ? (
                   <CloseIcon fontSize="large" />
                 ) : (
-                  <ViewInArIcon fontSize="large" />
+                  <SatelliteAltIcon fontSize="large" />
                 )}
               </button>
-              <aside className="workflowDisplayCont">asdf</aside>
+              <aside className="workflowDisplayCont">Barcode Reader</aside>
               <div className="workflowItemTooltip">Tooltip content</div>
             </div>
             <div className="workflowItem">
@@ -119,6 +123,22 @@ export default function SpecialWorkFlow({
               </button>
               <aside className="workflowDisplayCont">Thanks</aside>
               <div className="workflowItemTooltip">Tooltip content</div>
+            </div>
+            <div className="workflowItem">
+              <button
+                className={`workflowItemBtn fx-ac spacem ${reveal === "accept-return" && "activeFlow"}`}
+                onClick={() => controlReveal("accept-return")}
+              >
+                {reveal === "accept-return" ? (
+                  <CloseIcon fontSize="large" />
+                ) : (
+                  <CrisisAlertIcon fontSize="large" />
+                )}
+              </button>
+              <aside className="workflowDisplayCont">
+                Sell Return information that needs to be displayed
+              </aside>
+              <div className="workflowItemTooltip">Accept return</div>
             </div>
             <div className="workflowItem">
               <button
@@ -200,7 +220,7 @@ export default function SpecialWorkFlow({
   );
 }
 
-function AllProducts({ addToCart }) {
+function AllProducts({ addToCart, setAlert }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
 
@@ -219,8 +239,8 @@ function AllProducts({ addToCart }) {
     } else {
       const filtered = products.filter(
         (product) =>
-          product.name.toLowerCase().includes(term.toLowerCase()) ||
-          product.barcode.includes(term),
+          product?.name.toLowerCase().includes(term.toLowerCase()) ||
+          product?.barcode.includes(term),
       );
       setFilteredProducts(filtered);
     }
@@ -230,33 +250,58 @@ function AllProducts({ addToCart }) {
     if (filteredProducts.length > 0) {
       return (
         <div className="workFlowProductsDisplay fx-cl spacem">
-          {filteredProducts.map((product) => (
-            <div
-              className="workflowDisplayItem"
-              key={product.productId}
-              onClick={() => {
-                addToCart(product);
-                setFilteredProducts("");
-                setSearchTerm("");
-              }}
-            >
-              <div className="fx-ac spacem">
-                <figure className="productAct">&nbsp;</figure>
-                <p>
-                  {" "}
-                  <AdjustIcon />
-                  <strong>{product.name}</strong>
-                </p>
-                <span>N{(product.pricing?.sellingPrice).toLocaleString()}</span>
+          {filteredProducts.map((product) => {
+            const intoCart = {
+              saleId: `SALE-${Math.floor(Math.random() * 1000000)}`,
+              sku: product.sku,
+              name: product.name,
+              warehouseId: product.warehouses[0].warehouseId,
+              soldQuantity: product.stock.sellingQuantity,
+              unit: product.units?.baseUnit,
+              pricing: {
+                costPrice: product.pricing.costPrice,
+                sellingPrice: product.pricing.sellingPrice,
+                discount: 0,
+                taxRate: product.pricing.taxRate,
+              },
+              batch: {
+                batchNo: product.batch?.batches[0]?.batchNo,
+                quantity: product.batch?.batches[0]?.quantity,
+                expiryDate: product.expiryDate,
+              },
+
+              updatedAt: new Date(),
+            };
+            return (
+              <div
+                className="workflowDisplayItem"
+                key={product?.productId}
+                onClick={() => {
+                  addToCart(intoCart);
+                  setFilteredProducts("");
+                  setSearchTerm("");
+                }}
+              >
+                <div className="fx-ac spacem">
+                  <figure className="productAct">&nbsp;</figure>
+                  <p>
+                    {" "}
+                    <AdjustIcon />
+                    <strong>{product?.name}</strong>
+                  </p>
+                  <span>
+                    N{product?.pricing?.sellingPrice?.toLocaleString()}
+                  </span>
+                </div>
+                <div className="fx-ac spacem">
+                  <p>{product?.brand}</p>
+                  <p>{product?.units?.baseUnit}</p>
+                  <span>{product?.sellingQuantity}</span>
+                  <span>{product?.status}</span>
+                </div>
               </div>
-              <div className="fx-ac spacem">
-                <p>{product.brand}</p>
-                <p>{product.units.baseUnit}</p>
-                <span>{product.sellingQuantity}</span>
-                <span>{product.status}</span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       );
     } else if (searchTerm.trim() !== "") {
@@ -268,31 +313,62 @@ function AllProducts({ addToCart }) {
     } else {
       return (
         <div className="workFlowProductsDisplay fx-cl spacem">
-          {products.map((product) => (
-            <div
-              className="workflowDisplayItem fx-cl spacem"
-              key={product.productId}
-              onClick={() => {
-                addToCart(product);
-                setFilteredProducts("");
-                setSearchTerm("");
-              }}
-            >
-              <div className="fx-ac spacem">
-                <figure className="productAct">&nbsp;</figure>
-                <p>{product.name}</p>
-                <span>N{(product.pricing?.sellingPrice).toLocaleString()}</span>
+          {products.map((product) => {
+            const intoCart = {
+              saleId: `SALE-${Math.floor(Math.random() * 1000000)}`,
+
+              sku: product.sku,
+              name: product.name,
+
+              warehouseId: product.warehouses[0].warehouseId,
+
+              soldQuantity: product.stock.sellingQuantity,
+              unit: product.units?.baseUnit,
+              pricing: {
+                costPrice: product.pricing.costPrice,
+                sellingPrice: product.pricing.sellingPrice,
+                discount: 0,
+                taxRate: product.pricing.taxRate,
+              },
+
+              batch: {
+                batchNo: product.batch?.batches[0]?.batchNo,
+                quantity: product.batch?.batches[0]?.quantity,
+                expiryDate: product.expiryDate,
+              },
+
+              updatedAt: new Date(),
+            };
+            return (
+              <div
+                className="workflowDisplayItem"
+                key={product?.productId}
+                onClick={() => {
+                  addToCart(intoCart);
+                  setFilteredProducts("");
+                  setSearchTerm("");
+                }}
+              >
+                <div className="fx-ac spacem">
+                  <figure className="productAct">&nbsp;</figure>
+                  <p>
+                    {" "}
+                    <AdjustIcon />
+                    <strong>{product?.name}</strong>
+                  </p>
+                  <span>
+                    N{product?.pricing?.sellingPrice?.toLocaleString()}
+                  </span>
+                </div>
+                <div className="fx-ac spacem">
+                  <p>{product?.brand}</p>
+                  <p>{product?.units?.baseUnit}</p>
+                  <span>{product?.stock?.sellingQuantity}</span>
+                  <span>{product?.status}</span>
+                </div>
               </div>
-              <div className="fx-ac spacem">
-                <p>
-                  <strong>{product.brand}</strong>
-                </p>
-                <p>{product.units.baseUnit}</p>
-                <span>{product.sellingQuantity}</span>
-                <span>{product.status}</span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       );
     }
@@ -310,13 +386,23 @@ function AllProducts({ addToCart }) {
           <SearchIcon fontSize="large" />
           <input
             type="text"
-            placeholder="Search product..."
+            placeholder="Search product?..."
             value={searchTerm}
             onChange={handleSearch}
           />
         </div>
         <div className="fx">
-          <button>Filter Search</button>
+          <button
+            onClick={() =>
+              setAlert({
+                message:
+                  "The new inventory item has been added to the warehouse.",
+                type: "info",
+              })
+            }
+          >
+            Filter Search
+          </button>
         </div>
       </div>
 

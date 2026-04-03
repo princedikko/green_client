@@ -24,14 +24,18 @@ const ExportExcelJSButton = ({ currentRows }) => {
     // 3. Add rows
     currentRows.forEach((item) => {
       worksheet.addRow({
-        customerName: item.customerName,
-        invoiceNo: item.invoiceNo,
-        quantity: item.quantity,
-        totalAmount: "₦" + item.totalAmount,
-        totalPaid: "₦" + item.totalPaid,
-        sellDue: "₦" + item.sellDue,
-        date: item.date,
-        paymentStatus: item.paymentStatus,
+        name: item.name,
+        startsAt: item.startsAt,
+        endsAt: item.endsAt,
+        discount:
+          item.discountType === "percentage"
+            ? item.discountAmount + "%"
+            : "₦" + item.discountAmount,
+        priority: item.priority,
+        brand: item.brand || "-",
+        category: item.category || "-",
+        products: item.products?.length || 0,
+        location: item.location?.name || "-",
       });
     });
 

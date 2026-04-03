@@ -40,23 +40,3 @@ const store = configureStore({ reducer: persistedReducer });
 const persistor = persistStore(store);
 
 export { store, persistor };
-
-// // FUNCTIONS WHITOU REDUX PERSIT *************************************************
-// import { combineReducers, configureStore } from "@reduxjs/toolkit";
-// // call reducer
-// import adminReducer from "./admin_reducer.js";
-// import staffReducer from "./staff_reducer";
-// import clientReducer from "./client_reducer";
-// import appFormReducer from "./registrationReducer.js";
-// import hybridReducer from "./hybrid_reducer.js";
-
-// const rootReducer = combineReducers({
-//   adminFunction: adminReducer,
-//   staffFunction: staffReducer,
-//   clientFunction: clientReducer,
-//   applictaionForm: appFormReducer,
-//   hybridActions: hybridReducer,
-// });
-
-// // create store with reducer
-// export default configureStore({ reducer: rootReducer });

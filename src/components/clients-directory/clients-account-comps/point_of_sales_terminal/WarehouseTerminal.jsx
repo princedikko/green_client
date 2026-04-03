@@ -16,6 +16,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import AddIcon from "@mui/icons-material/Add";
 import DevicesOtherIcon from "@mui/icons-material/DevicesOther";
 
+import SatelliteAltIcon from "@mui/icons-material/SatelliteAlt";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 // import SearchIcon from "@mui/icons-material/Search";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
@@ -84,12 +85,13 @@ import {
 } from "./ware_house_comps/payment_buttons/PaymentComps.jsx";
 import IsLoading from "../../../../IsLoading.jsx";
 import SpecialWorkFlow from "./SpecialWorkFlow.jsx";
+import WarehouseAlert from "./aler-comp/WarehouseAlert.jsx";
 
 let queue;
 
 function WarehouseTerminal() {
+  const [alert, setAlert] = useState(null);
   const wrapperRef = useRef(null);
-
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   // HOOKS-----------------------------
@@ -100,6 +102,13 @@ function WarehouseTerminal() {
   const redirect = useNavigate();
   const dispatch = useDispatch();
   const [isFullscreen, setIsFullscreen] = useState(false);
+  // END OF MODAL FUNCTIONS------------------
+  const [toggleAside, setToggleAside] = useState("productsf");
+  const [showModal, setShowModal] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [customer, setCustomer] = useState("Walk-in Customer");
+  const [discount, setDiscount] = useState(0);
+  const [tax, setTax] = useState({});
 
   // FULLSCREEN TOGGLE FUNCTION------------------
   const toggleFullscreen = () => {
@@ -125,14 +134,6 @@ function WarehouseTerminal() {
   const onHoldData = useSelector(
     (state) => state.hybridActions.on_holded_sales,
   );
-  const sold = useSelector((state) => state.mongodbActions.mongoSales);
-
-  // END OF MODAL FUNCTIONS------------------
-  const [toggleAside, setToggleAside] = useState("productsf");
-  const [showModal, setShowModal] = useState("");
-  const [openModal, setOpenModal] = useState(false);
-  const [togglePagination, setTogglePagination] = useState(true);
-  const [customer, setCustomer] = useState("Walk-in Customer");
 
   /////////////////////////////////////////////////////////////////////////
   // REDUX FUCNTIONS
@@ -309,23 +310,9 @@ function WarehouseTerminal() {
       case "add_new_product":
         return <AddNewProduct handleOnHold={handleOnHold} />;
       case "save_draft":
-        return (
-          <SaveDraft
-            cart={cart}
-            customerName={customer}
-            setLoading={setLoading}
-            secondaryFunction={secondaryFunction}
-          />
-        );
+        return <SaveDraft salesPayload={salePayloads} />;
       case "debit":
-        return (
-          <Debit
-            cart={cart}
-            customerName={customer}
-            setLoading={setLoading}
-            secondaryFunction={secondaryFunction}
-          />
-        );
+        return <Debit salesPayload={salePayloads} />;
       case "multi_pay":
         return (
           <MultiPay
@@ -373,32 +360,11 @@ function WarehouseTerminal() {
           />
         );
       case "cash_pay":
-        return (
-          <CashPayment
-            cart={cart}
-            customerName={customer}
-            setLoading={setLoading}
-            secondaryFunction={secondaryFunction}
-          />
-        );
+        return <CashPayment salesPayload={salePayloads} />;
       case "check":
-        return (
-          <Check
-            cart={cart}
-            customerName={customer}
-            setLoading={setLoading}
-            secondaryFunction={secondaryFunction}
-          />
-        );
+        return <Check salesPayload={salePayloads} />;
       case "account":
-        return (
-          <Account
-            cart={cart}
-            customerName={customer}
-            setLoading={setLoading}
-            secondaryFunction={secondaryFunction}
-          />
-        );
+        return <Account salesPayload={salePayloads} />;
       case "on_hold":
         return (
           <OnHold
@@ -408,14 +374,7 @@ function WarehouseTerminal() {
           />
         );
       case "gift":
-        return (
-          <Gifting
-            cart={cart}
-            customerName={customer}
-            setLoading={setLoading}
-            secondaryFunction={secondaryFunction}
-          />
-        );
+        return <Gifting salesPayload={salePayloads} />;
       case "discount":
         return (
           <Discount
@@ -494,6 +453,20 @@ function WarehouseTerminal() {
     }
   }
 
+  const salePayloads = {
+    cart: cart,
+    discount: discount,
+    customerName: customer,
+    setLoading: setLoading,
+    secondaryFunction: secondaryFunction,
+    setAlert: setAlert,
+    subTotal: cart?.reduce(
+      (sum, item) => sum + item.pricing.sellingPrice * item.soldQuantity,
+      0,
+    ),
+    tax: tax,
+    setOpenModal: setOpenModal,
+  };
   // useEffect(() => {
   //   !isFullscreen && toggleFullscreen();
   // }, [isFullscreen]);
@@ -667,23 +640,51 @@ function WarehouseTerminal() {
 
                       {filteredProducts.length > 0 && (
                         <ul className="searched-products-dropdown">
-                          {filteredProducts.map((product) => (
-                            <li
-                              key={product.productId}
-                              onClick={() => {
-                                addToCart(product);
-                                setFilteredProducts("");
-                                setSearchTerm("");
-                              }}
-                              style={{
-                                padding: "8px",
-                                cursor: "pointer",
-                                borderBottom: "1px solid #eee",
-                              }}
-                            >
-                              {product.name} — {product.barcode}
-                            </li>
-                          ))}
+                          {filteredProducts.map((product) => {
+                            const intoCart = {
+                              saleId: `SALE-${Math.floor(Math.random() * 1000000)}`,
+
+                              sku: product.sku,
+                              name: product.name,
+
+                              warehouseId: product.warehouses[0].warehouseId,
+
+                              sellingQuantity: product.stock.soldQuantity,
+                              unit: product.units?.baseUnit,
+
+                              pricing: {
+                                costPrice: product.pricing.costPrice,
+                                sellingPrice: product.pricing.sellingPrice,
+                                discount: 0,
+                                taxRate: product.pricing.taxRate,
+                              },
+
+                              batch: {
+                                batchNo: product.batches[0]?.batchNo,
+                                expiryDate: product.expiryDate,
+                              },
+
+                              updatedAt: new Date(),
+                            };
+
+                            return (
+                              <li
+                                key={product.productId}
+                                onClick={() => {
+                                  addToCart(intoCart);
+                                  setFilteredProducts([]);
+                                  setSearchTerm("");
+                                }}
+                                style={{
+                                  padding: "8px",
+                                  cursor: "pointer",
+                                  borderBottom: "1px solid #eee",
+                                }}
+                              >
+                                {product.name} — {product.barcode}
+                              </li>
+                            );
+                          })}
                         </ul>
                       )}
                     </div>
@@ -752,7 +753,7 @@ function WarehouseTerminal() {
                         .reduce(
                           (sum, item) =>
                             sum +
-                            item.pricing?.sellingPrice * item.sellingQuantity,
+                            item.pricing?.sellingPrice * item.soldQuantity,
                           0,
                         )
                         .toLocaleString()}
@@ -1029,6 +1030,8 @@ function WarehouseTerminal() {
   }
   return (
     <section className="sectionwarehouseHub fx-cl">
+      {alert && <WarehouseAlert alert={alert} setAlert={setAlert} />}
+
       {loading && <IsLoading />}
       {openModal && (
         <div id="modalContainer" onClick={() => closeModalDiv()}>
@@ -1062,6 +1065,7 @@ function WarehouseTerminal() {
             addToCart={addToCart}
             handleModalSwitch={handleModalSwitch}
             toggleScreen={toggleScreen}
+            setAlert={setAlert}
           />
           <Main />
         </div>
@@ -1113,7 +1117,7 @@ function WarehouseTerminal() {
               </figure>
 
               <figure className="warehouseHubRight fx-ac spacem">
-                <SettingsRemoteTwoToneIcon
+                <SatelliteAltIcon
                   style={{ color: "#f16b4c", fontSize: "2.8rem" }}
                 />
                 <div className="fx-ac">

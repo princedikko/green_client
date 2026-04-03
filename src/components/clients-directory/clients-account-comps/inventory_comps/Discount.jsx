@@ -44,23 +44,76 @@ export default function Discount({ breadcrumbs }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [openLimit, setOpenLimit] = useState(false);
-  const totalPages = Math.ceil(salesData.length / rowsPerPage);
+  const totalPages = Math.ceil(discountData?.length / rowsPerPage);
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
-  const currentRows = salesData.slice(start, end);
+  const currentRows = discountData?.slice(start, end);
 
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
   );
 
+  // /////////////////////////////////////////////////////////
+  // Cross Origin Resource Sharing CRUD - Functions
+  // /////////////////////////////////////////////////////////
+  const payload = {
+    discountId: "DISC-00021",
+    name: "Ramadan Promo",
+    startsAt: new Date("2026-03-01"),
+    endsAt: new Date("2026-03-30"),
+    discountType: "percentage",
+    discountAmount: 10,
+    priority: 1,
+    brand: "Nestle",
+    category: "Beverages",
+    products: [{ productId: "prod-101", name: "Peak Milk 170g" }],
+    location: { warehouseId: "wh-001", name: "Main Store" },
+    active: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  async function saveDiscount() {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/inventory/discount/create`,
+        payload,
+      );
+      if (response?.data?.status === 201) {
+        enqueueSnackbar(response?.data?.message, {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+      } else {
+        enqueueSnackbar(response?.data?.message, {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+
+      console.log("Quotation response:", response);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+
+      enqueueSnackbar("An error occurred while submitting the quotation", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  }
+  // -------------------------------------------------------------------
+
   async function apiGetDiscount() {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/inventory/discount/fetch`,
       )
       .then((response) => {
-        discountData = response.data.data;
+        discountData = response.data.discountData;
         console.log("discountData: ", response);
         if (response.data.status === 201) {
           setLoading(false);
@@ -141,13 +194,13 @@ export default function Discount({ breadcrumbs }) {
   function switchActiveTab() {
     switch (currentTab) {
       case "discount2026":
-        return <ToDo />;
+        return <CurrentBill />;
       case "completed":
         return <Completed />;
       case "progress":
         return <Progress />;
       default:
-        return <ToDo />;
+        return <CurrentBill />;
     }
   }
 
@@ -189,7 +242,7 @@ export default function Discount({ breadcrumbs }) {
   // COMPONENTS OF discount2026 PAGE
   // //////////////////////////////////////////////////////////////////////////
 
-  function ToDo() {
+  function CurrentBill() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -206,33 +259,42 @@ export default function Discount({ breadcrumbs }) {
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
+                <th>Name</th>
+                <th>Duration</th>
+                <th>Discount</th>
+                <th>Priority</th>
+                <th>Brand</th>
+                <th>Category</th>
+                <th>Products</th>
+                <th>Location</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
+              {currentRows?.map((item, index) => (
+                <tr key={item.discountId}>
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item.name}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
                   <td>
-                    <button>{item.action}</button>
+                    <strong>From: </strong>
+                    {new Date(item.startsAt).toLocaleDateString()} &nbsp; &nbsp;
+                    <strong>To: </strong>
+                    {new Date(item.endsAt).toLocaleDateString()}
+                  </td>
+                  <td>
+                    {item.discountType === "percentage"
+                      ? `${item.discountAmount}%`
+                      : `₦${item.discountAmount?.toLocaleString()}`}
+                  </td>
+                  <td>{item.priority}</td>
+                  <td>{item.brand || "-"}</td>
+                  <td>{item.category || "-"}</td>
+                  <td>{item.products?.length || 0}</td>
+                  <td>{item.location?.name}</td>
+                  <td>
+                    <button>E</button>
+                    <button>X</button>
                   </td>
                 </tr>
               ))}
@@ -297,12 +359,12 @@ export default function Discount({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {discountData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        discountData?.length,
+                      )} of ${discountData?.length} entries`}
                 </span>
               </span>
               <div className="discount2026_entries-info fx-ac spacem">
@@ -538,12 +600,12 @@ export default function Discount({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {discountData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        discountData?.length,
+                      )} of ${discountData?.length} entries`}
                 </span>
               </span>
               <div className="discount2026_entries-info fx-ac spacem">
@@ -730,12 +792,12 @@ export default function Discount({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {discountData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        discountData?.length,
+                      )} of ${discountData?.length} entries`}
                 </span>
               </span>
               <div className="discount2026_entries-info fx-ac spacem">
@@ -942,9 +1004,11 @@ export default function Discount({ breadcrumbs }) {
             <div className="fx-ac space1">
               <button
                 className="discount2026_export_btn fx-ac spacem"
-                onClick={() => navigate("/clients/warehouse_terminal")}
+                onClick={
+                  () => saveDiscount() /* open modal to add new discount2026 */
+                }
               >
-                <AddIcon fontSize="large" /> <span>Add new</span>
+                <AddIcon fontSize="large" /> <span>Create</span>
               </button>
             </div>
           </div>

@@ -109,7 +109,7 @@ export function AddNewProduct({ handleOnHold }) {
 export function ClearCart({ clearCart, cart, customer, setOpenModal }) {
   const [cashCollected, setCashCollected] = useState(0);
   const grandTotal = cart?.reduce(
-    (sum, item) => sum + item.pricing.sellingPrice * item.sellingQuantity,
+    (sum, item) => sum + item.pricing.sellingPrice * item.soldQuantity,
     0,
   );
   return (
@@ -176,14 +176,18 @@ export function ClearCart({ clearCart, cart, customer, setOpenModal }) {
     </div>
   );
 }
-export function SaveDraft({
-  cart,
-  discount,
-  customerName,
-  setLoading,
-  secondaryFunction,
-}) {
+export function SaveDraft({ salesPayload }) {
   const { enqueueSnackbar } = useSnackbar();
+  const {
+    cart,
+    discount,
+    customerName,
+    setLoading,
+    secondaryFunction,
+    setAlert,
+    subTotal,
+    tax,
+  } = salesPayload;
 
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
@@ -252,26 +256,62 @@ export function SaveDraft({
     </div>
   );
 }
-export function Quotation({
-  cart,
-  discount,
-  customerName,
-  setLoading,
-  secondaryFunction,
-}) {
+export function Quotation({ salesPayload }) {
   const { enqueueSnackbar } = useSnackbar();
 
+  const {
+    cart,
+    discount,
+    customerName,
+    setLoading,
+    secondaryFunction,
+    setAlert,
+    subTotal,
+    tax,
+  } = salesPayload;
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
-
   const payload = {
-    quotationId: "JDRTY3453453",
-    paymentType: "nill",
-    items: cart,
-    discount: discount,
-    customerName: customerName,
-    date: new Date().toISOString(),
+    type: "quotation",
+
+    quoteId: "QUO-000145",
+
+    customerId: "cust-3344",
+    customer_name: customerName,
+
+    warehouseId: "sdr3-1234-sdfg-5678",
+
+    soldItems: cart,
+
+    currency: "NGN",
+
+    totals: {
+      subtotal: 4100,
+      discount: 0,
+      taxAmount: 307.5,
+      total: 4407.5,
+    },
+
+    quotBy: {
+      userId: "user-22",
+      name: "Cashier 1",
+    },
+
+    payment: null,
+
+    status: "draft", //"draft" "sent" "accepted" "rejected" "converted"
+
+    createdAt: new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }),
+    updatedAt: new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }),
   };
 
   async function saveQuotation() {
@@ -462,7 +502,7 @@ export function Subscriptions({
 
   const [cashCollected, setCashCollected] = useState(0);
   const grandTotal = cart?.reduce(
-    (sum, item) => sum + item.pricing.sellingPrice * item.sellingQuantity,
+    (sum, item) => sum + item.pricing.sellingPrice * item.soldQuantity,
     0,
   );
 

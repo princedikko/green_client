@@ -57,17 +57,50 @@ export default function Returns({ breadcrumbs }) {
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    name: "products array",
+    sku: "MILK-PEAK-001",
+    barcode: "6224001234567", // EAN / UPC
+    name: "Peak Milk 170g",
+    brand: "Peak",
+    category: {
+      name: "Dairy",
+    },
+
+    unit: "tin",
+    costPrice: 820,
+    sellingPrice: 950,
+    taxRate: 2.5, // VAT %
+
+    stock: {
+      quantity: 245,
+      minLevel: 20,
+      reorderLevel: 50,
+    },
+
+    batchTracking: true,
+    expiryTracking: true,
+
+    batches: [
+      {
+        batchNo: "PK0124A",
+        costPrice: 800,
+      },
+    ],
+
+    supplier: {
+      name: "UAC Foods",
+    },
+
+    status: "ACTIVE",
   };
 
-  async function apiPostProducts() {
+  async function postReturn() {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/purchases/post_return`,
         payload,
       );
-      if (response?.data?.status === 200) {
+      if (response?.data?.status === 201) {
         enqueueSnackbar(response?.data?.message, {
           variant: "success",
           autoHideDuration: 3000,
@@ -79,6 +112,7 @@ export default function Returns({ breadcrumbs }) {
         });
       }
 
+      console.log("Return response:", response);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -179,13 +213,13 @@ export default function Returns({ breadcrumbs }) {
   function switchActiveTab() {
     switch (currentTab) {
       case "returns":
-        return <ToDo />;
+        return <AllReturned />;
       case "completed":
-        return <Completed />;
+        return <Pending />;
       case "progress":
-        return <Progress />;
+        return <AddNew />;
       default:
-        return <ToDo />;
+        return <AllReturned />;
     }
   }
 
@@ -227,7 +261,7 @@ export default function Returns({ breadcrumbs }) {
   // COMPONENTS OF returns PAGE
   // //////////////////////////////////////////////////////////////////////////
 
-  function ToDo() {
+  function AllReturned() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -466,7 +500,7 @@ export default function Returns({ breadcrumbs }) {
       </div>
     );
   }
-  function Completed() {
+  function Pending() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -658,7 +692,7 @@ export default function Returns({ breadcrumbs }) {
       </div>
     );
   }
-  function Progress() {
+  function AddNew() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -672,6 +706,9 @@ export default function Returns({ breadcrumbs }) {
     function TableView({ currentRows }) {
       return (
         <div className="prog">
+          <button className="btnTemporary" onClick={() => postReturn()}>
+            Post Return
+          </button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
@@ -925,7 +962,7 @@ export default function Returns({ breadcrumbs }) {
               onClick={() => handleCurrentTAB("returns")}
               className={`fx-ac  spacem ${currentTab == "returns" && "active"}`}
             >
-              <span>Todo</span>
+              <span>Returned List</span>
               <figure>34</figure>
             </li>
             <li
@@ -934,7 +971,7 @@ export default function Returns({ breadcrumbs }) {
                 currentTab == "completed" && "active"
               }`}
             >
-              <span>Completed</span>
+              <span>Pending</span>
               <figure>45</figure>
             </li>
             <li
@@ -943,7 +980,7 @@ export default function Returns({ breadcrumbs }) {
                 currentTab == "progress" && "active"
               }`}
             >
-              <span>In Progress</span>
+              <span>In AddNew</span>
               <figure>89</figure>
             </li>
           </ul>

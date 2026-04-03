@@ -6,6 +6,8 @@ import Imgs from "../../images/Udupss_girl.png";
 import N1 from "../../images/n1.png";
 import DebitSale from "../DebitSale";
 import Payments from "../Payments";
+import SuccessSound from "../../sounds/sold.wav";
+import ErrorSound from "../../sounds/error.wav";
 import RecentTransaction from "../RecentTransaction";
 import MultiplePayment from "../MultiplePayment";
 import EventRoundedIcon from "@mui/icons-material/EventRounded";
@@ -13,60 +15,81 @@ import WorkspacePremiumRoundedIcon from "@mui/icons-material/WorkspacePremiumRou
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-export function CashPayment({
-  cart,
-  discount,
-  customerName,
-  setLoading,
-  secondaryFunction,
-}) {
-  const { enqueueSnackbar } = useSnackbar();
-
+export function CashPayment({ salesPayload }) {
   const [cashCollected, setCashCollected] = useState(0);
-  const grandTotal = cart?.reduce(
-    (sum, item) => sum + item.pricing.sellingPrice * item.sellingQuantity,
-    0,
-  );
+
+  const {
+    cart,
+    discount,
+    customerName,
+    setLoading,
+    setOpenModal,
+    secondaryFunction,
+    setAlert,
+    subTotal,
+    tax,
+  } = salesPayload;
 
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    paymentType: "cash payment",
-    items: cart,
-    discount: discount,
-    customerName: customerName,
+    saleId: "SALE-000145", // invoice or receipt ID
+    customerId: "cust-3344",
+    customer_name: customerName,
+    soldItems: cart,
+    totals: {
+      cash: cashCollected,
+      change: cashCollected - (subTotal + tax),
+      discount: discount,
+      subtotal: subTotal,
+      taxAmount: tax,
+      total: subTotal + discount + tax,
+    },
+    soldBy: {
+      userId: "user-22",
+      name: "Yasmeen",
+    },
+    payment: {
+      method: "cash", // cash, card, transfer, wallet
+      status: "paid",
+    },
+    status: "completed", // completed, refunded, cancelled
+    createdAt: new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }),
+    updatedAt: "",
   };
   async function cashPaidSubmit() {
     try {
       setLoading(true);
-      secondaryFunction();
+      setOpenModal(false);
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/point_of_sales/payment/${"credit-sale"}`,
         payload,
       );
       if (response?.data?.status === 201) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
+        new Audio(SuccessSound).play();
+        secondaryFunction();
+        setAlert({
+          message: `Payment received! A total of ${cart.length} items have been successfully sold using Cash.`,
+          type: "success",
         });
       } else {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
+        new Audio(ErrorSound).play();
+        setAlert({ message: "Failed to process cash payment.", type: "error" });
       }
 
-      console.log("Credit sale response:", response);
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log(error);
-
-      enqueueSnackbar("An error occurred while submitting the cash payment", {
-        variant: "error",
-        autoHideDuration: 3000,
+      new Audio(ErrorSound).play();
+      setAlert({
+        message: "An error occurred while submitting the cash payment.",
+        type: "error",
       });
     }
   }
@@ -94,7 +117,7 @@ export function CashPayment({
               <EventRoundedIcon fontSize="large" /> <span>Grand Total:</span>
             </div>
             <p>
-              <strong>₦ {grandTotal.toLocaleString()}</strong>
+              <strong>₦ {subTotal.toLocaleString()}</strong>
             </p>
           </div>
           <div className="cashPaymentRow">
@@ -110,7 +133,7 @@ export function CashPayment({
             </div>
             <p style={{ color: "#ed826b", fontWeight: "bold" }}>
               {" "}
-              ₦ {(cashCollected - grandTotal).toLocaleString()}
+              ₦ {(cashCollected - subTotal).toLocaleString()}
             </p>
           </div>
         </div>
@@ -158,24 +181,49 @@ export function CashPayment({
     </div>
   );
 }
-export function CreditSale({
-  cart,
-  discount,
-  customerName,
-  setLoading,
-  secondaryFunction,
-}) {
+export function CreditSale({ salesPayload }) {
   const { enqueueSnackbar } = useSnackbar();
+  const {
+    cart,
+    discount,
+    customerName,
+    setLoading,
+    secondaryFunction,
+    setAlert,
+    subTotal,
+    tax,
+  } = salesPayload;
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    paymentType: "credit sale",
-    items: cart,
-    discount: discount,
-    customerName: customerName,
+    saleId: "SALE-000145", // invoice or receipt ID
+    customerId: "cust-3344",
+    customer_name: customerName,
+    soldItems: cart,
+    totals: {
+      subtotal: subTotal,
+      taxAmount: tax,
+      total: subTotal + tax,
+    },
+    soldBy: {
+      userId: "user-22",
+      name: "Yasmeen",
+    },
+    payment: {
+      method: "cash", // cash, card, transfer, wallet
+      status: "paid",
+    },
+    status: "completed", // completed, refunded, cancelled
+    createdAt: new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }),
+    updatedAt: "",
   };
+
   async function executeCreditSale() {
     try {
       setLoading(true);
@@ -235,23 +283,51 @@ export function CreditSale({
     </div>
   );
 }
-export function MultiPay({
-  cart,
-  discount,
-  customerName,
-  setLoading,
-  secondaryFunction,
-}) {
+export function MultiPay({ salesPayload }) {
   const { enqueueSnackbar } = useSnackbar();
+  const {
+    cart,
+    discount,
+    customerName,
+    setLoading,
+    secondaryFunction,
+    setAlert,
+    subTotal,
+    tax,
+  } = salesPayload;
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    paymentType: "multiple payment",
-    items: cart,
-    discount: discount,
-    customerName: customerName,
+    saleId: "SALE-000145", // invoice or receipt ID
+    customerId: "cust-3344",
+    customer_name: customerName,
+    soldItems: cart,
+    totals: {
+      subtotal: 4100,
+      taxAmount: 307.5,
+      total: 4407.5,
+    },
+    soldBy: {
+      userId: "user-22",
+      name: "Cashier 1",
+    },
+    payment: {
+      method: "cash", // cash, card, transfer, wallet
+      status: "paid",
+    },
+    status: "completed", // completed, refunded, cancelled
+    createdAt: new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }),
+    updatedAt: new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }),
   };
   async function executeMultiPaySale() {
     try {
@@ -294,14 +370,19 @@ export function MultiPay({
     </div>
   );
 }
-export function Debit({
-  cart,
-  discount,
-  customerName,
-  setLoading,
-  secondaryFunction,
-}) {
+export function Debit({ salesPayload }) {
   const { enqueueSnackbar } = useSnackbar();
+  const {
+    cart,
+    discount,
+    customerName,
+    setLoading,
+    secondaryFunction,
+    setAlert,
+    subTotal,
+    tax,
+  } = salesPayload;
+
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
@@ -350,14 +431,19 @@ export function Debit({
     </>
   );
 }
-export function Account({
-  cart,
-  discount,
-  customerName,
-  setLoading,
-  secondaryFunction,
-}) {
+export function Account({ salesPayload }) {
   const { enqueueSnackbar } = useSnackbar();
+  const {
+    cart,
+    discount,
+    customerName,
+    setLoading,
+    secondaryFunction,
+    setAlert,
+    subTotal,
+    tax,
+  } = salesPayload;
+
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
@@ -410,14 +496,20 @@ export function Account({
     </>
   );
 }
-export function Check({
-  cart,
-  discount,
-  customerName,
-  setLoading,
-  secondaryFunction,
-}) {
+export function Check({ salesPayload }) {
   const { enqueueSnackbar } = useSnackbar();
+
+  const {
+    cart,
+    discount,
+    customerName,
+    setLoading,
+    secondaryFunction,
+    setAlert,
+    subTotal,
+    tax,
+  } = salesPayload;
+
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
@@ -470,14 +562,18 @@ export function Check({
     </>
   );
 }
-export function Gifting({
-  cart,
-  discount,
-  customerName,
-  setLoading,
-  secondaryFunction,
-}) {
+export function Gifting({ salesPayload }) {
   const { enqueueSnackbar } = useSnackbar();
+  const {
+    cart,
+    discount,
+    customerName,
+    setLoading,
+    secondaryFunction,
+    setAlert,
+    subTotal,
+    tax,
+  } = salesPayload;
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////

@@ -56,39 +56,66 @@ export default function Products({ breadcrumbs }) {
 
   const payload = {
     sku: "MILK-PEAK-001",
-    barcode: "6224001234567", // EAN / UPC
+    barcode: "6224001234567",
+    qrcode: "1234567890123",
     name: "Peak Milk 170g",
     brand: "Peak",
-    category: {
-      name: "Dairy",
-    },
+    units: { baseUnit: "tin", purchaseUnit: "carton", conversionRate: 24 },
+    description: "Business laptop",
+    categoryId: "",
+    supplierId: "uac-5678",
+    productType: "inventory",
 
-    unit: "tin",
-    costPrice: 820,
-    sellingPrice: 950,
-    taxRate: 2.5, // VAT %
+    pricing: {
+      costPrice: 650,
+      sellingPrice: 820,
+      taxRate: 7.5,
+      currency: "NGN",
+    },
 
     stock: {
-      quantity: 245,
+      quantityAvailable: 35,
+      reorderLevel: 5,
+      reorderQuantity: 10,
+
       minLevel: 20,
-      reorderLevel: 50,
+      sellingQuantity: 1,
     },
 
-    batchTracking: true,
-    expiryTracking: true,
-
-    batches: [
+    warehouses: [
       {
-        batchNo: "PK0124A",
-        costPrice: 800,
+        warehouseId: "sdr3-1234-sdfg-5678",
+        location: "Aisle 3 - Rack B",
+        quantity: 35,
       },
     ],
 
-    supplier: {
-      name: "UAC Foods",
+    batch: {
+      batchTracking: true,
+      expiryTracking: true,
+      trackingMethod: "FEFO",
+      batches: [
+        {
+          batchNo: "PK0124A",
+          costPrice: 800,
+          quantity: 100,
+          manufactureDate: "2024-01-01",
+          expiryDate: "2026-01-30",
+          warehouseId: "sdr3-1234-sdfg-5678",
+        },
+      ],
     },
-
-    status: "ACTIVE",
+    dimensions: {
+      weight: null,
+      length: null,
+      width: null,
+      height: null,
+    },
+    images: [],
+    trackInventory: true,
+    status: "active",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   };
 
   async function apiPostProducts() {

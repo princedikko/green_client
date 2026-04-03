@@ -13,6 +13,7 @@ import IsLoading from "../../../../IsLoading.jsx";
 import FilterImports from "./filters/FilterImports.jsx";
 import ExportPDFButton from "./exports/ImportsPDFExport.jsx";
 import ExportExcelJSButton from "./exports/ImportsExcelExport.jsx";
+import ImportProducts from "./imports/ImportProducts.jsx";
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 // import from MUI
@@ -57,17 +58,50 @@ export default function Imports({ breadcrumbs }) {
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    name: "products array",
+    sku: "MILK-PEAK-001",
+    barcode: "6224001234567", // EAN / UPC
+    name: "Peak Milk 170g",
+    brand: "Peak",
+    category: {
+      name: "Dairy",
+    },
+
+    unit: "tin",
+    costPrice: 820,
+    sellingPrice: 950,
+    taxRate: 2.5, // VAT %
+
+    stock: {
+      quantity: 245,
+      minLevel: 20,
+      reorderLevel: 50,
+    },
+
+    batchTracking: true,
+    expiryTracking: true,
+
+    batches: [
+      {
+        batchNo: "PK0124A",
+        costPrice: 800,
+      },
+    ],
+
+    supplier: {
+      name: "UAC Foods",
+    },
+
+    status: "ACTIVE",
   };
 
-  async function apiPostProducts() {
+  async function executeImports() {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_products/post_import`,
         payload,
       );
-      if (response?.data?.status === 200) {
+      if (response?.data?.status === 201) {
         enqueueSnackbar(response?.data?.message, {
           variant: "success",
           autoHideDuration: 3000,
@@ -79,6 +113,7 @@ export default function Imports({ breadcrumbs }) {
         });
       }
 
+      console.log("Execute import response:", response);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -178,13 +213,13 @@ export default function Imports({ breadcrumbs }) {
   function switchActiveTab() {
     switch (currentTab) {
       case "imports":
-        return <ToDo />;
+        return <ImportedData />;
       case "completed":
         return <Completed />;
       case "progress":
-        return <Progress />;
+        return <ImportNew />;
       default:
-        return <ToDo />;
+        return <ImportedData />;
     }
   }
 
@@ -226,7 +261,7 @@ export default function Imports({ breadcrumbs }) {
   // COMPONENTS OF imports PAGE
   // //////////////////////////////////////////////////////////////////////////
 
-  function ToDo() {
+  function ImportedData() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -657,7 +692,7 @@ export default function Imports({ breadcrumbs }) {
       </div>
     );
   }
-  function Progress() {
+  function ImportNew() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -671,6 +706,9 @@ export default function Imports({ breadcrumbs }) {
     function TableView({ currentRows }) {
       return (
         <div className="prog">
+          <button className="btnTemporary" onClick={() => executeImports()}>
+            Execute Import
+          </button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
@@ -805,7 +843,7 @@ export default function Imports({ breadcrumbs }) {
               </div>
             </div>
             <div className="imports_row" id="printable">
-              {switchView()}
+              <ImportProducts />
             </div>
             <div className="fx-jc">
               <div className="imports_pagination fx-ac space2">

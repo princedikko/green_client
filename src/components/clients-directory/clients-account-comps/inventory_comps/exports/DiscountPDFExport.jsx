@@ -78,38 +78,38 @@ const PDFDocument = ({ data }) => (
           <View
             style={[
               styles.tableRow,
-              index % 2 === 0 ? styles.evenRow : styles.oddRow, // alternate colors
+              index % 2 === 0 ? styles.evenRow : styles.oddRow,
             ]}
-            key={item.invoiceNo}
+            key={item.discountId}
           >
             <Text style={[styles.tableCol, { width: 140, fontWeight: "bold" }]}>
-              {" "}
-              {item.customerName}{" "}
+              {item.name}
             </Text>
-            <Text style={[styles.tableCol, { width: 70 }]}>
-              {" "}
-              {item.invoiceNo}{" "}
+            <Text style={[styles.tableCol, { width: 90 }]}>
+              {new Date(item.startsAt).toLocaleDateString()}
+            </Text>
+            <Text style={[styles.tableCol, { width: 90 }]}>
+              {new Date(item.endsAt).toLocaleDateString()}
+            </Text>
+            <Text style={[styles.tableCol, { width: 100 }]}>
+              {item.discountType === "percentage"
+                ? `${item.discountAmount}%`
+                : `₦${item.discountAmount?.toLocaleString()}`}
             </Text>
             <Text style={[styles.tableCol, { width: 60, textAlign: "center" }]}>
-              {item.quantity}{" "}
+              {item.priority}
             </Text>
-
+            <Text style={[styles.tableCol, { width: 90 }]}>
+              {item.brand || "-"}
+            </Text>
+            <Text style={[styles.tableCol, { width: 90 }]}>
+              {item.category || "-"}
+            </Text>
+            <Text style={[styles.tableCol, { width: 70, textAlign: "center" }]}>
+              {item.products?.length || 0}
+            </Text>
             <Text style={[styles.tableCol, { width: 100 }]}>
-              {" "}
-              ₦{item.totalAmount.toLocaleString()}{" "}
-            </Text>
-            <Text style={[styles.tableCol, { width: 100 }]}>
-              {" "}
-              ₦{item.totalPaid.toLocaleString()}{" "}
-            </Text>
-
-            <Text style={[styles.tableCol, { width: 80 }]}>
-              ₦{item.sellDue.toLocaleString()}{" "}
-            </Text>
-            <Text style={[styles.tableCol, { width: 80 }]}>{item.date}</Text>
-            <Text style={[styles.tableCol, { width: 80 }]}>
-              {" "}
-              {item.paymentStatus}{" "}
+              {item.location?.name || "-"}
             </Text>
           </View>
         ))}

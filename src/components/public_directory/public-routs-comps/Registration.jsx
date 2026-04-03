@@ -289,7 +289,7 @@ export default function Registration() {
     return (
       <div className="regMainCont fx-cl space3">
         <div className="regHeader fx-cl fx-ac space3">
-          <h3>High-speed, Secure & Stress-Free Online Exams</h3>
+          <h3>High-speed, Secure & Stress-Free to your Business</h3>
           <div className="regHTag fx-ac">
             <figure className="fx-ac space2">
               <span>
@@ -307,7 +307,7 @@ export default function Registration() {
               <span>
                 <PeopleAltRoundedIcon fontSize="large" />
               </span>
-              <span>Protected by Universe tech industry laws</span>
+              <span>Protected by Jool Inventory Laws</span>
             </figure>
             <figure className="fx-ac space2">
               <span>
@@ -317,8 +317,8 @@ export default function Registration() {
             </figure>
           </div>
           <figure className="regTag">
-            ico<strong>100%</strong> Fast & Effortless{" "}
-            <strong>Online Exams System</strong> for All Candidates
+            <CategoryRoundedIcon fontSize="small" /> <strong>100%</strong> Fast
+            & Effortless <strong>Inventory</strong> for All Business
           </figure>
         </div>
         <div className="regMainDiv fx-cl space3">
@@ -693,7 +693,7 @@ export default function Registration() {
     <>
       {loading ? <IsLoading /> : null}
       <section className="fx-cl space3 " id="regCont">
-        <header className="RegformHeader fx-ac fx-jb space4">
+        {/* <header className="RegformHeader fx-ac fx-jb space4">
           <figure style={{ maxWidth: "10rem" }}>
             <img src={SPLogo} alt="" />
           </figure>
@@ -705,7 +705,7 @@ export default function Registration() {
               <option value="Hausa">Hausa</option>
             </select>
           </div>
-        </header>
+        </header> */}
         <div className="fx-jc">
           <RegFormFilling />
         </div>

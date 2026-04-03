@@ -78,39 +78,39 @@ const PDFDocument = ({ data }) => (
           <View
             style={[
               styles.tableRow,
-              index % 2 === 0 ? styles.evenRow : styles.oddRow, // alternate colors
+              index % 2 === 0 ? styles.evenRow : styles.oddRow,
             ]}
-            key={item.invoiceNo}
+            key={item?.quoteId}
           >
             <Text style={[styles.tableCol, { width: 140, fontWeight: "bold" }]}>
-              {" "}
-              {item.customerName}{" "}
+              {item?.customer_name}
             </Text>
-            <Text style={[styles.tableCol, { width: 70 }]}>
-              {" "}
-              {item.invoiceNo}{" "}
+
+            <Text style={[styles.tableCol, { width: 90 }]}>
+              {item?.quoteId}
             </Text>
+
             <Text style={[styles.tableCol, { width: 60, textAlign: "center" }]}>
-              {item.quantity}{" "}
+              {item?.soldItems?.length}
             </Text>
 
             <Text style={[styles.tableCol, { width: 100 }]}>
-              {" "}
-              ₦{item.totalAmount.toLocaleString()}{" "}
-            </Text>
-            <Text style={[styles.tableCol, { width: 100 }]}>
-              {" "}
-              ₦{item.totalPaid.toLocaleString()}{" "}
+              ₦{item?.totals?.subtotal?.toLocaleString()}
             </Text>
 
-            <Text style={[styles.tableCol, { width: 80 }]}>
-              ₦{item.sellDue.toLocaleString()}{" "}
+            <Text style={[styles.tableCol, { width: 100 }]}>
+              ₦{item?.totals?.total?.toLocaleString()}
             </Text>
-            <Text style={[styles.tableCol, { width: 80 }]}>{item.date}</Text>
-            <Text style={[styles.tableCol, { width: 80 }]}>
-              {" "}
-              {item.paymentStatus}{" "}
+
+            <Text style={[styles.tableCol, { width: 90 }]}>
+              {item?.quotBy?.name}
             </Text>
+
+            <Text style={[styles.tableCol, { width: 100 }]}>
+              {new Date(item?.createdAt).toLocaleDateString()}
+            </Text>
+
+            <Text style={[styles.tableCol, { width: 80 }]}>{item?.status}</Text>
           </View>
         ))}
       </View>
@@ -122,7 +122,7 @@ const PDFDocument = ({ data }) => (
 const ExportPDFButton = ({ currentRows }) => (
   <PDFDownloadLink
     document={<PDFDocument data={currentRows} />}
-    fileName="sales_table.pdf"
+    fileName="Quotations.pdf"
   >
     {({ loading }) =>
       loading ? (

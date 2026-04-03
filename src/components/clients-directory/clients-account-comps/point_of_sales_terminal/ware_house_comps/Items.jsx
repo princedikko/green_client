@@ -13,56 +13,31 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-export default function Items({ setChangeView, changeview }) {
+export default function Items() {
   const [loading, setLoading] = useState(false);
-
-  const cart = useSelector((state) => state.hybridActions.warehouse?.cart);
-  const { products } = useSelector((state) => state.hybridActions.warehouse);
-
   const dispatch = useDispatch();
-
-  function switchView() {
-    switch (changeview) {
-      case "grid":
-        return <CardView dispatch={dispatch} />;
-      case "table":
-        return <TableView dispatch={dispatch} />;
-      default:
-        return <TableView dispatch={dispatch} />;
-    }
-  }
-
-  async function getApplicants() {
-    setLoading(true);
-    await axios
-      .get(`${process.env.REACT_APP_SERVER_SCRIPT_HOST}/form_sales`)
-      .then((response) => {
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-  }
-
-  // useEffect(() => {
-  //   getApplicants();
-  // }, []);
 
   return (
     <>
-      {loading ? <IsLoading /> : <div className="item_row">{switchView()}</div>}
+      {loading ? (
+        <IsLoading />
+      ) : (
+        <div className="item_row">
+          <ItemsList dispatch={dispatch} />
+        </div>
+      )}
     </>
   );
 }
 
-function TableView() {
+function ItemsList() {
   const [openItemDrpdwn, setOpenItemDrpdwn] = useState(false);
   const [accordion, setAccordion] = useState(null);
   const [brands, setBrands] = useState("All brands");
   const [activeRow, setActiveRow] = useState(null);
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.hybridActions.warehouse?.cart);
+
   function popCart(index) {
     dispatch(Action.removeFromCart(index));
   }
@@ -76,7 +51,7 @@ function TableView() {
     }
   }
   function updateQty(index, qty, available) {
-    if (available >= qty) {
+    if (Number(available) >= Number(qty)) {
       if (qty > 0) {
         dispatch(Action.updateQuantity({ index, qty }));
       } else {
@@ -126,7 +101,7 @@ function TableView() {
                 className="itemRowTdCont"
               >
                 <td
-                  id={item.sku}
+                  id={item?.sku}
                   className={`itemRowTd ${activeRow == index && "active_warehauseRow"}`}
                   onClick={() =>
                     accordion == index
@@ -137,7 +112,7 @@ function TableView() {
                   <span>
                     <strong>{index + 1}</strong>
                   </span>
-                  <span>{item.name}</span>
+                  <span>{item?.name}</span>
                   <span>
                     <div className="item_row_entries-info fx-ac spacem">
                       <div className="item_row-page-limit">
@@ -145,9 +120,8 @@ function TableView() {
                           onClick={() => handleItemDrpdwn()}
                           style={{ color: "#222", textTransform: "capitalize" }}
                         >
-                          {item.packaging}
                           <span className="item_row-page-limit-arrow">
-                            {item.units?.baseUnit}
+                            {item?.unit}
                           </span>
                         </button>
 
@@ -166,11 +140,7 @@ function TableView() {
                                 key={n}
                                 className="item_row-limit-item"
                                 onClick={() =>
-                                  updatePackage(
-                                    index,
-                                    n,
-                                    item.batches[0]?.quantity,
-                                  )
+                                  updatePackage(index, n, item?.soldQuantity)
                                 }
                               >
                                 {n}
@@ -189,8 +159,8 @@ function TableView() {
                       onClick={() =>
                         updateQty(
                           index,
-                          Number(item.sellingQuantity - 1),
-                          item.batches[0]?.quantity,
+                          Number(item?.soldQuantity - 1),
+                          item?.batch.quantity,
                         )
                       }
                     >
@@ -201,7 +171,7 @@ function TableView() {
                     </button>
                     <input
                       type="text"
-                      value={item.sellingQuantity}
+                      value={item?.soldQuantity}
                       style={{
                         width: "3.5rem",
                         backgroundColor: "transparent",
@@ -211,7 +181,7 @@ function TableView() {
                         insertQty(
                           index,
                           Number(event.target.value),
-                          item.batches[0]?.quantity,
+                          item?.batch?.quantity,
                         )
                       }
                     />
@@ -219,8 +189,8 @@ function TableView() {
                       onClick={() =>
                         updateQty(
                           index,
-                          Number(item.sellingQuantity + 1),
-                          item.batches[0]?.quantity,
+                          Number(item?.soldQuantity + 1),
+                          item?.batch.quantity,
                         )
                       }
                     >
@@ -229,13 +199,15 @@ function TableView() {
                   </span>
 
                   <span className="fx-ac space1">
-                    <span>₦{item.pricing?.sellingPrice.toLocaleString()}</span>
+                    <span>
+                      ₦{item?.pricing?.sellingPrice?.toLocaleString()}
+                    </span>
                   </span>
                   <span className="fx-ac space1">
                     <span>
                       ₦
                       {(
-                        item.pricing?.sellingPrice * item?.sellingQuantity
+                        item?.pricing?.sellingPrice * item?.soldQuantity
                       ).toLocaleString()}
                     </span>
                   </span>
@@ -265,19 +237,19 @@ function TableView() {
                       <div className="fx-cl spacem ">
                         <span>Brand</span>
                         <p>
-                          <strong>{item.brand}</strong>
+                          <strong>{item?.brand}</strong>
                         </p>
                       </div>
                       <div className="fx-cl spacem">
                         <span>Batch</span>
                         <p>
-                          <strong>{item?.batches[0]?.batchNo}</strong>
+                          <strong>adfs</strong>
                         </p>
                       </div>
                       <div className="fx-cl spacem ">
                         <span>Item SKU</span>
                         <p>
-                          <strong>{item.sku}</strong>
+                          <strong>{item?.sku}</strong>
                         </p>
                       </div>
 
@@ -291,7 +263,7 @@ function TableView() {
                               textTransform: "capitalize",
                             }}
                           >
-                            {item.units?.baseUnit}
+                            {item?.unit}
                             <span className="item_row-page-limit-arrow">▾</span>
                           </button>
 
@@ -310,11 +282,7 @@ function TableView() {
                                   key={n}
                                   className="item_row-limit-item"
                                   onClick={() =>
-                                    updatePackage(
-                                      index,
-                                      n,
-                                      item.batches[0]?.quantity,
-                                    )
+                                    updatePackage(index, n, item?.soldQuantity)
                                   }
                                 >
                                   {n}
@@ -327,7 +295,7 @@ function TableView() {
                       <div className="fx-cl spacem">
                         <span>Expiry Date</span>
                         <p>
-                          <strong>{item?.batches[0].expiryDate}</strong>
+                          <strong>{item?.batch?.expiryDate}</strong>
                         </p>
                       </div>
                       <div className="fx-cl spacem ">
@@ -339,13 +307,13 @@ function TableView() {
                       <div className="fx-cl spacem ">
                         <span>Attribute</span>
                         <p>
-                          <strong>{item.barcode}</strong>
+                          <strong>{item?.barcode}</strong>
                         </p>
                       </div>
                       <div className="fx-cl spacem ">
                         <span>Bar Code</span>
                         <p>
-                          <strong>{item.barcode}</strong>
+                          <strong>{item?.barcode}</strong>
                         </p>
                       </div>
 
@@ -391,84 +359,5 @@ function TableView() {
         <p style={{ textAlign: "center" }}>... Scan bar code or add items</p>
       )}
     </>
-  );
-}
-
-function CardView() {
-  const dispatch = useDispatch();
-  const cart = useSelector((state) => state.hybridActions.warehouse?.cart);
-  return (
-    <div className="girdViewCont">
-      <figure className="gridViewCard ">
-        <h4>Othman Umar Dikko Jooli</h4>
-        <div>
-          <div className="fx-cl spacem">
-            <div className="fx-ac">
-              <span>Heading</span> <span>Heading here</span>
-            </div>
-          </div>
-        </div>
-      </figure>
-      <figure className="gridViewCard ">
-        <h4>Othman Umar Dikko Jooli</h4>
-        <div>
-          <div className="fx-cl spacem">
-            <div className="fx-ac">
-              <span>Heading</span> <span>Heading here</span>
-            </div>
-          </div>
-        </div>
-      </figure>
-      <figure className="gridViewCard ">
-        <h4>Othman Umar Dikko Jooli</h4>
-        <div>
-          <div className="fx-cl spacem">
-            <div className="fx-ac">
-              <span>Heading</span> <span>Heading here</span>
-            </div>
-          </div>
-        </div>
-      </figure>
-      <figure className="gridViewCard ">
-        <h4>Othman Umar Dikko Jooli</h4>
-        <div>
-          <div className="fx-cl spacem">
-            <div className="fx-ac">
-              <span>Heading</span> <span>Heading here</span>
-            </div>
-          </div>
-        </div>
-      </figure>
-      <figure className="gridViewCard ">
-        <h4>Othman Umar Dikko Jooli</h4>
-        <div>
-          <div className="fx-cl spacem">
-            <div className="fx-ac">
-              <span>Heading</span> <span>Heading here</span>
-            </div>
-          </div>
-        </div>
-      </figure>
-      <figure className="gridViewCard ">
-        <h4>Othman Umar Dikko Jooli</h4>
-        <div>
-          <div className="fx-cl spacem">
-            <div className="fx-ac">
-              <span>Heading</span> <span>Heading here</span>
-            </div>
-          </div>
-        </div>
-      </figure>
-      <figure className="gridViewCard ">
-        <h4>Othman Umar Dikko Jooli</h4>
-        <div>
-          <div className="fx-cl spacem">
-            <div className="fx-ac">
-              <span>Heading</span> <span>Heading here</span>
-            </div>
-          </div>
-        </div>
-      </figure>
-    </div>
   );
 }

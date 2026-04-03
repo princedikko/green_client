@@ -1,0 +1,210 @@
+/* Personal Info Section */
+.resultUploadPrCont {
+  padding: 2rem;
+}
+
+.resultUploadPr {
+  /* background-color: #f9fcff; */
+  background-color: #fafaff;
+  padding: 4.5rem;
+  font-size: 1.2rem;
+  border-radius: 6px;
+  max-width: 88rem;
+  border-radius: 1.2rem;
+  margin: 0 auto;
+  /* border: 1px solid #d1e9ff; */
+  /* box-shadow: 0 4px 10px rgba(0, 123, 255, 0.1); */
+  margin-bottom: 25px;
+  color: #666;
+}
+.std_scroll {
+  overflow: scroll;
+  overflow-x: hidden;
+  max-height: 85vh;
+  padding: 0.2rem;
+  padding-right: 1rem;
+}
+/* Profile Image */
+.resultUploadPrpassport {
+  width: 120px;
+  height: 120px;
+  border-radius: 0.4rem;
+  object-fit: cover;
+  border: 1px solid #0056b3;
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
+}
+
+/* Info Group */
+.resultUploadPrcomp {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  width: 100%;
+}
+
+.resultUploadPrcomp div {
+  color: #333;
+  display: flex;
+  flex-direction: column;
+}
+
+.resultUploadPrcomp div strong {
+  font-weight: 500;
+  color: #0056b3;
+}
+
+.resultUploadPrcomp div span {
+  font-size: 1.2em;
+  color: #666;
+}
+
+.resultUploadPrHeader {
+  text-align: center;
+}
+.resultUploadPrHeader img {
+  max-width: 10rem;
+}
+.resultUploadPr ul {
+  list-style-type: disc;
+  margin-top: 2rem;
+}
+
+.resultUploadPrpart {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.resultUploadPr table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.resultUploadPr table th,
+.resultUploadPr table td {
+  text-align: center;
+}
+
+.resultUploadPrCont button {
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
+  transition: all 0.3s;
+  text-align: center;
+  min-width: 14rem;
+}
+.resultUploadPrCont button:hover,
+.resultUploadPrCont button:active {
+  opacity: 0.7;
+}
+
+/* ________________________________________________________________ */
+.resultUploadAside {
+  background-color: #fff;
+  border-radius: 1.2rem;
+  /* overflow: scroll; */
+  /* overflow-x: hidden; */
+  /* max-height: 85vh; */
+  padding: 2rem;
+}
+.resultUploadAside table {
+  padding: 2.4rem 0;
+}
+.resultUploadAside table thead tr {
+  display: grid;
+  grid-template-columns: 3fr 3.3fr 1.5fr 1.4fr 1fr 1fr 1fr;
+  padding: 1.2rem;
+  /* background-color: rgb(29, 86, 251); */
+  border-radius: 0.8rem;
+  font-size: 1.2rem;
+  color: white;
+  gap: 0.6rem;
+}
+
+.resultUploadAside table tbody tr {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: 3fr 3.3fr 1.5fr 1.4fr 1fr 1fr 1fr;
+  align-items: center;
+  border-bottom: 1px solid #f3f3f3;
+  padding: 1.2rem;
+  background-color: #fff;
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: rgb(34, 33, 33);
+  text-align: center;
+}
+.resultUploadAside table tbody tr:hover,
+.resultUploadAside table tbody tr:active {
+  background-color: #fafaff;
+  border-radius: 0.8rem;
+}
+.resultUploadAside table tbody tr .completed {
+  padding: 0.3rem 1.6rem;
+  border-radius: 0.4rem;
+  background-color: #eefef2;
+  color: #048e5b;
+}
+.resultUploadAside table tbody tr .pending {
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.4rem;
+  background-color: #ffe6e6;
+  color: #e30606;
+}
+
+.resultUploadAside table tbody tr td:nth-child(2) figure {
+  background-color: #48c798;
+  color: white;
+  border-radius: 55rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  overflow: hidden;
+}
+.resultUploadAside table tbody tr td input {
+  width: 100%;
+  max-width: 8rem;
+  background-color: transparent;
+  padding: 0.4rem 0.2rem;
+  color: #666;
+  border-radius: 0.4rem;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+.resultUploadAside table tbody tr button {
+  background-color: transparent;
+  color: #12e095;
+}
+.resultUploadAside table tbody tr button:first-child {
+  background-color: transparent;
+  color: #999;
+}
+
+.resultUploadAside header select {
+  padding: 1rem 3rem;
+  border-radius: 0.8rem;
+  background-color: #fafaff;
+  color: #048e5b;
+}
+.resultUploadAside button {
+  padding: 1rem 3rem;
+  border-radius: 0.8rem;
+  background-color: #048e5b;
+  color: #fff;
+  width: 20rem;
+}
+
+/* Grid views */
+.resultUploadAside .gridViewCard {
+  background-color: #fafaff;
+  border-radius: 1.2rem;
+  border: 1px solid green;
+  padding: 2.4rem;
+}
+
+.girdViewCont {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 1.2rem;
+  row-gap: 3rem;
+  padding: 3rem;
+}

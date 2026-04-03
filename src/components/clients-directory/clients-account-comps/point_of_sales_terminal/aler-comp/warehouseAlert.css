@@ -1,0 +1,57 @@
+.warehouse-alert {
+  width: 100%;
+  max-width: 98.8rem;
+  position: fixed;
+  top: 20px;
+  right: 50%;
+  transform: translateX(50%);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.35);
+  border-radius: 1.2rem;
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: bold;
+  z-index: 1000;
+  overflow: hidden;
+}
+.alertCont {
+  padding: 1.2rem 2.5rem;
+  position: relative;
+}
+
+.warehouse-alert.info {
+  background: #567de7;
+}
+.warehouse-alert.success {
+  background: #26bf89;
+}
+
+.warehouse-alert.error {
+  background: #d32f2f;
+}
+
+.warehouse-alert.warning {
+  background: #ed6c02;
+}
+.warehouse-alert button {
+  color: #fff;
+}
+
+/* progress bar */
+
+.warehouse-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.61);
+  animation: progress 6s linear forwards;
+}
+
+@keyframes progress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}

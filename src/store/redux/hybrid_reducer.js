@@ -38,7 +38,7 @@ export const hybridReducer = createSlice({
       if (!state.warehouse.cart) state.warehouse.cart = [];
 
       if (state.warehouse.cart[index]) {
-        state.warehouse.cart[index].packaging = pkg;
+        state.warehouse.cart[index].soldQuantity = pkg;
       }
     },
     updateQuantity: (state, action) => {
@@ -48,7 +48,7 @@ export const hybridReducer = createSlice({
       if (!state.warehouse.cart) state.warehouse.cart = [];
 
       if (state.warehouse.cart) {
-        state.warehouse.cart[index].sellingQuantity = qty;
+        state.warehouse.cart[index].soldQuantity = qty;
       }
     },
     insertQuantity: (state, action) => {
@@ -58,7 +58,7 @@ export const hybridReducer = createSlice({
       if (!state.warehouse.cart) state.warehouse.cart = [];
 
       if (state.warehouse.cart) {
-        state.warehouse.cart[index].sellingQuantity = qty;
+        state.warehouse.cart[index].soldQuantity = qty;
       }
     },
 

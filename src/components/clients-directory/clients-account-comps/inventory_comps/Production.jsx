@@ -57,17 +57,50 @@ export default function Production({ breadcrumbs }) {
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    name: "products array",
+    sku: "MILK-PEAK-001",
+    barcode: "6224001234567", // EAN / UPC
+    name: "Peak Milk 170g",
+    brand: "Peak",
+    category: {
+      name: "Dairy",
+    },
+
+    unit: "tin",
+    costPrice: 820,
+    sellingPrice: 950,
+    taxRate: 2.5, // VAT %
+
+    stock: {
+      quantity: 245,
+      minLevel: 20,
+      reorderLevel: 50,
+    },
+
+    batchTracking: true,
+    expiryTracking: true,
+
+    batches: [
+      {
+        batchNo: "PK0124A",
+        costPrice: 800,
+      },
+    ],
+
+    supplier: {
+      name: "UAC Foods",
+    },
+
+    status: "ACTIVE",
   };
 
-  async function apiPostProducts() {
+  async function apiPostProduction() {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/account/production/post`,
         payload,
       );
-      if (response?.data?.status === 200) {
+      if (response?.data?.status === 201) {
         enqueueSnackbar(response?.data?.message, {
           variant: "success",
           autoHideDuration: 3000,
@@ -79,6 +112,7 @@ export default function Production({ breadcrumbs }) {
         });
       }
 
+      console.log("Production response:", response);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -997,7 +1031,7 @@ export default function Production({ breadcrumbs }) {
             <div className="fx-ac space1">
               <button
                 className="production_export_btn fx-ac spacem"
-                onClick={() => navigate("/clients/warehouse_terminal")}
+                onClick={() => apiPostProduction()}
               >
                 <AddIcon fontSize="large" /> <span>Add new</span>
               </button>

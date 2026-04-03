@@ -1,6 +1,7 @@
 // Public routes
 import Test from "./test/Test";
 import Home from "./components/public_directory/home-page/Home";
+import PricingPage from "./components/public_directory/public-routs-comps/Pricing";
 
 // _____________________________________________________________
 import ClientsLogin from "./components/public_directory/public-routs-comps/logins/ClientsLogin";
@@ -43,6 +44,12 @@ const greenRoutes = [
     path: "/executive/login",
     name: "Executive login",
     element: <ExecutiveLogin />,
+    isPublic: true,
+  },
+  {
+    path: "/pricing",
+    name: "Pricing",
+    element: <PricingPage />,
     isPublic: true,
   },
 

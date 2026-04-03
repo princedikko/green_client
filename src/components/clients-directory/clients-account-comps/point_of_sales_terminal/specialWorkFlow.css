@@ -128,9 +128,16 @@ h3.workflowHead {
 }
 
 #specialWorkFlow .workFlowSearchCont + div button {
+  padding: 1rem 1.2rem;
+  background-color: rgb(153 191 251 / 40%);
+  border-radius: 55rem;
+  color: #fff;
   width: 33rem;
+  transition: all 0.3s ease;
 }
-
+#specialWorkFlow .workFlowSearchCont + div button:hover {
+  background-color: #3a84f8;
+}
 .roundUpRegister {
   width: 45rem;
   max-height: 90vh;
@@ -174,6 +181,7 @@ h3.workflowHead {
   padding: 0.8rem 1.6rem;
   background-color: rgb(153 191 251 / 40%);
   transition: all 0.3s ease;
+  color: #fff;
 }
 .roundUpClose button#registerClose:hover {
   background-color: #3a84f8;

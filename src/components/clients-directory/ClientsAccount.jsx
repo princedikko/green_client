@@ -101,16 +101,10 @@ export default function ClientsAccount() {
   // const [active, setActive] = useState("done");
 
   function logOut() {
-    dispatch(DispatchLogout());
+    dispatch(Action.logOut());
+    dispatch(ActionHybrid.clearCartAction());
     // redirect("/client_login");
   }
-  const DispatchLogout = () => async (dispatch) => {
-    try {
-      dispatch(Action.logOut());
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   function handleTerminal() {
     navigate("/clients/warehouse_terminal");
@@ -512,6 +506,11 @@ export default function ClientsAccount() {
         {
           title: "Settings",
           hook: "settings",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Users",
+          hook: "user",
           tabs: ["main", "completed", "pending"],
         },
         {
