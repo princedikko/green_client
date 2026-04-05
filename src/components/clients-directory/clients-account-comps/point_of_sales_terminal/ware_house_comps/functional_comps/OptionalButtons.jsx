@@ -2,6 +2,10 @@ import { useReducer, useState } from "react";
 import "./optionalbuttons.css";
 import axios from "axios";
 import { useSnackbar } from "notistack";
+// Sounds
+import SuccessSound from "../../sounds/sold.wav";
+import ErrorSound from "../../sounds/error.wav";
+//
 import Imgs from "../../images/Udupss_girl.png";
 import OnholdTransactions from "../OnholdTransactions";
 import ForumRoundedIcon from "@mui/icons-material/ForumRounded";
@@ -194,13 +198,52 @@ export function SaveDraft({ salesPayload }) {
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    isDraft: true,
-    draftId: "JDRTY3453453",
-    paymentType: "nill",
+    draft: {
+      isDraft: true,
+      draftId: "JDRTY3453453",
+      status: "draft", // "draft" "sent" "accepted" "rejected" "converted"
+    },
+
+    customer: {
+      id: "cust-3344",
+      name: customerName,
+      contact_no: "08012345678",
+      location: "Area One, Abuja Nigeria",
+    },
+
+    warehouse: {
+      warehouseId: "sdr3-1234-sdfg-5678",
+    },
+
     items: cart,
-    discount: discount,
-    customerName: customerName,
-    date: new Date().toISOString(),
+
+    currency: "NGN",
+
+    totals: {
+      subtotal: subTotal,
+      discount: discount,
+      tax: tax,
+      total: subTotal + discount + tax,
+    },
+
+    payment: {
+      type: "", // cash, transfer, card etc
+      details: null,
+    },
+
+    draftedBy: {
+      userId: "user-22",
+      name: "Cashier 1",
+    },
+
+    dates: {
+      createdAt: new Date().toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      }),
+      updatedAt: "",
+    },
   };
 
   async function saveDraft() {
@@ -212,26 +255,31 @@ export function SaveDraft({ salesPayload }) {
         payload,
       );
       if (response?.data?.status === 201) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
+        await new Audio(SuccessSound).play();
+        secondaryFunction();
+        setAlert({
+          message: `${response?.data?.message || "Draft saved successfully"}`,
+          type: "info",
         });
       } else {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "error",
-          autoHideDuration: 3000,
+        await new Audio(ErrorSound).play();
+        secondaryFunction();
+        setAlert({
+          message: response?.data?.message || "Failed to save draft",
+          type: "error",
         });
       }
-
-      console.log("Credit sale response:", response);
+      console.log("Drafteds:", response);
       setLoading(false);
     } catch (error) {
       setLoading(false);
       console.log(error);
 
-      enqueueSnackbar("An error occurred while submitting the cash payment", {
-        variant: "error",
-        autoHideDuration: 3000,
+      await new Audio(ErrorSound).play();
+      secondaryFunction();
+      setAlert({
+        message: "Server error while saving draft",
+        type: "error",
       });
     }
   }
@@ -491,14 +539,18 @@ export function HoldedSales({
     </>
   );
 }
-export function Subscriptions({
-  cart,
-  discount,
-  customerName,
-  setLoading,
-  secondaryFunction,
-}) {
-  const { enqueueSnackbar } = useSnackbar();
+export function PostSubscriptions({ salesPayload }) {
+  const {
+    cart,
+    discount,
+    customerName,
+    setLoading,
+    setOpenModal,
+    secondaryFunction,
+    setAlert,
+    subTotal,
+    tax,
+  } = salesPayload;
 
   const [cashCollected, setCashCollected] = useState(0);
   const grandTotal = cart?.reduce(
@@ -511,17 +563,42 @@ export function Subscriptions({
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    subscriptionId: "JDRTY3453453",
+    subscriptionId: "SE-000145", // invoice or receipt ID
+    sale: {
+      customer: {
+        id: "cust-3344",
+        name: customerName,
+        location: "Area One, Abuja Nigeria",
+      },
 
-    customer: {
-      name: customerName,
-    },
-    products: {
       items: cart,
-      discount: discount,
-    },
 
-    paymentType: "cash payment",
+      totals: {
+        subtotal: subTotal,
+        discount: discount,
+        tax: tax,
+        total: subTotal + discount + tax,
+      },
+      saveBy: {
+        userId: "user-22",
+        name: "Yasmeen",
+      },
+      dates: {
+        createdAt: new Date().toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        }),
+        updatedAt: "",
+      },
+    },
+    subscription: {
+      subscription_interval: "monthly",
+      repetitions: 12,
+      generated_invoices: 3,
+      last_generated: "05 April 2026",
+      upcoming_invoice: "05 May 2026",
+    },
   };
 
   async function postSubscribe() {
@@ -533,14 +610,18 @@ export function Subscriptions({
         payload,
       );
       if (response?.data?.status === 201) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
+        await new Audio(SuccessSound).play();
+        secondaryFunction();
+        setAlert({
+          message: `${response?.data?.message || "Subscription processed successfully"}`,
+          type: "success",
         });
       } else {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "error",
-          autoHideDuration: 3000,
+        await new Audio(ErrorSound).play();
+        secondaryFunction();
+        setAlert({
+          message: response?.data?.message || "Failed to process subscription",
+          type: "error",
         });
       }
 
@@ -550,9 +631,11 @@ export function Subscriptions({
       setLoading(false);
       console.log(error);
 
-      enqueueSnackbar("An error occurred while submitting the cash payment", {
-        variant: "error",
-        autoHideDuration: 3000,
+      await new Audio(ErrorSound).play();
+      secondaryFunction();
+      setAlert({
+        message: "Server error while processing subscription",
+        type: "error",
       });
     }
   }

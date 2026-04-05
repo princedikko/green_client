@@ -67,7 +67,7 @@ import {
   SaveDraft,
   Discount,
   HoldedSales,
-  Subscriptions,
+  PostSubscriptions,
   AddContacts,
 } from "./ware_house_comps/functional_comps/OptionalButtons.jsx";
 
@@ -314,32 +314,11 @@ function WarehouseTerminal() {
       case "debit":
         return <Debit salesPayload={salePayloads} />;
       case "multi_pay":
-        return (
-          <MultiPay
-            cart={cart}
-            customerName={customer}
-            setLoading={setLoading}
-            secondaryFunction={secondaryFunction}
-          />
-        );
+        return <MultiPay salesPayload={salePayloads} />;
       case "credit_sale":
-        return (
-          <CreditSale
-            cart={cart}
-            customerName={customer}
-            setLoading={setLoading}
-            secondaryFunction={secondaryFunction}
-          />
-        );
+        return <CreditSale salesPayload={salePayloads} />;
       case "quotation":
-        return (
-          <Quotation
-            cart={cart}
-            customerName={customer}
-            setLoading={setLoading}
-            secondaryFunction={secondaryFunction}
-          />
-        );
+        return <Quotation salesPayload={salePayloads} />;
       case "add-new-contact":
         return (
           <AddContacts
@@ -393,14 +372,7 @@ function WarehouseTerminal() {
           />
         );
       case "subscription":
-        return (
-          <Subscriptions
-            cart={cart}
-            customerName={customer}
-            setLoading={setLoading}
-            secondaryFunction={secondaryFunction}
-          />
-        );
+        return <PostSubscriptions salesPayload={salePayloads} />;
       case "transactions":
         return <TransactionLog />;
       case "payments":
@@ -640,36 +612,37 @@ function WarehouseTerminal() {
 
                       {filteredProducts.length > 0 && (
                         <ul className="searched-products-dropdown">
-                          {filteredProducts.map((product) => {
+                          {filteredProducts.map((product, index) => {
                             const intoCart = {
                               saleId: `SALE-${Math.floor(Math.random() * 1000000)}`,
-
                               sku: product.sku,
                               name: product.name,
-
                               warehouseId: product.warehouses[0].warehouseId,
-
-                              sellingQuantity: product.stock.soldQuantity,
+                              soldQuantity: product.stock.sellingQuantity,
                               unit: product.units?.baseUnit,
-
                               pricing: {
                                 costPrice: product.pricing.costPrice,
                                 sellingPrice: product.pricing.sellingPrice,
                                 discount: 0,
                                 taxRate: product.pricing.taxRate,
                               },
-
                               batch: {
-                                batchNo: product.batches[0]?.batchNo,
+                                batchNo: product.batch?.batches[0]?.batchNo,
+                                quantity: product.batch?.batches[0]?.quantity,
                                 expiryDate: product.expiryDate,
                               },
-
-                              updatedAt: new Date(),
+                              createdAt: new Date().toLocaleDateString(
+                                "en-GB",
+                                {
+                                  day: "2-digit",
+                                  month: "long",
+                                  year: "numeric",
+                                },
+                              ),
                             };
-
                             return (
                               <li
-                                key={product.productId}
+                                key={index}
                                 onClick={() => {
                                   addToCart(intoCart);
                                   setFilteredProducts([]);
@@ -1308,23 +1281,50 @@ function Products({ handleModalSwitch, products, addToCart, clearCart }) {
     if (filteredProducts.length > 0) {
       return (
         <div className="items_product_cont g g3 space1">
-          {filteredProducts.map((item, index) => (
-            <figure
-              onClick={() => {
-                addToCart(item);
+          {filteredProducts.map((product, index) => {
+            const intoCart = {
+              saleId: `SALE-${Math.floor(Math.random() * 1000000)}`,
+              sku: product.sku,
+              name: product.name,
+              warehouseId: product.warehouses[0].warehouseId,
+              soldQuantity: product.stock.sellingQuantity,
+              unit: product.units?.baseUnit,
+              pricing: {
+                costPrice: product.pricing.costPrice,
+                sellingPrice: product.pricing.sellingPrice,
+                discount: 0,
+                taxRate: product.pricing.taxRate,
+              },
+              batch: {
+                batchNo: product.batch?.batches[0]?.batchNo,
+                quantity: product.batch?.batches[0]?.quantity,
+                expiryDate: product.expiryDate,
+              },
+              createdAt: new Date().toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+              }),
+            };
 
-                setFilteredProducts("");
-                setSearchTerm("");
-              }}
-              key={index}
-              className="productsCardWH fx-cl space1 fx-jb"
-            >
-              <h4>{item.name}</h4>
-              <div>
-                <p>₦{item?.pricing?.sellingPrice}</p>
-              </div>
-            </figure>
-          ))}
+            return (
+              <figure
+                onClick={() => {
+                  addToCart(intoCart);
+
+                  setFilteredProducts("");
+                  setSearchTerm("");
+                }}
+                key={index}
+                className="productsCardWH fx-cl space1 fx-jb"
+              >
+                <h4>{product.name}</h4>
+                <div>
+                  <p>₦{product?.pricing?.sellingPrice}</p>
+                </div>
+              </figure>
+            );
+          })}
         </div>
       );
     } else if (searchTerm.trim() !== "") {
@@ -1332,18 +1332,42 @@ function Products({ handleModalSwitch, products, addToCart, clearCart }) {
     } else {
       return (
         <div className="items_product_cont g g3 space1">
-          {products?.map((item, index) => {
+          {products?.map((product, index) => {
+            const intoCart = {
+              saleId: `SALE-${Math.floor(Math.random() * 1000000)}`,
+              sku: product.sku,
+              name: product.name,
+              warehouseId: product.warehouses[0].warehouseId,
+              soldQuantity: product.stock.sellingQuantity,
+              unit: product.units?.baseUnit,
+              pricing: {
+                costPrice: product.pricing.costPrice,
+                sellingPrice: product.pricing.sellingPrice,
+                discount: 0,
+                taxRate: product.pricing.taxRate,
+              },
+              batch: {
+                batchNo: product.batch?.batches[0]?.batchNo,
+                quantity: product.batch?.batches[0]?.quantity,
+                expiryDate: product.expiryDate,
+              },
+              createdAt: new Date().toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+              }),
+            };
             return (
               <figure
                 onClick={() => {
-                  addToCart(item);
+                  addToCart(intoCart);
                 }}
                 key={index}
                 className="productsCardWH fx-cl space1 fx-jb"
               >
-                <h4>{item.name}</h4>
+                <h4>{product.name}</h4>
                 <div>
-                  <p>₦{item?.pricing?.sellingPrice}</p>
+                  <p>₦{product?.pricing?.sellingPrice}</p>
                 </div>
               </figure>
             );
@@ -1367,27 +1391,6 @@ function Products({ handleModalSwitch, products, addToCart, clearCart }) {
               value={searchTerm}
               onChange={handleSearch}
             />
-
-            {/* {filteredProducts.length > 0 && (
-              <ul className="searched-products-dropdown">
-                {filteredProducts.map((product) => (
-                  <li
-                    key={product.productId}
-                    onClick={() => {
-                      addToCart(product);
-                      setFilteredProducts("");
-                      setSearchTerm("");
-                    }}
-                    style={{
-                      padding: "8px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    {product.name} — {product.barcode}
-                  </li>
-                ))}
-              </ul>
-            )} */}
           </div>
           {/* <button>
             <SearchIcon fontSize="large" />

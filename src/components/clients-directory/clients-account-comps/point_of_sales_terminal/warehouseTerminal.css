@@ -351,9 +351,8 @@ div.warehouseHubOperations button.cashPaid:hover {
 }
 
 #largeView {
-  background-color: #3a84f8;
   background: linear-gradient(257deg, #26bf89, #3a8ff8);
-  /* background-image: url("./images/large.png"); */
+  background-image: url("./images/large.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: bottom;

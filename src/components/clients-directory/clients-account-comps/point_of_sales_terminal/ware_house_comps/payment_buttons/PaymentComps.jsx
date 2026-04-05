@@ -72,21 +72,21 @@ export function CashPayment({ salesPayload }) {
         payload,
       );
       if (response?.data?.status === 201) {
-        new Audio(SuccessSound).play();
+        await new Audio(SuccessSound).play();
         secondaryFunction();
         setAlert({
           message: `Payment received! A total of ${cart.length} items have been successfully sold using Cash.`,
           type: "success",
         });
       } else {
-        new Audio(ErrorSound).play();
+        await new Audio(ErrorSound).play();
         setAlert({ message: "Failed to process cash payment.", type: "error" });
       }
 
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      new Audio(ErrorSound).play();
+      await new Audio(ErrorSound).play();
       setAlert({
         message: "An error occurred while submitting the cash payment.",
         type: "error",
@@ -182,17 +182,18 @@ export function CashPayment({ salesPayload }) {
   );
 }
 export function CreditSale({ salesPayload }) {
-  const { enqueueSnackbar } = useSnackbar();
   const {
     cart,
     discount,
     customerName,
     setLoading,
+    setOpenModal,
     secondaryFunction,
     setAlert,
     subTotal,
     tax,
   } = salesPayload;
+
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
@@ -203,16 +204,17 @@ export function CreditSale({ salesPayload }) {
     customer_name: customerName,
     soldItems: cart,
     totals: {
+      discount: discount,
       subtotal: subTotal,
       taxAmount: tax,
-      total: subTotal + tax,
+      total: subTotal + discount + tax,
     },
     soldBy: {
       userId: "user-22",
       name: "Yasmeen",
     },
     payment: {
-      method: "cash", // cash, card, transfer, wallet
+      method: "credit", // cash, card, transfer, wallet
       status: "paid",
     },
     status: "completed", // completed, refunded, cancelled
@@ -223,25 +225,24 @@ export function CreditSale({ salesPayload }) {
     }),
     updatedAt: "",
   };
-
   async function executeCreditSale() {
     try {
       setLoading(true);
-      secondaryFunction();
+      setOpenModal(false);
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/point_of_sales/payment/${"credit-sale"}}`,
         payload,
       );
       if (response?.data?.status === 201) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
+        await new Audio(SuccessSound).play();
+        secondaryFunction();
+        setAlert({
+          message: `Payment received! A total of ${cart.length} items have been successfully sold using Cash.`,
+          type: "success",
         });
       } else {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
+        await new Audio(ErrorSound).play();
+        setAlert({ message: "Failed to process cash payment.", type: "error" });
       }
 
       console.log("Add product response:", response);
@@ -250,9 +251,10 @@ export function CreditSale({ salesPayload }) {
       setLoading(false);
       console.log(error);
 
-      enqueueSnackbar("An error occurred while submitting the cash payment", {
-        variant: "error",
-        autoHideDuration: 3000,
+      await new Audio(ErrorSound).play();
+      setAlert({
+        message: "An error occurred while submitting the cash payment.",
+        type: "error",
       });
     }
   }
@@ -284,17 +286,18 @@ export function CreditSale({ salesPayload }) {
   );
 }
 export function MultiPay({ salesPayload }) {
-  const { enqueueSnackbar } = useSnackbar();
   const {
     cart,
     discount,
     customerName,
     setLoading,
+    setOpenModal,
     secondaryFunction,
     setAlert,
     subTotal,
     tax,
   } = salesPayload;
+
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
@@ -305,16 +308,18 @@ export function MultiPay({ salesPayload }) {
     customer_name: customerName,
     soldItems: cart,
     totals: {
-      subtotal: 4100,
-      taxAmount: 307.5,
-      total: 4407.5,
+      discount: discount,
+      subtotal: subTotal,
+      taxAmount: tax,
+      total: subTotal + discount + tax,
     },
     soldBy: {
       userId: "user-22",
-      name: "Cashier 1",
+      name: "Yasmeen",
     },
     payment: {
-      method: "cash", // cash, card, transfer, wallet
+      method: "multiple", // cash, card, transfer, wallet
+      payments: [],
       status: "paid",
     },
     status: "completed", // completed, refunded, cancelled
@@ -323,30 +328,27 @@ export function MultiPay({ salesPayload }) {
       month: "long",
       year: "numeric",
     }),
-    updatedAt: new Date().toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    }),
+    updatedAt: "",
   };
+
   async function executeMultiPaySale() {
     try {
       setLoading(true);
-      secondaryFunction();
+      setOpenModal(false);
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/point_of_sales/payment/${"multi-pay-sale"}}`,
         payload,
       );
       if (response?.data?.status === 201) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
+        await new Audio(SuccessSound).play();
+        secondaryFunction();
+        setAlert({
+          message: `Payment received! A total of ${cart.length} items have been successfully sold using Cash.`,
+          type: "success",
         });
       } else {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
+        await new Audio(ErrorSound).play();
+        setAlert({ message: "Failed to process cash payment.", type: "error" });
       }
 
       console.log("Add product response:", response);
@@ -355,9 +357,10 @@ export function MultiPay({ salesPayload }) {
       setLoading(false);
       console.log(error);
 
-      enqueueSnackbar("An error occurred while submitting the cash payment", {
-        variant: "error",
-        autoHideDuration: 3000,
+      await new Audio(ErrorSound).play();
+      setAlert({
+        message: "An error occurred while submitting the cash payment.",
+        type: "error",
       });
     }
   }
@@ -372,11 +375,13 @@ export function MultiPay({ salesPayload }) {
 }
 export function Debit({ salesPayload }) {
   const { enqueueSnackbar } = useSnackbar();
+
   const {
     cart,
     discount,
     customerName,
     setLoading,
+    setOpenModal,
     secondaryFunction,
     setAlert,
     subTotal,
@@ -388,29 +393,52 @@ export function Debit({ salesPayload }) {
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    paymentType: "debit payment",
-    items: cart,
-    discount: discount,
-    customerName: customerName,
+    saleId: "SALE-000145", // invoice or receipt ID
+    customerId: "cust-3344",
+    customer_name: customerName,
+    soldItems: cart,
+    totals: {
+      discount: discount,
+      subtotal: subTotal,
+      taxAmount: tax,
+      total: subTotal + discount + tax,
+    },
+    soldBy: {
+      userId: "user-22",
+      name: "Yasmeen",
+    },
+    payment: {
+      method: "debit", // cash, card, transfer, wallet
+      debitInfo: {},
+      status: "paid",
+    },
+    status: "completed", // completed, refunded, cancelled
+    createdAt: new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }),
+    updatedAt: "",
   };
+
   async function executeDebitPay() {
     try {
       setLoading(true);
-      secondaryFunction();
+      setOpenModal(false);
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/point_of_sales/payment/${"debit-pay"}}`,
         payload,
       );
       if (response?.data?.status === 201) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
+        await new Audio(SuccessSound).play();
+        secondaryFunction();
+        setAlert({
+          message: `Payment received! A total of ${cart.length} items have been successfully sold using Cash.`,
+          type: "success",
         });
       } else {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
+        await new Audio(ErrorSound).play();
+        setAlert({ message: "Failed to process cash payment.", type: "error" });
       }
 
       console.log("Add product response:", response);
@@ -419,9 +447,10 @@ export function Debit({ salesPayload }) {
       setLoading(false);
       console.log(error);
 
-      enqueueSnackbar("An error occurred while submitting the cash payment", {
-        variant: "error",
-        autoHideDuration: 3000,
+      await new Audio(ErrorSound).play();
+      setAlert({
+        message: "An error occurred while submitting the cash payment.",
+        type: "error",
       });
     }
   }
@@ -433,11 +462,13 @@ export function Debit({ salesPayload }) {
 }
 export function Account({ salesPayload }) {
   const { enqueueSnackbar } = useSnackbar();
+
   const {
     cart,
     discount,
     customerName,
     setLoading,
+    setOpenModal,
     secondaryFunction,
     setAlert,
     subTotal,
@@ -449,29 +480,52 @@ export function Account({ salesPayload }) {
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    paymentType: "account payment",
-    items: cart,
-    discount: discount,
-    customerName: customerName,
+    saleId: "SALE-000145", // invoice or receipt ID
+    customerId: "cust-3344",
+    customer_name: customerName,
+    soldItems: cart,
+    totals: {
+      discount: discount,
+      subtotal: subTotal,
+      taxAmount: tax,
+      total: subTotal + discount + tax,
+    },
+    soldBy: {
+      userId: "user-22",
+      name: "Yasmeen",
+    },
+    payment: {
+      method: "account", // cash, card, transfer, wallet
+      accountDetail: {},
+      status: "paid",
+    },
+    status: "completed", // completed, refunded, cancelled
+    createdAt: new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }),
+    updatedAt: "",
   };
+
   async function executeAcctPay() {
     try {
       setLoading(true);
-      secondaryFunction();
+      setOpenModal(false);
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/point_of_sales/payment/${"account-transfer"}}`,
         payload,
       );
       if (response?.data?.status === 201) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
+        await new Audio(SuccessSound).play();
+        secondaryFunction();
+        setAlert({
+          message: `Payment received! A total of ${cart.length} items have been successfully sold using Cash.`,
+          type: "success",
         });
       } else {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
+        await new Audio(ErrorSound).play();
+        setAlert({ message: "Failed to process cash payment.", type: "error" });
       }
 
       console.log("Add product response:", response);
@@ -480,9 +534,10 @@ export function Account({ salesPayload }) {
       setLoading(false);
       console.log(error);
 
-      enqueueSnackbar("An error occurred while submitting the cash payment", {
-        variant: "error",
-        autoHideDuration: 3000,
+      await new Audio(ErrorSound).play();
+      setAlert({
+        message: "An error occurred while submitting the cash payment.",
+        type: "error",
       });
     }
   }
@@ -504,6 +559,7 @@ export function Check({ salesPayload }) {
     discount,
     customerName,
     setLoading,
+    setOpenModal,
     secondaryFunction,
     setAlert,
     subTotal,
@@ -515,29 +571,52 @@ export function Check({ salesPayload }) {
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    paymentType: "check payment",
-    items: cart,
-    discount: discount,
-    customerName: customerName,
+    saleId: "SALE-000145", // invoice or receipt ID
+    customerId: "cust-3344",
+    customer_name: customerName,
+    soldItems: cart,
+    totals: {
+      discount: discount,
+      subtotal: subTotal,
+      taxAmount: tax,
+      total: subTotal + discount + tax,
+    },
+    soldBy: {
+      userId: "user-22",
+      name: "Yasmeen",
+    },
+    payment: {
+      method: "check", // cash, card, transfer, wallet
+      details: {},
+      status: "paid",
+    },
+    status: "completed", // completed, refunded, cancelled
+    createdAt: new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }),
+    updatedAt: "",
   };
+
   async function executeCheckPay() {
     try {
       setLoading(true);
-      secondaryFunction();
+      setOpenModal(false);
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/point_of_sales/payment/${"check-payment"}}`,
         payload,
       );
       if (response?.data?.status === 201) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
+        await new Audio(SuccessSound).play();
+        secondaryFunction();
+        setAlert({
+          message: `Payment received! A total of ${cart.length} items have been successfully sold using Cash.`,
+          type: "success",
         });
       } else {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
+        await new Audio(ErrorSound).play();
+        setAlert({ message: "Failed to process cash payment.", type: "error" });
       }
 
       console.log("Add product response:", response);
@@ -546,9 +625,10 @@ export function Check({ salesPayload }) {
       setLoading(false);
       console.log(error);
 
-      enqueueSnackbar("An error occurred while submitting the cash payment", {
-        variant: "error",
-        autoHideDuration: 3000,
+      await new Audio(ErrorSound).play();
+      setAlert({
+        message: "An error occurred while submitting the cash payment.",
+        type: "error",
       });
     }
   }
@@ -563,45 +643,69 @@ export function Check({ salesPayload }) {
   );
 }
 export function Gifting({ salesPayload }) {
-  const { enqueueSnackbar } = useSnackbar();
   const {
     cart,
     discount,
     customerName,
     setLoading,
+    setOpenModal,
     secondaryFunction,
     setAlert,
     subTotal,
     tax,
   } = salesPayload;
+
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    paymentType: "gift",
-    items: cart,
-    discount: discount,
-    customerName: customerName,
+    saleId: "SALE-000145", // invoice or receipt ID
+    customerId: "cust-3344",
+    customer_name: customerName,
+    soldItems: cart,
+    totals: {
+      discount: discount,
+      subtotal: subTotal,
+      taxAmount: tax,
+      total: subTotal + discount + tax,
+    },
+    soldBy: {
+      userId: "user-22",
+      name: "Yasmeen",
+    },
+    payment: {
+      method: "gift", // cash, card, transfer, wallet
+      giftInto: {},
+      status: "paid",
+    },
+    status: "completed", // completed, refunded, cancelled
+    createdAt: new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }),
+    updatedAt: "",
   };
+
   async function executeGift() {
     try {
       setLoading(true);
-      secondaryFunction();
+      setOpenModal(false);
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/point_of_sales/payment/${"gift"}}`,
         payload,
       );
       if (response?.data?.status === 201) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
+        await new Audio(SuccessSound).play();
+        secondaryFunction();
+        setAlert({
+          message: `Payment received! A total of ${cart.length} items have been successfully sold using Cash.`,
+          type: "success",
         });
       } else {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
+        await new Audio(ErrorSound).play();
+        setAlert({ message: "Failed to process cash payment.", type: "error" });
       }
 
       console.log("Add product response:", response);
@@ -610,9 +714,10 @@ export function Gifting({ salesPayload }) {
       setLoading(false);
       console.log(error);
 
-      enqueueSnackbar("An error occurred while submitting the gift", {
-        variant: "error",
-        autoHideDuration: 3000,
+      await new Audio(ErrorSound).play();
+      setAlert({
+        message: "An error occurred while submitting the cash payment.",
+        type: "error",
       });
     }
   }
@@ -669,17 +774,50 @@ export function PaymentLogs({ handleOnHold }) {
     </div>
   );
 }
-export function Shipping({ handleOnHold }) {
-  const { enqueueSnackbar } = useSnackbar();
-  const [loading, setLoading] = useState(false);
+export function Shipping({ salesPayload }) {
+  const {
+    cart,
+    discount,
+    customerName,
+    setLoading,
+    setOpenModal,
+    secondaryFunction,
+    setAlert,
+    subTotal,
+    tax,
+  } = salesPayload;
 
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    paymentType: "cash payment",
-    name: "products array",
+    saleId: "SALE-000145", // invoice or receipt ID
+    customerId: "cust-3344",
+    customer_name: customerName,
+    soldItems: cart,
+    totals: {
+      shippingFee: 3242,
+      discount: discount,
+      subtotal: subTotal,
+      taxAmount: tax,
+      total: subTotal + discount + tax,
+    },
+    soldBy: {
+      userId: "user-22",
+      name: "Yasmeen",
+    },
+    payment: {
+      method: "cash", // cash, card, transfer, wallet
+      status: "paid",
+    },
+    status: "completed", // completed, refunded, cancelled
+    createdAt: new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }),
+    updatedAt: "",
   };
 
   async function executeShipping() {
@@ -690,13 +828,16 @@ export function Shipping({ handleOnHold }) {
         payload,
       );
       if (response?.data?.status === 200) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
+        await new Audio(SuccessSound).play();
+        secondaryFunction();
+        setAlert({
+          message: `Payment received! A total of ${cart.length} items have been successfully sold using Cash.`,
+          type: "success",
         });
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
-          variant: "error",
-          autoHideDuration: 3000,
+        await new Audio(ErrorSound).play();
+        setAlert({
+          message: "An error occurred while adding shippings.",
+          type: "error",
         });
       }
 
@@ -705,23 +846,15 @@ export function Shipping({ handleOnHold }) {
       setLoading(false);
       console.log(error);
 
-      enqueueSnackbar("Server error while fetching products", {
-        variant: "error",
-        autoHideDuration: 3000,
+      await new Audio(ErrorSound).play();
+      setAlert({
+        message: "An error occurred while submitting the cash payment.",
+        type: "error",
       });
     }
   }
   // -------------------------------------------------------------------
 
-  function handleSaveDraft() {
-    enqueueSnackbar(`Draft added successfully`, {
-      variant: "success",
-      autoHideDuration: 3000,
-      ContentProps: {
-        style: { fontSize: "16px", fontWeight: "bold" },
-      },
-    });
-  }
   return (
     <div
       className="OpBtnCont fx-cl space2"

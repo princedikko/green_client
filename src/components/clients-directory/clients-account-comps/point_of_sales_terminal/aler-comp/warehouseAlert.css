@@ -26,11 +26,11 @@
 }
 
 .warehouse-alert.error {
-  background: #d32f2f;
+  background: #f85a38;
 }
 
 .warehouse-alert.warning {
-  background: #ed6c02;
+  background: #f08731;
 }
 .warehouse-alert button {
   color: #fff;

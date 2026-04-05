@@ -44,10 +44,10 @@ export default function SellReturn({ breadcrumbs }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [openLimit, setOpenLimit] = useState(false);
-  const totalPages = Math.ceil(salesData.length / rowsPerPage);
+  const totalPages = Math.ceil(sellreturnData?.length / rowsPerPage);
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
-  const currentRows = salesData.slice(start, end);
+  const currentRows = sellreturnData?.slice(start, end);
 
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
@@ -58,40 +58,31 @@ export default function SellReturn({ breadcrumbs }) {
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    sku: "MILK-PEAK-001",
-    barcode: "6224001234567", // EAN / UPC
-    name: "Peak Milk 170g",
-    brand: "Peak",
-    category: {
-      name: "Dairy",
+    sale_id: "66492e5ac8d21a12",
+    customer: {
+      customer_id: "664812e5ac8d21a12",
+      name: "Abdullahi Musa",
+      phone: "08034567890",
     },
-
-    unit: "tin",
-    costPrice: 820,
-    sellingPrice: 950,
-    taxRate: 2.5, // VAT %
-
-    stock: {
-      quantity: 245,
-      minLevel: 20,
-      reorderLevel: 50,
-    },
-
-    batchTracking: true,
-    expiryTracking: true,
-
-    batches: [
+    returned_items: [
       {
-        batchNo: "PK0124A",
-        costPrice: 800,
+        product_id: "664812e5ac8d21a44",
+        product_name: "Samsung Charger",
+        batch_no: "BATCH123",
+        expiry_date: "2025-12-31",
+        quantity_returned: 1,
+        selling_price: 3500,
+        subtotal: 3500,
+        reason: "Defective",
       },
     ],
-
-    supplier: {
-      name: "UAC Foods",
+    total_return_amount: 3500,
+    refund_method: "cash",
+    processed_by: {
+      user_id: "66481111c8d21a99",
+      name: "Admin",
     },
-
-    status: "ACTIVE",
+    return_date: "2026-04-05",
   };
 
   async function acceptSellReturn() {
@@ -126,14 +117,14 @@ export default function SellReturn({ breadcrumbs }) {
     }
   }
 
-  const apiGetSales = async () => {
+  const fetSellReturns = async () => {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/546asdf4a6s4df54asdf78ew7r/sell-returns`,
       )
       .then((response) => {
-        sellreturnData = response.data.data;
+        sellreturnData = response.data.sellReturns;
         console.log("sellreturnData: ", response);
         if (response.data.status === 201) {
           setLoading(false);
@@ -291,7 +282,7 @@ export default function SellReturn({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -299,10 +290,10 @@ export default function SellReturn({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -318,7 +309,7 @@ export default function SellReturn({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="sellreturnCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="sellreturnGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -349,7 +340,7 @@ export default function SellReturn({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -370,12 +361,12 @@ export default function SellReturn({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {sellreturnData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        sellreturnData?.length,
+                      )} of ${sellreturnData?.length} entries`}
                 </span>
               </span>
               <div className="sellreturn_entries-info fx-ac spacem">
@@ -532,7 +523,7 @@ export default function SellReturn({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -540,10 +531,10 @@ export default function SellReturn({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -559,7 +550,7 @@ export default function SellReturn({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="sellreturnCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="sellreturnGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -590,7 +581,7 @@ export default function SellReturn({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -611,12 +602,12 @@ export default function SellReturn({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {sellreturnData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        sellreturnData?.length,
+                      )} of ${sellreturnData?.length} entries`}
                 </span>
               </span>
               <div className="sellreturn_entries-info fx-ac spacem">
@@ -724,7 +715,7 @@ export default function SellReturn({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -732,10 +723,10 @@ export default function SellReturn({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -751,7 +742,7 @@ export default function SellReturn({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="sellreturnCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="sellreturnGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -782,7 +773,7 @@ export default function SellReturn({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -803,12 +794,12 @@ export default function SellReturn({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {sellreturnData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        sellreturnData?.length,
+                      )} of ${sellreturnData?.length} entries`}
                 </span>
               </span>
               <div className="sellreturn_entries-info fx-ac spacem">
@@ -889,7 +880,7 @@ export default function SellReturn({ breadcrumbs }) {
   }
 
   useEffect(() => {
-    apiGetSales();
+    fetSellReturns();
   }, []);
   return (
     <div className="sellreturnCompContainer">

@@ -885,7 +885,7 @@ export default function Sales({ breadcrumbs }) {
                   currentTab == "completed" && "active"
                 }`}
               >
-                <span>Today Sales</span>
+                <span>Credit Sales</span>
                 <figure>45</figure>
               </li>
               <li

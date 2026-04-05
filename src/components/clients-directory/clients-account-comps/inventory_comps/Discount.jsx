@@ -59,8 +59,16 @@ export default function Discount({ breadcrumbs }) {
   const payload = {
     discountId: "DISC-00021",
     name: "Ramadan Promo",
-    startsAt: new Date("2026-03-01"),
-    endsAt: new Date("2026-03-30"),
+    startsAt: new Date("2026-01-20").toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }),
+    endsAt: new Date("2026-03-30").toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }),
     discountType: "percentage",
     discountAmount: 10,
     priority: 1,
@@ -69,8 +77,12 @@ export default function Discount({ breadcrumbs }) {
     products: [{ productId: "prod-101", name: "Peak Milk 170g" }],
     location: { warehouseId: "wh-001", name: "Main Store" },
     active: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }),
+    updatedAt: "",
   };
 
   async function saveDiscount() {
@@ -91,7 +103,6 @@ export default function Discount({ breadcrumbs }) {
           autoHideDuration: 3000,
         });
       }
-
       console.log("Quotation response:", response);
       setLoading(false);
     } catch (error) {
@@ -114,7 +125,6 @@ export default function Discount({ breadcrumbs }) {
       )
       .then((response) => {
         discountData = response.data.discountData;
-        console.log("discountData: ", response);
         if (response.data.status === 201) {
           setLoading(false);
           enqueueSnackbar(`${response.data.message}`, {
@@ -134,6 +144,7 @@ export default function Discount({ breadcrumbs }) {
           });
           setLoading(false);
         }
+        console.log("Fetched discount data:", response.data.discountData);
       })
       .catch((error) => {
         enqueueSnackbar(`error: something went wrong!`, {
@@ -307,7 +318,7 @@ export default function Discount({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="discount2026CardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="discount2026GridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -338,7 +349,7 @@ export default function Discount({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount ? item.totalAmount?.toLocaleString() : "0"}
                   <small> / sale</small>
                 </div>
 
@@ -521,7 +532,7 @@ export default function Discount({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -529,10 +540,10 @@ export default function Discount({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -548,7 +559,7 @@ export default function Discount({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="discount2026CardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="discount2026GridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -579,7 +590,7 @@ export default function Discount({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -713,7 +724,7 @@ export default function Discount({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -721,10 +732,10 @@ export default function Discount({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -740,7 +751,7 @@ export default function Discount({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="discount2026CardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="discount2026GridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -771,7 +782,7 @@ export default function Discount({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 

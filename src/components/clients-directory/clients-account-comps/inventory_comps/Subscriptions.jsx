@@ -46,10 +46,10 @@ export default function Subscriptions({ breadcrumbs }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [openLimit, setOpenLimit] = useState(false);
-  const totalPages = Math.ceil(salesData.length / rowsPerPage);
+  const totalPages = Math.ceil(subscriptionsData?.length / rowsPerPage);
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
-  const currentRows = salesData.slice(start, end);
+  const currentRows = subscriptionsData?.slice(start, end);
 
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
@@ -59,10 +59,10 @@ export default function Subscriptions({ breadcrumbs }) {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/691a663dc9f64e6b9b8be48e/get_subscriptions`,
       )
       .then((response) => {
-        subscriptionsData = response.data.data;
+        subscriptionsData = response.data.subsData;
         console.log("subscriptionsData: ", response);
         if (response.data.status === 201) {
           setLoading(false);
@@ -152,40 +152,6 @@ export default function Subscriptions({ breadcrumbs }) {
     }
   }
 
-  const printElement = (id) => {
-    const element = document.getElementById(id);
-    if (!element) return;
-
-    const printWindow = window.open("", "_blank", "width=900,height=650");
-
-    printWindow.document.write(`
-    <html>
-      <head>
-        <title>Print</title>
-        <style>
-          body { font-family: Arial; padding: 20px; }
-        </style>
-      </head>
-
-      <body>
-        ${element.innerHTML}
-
-        <script>
-          window.onload = function () {
-            window.print();
-
-            // close after print dialog finishes
-            window.onafterprint = function () {
-              window.close();
-            };
-          };
-        </script>
-      </body>
-    </html>
-  `);
-
-    printWindow.document.close();
-  };
   // //////////////////////////////////////////////////////////////////////////
   // COMPONENTS OF subscription PAGE
   // //////////////////////////////////////////////////////////////////////////
@@ -207,36 +173,35 @@ export default function Subscriptions({ breadcrumbs }) {
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
                 <th>Date</th>
-                <th>Action</th>
+                <th>Subscription No.</th>
+                <th>Customer name</th>
+                <th>Location</th>
+                <th>Subscription Interval</th>
+                <th>No. of Repetitions</th>
+                <th>Generated Invoices</th>
+                <th>Last generated</th>
+                <th>Upcoming invoice</th>
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
-                  <td>
-                    <strong>{item.customerName}</strong>
-                  </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
-                  <td>
-                    <button>{item.action}</button>
-                  </td>
-                </tr>
-              ))}
+              <tbody className="fx-cl spacem">
+                {currentRows?.map((item, index) => (
+                  <tr key={item.subscriptionId}>
+                    <td>{item.sale.dates.createdAt}</td>
+                    <td>{item.subscriptionId}</td>
+                    <td>
+                      <strong>{item.sale.customer.name}</strong>
+                    </td>
+                    <td>{item.sale.customer.location}</td>
+                    <td>{item.subscription.subscription_interval}</td>
+                    <td>{item.subscription.repetitions}</td>
+                    <td>{item.subscription.generated_invoices}</td>
+                    <td>{item.subscription.last_generated}</td>
+                    <td>{item.subscription.upcoming_invoice}</td>
+                  </tr>
+                ))}
+              </tbody>
             </tbody>
           </table>
         </div>
@@ -246,7 +211,7 @@ export default function Subscriptions({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="subscriptionCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="subscriptionGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -277,7 +242,7 @@ export default function Subscriptions({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -298,12 +263,12 @@ export default function Subscriptions({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {subscriptionsData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        subscriptionsData?.length,
+                      )} of ${subscriptionsData?.length} entries`}
                 </span>
               </span>
               <div className="subscription_entries-info fx-ac spacem">
@@ -460,7 +425,7 @@ export default function Subscriptions({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -468,10 +433,10 @@ export default function Subscriptions({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -487,7 +452,7 @@ export default function Subscriptions({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="subscriptionCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="subscriptionGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -518,7 +483,7 @@ export default function Subscriptions({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -539,12 +504,12 @@ export default function Subscriptions({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {subscriptionsData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        subscriptionsData?.length,
+                      )} of ${subscriptionsData?.length} entries`}
                 </span>
               </span>
               <div className="subscription_entries-info fx-ac spacem">
@@ -652,7 +617,7 @@ export default function Subscriptions({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -660,10 +625,10 @@ export default function Subscriptions({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -679,7 +644,7 @@ export default function Subscriptions({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="subscriptionCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="subscriptionGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -710,7 +675,7 @@ export default function Subscriptions({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -731,12 +696,12 @@ export default function Subscriptions({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {subscriptionsData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        subscriptionsData?.length,
+                      )} of ${subscriptionsData?.length} entries`}
                 </span>
               </span>
               <div className="subscription_entries-info fx-ac spacem">
@@ -900,8 +865,8 @@ export default function Subscriptions({ breadcrumbs }) {
                 currentTab == "completed" && "active"
               }`}
             >
-              <span>Today</span>
-              <figure>45</figure>
+              <span>In-actives</span>
+              <figure>24</figure>
             </li>
             <li
               onClick={() => handleCurrentTAB("progress")}
@@ -909,7 +874,7 @@ export default function Subscriptions({ breadcrumbs }) {
                 currentTab == "progress" && "active"
               }`}
             >
-              <span>This Week</span>
+              <span>Manage Subscriptions</span>
               <figure>89</figure>
             </li>
           </ul>

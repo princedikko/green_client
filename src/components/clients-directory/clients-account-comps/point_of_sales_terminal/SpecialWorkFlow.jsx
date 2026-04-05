@@ -269,8 +269,11 @@ function AllProducts({ addToCart, setAlert }) {
                 quantity: product.batch?.batches[0]?.quantity,
                 expiryDate: product.expiryDate,
               },
-
-              updatedAt: new Date(),
+              createdAt: new Date().toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+              }),
             };
             return (
               <div
@@ -341,7 +344,7 @@ function AllProducts({ addToCart, setAlert }) {
             };
             return (
               <div
-                className="workflowDisplayItem"
+                className="workflowDisplayItem fx-ac space2 "
                 key={product?.productId}
                 onClick={() => {
                   addToCart(intoCart);
@@ -349,22 +352,22 @@ function AllProducts({ addToCart, setAlert }) {
                   setSearchTerm("");
                 }}
               >
-                <div className="fx-ac spacem">
-                  <figure className="productAct">&nbsp;</figure>
-                  <p>
-                    {" "}
-                    <AdjustIcon />
-                    <strong>{product?.name}</strong>
-                  </p>
-                  <span>
-                    N{product?.pricing?.sellingPrice?.toLocaleString()}
-                  </span>
-                </div>
-                <div className="fx-ac spacem">
-                  <p>{product?.brand}</p>
-                  <p>{product?.units?.baseUnit}</p>
-                  <span>{product?.stock?.sellingQuantity}</span>
-                  <span>{product?.status}</span>
+                <figure className="fx-ac fx-jc">
+                  <AdjustIcon fontSize="large" />
+                </figure>
+                <div className="fx-cl space1" style={{ flexGrow: 1 }}>
+                  <div className="fx-ac fx-jb spacem">
+                    <h3>{product?.name}</h3>
+                    <span>
+                      N{product?.pricing?.sellingPrice?.toLocaleString()}
+                    </span>
+                  </div>
+                  <div className="fx-ac spacem ">
+                    <p>{product?.brand}</p>
+                    <p>{product?.units?.baseUnit}</p>
+                    <span>{product?.stock?.sellingQuantity}</span>
+                    <span>{product?.status}</span>
+                  </div>
                 </div>
               </div>
             );
@@ -397,7 +400,7 @@ function AllProducts({ addToCart, setAlert }) {
               setAlert({
                 message:
                   "The new inventory item has been added to the warehouse.",
-                type: "info",
+                type: "warning",
               })
             }
           >
