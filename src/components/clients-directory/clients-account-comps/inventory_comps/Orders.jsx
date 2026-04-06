@@ -965,7 +965,7 @@ export default function Orders({ breadcrumbs }) {
               className={`fx-ac  spacem ${currentTab == "orders" && "active"}`}
             >
               <span>All Orders</span>
-              <figure>34</figure>
+              <figure>{currentRows?.length || 0}</figure>
             </li>
             <li
               onClick={() => handleCurrentTAB("completed")}

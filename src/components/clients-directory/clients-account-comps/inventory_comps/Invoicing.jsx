@@ -963,7 +963,7 @@ export default function Invoicing({ breadcrumbs }) {
               }`}
             >
               <span>Invoice</span>
-              <figure>34</figure>
+              <figure>{currentRows?.length || 0}</figure>
             </li>
             <li
               onClick={() => handleCurrentTAB("completed")}

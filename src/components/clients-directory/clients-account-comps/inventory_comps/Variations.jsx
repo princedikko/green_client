@@ -1007,7 +1007,7 @@ export default function Variations({ breadcrumbs }) {
               }`}
             >
               <span>Variation List</span>
-              <figure>34</figure>
+              <figure>{currentRows?.length || 0}</figure>
             </li>
             <li
               onClick={() => handleCurrentTAB("completed")}

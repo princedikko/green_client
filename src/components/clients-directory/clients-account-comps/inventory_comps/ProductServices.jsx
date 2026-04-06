@@ -1000,7 +1000,7 @@ export default function ProductServices({ breadcrumbs }) {
               }`}
             >
               <span>All Services</span>
-              <figure>34</figure>
+              <figure>{currentRows?.length || 0}</figure>
             </li>
             <li
               onClick={() => handleCurrentTAB("completed")}

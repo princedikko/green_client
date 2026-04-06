@@ -964,7 +964,7 @@ export default function TaxRate({ breadcrumbs }) {
               className={`fx-ac  spacem ${currentTab == "taxrate" && "active"}`}
             >
               <span>Tax Rates</span>
-              <figure>34</figure>
+              <figure>{currentRows?.length || 0}</figure>
             </li>
             <li
               onClick={() => handleCurrentTAB("completed")}

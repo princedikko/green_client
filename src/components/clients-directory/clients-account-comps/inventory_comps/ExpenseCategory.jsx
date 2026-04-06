@@ -937,7 +937,7 @@ export default function ExpenseCategory({ breadcrumbs }) {
               }`}
             >
               <span>Todo</span>
-              <figure>34</figure>
+              <figure>{currentRows?.length || 0}</figure>
             </li>
             <li
               onClick={() => handleCurrentTAB("completed")}

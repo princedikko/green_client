@@ -963,7 +963,7 @@ export default function Returns({ breadcrumbs }) {
               className={`fx-ac  spacem ${currentTab == "returns" && "active"}`}
             >
               <span>Returned List</span>
-              <figure>34</figure>
+              <figure>{currentRows?.length || 0}</figure>
             </li>
             <li
               onClick={() => handleCurrentTAB("completed")}
