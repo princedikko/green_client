@@ -27,7 +27,7 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 // image imports
 import ImgOne from "./img1.jpg";
 
-let salesAxios;
+let priceGroups;
 
 export default function PriceGroups({ breadcrumbs }) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -43,10 +43,10 @@ export default function PriceGroups({ breadcrumbs }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [openLimit, setOpenLimit] = useState(false);
-  const totalPages = Math.ceil(salesData.length / rowsPerPage);
+  const totalPages = Math.ceil(priceGroups?.length / rowsPerPage);
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
-  const currentRows = salesData.slice(start, end);
+  const currentRows = priceGroups?.slice(start, end);
 
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
@@ -60,11 +60,11 @@ export default function PriceGroups({ breadcrumbs }) {
     name: "products array",
   };
 
-  async function apiPostProducts() {
+  async function apiPostPriceGroup() {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_products/price_groups/add_price_group`,
         payload,
       );
       if (response?.data?.status === 200) {
@@ -73,10 +73,13 @@ export default function PriceGroups({ breadcrumbs }) {
           autoHideDuration: 3000,
         });
       } else {
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
+        enqueueSnackbar(
+          response?.data?.message || "Failed to fetch price groups",
+          {
+            variant: "error",
+            autoHideDuration: 3000,
+          },
+        );
       }
 
       setLoading(false);
@@ -95,11 +98,11 @@ export default function PriceGroups({ breadcrumbs }) {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/manage_products/client/691a663dc9f64e6b9b8be48e/price_groups/get_price_groups`,
       )
       .then((response) => {
-        salesAxios = response.data.data;
-        console.log("salesAxios: ", response);
+        priceGroups = response.data.priceGroupsData;
+        console.log("priceGroups: ", response);
         if (response.data.status === 201) {
           setLoading(false);
           enqueueSnackbar(`${response.data.message}`, {
@@ -256,19 +259,19 @@ export default function PriceGroups({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
                     <strong>{item.customerName}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
+                  <td>{item.barcode}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
+                  <td>{item.barcode}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
+                  <td>{item.barcode}</td>
                   <td>
                     <button>{item.action}</button>
                   </td>
@@ -283,7 +286,7 @@ export default function PriceGroups({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="pricegroupsCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="pricegroupsGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -314,7 +317,7 @@ export default function PriceGroups({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -335,12 +338,12 @@ export default function PriceGroups({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {priceGroups?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        priceGroups?.length,
+                      )} of ${priceGroups?.length} entries`}
                 </span>
               </span>
               <div className="pricegroups_entries-info fx-ac spacem">
@@ -497,7 +500,7 @@ export default function PriceGroups({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -505,10 +508,10 @@ export default function PriceGroups({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -524,7 +527,7 @@ export default function PriceGroups({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="pricegroupsCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="pricegroupsGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -555,7 +558,7 @@ export default function PriceGroups({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -576,12 +579,12 @@ export default function PriceGroups({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {priceGroups?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        priceGroups?.length,
+                      )} of ${priceGroups?.length} entries`}
                 </span>
               </span>
               <div className="pricegroups_entries-info fx-ac spacem">
@@ -767,7 +770,7 @@ export default function PriceGroups({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -775,10 +778,10 @@ export default function PriceGroups({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -794,7 +797,7 @@ export default function PriceGroups({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="pricegroupsCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="pricegroupsGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -825,7 +828,7 @@ export default function PriceGroups({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -846,12 +849,12 @@ export default function PriceGroups({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {priceGroups?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        priceGroups?.length,
+                      )} of ${priceGroups?.length} entries`}
                 </span>
               </span>
               <div className="pricegroups_entries-info fx-ac spacem">

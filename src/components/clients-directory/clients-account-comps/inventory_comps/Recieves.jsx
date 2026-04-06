@@ -27,7 +27,7 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 // image imports
 import ImgOne from "./img1.jpg";
 
-let salesAxios;
+let recievesData;
 
 export default function Recives({ breadcrumbs }) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -43,10 +43,10 @@ export default function Recives({ breadcrumbs }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [openLimit, setOpenLimit] = useState(false);
-  const totalPages = Math.ceil(salesData.length / rowsPerPage);
+  const totalPages = Math.ceil(recievesData?.length / rowsPerPage);
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
-  const currentRows = salesData.slice(start, end);
+  const currentRows = recievesData?.slice(start, end);
 
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
@@ -125,15 +125,15 @@ export default function Recives({ breadcrumbs }) {
     }
   }
 
-  async function apiGetSales() {
+  async function apiFetchRecieves() {
     setLoading(true);
     await axios
       .get(
         `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
       )
       .then((response) => {
-        salesAxios = response.data.data;
-        console.log("salesAxios: ", response);
+        recievesData = response.data.data;
+        console.log("recievesData: ", response);
         if (response.data.status === 201) {
           setLoading(false);
           enqueueSnackbar(`${response.data.message}`, {
@@ -290,7 +290,7 @@ export default function Recives({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -298,10 +298,10 @@ export default function Recives({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -317,7 +317,7 @@ export default function Recives({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="recievesCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="recievesGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -348,7 +348,7 @@ export default function Recives({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -369,12 +369,12 @@ export default function Recives({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {recievesData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        recievesData?.length,
+                      )} of ${recievesData?.length} entries`}
                 </span>
               </span>
               <div className="recieves_entries-info fx-ac spacem">
@@ -529,7 +529,7 @@ export default function Recives({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -537,10 +537,10 @@ export default function Recives({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -556,7 +556,7 @@ export default function Recives({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="recievesCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="recievesGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -587,7 +587,7 @@ export default function Recives({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -608,12 +608,12 @@ export default function Recives({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {recievesData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        recievesData?.length,
+                      )} of ${recievesData?.length} entries`}
                 </span>
               </span>
               <div className="recieves_entries-info fx-ac spacem">
@@ -724,7 +724,7 @@ export default function Recives({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -732,10 +732,10 @@ export default function Recives({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -751,7 +751,7 @@ export default function Recives({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="recievesCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="recievesGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -782,7 +782,7 @@ export default function Recives({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -803,12 +803,12 @@ export default function Recives({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {recievesData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        recievesData?.length,
+                      )} of ${recievesData?.length} entries`}
                 </span>
               </span>
               <div className="recieves_entries-info fx-ac spacem">
@@ -888,7 +888,7 @@ export default function Recives({ breadcrumbs }) {
     );
   }
   useEffect(() => {
-    apiGetSales();
+    apiFetchRecieves();
   }, []);
   return (
     <div className="recievesCompContainer">
@@ -974,7 +974,7 @@ export default function Recives({ breadcrumbs }) {
               }`}
             >
               <span>Pending</span>
-              <figure>45</figure>
+              <figure>{currentRows?.length || 0}</figure>
             </li>
             <li
               onClick={() => handleCurrentTAB("progress")}

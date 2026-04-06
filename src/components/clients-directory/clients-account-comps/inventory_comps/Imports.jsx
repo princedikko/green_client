@@ -44,10 +44,10 @@ export default function Imports({ breadcrumbs }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [openLimit, setOpenLimit] = useState(false);
-  const totalPages = Math.ceil(salesData.length / rowsPerPage);
+  const totalPages = Math.ceil(importData?.length / rowsPerPage);
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
-  const currentRows = salesData.slice(start, end);
+  const currentRows = importData?.slice(start, end);
 
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
@@ -94,6 +94,69 @@ export default function Imports({ breadcrumbs }) {
     status: "ACTIVE",
   };
 
+  const payloadX = {
+    product: {
+      name: "",
+      brand: "",
+      unit: "",
+      category: "",
+      subCategory: "",
+      description: "",
+      image: "",
+    },
+
+    identification: {
+      sku: "",
+      barcodeType: "",
+      productType: "single",
+    },
+
+    stock: {
+      manageStock: true,
+      openingStock: 0,
+      alertQuantity: 0,
+      location: "",
+      productLocations: [],
+      rack: "",
+      row: "",
+      position: "",
+    },
+
+    expiry: {
+      expiresIn: null,
+      expiryPeriodUnit: "months",
+      expiryDate: null,
+    },
+
+    pricing: {
+      purchasePriceIncludingTax: 0,
+      purchasePriceExcludingTax: 0,
+      profitMargin: 0,
+      sellingPrice: 0,
+      sellingPriceTaxType: "inclusive",
+      applicableTax: "",
+    },
+
+    variations: {
+      variationName: "",
+      variationValues: [],
+      variationSkus: [],
+    },
+
+    extra: {
+      enableIMEIOrSerialNumber: false,
+      weight: "",
+      notForSelling: false,
+    },
+
+    customFields: {
+      field1: "",
+      field2: "",
+      field3: "",
+      field4: "",
+    },
+  };
+
   async function executeImports() {
     try {
       setLoading(true);
@@ -130,10 +193,10 @@ export default function Imports({ breadcrumbs }) {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/manage_products/client/691a663dc9f64e6b9b8be48e/imports`,
       )
       .then((response) => {
-        importData = response.data.data;
+        importData = response.data.importsData;
         console.log("importData: ", response);
         if (response.data.status === 201) {
           setLoading(false);
@@ -290,18 +353,18 @@ export default function Imports({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item.barcode}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>{item.barcode}</td>
+                  <td>{item.barcode}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
+                  <td>{item.barcode}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -317,7 +380,7 @@ export default function Imports({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="importsCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="importsGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -348,7 +411,7 @@ export default function Imports({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -369,12 +432,12 @@ export default function Imports({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {importData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        importData?.length,
+                      )} of ${importData?.length} entries`}
                 </span>
               </span>
               <div className="imports_entries-info fx-ac spacem">
@@ -529,7 +592,7 @@ export default function Imports({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -537,10 +600,10 @@ export default function Imports({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -556,7 +619,7 @@ export default function Imports({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="importsCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="importsGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -587,7 +650,7 @@ export default function Imports({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -608,12 +671,12 @@ export default function Imports({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {importData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        importData?.length,
+                      )} of ${importData?.length} entries`}
                 </span>
               </span>
               <div className="imports_entries-info fx-ac spacem">
@@ -724,7 +787,7 @@ export default function Imports({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -732,10 +795,10 @@ export default function Imports({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -751,7 +814,7 @@ export default function Imports({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="importsCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="importsGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -782,7 +845,7 @@ export default function Imports({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -803,12 +866,12 @@ export default function Imports({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {importData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        importData?.length,
+                      )} of ${importData?.length} entries`}
                 </span>
               </span>
               <div className="imports_entries-info fx-ac spacem">

@@ -902,7 +902,7 @@ export default function Quotation({ breadcrumbs }) {
               }`}
             >
               <span>Quotations</span>
-              <figure>34</figure>
+              <figure>{quotesData?.length || 0}</figure>
             </li>
             <li
               onClick={() => handleCurrentTAB("completed")}

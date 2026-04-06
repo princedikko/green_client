@@ -290,7 +290,7 @@ export default function Invoicing({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -298,10 +298,10 @@ export default function Invoicing({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -317,7 +317,7 @@ export default function Invoicing({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="invoicingCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="invoicingGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -348,7 +348,7 @@ export default function Invoicing({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -531,7 +531,7 @@ export default function Invoicing({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -539,10 +539,10 @@ export default function Invoicing({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -558,7 +558,7 @@ export default function Invoicing({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="invoicingCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="invoicingGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -589,7 +589,7 @@ export default function Invoicing({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -726,7 +726,7 @@ export default function Invoicing({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -734,10 +734,10 @@ export default function Invoicing({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -753,7 +753,7 @@ export default function Invoicing({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="invoicingCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="invoicingGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -784,7 +784,7 @@ export default function Invoicing({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -972,7 +972,7 @@ export default function Invoicing({ breadcrumbs }) {
               }`}
             >
               <span>Billing Estimate</span>
-              <figure>45</figure>
+              <figure>{currentRows?.length || 0}</figure>
             </li>
             <li
               onClick={() => handleCurrentTAB("progress")}

@@ -71,25 +71,30 @@ export default function SellReturn({ breadcrumbs }) {
         batch_no: "BATCH123",
         expiry_date: "2025-12-31",
         quantity_returned: 1,
-        selling_price: 3500,
+        sold_price: 3500,
         subtotal: 3500,
         reason: "Defective",
       },
     ],
+    invoiceNo: "INV123456",
     total_return_amount: 3500,
     refund_method: "cash",
     processed_by: {
       user_id: "66481111c8d21a99",
-      name: "Admin",
+      name: "Ameenat",
     },
-    return_date: "2026-04-05",
+    return_date: new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }),
   };
 
   async function acceptSellReturn() {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/inventory/sellreturn/post`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_products/sellreturn/post`,
         payload,
       );
       if (response?.data?.status === 201) {
@@ -121,7 +126,7 @@ export default function SellReturn({ breadcrumbs }) {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/546asdf4a6s4df54asdf78ew7r/sell-returns`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/manage_products/client/546asdf4a6s4df54asdf78ew7r/sell-returns`,
       )
       .then((response) => {
         sellreturnData = response.data.sellReturns;
@@ -205,13 +210,13 @@ export default function SellReturn({ breadcrumbs }) {
   function switchActiveTab() {
     switch (currentTab) {
       case "sellreturn":
-        return <ToDo />;
+        return <ReturnsList />;
       case "completed":
         return <Completed />;
       case "progress":
         return <Progress />;
       default:
-        return <ToDo />;
+        return <ReturnsList />;
     }
   }
 
@@ -253,7 +258,7 @@ export default function SellReturn({ breadcrumbs }) {
   // COMPONENTS OF sellreturn PAGE
   // //////////////////////////////////////////////////////////////////////////
 
-  function ToDo() {
+  function ReturnsList() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -272,29 +277,28 @@ export default function SellReturn({ breadcrumbs }) {
               <tr>
                 <th>Customer name</th>
                 <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
+                <th>Phone No.</th>
+                <th>Return Amount</th>
+                <th>Refund Method</th>
+                <th>Items</th>
+                <th>Attended By</th>
                 <th>Date</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
               {currentRows?.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
+                <tr key={index}>
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item.customer?.name}</strong>
                   </td>
                   <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
-                  <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue?.toLocaleString()}</td>
-                  <td>{item.date}</td>
+                  <td>{item.customer?.phone}</td>
+                  <td>₦{item.total_return_amount?.toLocaleString()}</td>
+                  <td>{item.refund_method}</td>
+                  <td>{item.returned_items.length}</td>
+                  <td>{item.processed_by?.name}</td>
+                  <td>{item.return_date}</td>
                   <td>
                     <button>{item.action}</button>
                   </td>
@@ -955,7 +959,7 @@ export default function SellReturn({ breadcrumbs }) {
               }`}
             >
               <span>Sell Returns</span>
-              <figure>34</figure>
+              <figure>{sellreturnData?.length || 0}</figure>
             </li>
             <li
               onClick={() => handleCurrentTAB("completed")}

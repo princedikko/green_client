@@ -887,7 +887,7 @@ export default function Drafts({ breadcrumbs }) {
               className={`fx-ac  spacem ${currentTab == "drafts" && "active"}`}
             >
               <span>Drafts</span>
-              <figure>34</figure>
+              <figure>{draftData?.length || 0}</figure>
             </li>
             <li
               onClick={() => handleCurrentTAB("completed")}

@@ -93,18 +93,16 @@ const PDFDocument = ({ data }) => (
             <Text style={[styles.tableCol, { width: 60, textAlign: "center" }]}>
               {item.quantity}{" "}
             </Text>
-
             <Text style={[styles.tableCol, { width: 100 }]}>
               {" "}
-              ₦{item.totalAmount.toLocaleString()}{" "}
+              ₦{item.totalAmount?.toLocaleString()}{" "}
             </Text>
             <Text style={[styles.tableCol, { width: 100 }]}>
               {" "}
-              ₦{item.totalPaid.toLocaleString()}{" "}
+              ₦{item.totalPaid?.toLocaleString()}{" "}
             </Text>
-
             <Text style={[styles.tableCol, { width: 80 }]}>
-              ₦{item.sellDue.toLocaleString()}{" "}
+              ₦{item.sellDue?.toLocaleString()}{" "}
             </Text>
             <Text style={[styles.tableCol, { width: 80 }]}>{item.date}</Text>
             <Text style={[styles.tableCol, { width: 80 }]}>

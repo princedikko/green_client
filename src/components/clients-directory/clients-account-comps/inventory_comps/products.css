@@ -85,7 +85,7 @@
 } */
 .products table thead tr {
   display: grid;
-  grid-template-columns: 4fr 2fr 3fr 2.5fr 2fr 1.5fr 1.5fr 1.5fr 1.5fr;
+  grid-template-columns: 3.1fr 1.8fr 2.1fr 1.5fr 1.9fr 1.9fr 1.1fr 1.3fr 2.5fr 1fr 2fr;
   padding: 1.2rem 2.4rem;
   /* background-color: #e3ecfd; */
   background-color: #3a84f8;
@@ -98,10 +98,10 @@
 .products table tbody tr:nth-child(even) {
   background-color: #e3ecfd;
 }
-.products table tbody tr {
+.products table tbody .productsRowTd {
   display: grid;
   /* gap: .6rem; */
-  grid-template-columns: 4fr 2fr 3fr 2.5fr 2fr 1.5fr 1.5fr 1.5fr 1.5fr;
+  grid-template-columns: 3.1fr 1.8fr 2.1fr 1.5fr 1.9fr 1.9fr 1.1fr 1.3fr 2.5fr 1fr 2fr;
   border-radius: 1rem;
   padding: 1.2rem 2.4rem;
   background-color: #fff;
@@ -110,43 +110,48 @@
   color: #0b3983;
   transition: all 0.3s ease-in-out;
 }
-.products table tbody tr:hover,
-.products table tbody tr:active {
-  box-shadow: inset 0 0 0rem 0.1rem rgb(105, 157, 240);
-}
-.products_row table tbody tr .completed {
-  padding: 0.3rem 1.6rem;
-  border-radius: 0.4rem;
-  background-color: #eefef2;
-  color: #048e5b;
-}
-.products_row table tbody tr .pending {
-  padding: 0.3rem 0.6rem;
-  border-radius: 0.4rem;
-  background-color: #ffe6e6;
-  color: #e30606;
-}
-.products_row table tbody tr td:nth-child(2) {
-  display: flex;
-  gap: 0.4rem;
-  font-weight: 600;
-}
-.products_row table tbody tr td:nth-child(2) figure {
-  background-color: #48c798;
-  color: white;
-  border-radius: 55rem;
-  height: 2.5rem;
-  width: 2.5rem;
+.products_row table tbody tr.productsRowTdCont {
+  background-color: #fff;
+  border-radius: 0.8rem;
   overflow: hidden;
+  padding: 0.4rem;
 }
 
-.products_row table tbody tr button {
-  background-color: transparent;
-  color: #12e095;
+.products_row table tbody tr.productsRowTdCont:hover {
+  background-color: #fff;
+  box-shadow: inset 0 0 0rem 0.1rem rgb(105, 157, 240);
+  cursor: pointer;
 }
-.products_row table tbody tr button:first-child {
-  background-color: transparent;
-  color: #999;
+.products_row table tbody tr.productsRowTdCont:hover .productsRowTd {
+  color: #3a84f8;
+  font-weight: bold;
+}
+
+.productsAccordionCont {
+  display: none;
+}
+table tbody #productsAccordionOpen .productsAccordionCont {
+  display: block;
+}
+
+.productsAccordionDisc {
+  padding: 1.2rem;
+}
+
+.productsAccordionDisc figure {
+  height: 15rem;
+  width: 15rem;
+  border-radius: 1.2rem;
+  background-color: #fafafa;
+}
+
+.productsAccordionDetails {
+  flex-grow: 1;
+  row-gap: 2.4rem;
+}
+/* .productsAccordionDetails div:first-child, */
+.productsAccordionDetails div:last-child {
+  grid-column: span 2;
 }
 
 .products_row header select {
@@ -208,7 +213,7 @@
   background: white;
   cursor: pointer;
   display: flex;
-  align-items: center;
+  align-productss: center;
   gap: 6px;
 }
 
@@ -230,29 +235,29 @@
   z-index: 10;
 }
 
-.products-limit-item {
+.products-limit-products {
   font-size: 1.2rem;
   padding: 10px 14px;
   cursor: pointer;
 }
 
-.products-limit-item:hover {
+.products-limit-products:hover {
   background: #f4f6ff;
   color: #4f46e5;
 }
 
 .products_pagination {
-  background-color: #ffffff;
+  background-color: transparent;
   border-radius: 0.8rem;
   padding: 0.5rem;
   margin-top: 0.8rem;
 }
 
 .products_pagination button {
-  background-color: #fafaff;
+  background-color: #3a84f8;
   border: none;
   border-radius: 0.3rem;
-  color: #666;
+  color: #fff;
   font-size: 1.2rem;
   padding: 0.4rem 0.8rem;
   margin: 0 0.4rem;
@@ -261,7 +266,7 @@
 }
 
 .products_pagination button:hover {
-  background-color: #3a84f8;
+  background-color: #0b3983;
   color: #fff;
 }
 
@@ -322,7 +327,7 @@
 .ratingRow {
   display: flex;
   gap: 10px;
-  align-items: center;
+  align-productss: center;
 }
 
 .rating {
@@ -355,7 +360,7 @@
 .cardFooter {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-productss: center;
 }
 
 .price {

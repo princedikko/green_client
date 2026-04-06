@@ -965,7 +965,7 @@ export default function Discount({ breadcrumbs }) {
               }`}
             >
               <span>All Discount</span>
-              <figure>34</figure>
+              <figure>{discountData?.length || 0}</figure>
             </li>
             <li
               onClick={() => handleCurrentTAB("completed")}

@@ -15,6 +15,14 @@ import ExportExcelJSButton from "./exports/ProductsExcelExport.jsx";
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 // import from MUI
+import SkipNextIcon from "@mui/icons-material/SkipNext";
+import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
+import CloseIcon from "@mui/icons-material/Close";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import PrintIcon from "@mui/icons-material/Print";
@@ -114,8 +122,11 @@ export default function Products({ breadcrumbs }) {
     images: [],
     trackInventory: true,
     status: "active",
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }),
   };
 
   async function apiPostProducts() {
@@ -155,11 +166,15 @@ export default function Products({ breadcrumbs }) {
       setLoading(true);
 
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/products/fetch_product`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/manage_products/client/691a663dc9f64e6b9b8be48e/products/fetch_product`,
       );
 
-      if (response?.data?.status === 200) {
-        productsData = response.data.info;
+      if (response?.data?.status === 201) {
+        productsData = response.data.productDB;
+        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
         console.log("Fetched products:", productsData);
       } else {
         enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
@@ -252,42 +267,218 @@ export default function Products({ breadcrumbs }) {
       }
     }
     function TableView({ currentRows }) {
+      const [openItemDrpdwn, setOpenItemDrpdwn] = useState(false);
+      const [accordion, setAccordion] = useState(null);
+      const [brands, setBrands] = useState("All brands");
+      const [activeRow, setActiveRow] = useState(null);
+      const dispatch = useDispatch();
+
+      function handleItemDrpdwn(index) {
+        setOpenItemDrpdwn(!openItemDrpdwn);
+        if (activeRow === index) {
+          setActiveRow(null);
+        } else {
+          setActiveRow(index);
+        }
+      }
+
       return (
         <div className="products">
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
-                <th>Action</th>
+                <th>Product</th>
+                <th>SKU</th>
+                <th>Category</th>
+                <th>Brand</th>
+                <th>Purchase Price</th>
+                <th>Selling Price</th>
+                <th>Stock</th>
+                <th>Unit</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Created</th>
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
               {currentRows?.map((item, index) => (
-                <tr key={item?.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
-                  <td>
-                    <strong>{item?.name}</strong>
+                <tr
+                  key={index}
+                  id={`${accordion == index && "productsAccordionOpen"}`}
+                  className="productsRowTdCont fx-cl space1"
+                >
+                  <td
+                    id={item?.sku}
+                    className={`productsRowTd ${activeRow == index && "active_warehauseRow"}`}
+                    onClick={() =>
+                      accordion == index
+                        ? setAccordion(null)
+                        : setAccordion(index)
+                    }
+                  >
+                    <span>
+                      <strong>{item?.name}</strong>
+                    </span>
+                    <span>{item?.sku}</span>
+                    <span>{item?.categoryId}</span>
+                    <span>{item?.brand}</span>
+                    <span>₦{item?.pricing?.costPrice?.toLocaleString()}</span>
+                    <span>
+                      ₦{item?.pricing?.sellingPrice?.toLocaleString()}
+                    </span>
+                    <span>{item?.stock?.quantityAvailable}</span>
+                    <span>{item?.units?.baseUnit}</span>
+                    <span>{item?.warehouses?.[0]?.location}</span>
+                    <span>{item?.status}</span>
+                    <span>
+                      {/* {item?.createdAt} */}
+                      {new Date(item?.createdAt).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </span>
                   </td>
-                  <td>{item?.barcode}</td>
-                  <td>{item?.brand}</td>
-                  <td>₦{item?.sellingPrice}</td>
-                  <td>₦{item?.sellingPrice}</td>
-                  <td>{item?.unit}</td>
-                  <td>₦{item?.costPrice}</td>
-                  <td>{item?.date}</td>
-                  <td>
-                    <button>{item?.action}</button>
-                  </td>
+
+                  <span className="productsAccordionCont">
+                    <div className="productsAccordionDisc fx-ac space1">
+                      <figure className="fx-ac fx-jc">
+                        <ShoppingCartIcon
+                          style={{
+                            fontSize: "9.5rem",
+                            color: "rgb(233 245 243)",
+                          }}
+                        />
+                      </figure>
+
+                      <div className="productsAccordionDetails g g4 space1">
+                        <div className="fx-cl spacem">
+                          <span>Brand</span>
+                          <p>
+                            <strong>{item?.brand}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Batch</span>
+                          <p>
+                            <strong>
+                              {item?.batch?.batches?.[0]?.batchNo}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Item SKU</span>
+                          <p>
+                            <strong>{item?.sku}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Base Unit</span>
+                          <p>
+                            <strong>{item?.units?.baseUnit}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Expiry Date</span>
+                          <p>
+                            <strong>
+                              {item?.batch?.batches?.[0]?.expiryDate}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Warehouse</span>
+                          <p>
+                            <strong>{item?.warehouses?.[0]?.location}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Barcode</span>
+                          <p>
+                            <strong>{item?.barcode}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Stock Available</span>
+                          <p>
+                            <strong>{item?.stock?.quantityAvailable}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-ac space1">
+                          <button
+                            className="controlButtons"
+                            style={{
+                              cursor:
+                                currentRows.length > 0
+                                  ? "pointer"
+                                  : "not-allowed",
+                              opacity: currentRows.length > 0 ? 1 : 0.6,
+                            }}
+                          >
+                            <span>Return item</span>
+                          </button>
+
+                          <button
+                            className="controlButtons"
+                            style={{
+                              cursor:
+                                currentRows.length > 0
+                                  ? "pointer"
+                                  : "not-allowed",
+                              opacity: currentRows.length > 0 ? 1 : 0.6,
+                            }}
+                          >
+                            <RemoveCircleOutlineIcon />
+                            <span>Edit</span>
+                          </button>
+
+                          <button
+                            className="controlButtons"
+                            style={{
+                              cursor:
+                                currentRows.length > 0
+                                  ? "pointer"
+                                  : "not-allowed",
+                              opacity: currentRows.length > 0 ? 1 : 0.6,
+                            }}
+                          >
+                            <LocalPrintshopIcon />
+                            <span>Discount</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
                 </tr>
               ))}
             </tbody>
+            {/* <tbody className="fx-cl spacem">
+              {currentRows?.map((item, index) => (
+                <tr key={index}>
+                  <td>
+                    <strong>{item?.name}</strong>
+                  </td>
+                  <td>{item?.sku}</td>
+                  <td>{item?.categoryId}</td>
+                  <td>{item?.brand}</td>
+                  <td>₦{item?.pricing?.costPrice?.toLocaleString()}</td>
+                  <td>₦{item?.pricing?.sellingPrice?.toLocaleString()}</td>
+                  <td>{item?.stock?.quantityAvailable}</td>
+                  <td>{item?.units?.baseUnit}</td>
+                  <td>{item?.warehouses?.[0]?.location}</td>
+                  <td>{item?.status}</td>
+                  <td>{new Date(item?.createdAt).toLocaleDateString()}</td>
+                </tr>
+              ))}
+            </tbody> */}
           </table>
         </div>
       );
@@ -393,10 +584,12 @@ export default function Products({ breadcrumbs }) {
             <div className="fx-jc">
               <div className="products_pagination fx-ac space2">
                 <button
+                  className="fx-ac spacem"
                   disabled={currentPage === 1}
                   onClick={() => setCurrentPage((p) => p - 1)}
                 >
-                  Previous
+                  <SkipPreviousIcon />
+                  Prev
                 </button>
                 <div className="fx-ac">
                   {getPagination(currentPage, totalPages)?.map((page, i) =>
@@ -419,10 +612,12 @@ export default function Products({ breadcrumbs }) {
                 </div>
 
                 <button
+                  className="fx-ac spacem"
                   disabled={currentPage === totalPages}
                   onClick={() => setCurrentPage((p) => p + 1)}
                 >
                   Next
+                  <SkipNextIcon />
                 </button>
               </div>
             </div>
@@ -632,10 +827,12 @@ export default function Products({ breadcrumbs }) {
             <div className="fx-jc">
               <div className="products_pagination fx-ac space2">
                 <button
+                  className="fx-ac spacem"
                   disabled={currentPage === 1}
                   onClick={() => setCurrentPage((p) => p - 1)}
                 >
-                  Previous
+                  <SkipPreviousIcon />
+                  Prev
                 </button>
                 <div className="fx-ac">
                   {getPagination(currentPage, totalPages)?.map((page, i) =>
@@ -658,10 +855,12 @@ export default function Products({ breadcrumbs }) {
                 </div>
 
                 <button
+                  className="fx-ac spacem"
                   disabled={currentPage === totalPages}
                   onClick={() => setCurrentPage((p) => p + 1)}
                 >
                   Next
+                  <SkipNextIcon />
                 </button>
               </div>
             </div>
@@ -686,7 +885,7 @@ export default function Products({ breadcrumbs }) {
       return (
         <div className="prog">
           <button className="btnTemporary" onClick={() => apiPostProducts()}>
-            add product
+            Host Products
           </button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
@@ -827,10 +1026,12 @@ export default function Products({ breadcrumbs }) {
             <div className="fx-jc">
               <div className="products_pagination fx-ac space2">
                 <button
+                  className="fx-ac spacem"
                   disabled={currentPage === 1}
                   onClick={() => setCurrentPage((p) => p - 1)}
                 >
-                  Previous
+                  <SkipPreviousIcon />
+                  Prev
                 </button>
                 <div className="fx-ac">
                   {getPagination(currentPage, totalPages)?.map((page, i) =>
@@ -853,10 +1054,12 @@ export default function Products({ breadcrumbs }) {
                 </div>
 
                 <button
+                  className="fx-ac spacem"
                   disabled={currentPage === totalPages}
                   onClick={() => setCurrentPage((p) => p + 1)}
                 >
                   Next
+                  <SkipNextIcon />
                 </button>
               </div>
             </div>
@@ -945,14 +1148,14 @@ export default function Products({ breadcrumbs }) {
               }`}
             >
               <span>All Products</span>
-              <figure>34</figure>
+              <figure>{productsData?.length || 0}</figure>
             </li>
             <li
               onClick={() => handleCurrentTAB("codes")}
               className={`fx-ac  spacem ${currentTab == "codes" && "active"}`}
             >
               <span>Product Codes</span>
-              <figure>45</figure>
+              <figure>{productsData?.length || 0}</figure>
             </li>
             <li
               onClick={() => handleCurrentTAB("add_product")}

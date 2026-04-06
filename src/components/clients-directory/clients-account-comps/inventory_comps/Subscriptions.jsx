@@ -857,7 +857,7 @@ export default function Subscriptions({ breadcrumbs }) {
               }`}
             >
               <span>All Subscription</span>
-              <figure>34</figure>
+              <figure>{subscriptionsData?.length || 0}</figure>
             </li>
             <li
               onClick={() => handleCurrentTAB("completed")}
