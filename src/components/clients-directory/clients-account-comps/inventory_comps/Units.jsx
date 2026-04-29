@@ -203,31 +203,27 @@ export default function Units({ breadcrumbs }) {
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
+                <th>Name</th>
+                <th>Code</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Conversion Factor</th>
+                <th>Decimal</th>
                 <th>Date</th>
-                <th>Action</th>
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
               {currentRows?.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
+                <tr key={index}>
                   <td>
-                    <strong>{item.sku}</strong>
+                    <strong>{item.name}</strong>
                   </td>
-                  <td>{item._id}</td>
-                  <td>{item.sku}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
-                  <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue?.toLocaleString()}</td>
-                  <td>{item.date}</td>
+                  <td>{item.code}</td>
+                  <td>{item.description}</td>
+                  <td>{item.type}</td>
+                  <td>{item.conversionFactor}</td>
+                  <td>{item.decimal}</td>
+                  <td>{item.createdAt}</td>
                   <td>
                     <button>{item.action}</button>
                   </td>
@@ -432,40 +428,15 @@ export default function Units({ breadcrumbs }) {
     // /////////////////////////////////////////////////////////
 
     const payload = {
-      sku: "MILK-PEAK-001",
-      barcode: "6224001234567", // EAN / UPC
-      name: "Peak Milk 170g",
-      brand: "Peak",
-      category: {
-        name: "Dairy",
-      },
-
-      unit: "tin",
-      costPrice: 820,
-      sellingPrice: 950,
-      taxRate: 2.5, // VAT %
-
-      stock: {
-        quantity: 245,
-        minLevel: 20,
-        reorderLevel: 50,
-      },
-
-      batchTracking: true,
-      expiryTracking: true,
-
-      batches: [
-        {
-          batchNo: "PK0124A",
-          costPrice: 800,
-        },
-      ],
-
-      supplier: {
-        name: "UAC Foods",
-      },
-
-      status: "ACTIVE",
+      name: "Piece", // Piece, Kg, Liter, Pack, Carton
+      code: "PCS", // PCS, KG, LTR, PK, CTN
+      description: "Single item",
+      type: "count", // "weight" // "volume" // "package",
+      baseUnit: Boolean, // true if this is the base unit (e.g., Piece, Kg, Liter)
+      conversionFactor: 1, // Piece → 1  // Pack → 12 (1 Pack = 12 Pieces)  // Carton → 48 (1 Carton = 48 Pieces)
+      decimal: "Not allowed", // "Allowed",
+      createdAt: Date,
+      updatedAt: Date,
     };
 
     async function createUnit() {
@@ -539,10 +510,10 @@ export default function Units({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
-                  <td>₦{item.totalPaid?.toLocaleString()}</td>
+                  <td>{item.totalAmount?.toLocaleString()}</td>
+                  <td>{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue?.toLocaleString()}</td>
+                  <td>{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>

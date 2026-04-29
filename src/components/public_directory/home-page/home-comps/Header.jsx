@@ -15,7 +15,7 @@ export default function Header() {
       <nav className="navbar">
         <div className="navbar-container fx-jb space4">
           <Link to="/" className="navbar-logo fx-ac">
-            <img src={Logo} alt="udupss logo" />
+            {/* <img src={Logo} alt="udupss logo" /> */}
             <span>Jool</span>
           </Link>
           <button className="mobile-menu-toggle" onClick={toggleMobileMenu}>

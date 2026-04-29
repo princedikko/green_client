@@ -234,7 +234,7 @@ export default function Quotation({ breadcrumbs }) {
 
                   <td>₦{item?.totals?.total?.toLocaleString()}</td>
 
-                  <td>{item?.soldItems?.length}</td>
+                  <td>{item?.quoteItems?.length}</td>
 
                   <td>{item?.quotBy?.name}</td>
 

@@ -7,8 +7,6 @@ import { useSelector } from "react-redux";
 import * as Action from "../../../../store/redux/client_reducer.js";
 import { useSnackbar } from "notistack";
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-import salesData from "../data";
 import IsLoading from "../../../../IsLoading.jsx";
 import FilterProduction from "./filters/FilterProduction.jsx";
 import ExportPDFButton from "./exports/ProductionPDFExport.jsx";
@@ -129,10 +127,10 @@ export default function Production({ breadcrumbs }) {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/:id/account/production/get?page=${currentPage}&limit=${rowsPerPage}`,
       )
       .then((response) => {
-        productionData = response.data.data;
+        productionData = response.data.productionData;
         console.log("productionData: ", response);
         if (response.data.status === 201) {
           setLoading(false);
@@ -213,13 +211,13 @@ export default function Production({ breadcrumbs }) {
   function switchActiveTab() {
     switch (currentTab) {
       case "production":
-        return <ToDo />;
+        return <Productions />;
       case "completed":
         return <Completed />;
       case "progress":
         return <Progress />;
       default:
-        return <ToDo />;
+        return <Productions />;
     }
   }
 
@@ -261,7 +259,7 @@ export default function Production({ breadcrumbs }) {
   // COMPONENTS OF production PAGE
   // //////////////////////////////////////////////////////////////////////////
 
-  function ToDo() {
+  function Productions() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -294,15 +292,15 @@ export default function Production({ breadcrumbs }) {
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item.brand}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
+                  <td>{item.sku}</td>
+                  <td>{item.name}</td>
                   <td>₦{item.totalAmount?.toLocaleString()}</td>
                   <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
                   <td>₦{item.sellDue?.toLocaleString()}</td>
-                  <td>{item.date}</td>
+                  <td>{item.barcode}</td>
                   <td>
                     <button>{item.action}</button>
                   </td>

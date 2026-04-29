@@ -706,6 +706,110 @@ export default function Registration() {
             </select>
           </div>
         </header> */}
+        <div className="fx-cl space3">
+          <h2>Industry</h2>
+
+          <select
+            id="Industry"
+            name="Industry"
+            aria-labelledby="LblIndustry InstructIndustry"
+            class="mktoField mktoHasWidth mktoRequired mktoInvalid"
+            aria-required="true"
+            style="width: 150px;"
+            aria-describedby="ValidMsgIndustry"
+            aria-invalid="true"
+          >
+            <option value="">Select...</option>
+            <option value="3PL">3PL</option>
+            <option value="Aerospace &amp; Defense">
+              Aerospace &amp; Defense
+            </option>
+            <option value="Agriculture">Agriculture</option>
+            <option value="Apparel">Apparel</option>
+            <option value="Automotive">Automotive</option>
+            <option value="Biotechnology">Biotechnology</option>
+            <option value="Building Materials">Building Materials</option>
+            <option value="Cannabis">Cannabis</option>
+            <option value="Chemicals">Chemicals</option>
+            <option value="Construction">Construction</option>
+            <option value="Consultant">Consultant</option>
+            <option value="Consumer Goods">Consumer Goods</option>
+            <option value="Distribution">Distribution</option>
+            <option value="Ecommerce">Ecommerce</option>
+            <option value="Education">Education</option>
+            <option value="Electronics">Electronics</option>
+            <option value="EngineertoOrder">EngineertoOrder</option>
+            <option value="Fabrication">Fabrication</option>
+            <option value="Fasteners">Fasteners</option>
+            <option value="Firearms">Firearms</option>
+            <option value="Food &amp; Beverage">Food &amp; Beverage</option>
+            <option value="Furniture &amp; Home Decor">
+              Furniture &amp; Home Decor
+            </option>
+            <option value="Gas &amp; Oil">Gas &amp; Oil</option>
+            <option value="GovernmentAndMilitary">GovernmentAndMilitary</option>
+            <option value="Soap &amp; Shampoo">Soap &amp; Shampoo</option>
+            <option value="High Tech Manufacturing">
+              High Tech Manufacturing
+            </option>
+            <option value="HospitalAndHealthcare">HospitalAndHealthcare</option>
+            <option value="HotelAndHospitality">HotelAndHospitality</option>
+            <option value="IndustrialMachinery">IndustrialMachinery</option>
+            <option value="Job Shop">Job Shop</option>
+            <option value="Manufacturing-Other">Manufacturing-Other</option>
+            <option value="Marine Parts">Marine Parts</option>
+            <option value="Medical">Medical</option>
+            <option value="Metal Fabrication">Metal Fabrication</option>
+            <option value="Mining">Mining</option>
+            <option value="Paper &amp; Packaging">Paper &amp; Packaging</option>
+            <option value="Pet Products">Pet Products</option>
+            <option value="Pharmaceuticals">Pharmaceuticals</option>
+            <option value="Plastics &amp; Rubber">Plastics &amp; Rubber</option>
+            <option value="Professional Services">Professional Services</option>
+            <option value="Retail">Retail</option>
+            <option value="Semiconductors">Semiconductors</option>
+            <option value="Telecom">Telecom</option>
+            <option value="Wire &amp; Cable">Wire &amp; Cable</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div className="fx-cl space3">
+          <h2>Which accounting system are you using?</h2>
+          <select
+            id="Accounting_System__c"
+            name="Accounting_System__c"
+            aria-labelledby="LblAccounting_System__c InstructAccounting_System__c"
+            class="mktoField mktoHasWidth mktoRequired mktoValid"
+            aria-required="true"
+            style="width: 150px;"
+            aria-invalid="false"
+            data-gtm-form-interact-field-id="6"
+          >
+            <option value="">Select...</option>
+            <option value="QuickBooks Enterprise">QuickBooks Enterprise</option>
+            <option value="QuickBooks Premier">QuickBooks Premier</option>
+            <option value="QuickBooks Premier Plus (subscription)">
+              QuickBooks Premier Plus (subscription)
+            </option>
+            <option value="QuickBooks Pro">QuickBooks Pro</option>
+            <option value="QuickBooks Pro Plus (subscription)">
+              QuickBooks Pro Plus (subscription)
+            </option>
+            <option value="QuickBooks Online">QuickBooks Online</option>
+            <option value="Xero">Xero</option>
+            <option value="Sage">Sage</option>
+            <option value="NetSuite">NetSuite</option>
+            <option value="Sage Pastel">Sage Pastel</option>
+            <option value="Reckon">Reckon</option>
+            <option value="Reckon Hosted">Reckon Hosted</option>
+            <option value="MYOB">MYOB</option>
+            <option value="Other">Other</option>
+            <option value="Standalone">Standalone</option>
+            <option value="None">None</option>
+            <option value="Unknown">Unknown</option>
+          </select>
+        </div>
+
         <div className="fx-jc">
           <RegFormFilling />
         </div>

@@ -8,7 +8,6 @@ import * as Action from "../../../../store/redux/client_reducer.js";
 import { useSnackbar } from "notistack";
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-import salesData from "../data";
 import IsLoading from "../../../../IsLoading.jsx";
 import FilterInvoicing from "./filters/FilterInvoicing.jsx";
 import ExportPDFButton from "./exports/InvoicingPDFExport.jsx";
@@ -43,10 +42,10 @@ export default function Invoicing({ breadcrumbs }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [openLimit, setOpenLimit] = useState(false);
-  const totalPages = Math.ceil(salesData.length / rowsPerPage);
+  const totalPages = Math.ceil(invoicingData?.length / rowsPerPage);
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
-  const currentRows = salesData.slice(start, end);
+  const currentRows = invoicingData?.slice(start, end);
 
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
@@ -129,11 +128,11 @@ export default function Invoicing({ breadcrumbs }) {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/invoicing/get`,
       )
       .then((response) => {
-        invoicingData = response.data.data;
-        console.log("invoicingData: ", response);
+        invoicingData = response.data.invoicesData;
+        console.log("invoicingData: ", invoicingData);
         if (response.data.status === 201) {
           setLoading(false);
           enqueueSnackbar(`${response.data.message}`, {
@@ -294,13 +293,13 @@ export default function Invoicing({ breadcrumbs }) {
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item.sku}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
+                  <td>{item.barcode}</td>
+                  <td>{item.brand}</td>
                   <td>₦{item.totalAmount?.toLocaleString()}</td>
                   <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
+                  <td>{item.name}</td>
                   <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
@@ -369,12 +368,12 @@ export default function Invoicing({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {invoicingData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        invoicingData?.length,
+                      )} of ${invoicingData?.length} entries`}
                 </span>
               </span>
               <div className="invoicing_entries-info fx-ac spacem">
@@ -610,12 +609,12 @@ export default function Invoicing({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {invoicingData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        invoicingData?.length,
+                      )} of ${invoicingData?.length} entries`}
                 </span>
               </span>
               <div className="invoicing_entries-info fx-ac spacem">
@@ -805,12 +804,12 @@ export default function Invoicing({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {invoicingData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        invoicingData?.length,
+                      )} of ${invoicingData?.length} entries`}
                 </span>
               </span>
               <div className="invoicing_entries-info fx-ac spacem">
@@ -1011,11 +1010,8 @@ export default function Invoicing({ breadcrumbs }) {
               )}
             </div>
             <div className="fx-ac space1">
-              <button
-                className="invoicing_export_btn fx-ac spacem"
-                onClick={() => navigate("/clients/warehouse_terminal")}
-              >
-                <AddIcon fontSize="large" /> <span>Add new</span>
+              <button className="invoicing_export_btn fx-ac spacem">
+                <AddIcon fontSize="large" /> <span>Create invoice</span>
               </button>
             </div>
           </div>

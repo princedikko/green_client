@@ -7,8 +7,6 @@ import { useSelector } from "react-redux";
 import * as Action from "../../../../store/redux/client_reducer.js";
 import { useSnackbar } from "notistack";
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-import salesData from "../data";
 import IsLoading from "../../../../IsLoading.jsx";
 import FilterRecieves from "./filters/FilterRecieves.jsx";
 import ExportPDFButton from "./exports/RecivesPDFExport.jsx";
@@ -24,6 +22,11 @@ import PlaceIcon from "@mui/icons-material/Place";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
+
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 // image imports
 import ImgOne from "./img1.jpg";
 
@@ -57,40 +60,92 @@ export default function Recives({ breadcrumbs }) {
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    sku: "MILK-PEAK-001",
-    barcode: "6224001234567", // EAN / UPC
-    name: "Peak Milk 170g",
-    brand: "Peak",
-    category: {
-      name: "Dairy",
+    clientId: "JLIM=0001",
+    receiveId: "RCV-00021",
+    purchaseOrderId: "PO-00981",
+
+    supplier: {
+      supplierId: "SUP-0023",
+      name: "ABC Supplies Ltd",
     },
 
-    unit: "tin",
-    costPrice: 820,
-    sellingPrice: 950,
-    taxRate: 2.5, // VAT %
-
-    stock: {
-      quantity: 245,
-      minLevel: 20,
-      reorderLevel: 50,
+    warehouse: {
+      warehouseId: "WH-01",
+      name: "Main Warehouse",
     },
 
-    batchTracking: true,
-    expiryTracking: true,
+    receivedBy: {
+      userId: "USR-1001",
+      name: "Joolie ",
+    },
 
-    batches: [
+    receiveDate: "2026-04-29T10:30:00Z",
+
+    status: "PARTIAL",
+    // PENDING | PARTIAL | COMPLETED | REJECTED
+
+    items: [
       {
-        batchNo: "PK0124A",
-        costPrice: 800,
+        productId: "PRD-001",
+        name: "Laptop HP EliteBook",
+
+        orderedQty: 50,
+        receivedQty: 30,
+        rejectedQty: 2,
+
+        unitCost: 1200,
+        totalCost: 36000,
+
+        batchNumber: "BCH-7781",
+        expiryDate: null,
+        serialNumbers: ["SN001", "SN002", "SN003"],
+
+        location: "Aisle-3 / Shelf-B",
+
+        condition: "GOOD",
+        remarks: "Partial delivery received",
+      },
+      {
+        productId: "PRD-002",
+        name: "Wireless Mouse",
+
+        orderedQty: 100,
+        receivedQty: 100,
+        rejectedQty: 0,
+
+        unitCost: 15,
+        totalCost: 1500,
+
+        batchNumber: "BCH-8890",
+        expiryDate: null,
+        serialNumbers: [],
+
+        location: "Aisle-1 / Shelf-A",
+
+        condition: "GOOD",
+        remarks: "Fully received",
       },
     ],
 
-    supplier: {
-      name: "UAC Foods",
+    inspection: {
+      checkedBy: "USR-2002",
+      condition: "GOOD",
+      notes: "Items inspected and accepted with minor partial shortage",
     },
 
-    status: "ACTIVE",
+    totals: {
+      totalItems: 2,
+      totalOrderedQty: 150,
+      totalReceivedQty: 130,
+      totalRejectedQty: 2,
+      totalCost: 37500,
+    },
+
+    attachments: ["invoice_001.pdf", "delivery_note_001.jpg"],
+
+    isClosed: false,
+    createdAt: "2026-04-29T10:35:00Z",
+    updatedAt: "2026-04-29T10:40:00Z",
   };
 
   async function insertRecieve() {
@@ -129,11 +184,11 @@ export default function Recives({ breadcrumbs }) {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/purchases/client/691a663dc9f64e6b9b8be48e/get_receives`,
       )
       .then((response) => {
-        recievesData = response.data.data;
-        console.log("recievesData: ", response);
+        recievesData = response.data.recievesData;
+        console.log("recievesData: ", recievesData);
         if (response.data.status === 201) {
           setLoading(false);
           enqueueSnackbar(`${response.data.message}`, {
@@ -273,39 +328,173 @@ export default function Recives({ breadcrumbs }) {
       }
     }
     function TableView({ currentRows }) {
+      const [openItemDrpdwn, setOpenItemDrpdwn] = useState(false);
+      const [accordion, setAccordion] = useState(null);
+      const [brands, setBrands] = useState("All brands");
+      const [activeRow, setActiveRow] = useState(null);
+      const dispatch = useDispatch();
+
+      function handleItemDrpdwn(index) {
+        setOpenItemDrpdwn(!openItemDrpdwn);
+        if (activeRow === index) {
+          setActiveRow(null);
+        } else {
+          setActiveRow(index);
+        }
+      }
+
       return (
-        <div className="recieves">
+        <div className="products">
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
-                <th>Action</th>
+                <th>Receive ID</th>
+                <th>Purchase Order ID</th>
+                <th>Supplier</th>
+                <th>Warehouse</th>
+                <th>Received By</th>
+                <th>Receive Date</th>
+                <th>Status</th>
+                <th>Total Items</th>
+                <th>Total Cost</th>
               </tr>
             </thead>
+
             <tbody className="fx-cl spacem">
               {currentRows?.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
-                  <td>
-                    <strong>{item.customerName}</strong>
+                <tr
+                  key={index}
+                  id={`${accordion == index && "productsAccordionOpen"}`}
+                  className="productsRowTdCont fx-cl space1"
+                >
+                  <td
+                    className={`productsRowTd ${activeRow == index && "active_warehauseRow"}`}
+                    onClick={() =>
+                      accordion == index
+                        ? setAccordion(null)
+                        : setAccordion(index)
+                    }
+                  >
+                    <span>
+                      <strong>{item?.receiveId}</strong>
+                    </span>
+                    <span>{item?.purchaseOrderId}</span>
+                    <span>{item?.supplier?.name}</span>
+                    <span>{item?.warehouse?.name}</span>
+                    <span>{item?.receivedBy?.name}</span>
+                    <span>
+                      {new Date(item?.receiveDate).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <span>{item?.status}</span>
+                    <span>{item?.totals?.totalItems}</span>
+                    <span>₦{item?.totals?.totalCost?.toLocaleString()}</span>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
-                  <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue?.toLocaleString()}</td>
-                  <td>{item.date}</td>
-                  <td>
-                    <button>{item.action}</button>
-                  </td>
+
+                  <span className="productsAccordionCont">
+                    <div className="productsAccordionDisc fx-ac space1">
+                      <figure className="fx-ac fx-jc"></figure>
+
+                      <div className="productsAccordionDetails g g4 space1">
+                        <div className="fx-cl spacem">
+                          <span>Receive ID</span>
+                          <p>
+                            <strong>{item?.receiveId}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Purchase Order ID</span>
+                          <p>
+                            <strong>{item?.purchaseOrderId}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Supplier</span>
+                          <p>
+                            <strong>{item?.supplier?.name}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Warehouse</span>
+                          <p>
+                            <strong>{item?.warehouse?.name}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Items Received</span>
+                          <p>
+                            <strong>
+                              {item?.items?.map((i) => i.name).join(", ")}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Serial Numbers</span>
+                          <p>
+                            <strong>
+                              {item?.items
+                                ?.flatMap((i) => i.serialNumbers || [])
+                                .join(", ")}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Total Received Qty</span>
+                          <p>
+                            <strong>{item?.totals?.totalReceivedQty}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Total Rejected Qty</span>
+                          <p>
+                            <strong>{item?.totals?.totalRejectedQty}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Created At</span>
+                          <p>
+                            <strong>
+                              {new Date(item?.createdAt).toLocaleDateString(
+                                "en-GB",
+                                {
+                                  day: "2-digit",
+                                  month: "long",
+                                  year: "numeric",
+                                },
+                              )}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-ac space1">
+                          <button className="controlButtons">
+                            <span>View Receive</span>
+                          </button>
+
+                          <button className="controlButtons">
+                            <RemoveCircleOutlineIcon />
+                            <span>Edit</span>
+                          </button>
+
+                          <button className="controlButtons">
+                            <LocalPrintshopIcon />
+                            <span>Export</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
                 </tr>
               ))}
             </tbody>

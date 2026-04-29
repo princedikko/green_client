@@ -56,49 +56,14 @@ export default function Variations({ breadcrumbs }) {
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
 
-  const payload = {
-    name: "products array",
-  };
-
-  async function apiPostProducts() {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
-        payload,
-      );
-      if (response?.data?.status === 200) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-      } else {
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
-      }
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-
-      enqueueSnackbar("Server error while fetching products", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  }
-
   async function apiFetchVariation() {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/${id}/manage_products/get-variations`,
       )
       .then((response) => {
-        variationData = response.data.data;
+        variationData = response.data.variationsData;
         console.log("variationData: ", response);
         if (response.data.status === 201) {
           setLoading(false);
@@ -244,33 +209,32 @@ export default function Variations({ breadcrumbs }) {
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
+                <th>Variation</th>
+                <th>Volume</th>
+                <th>SKU</th>
+                <th>Barcode</th>
+                <th>Selling Price</th>
+                <th>Cost Price</th>
+                <th>Stock</th>
+                <th>Date Created</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
               {currentRows?.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
+                <tr key={item._id}>
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item.name}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
-                  <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue?.toLocaleString()}</td>
-                  <td>{item.date}</td>
+                  <td>{item.attributes?.volume}</td>
+                  <td>{item.sku}</td>
+                  <td>{item.barcode}</td>
+                  <td>₦{item.price?.toLocaleString()}</td>
+                  <td>₦{item.costPrice?.toLocaleString()}</td>
+                  <td>{item.stock}</td>
+                  <td>{item.createdAt}</td>
                   <td>
-                    <button>{item.action}</button>
+                    <button>Edit</button>
                   </td>
                 </tr>
               ))}
@@ -493,7 +457,6 @@ export default function Variations({ breadcrumbs }) {
                 <th>Quantity</th>
                 <th>Sell Due</th>
                 <th>Date</th>
-                <th>Action</th>
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
@@ -510,9 +473,6 @@ export default function Variations({ breadcrumbs }) {
                   <td>{item.totalItems}</td>
                   <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
-                  <td>
-                    <button>{item.action}</button>
-                  </td>
                 </tr>
               ))}
             </tbody>
@@ -666,40 +626,19 @@ export default function Variations({ breadcrumbs }) {
     // /////////////////////////////////////////////////////////
 
     const payload = {
-      sku: "MILK-PEAK-001",
-      barcode: "6224001234567", // EAN / UPC
-      name: "Peak Milk 170g",
-      brand: "Peak",
-      category: {
-        name: "Dairy",
+      variationId: "VAR-001",
+      name: "33cl",
+      sku: "COCA-33CL",
+      attributes: {
+        volume: "33cl",
       },
-
-      unit: "tin",
-      costPrice: 820,
-      sellingPrice: 950,
-      taxRate: 2.5, // VAT %
-
-      stock: {
-        quantity: 245,
-        minLevel: 20,
-        reorderLevel: 50,
-      },
-
-      batchTracking: true,
-      expiryTracking: true,
-
-      batches: [
-        {
-          batchNo: "PK0124A",
-          costPrice: 800,
-        },
-      ],
-
-      supplier: {
-        name: "UAC Foods",
-      },
-
-      status: "ACTIVE",
+      price: 500,
+      costPrice: 350,
+      stock: 120,
+      barcode: "615204983321",
+      image: "/products/cocacola-33cl.png",
+      isActive: true,
+      createdAt: new Date().toLocaleDateString(),
     };
 
     async function postNewVariation() {

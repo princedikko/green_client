@@ -85,7 +85,7 @@
 } */
 .units table thead tr {
   display: grid;
-  grid-template-columns: 4fr 2fr 3fr 2.5fr 2fr 1.5fr 1.5fr 1.5fr 1.5fr;
+  grid-template-columns: 4fr 2fr 3fr 2.5fr 2fr 1.5fr 1.2fr;
   padding: 1.2rem 2.4rem;
   /* background-color: #e3ecfd; */
   background-color: #3a84f8;
@@ -101,7 +101,7 @@
 .units table tbody tr {
   display: grid;
   /* gap: .6rem; */
-  grid-template-columns: 4fr 2fr 3fr 2.5fr 2fr 1.5fr 1.5fr 1.5fr 1.5fr;
+  grid-template-columns: 4fr 2fr 3fr 2.5fr 2fr 1.5fr 1.2fr;
   border-radius: 1rem;
   padding: 1.2rem 2.4rem;
   background-color: #fff;

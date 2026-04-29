@@ -206,41 +206,7 @@ export default function ReportsMain({ breadcrumbs }) {
                       <button className="cardBtn">View Sale</button>
                     </div>
                   </div>
-                  <div className="reportsmainGridCard">
-                    {/* Header */}
-                    <div className="cardHeader">
-                      <img alt="customer" className="avatar" src={ImgOne} />
 
-                      <div className="cardInfo">
-                        <h4>Profit/Loss</h4>
-                        <p>Invoice #454345</p>
-
-                        <div className="ratingRow">
-                          <span className="rating">5.3</span>
-                          <span className="location">📍 12/21/2002</span>
-                        </div>
-
-                        <small>254 items</small>
-                      </div>
-                    </div>
-
-                    {/* Tags */}
-                    <div className="tags">
-                      <span>Total</span>
-                      <span>Paid</span>
-                      <span>+211132</span>
-                    </div>
-
-                    {/* Footer */}
-                    <div className="cardFooter">
-                      <div className="price">
-                        ₦365,125
-                        <small> / sale</small>
-                      </div>
-
-                      <button className="cardBtn">View Sale</button>
-                    </div>
-                  </div>
                   <div className="reportsmainGridCard">
                     {/* Header */}
                     <div className="cardHeader">
@@ -282,7 +248,7 @@ export default function ReportsMain({ breadcrumbs }) {
                       <img alt="customer" className="avatar" src={ImgOne} />
 
                       <div className="cardInfo">
-                        <h4>Sales</h4>
+                        <h4>Sales-Based Reports</h4>
                         <p>Invoice #454345</p>
 
                         <div className="ratingRow">
@@ -352,7 +318,7 @@ export default function ReportsMain({ breadcrumbs }) {
                       <img alt="customer" className="avatar" src={ImgOne} />
 
                       <div className="cardInfo">
-                        <h4>Expense & Account</h4>
+                        <h4>Financial Inventory Reports</h4>
                         <p>Invoice #454345</p>
 
                         <div className="ratingRow">

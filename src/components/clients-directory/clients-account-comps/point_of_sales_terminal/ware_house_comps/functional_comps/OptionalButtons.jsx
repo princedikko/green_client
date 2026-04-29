@@ -214,23 +214,18 @@ export function SaveDraft({ salesPayload }) {
     warehouse: {
       warehouseId: "sdr3-1234-sdfg-5678",
     },
-
     items: cart,
-
     currency: "NGN",
-
     totals: {
       subtotal: subTotal,
       discount: discount,
       tax: tax,
       total: subTotal + discount + tax,
     },
-
     payment: {
       type: "", // cash, transfer, card etc
       details: null,
     },
-
     draftedBy: {
       userId: "user-22",
       name: "Cashier 1",
@@ -322,44 +317,30 @@ export function Quotation({ salesPayload }) {
   // /////////////////////////////////////////////////////////
   const payload = {
     type: "quotation",
-
     quoteId: "QUO-000145",
-
     customerId: "cust-3344",
     customer_name: customerName,
-
     warehouseId: "sdr3-1234-sdfg-5678",
-
-    soldItems: cart,
-
+    quoteItems: cart,
     currency: "NGN",
-
     totals: {
       subtotal: 4100,
       discount: 0,
       taxAmount: 307.5,
       total: 4407.5,
     },
-
     quotBy: {
       userId: "user-22",
       name: "Cashier 1",
     },
-
     payment: null,
-
     status: "draft", //"draft" "sent" "accepted" "rejected" "converted"
-
     createdAt: new Date().toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "long",
       year: "numeric",
     }),
-    updatedAt: new Date().toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    }),
+    updatedAt: "",
   };
 
   async function saveQuotation() {

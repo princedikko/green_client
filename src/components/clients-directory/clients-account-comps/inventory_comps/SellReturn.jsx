@@ -74,6 +74,7 @@ export default function SellReturn({ breadcrumbs }) {
         sold_price: 3500,
         subtotal: 3500,
         reason: "Defective",
+        description: "The charger stopped working after a week of use.",
       },
     ],
     invoiceNo: "INV123456",
@@ -89,7 +90,6 @@ export default function SellReturn({ breadcrumbs }) {
       year: "numeric",
     }),
   };
-
   async function acceptSellReturn() {
     try {
       setLoading(true);

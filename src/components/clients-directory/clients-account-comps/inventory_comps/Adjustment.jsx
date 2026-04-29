@@ -9,8 +9,6 @@ import * as Action from "../../../../store/redux/client_reducer.js";
 import { useSnackbar } from "notistack";
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-import salesData from "../data";
 import IsLoading from "../../../../IsLoading.jsx";
 import FilterAdjustment from "./filters/FilterAdjustment.jsx";
 import ExportPDFButton from "./exports/AdjustmentPDFExport.jsx";
@@ -131,11 +129,11 @@ export default function Adjustment({ breadcrumbs }) {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_stocks/fetch_adjustments`,
       )
       .then((response) => {
-        adjustmentsData = response.data.data;
-        console.log("adjustmentsData: ", response);
+        adjustmentsData = response.data.adjustmentsData;
+        console.log("adjustmentsData: ", adjustmentsData);
         if (response.data.status === 201) {
           setLoading(false);
           enqueueSnackbar(`${response.data.message}`, {
@@ -296,10 +294,10 @@ export default function Adjustment({ breadcrumbs }) {
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item.sku}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
+                  <td>{item.brand}</td>
+                  <td>{item.barcode}</td>
                   <td>₦{item.totalAmount?.toLocaleString()}</td>
                   <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>

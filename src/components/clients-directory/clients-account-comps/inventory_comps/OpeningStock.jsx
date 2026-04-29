@@ -8,7 +8,6 @@ import * as Action from "../../../../store/redux/client_reducer.js";
 import { useSnackbar } from "notistack";
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-import salesData from "../data";
 import IsLoading from "../../../../IsLoading.jsx";
 import FilterOpeningStock from "./filters/FilterOpeningStock.jsx";
 import ExportPDFButton from "./exports/OpeningStockPDFExport.jsx";
@@ -41,7 +40,6 @@ export default function OpeningStock({ breadcrumbs }) {
   // Paginations Functions
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-
   const [openLimit, setOpenLimit] = useState(false);
   const totalPages = Math.ceil(openingStockData?.length / rowsPerPage);
   const start = (currentPage - 1) * rowsPerPage;
@@ -125,10 +123,10 @@ export default function OpeningStock({ breadcrumbs }) {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_stocks/fetch_openingStocks`,
       )
       .then((response) => {
-        openingStockData = response.data.data;
+        openingStockData = response.data.openingStockData;
         console.log("openingStockData: ", response);
         if (response.data.status === 201) {
           setLoading(false);
@@ -290,9 +288,9 @@ export default function OpeningStock({ breadcrumbs }) {
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item.brand}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
+                  <td>{item.barcode}</td>
                   <td>{item.paymentStatus}</td>
                   <td>₦{item.totalAmount?.toLocaleString()}</td>
                   <td>₦{item.totalPaid?.toLocaleString()}</td>
@@ -531,10 +529,10 @@ export default function OpeningStock({ breadcrumbs }) {
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item.brand}</strong>
                   </td>
                   <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
+                  <td>{item.barcode}</td>
                   <td>₦{item.totalAmount?.toLocaleString()}</td>
                   <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>

@@ -3,11 +3,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import { motion } from "framer-motion"; // Importing framer-motion for animations
 
-import ManSitting from "../homepage_images/Maps.png"; // Importing image for the hero section
-import GalSitting from "../homepage_images/untitled-0 (14).png"; // Importing another image for the hero section
-import StuGalSitting from "../homepage_images/aa.png"; // Importing another image for the hero section
-import HoldingLogo from "../homepage_images/images.png"; // Importing another image for the hero section
-import Logo3d from "../homepage_images/logo_3d.png"; // Importing another image for the hero section
+import FirstGen from "../homepage_images/first.png"; // Importing image for the hero section
+import LongRcBasket from "../homepage_images/long_reciept_basket.png"; // Importing another image for the hero section
+import CoshionImg from "../homepage_images/coshion.png"; // Importing another image for the hero section
+import PhoneReciept from "../homepage_images/phoneReciepts.png"; // Importing another image for the hero section
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-fade"; // ✅ Important for fade to work
@@ -31,27 +30,22 @@ export default function HeroSwiper() {
     >
       <SwiperSlide>
         <figure>
-          <img src={HoldingLogo} alt="Hero illustration" />
+          <img src={PhoneReciept} alt="Hero illustration" />
         </figure>
       </SwiperSlide>
       <SwiperSlide>
         <figure>
-          <img src={Logo3d} alt="Hero illustration" />
+          <img src={LongRcBasket} alt="Hero illustration" />
         </figure>
       </SwiperSlide>
       <SwiperSlide>
         <figure>
-          <img src={GalSitting} alt="Hero illustration" />
+          <img src={FirstGen} alt="Hero illustration" />
         </figure>
       </SwiperSlide>
       <SwiperSlide>
         <figure>
-          <img src={ManSitting} alt="Hero illustration" />
-        </figure>
-      </SwiperSlide>
-      <SwiperSlide>
-        <figure>
-          <img src={StuGalSitting} alt="Hero illustration" />
+          <img src={CoshionImg} alt="Hero illustration" />
         </figure>
       </SwiperSlide>
     </Swiper>

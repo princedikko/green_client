@@ -27,7 +27,7 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 // image imports
 import ImgOne from "./img1.jpg";
 
-let salesAxios;
+let transferedStockData;
 
 export default function Transfers({ breadcrumbs }) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -43,10 +43,10 @@ export default function Transfers({ breadcrumbs }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [openLimit, setOpenLimit] = useState(false);
-  const totalPages = Math.ceil(salesData.length / rowsPerPage);
+  const totalPages = Math.ceil(transferedStockData?.length / rowsPerPage);
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
-  const currentRows = salesData.slice(start, end);
+  const currentRows = transferedStockData?.slice(start, end);
 
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
@@ -121,15 +121,15 @@ export default function Transfers({ breadcrumbs }) {
     }
   }
 
-  async function apiGetSales() {
+  async function apiGetTransfers() {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_stocks/fetch_transfers`,
       )
       .then((response) => {
-        salesAxios = response.data.data;
-        console.log("salesAxios: ", response);
+        transferedStockData = response.data.transfersData;
+        console.log("stock Transfered: ", transferedStockData);
         if (response.data.status === 201) {
           setLoading(false);
           enqueueSnackbar(`${response.data.message}`, {
@@ -286,18 +286,18 @@ export default function Transfers({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item.barcode}</strong>
                   </td>
                   <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>{item.brand}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -313,7 +313,7 @@ export default function Transfers({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="transfersCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="transfersGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -344,7 +344,7 @@ export default function Transfers({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -365,12 +365,12 @@ export default function Transfers({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {transferedStockData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        transferedStockData?.length,
+                      )} of ${transferedStockData?.length} entries`}
                 </span>
               </span>
               <div className="transfers_entries-info fx-ac spacem">
@@ -527,7 +527,7 @@ export default function Transfers({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -535,10 +535,10 @@ export default function Transfers({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -554,7 +554,7 @@ export default function Transfers({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="transfersCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="transfersGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -585,7 +585,7 @@ export default function Transfers({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -606,12 +606,12 @@ export default function Transfers({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {transferedStockData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        transferedStockData?.length,
+                      )} of ${transferedStockData?.length} entries`}
                 </span>
               </span>
               <div className="transfers_entries-info fx-ac spacem">
@@ -722,7 +722,7 @@ export default function Transfers({ breadcrumbs }) {
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
+              {currentRows?.map((item, index) => (
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
@@ -730,10 +730,10 @@ export default function Transfers({ breadcrumbs }) {
                   </td>
                   <td>{item.invoiceNo}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
+                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
+                  <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <button>{item.action}</button>
@@ -749,7 +749,7 @@ export default function Transfers({ breadcrumbs }) {
     function CardView({ currentRows }) {
       return (
         <div className="transfersCardGrid g g4 space2">
-          {currentRows.map((item) => (
+          {currentRows?.map((item) => (
             <div key={item.invoiceNo} className="transfersGridCard">
               {/* Header */}
               <div className="cardHeader">
@@ -780,7 +780,7 @@ export default function Transfers({ breadcrumbs }) {
               {/* Footer */}
               <div className="cardFooter">
                 <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
+                  ₦{item.totalAmount?.toLocaleString()}
                   <small> / sale</small>
                 </div>
 
@@ -801,12 +801,12 @@ export default function Transfers({ breadcrumbs }) {
                   Display:
                 </strong>
                 <span>
-                  {salesData.length === 0
+                  {transferedStockData?.length === 0
                     ? "0 to 0 of 0 entries"
                     : `${start + 1} to ${Math.min(
                         end,
-                        salesData.length,
-                      )} of ${salesData.length} entries`}
+                        transferedStockData?.length,
+                      )} of ${transferedStockData?.length} entries`}
                 </span>
               </span>
               <div className="transfers_entries-info fx-ac spacem">
@@ -886,7 +886,7 @@ export default function Transfers({ breadcrumbs }) {
     );
   }
   useEffect(() => {
-    apiGetSales();
+    apiGetTransfers();
   }, []);
   return (
     <div className="transfersCompContainer">

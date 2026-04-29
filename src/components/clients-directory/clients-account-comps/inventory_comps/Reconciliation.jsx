@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import * as Action from "../../../../store/redux/client_reducer.js";
 import { useSnackbar } from "notistack";
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 import salesData from "../data";
 import IsLoading from "../../../../IsLoading.jsx";
 import FilterReconciliation from "./filters/FilterReconciliation.jsx";
@@ -129,10 +128,10 @@ export default function Reconciliation({ breadcrumbs }) {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_stocks/fetch_reconciliations`,
       )
       .then((response) => {
-        reconciliationData = response.data.data;
+        reconciliationData = response.data.reconciliationsData;
         console.log("reconciliationData: ", response);
         if (response.data.status === 201) {
           setLoading(false);
@@ -296,8 +295,8 @@ export default function Reconciliation({ breadcrumbs }) {
                   <td>
                     <strong>{item.customerName}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
+                  <td>{item.barcode}</td>
+                  <td>{item.brand}</td>
                   <td>₦{item.totalAmount?.toLocaleString()}</td>
                   <td>₦{item.totalPaid?.toLocaleString()}</td>
                   <td>{item.totalItems}</td>

@@ -1,34 +1,47 @@
 .sectionHomeComp3 {
   background-color: #fff;
-  padding: 5.8rem;
+  padding: 9.6rem 5.8rem;
   text-align: center;
 }
-.HomeComp3Cont {
-  background-color: transparent;
-}
-
-.HomeComp3Cont h2 {
-  font-size: 5.6rem;
-}
-.HomeComp3Cont > p {
-  max-width: 46.89rem;
-  line-height: 1.5;
-}
-.HomeComp3Cont {
+.sectionHomeComp4 {
+  padding: 4.5rem;
+  background-color: #f3f0e8;
   font-size: 1.6rem;
 }
+.ourSrvc figure {
+  border-radius: 1.2rem;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  padding: 0.3rem;
+}
 
-.HomeComp3CardsCont .HomeComp3Card {
-  max-width: 28rem;
-}
-.HomeComp3CardsCont .HomeComp3Card h3 {
-  font-size: 2.4rem;
+.ourSrvc figure img {
+  width: 3.8rem;
+  height: auto;
+  border-radius: 0.8rem;
 }
 
-.HomeComp3CardsCont .HomeComp3Card p {
-  font-size: 1.5rem;
-  line-height: 1.5;
+.ourSrvc figure .srvcTag {
+  background-color: #f3f0e8;
+  color: #333;
+  border-radius: 0.5rem;
+  padding: 0.4rem 1.5rem;
+  transform: skewX(-14deg);
+  font-size: 1.3rem;
+  font-weight: bold;
 }
-.HomeComp3CardsCont .HomeComp3Card img {
-  max-width: 8.4rem;
+
+.srvcHead p {
+  font-size: 1.4rem;
+  font-weight: bold;
+  border-radius: 1.2rem;
+  color: #4e5a56;
+  /* border: 1px solid #b5b5b5; */
+  padding: 0.4rem 1.2rem;
+}
+.srvcHead figure {
+  background-color: #fafafa;
+  /* background: linear-gradient(to right, rgb(0, 0, 0), rgb(230, 106, 6)); */
+  flex-grow: 1;
+  height: 1px;
 }

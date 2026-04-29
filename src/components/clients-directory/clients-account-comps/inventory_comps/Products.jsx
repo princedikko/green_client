@@ -68,9 +68,15 @@ export default function Products({ breadcrumbs }) {
     qrcode: "1234567890123",
     name: "Peak Milk 170g",
     brand: "Peak",
-    units: { baseUnit: "tin", purchaseUnit: "carton", conversionRate: 24 },
+    productType: "inventory", // service, digital, subscription
+    units: {
+      baseUnit: "tin",
+      purchaseUnit: "carton",
+      conversionRate: 24,
+      salesUnit: "tin",
+    },
     description: "Business laptop",
-    categoryId: "",
+    categoryId: "cat-1234",
     supplierId: "uac-5678",
     productType: "inventory",
 
@@ -82,10 +88,8 @@ export default function Products({ breadcrumbs }) {
     },
 
     stock: {
-      quantityAvailable: 35,
       reorderLevel: 5,
       reorderQuantity: 10,
-
       minLevel: 20,
       sellingQuantity: 1,
     },
@@ -95,6 +99,8 @@ export default function Products({ breadcrumbs }) {
         warehouseId: "sdr3-1234-sdfg-5678",
         location: "Aisle 3 - Rack B",
         quantity: 35,
+        reservedQuantity: 0,
+        damagedQuantity: 0,
       },
     ],
 
@@ -106,7 +112,7 @@ export default function Products({ breadcrumbs }) {
         {
           batchNo: "PK0124A",
           costPrice: 800,
-          quantity: 100,
+          quantityAvailable: 35,
           manufactureDate: "2024-01-01",
           expiryDate: "2026-01-30",
           warehouseId: "sdr3-1234-sdfg-5678",
@@ -122,6 +128,8 @@ export default function Products({ breadcrumbs }) {
     images: [],
     trackInventory: true,
     status: "active",
+    createdBy: "userId",
+    updatedBy: "userId",
     createdAt: new Date().toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "long",
@@ -288,7 +296,6 @@ export default function Products({ breadcrumbs }) {
             <thead className="fx-cl spacem">
               <tr>
                 <th>Product</th>
-                <th>SKU</th>
                 <th>Category</th>
                 <th>Brand</th>
                 <th>Purchase Price</th>
@@ -297,7 +304,6 @@ export default function Products({ breadcrumbs }) {
                 <th>Unit</th>
                 <th>Location</th>
                 <th>Status</th>
-                <th>Created</th>
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
@@ -319,7 +325,6 @@ export default function Products({ breadcrumbs }) {
                     <span>
                       <strong>{item?.name}</strong>
                     </span>
-                    <span>{item?.sku}</span>
                     <span>{item?.categoryId}</span>
                     <span>{item?.brand}</span>
                     <span>₦{item?.pricing?.costPrice?.toLocaleString()}</span>
@@ -330,14 +335,6 @@ export default function Products({ breadcrumbs }) {
                     <span>{item?.units?.baseUnit}</span>
                     <span>{item?.warehouses?.[0]?.location}</span>
                     <span>{item?.status}</span>
-                    <span>
-                      {/* {item?.createdAt} */}
-                      {new Date(item?.createdAt).toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </span>
                   </td>
 
                   <span className="productsAccordionCont">
@@ -352,13 +349,6 @@ export default function Products({ breadcrumbs }) {
                       </figure>
 
                       <div className="productsAccordionDetails g g4 space1">
-                        <div className="fx-cl spacem">
-                          <span>Brand</span>
-                          <p>
-                            <strong>{item?.brand}</strong>
-                          </p>
-                        </div>
-
                         <div className="fx-cl spacem">
                           <span>Batch</span>
                           <p>
@@ -409,6 +399,22 @@ export default function Products({ breadcrumbs }) {
                           <span>Stock Available</span>
                           <p>
                             <strong>{item?.stock?.quantityAvailable}</strong>
+                          </p>
+                        </div>
+                        <div className="fx-cl spacem">
+                          <span>Date Created</span>
+                          <p>
+                            <strong>
+                              {" "}
+                              {new Date(item?.createdAt).toLocaleDateString(
+                                "en-GB",
+                                {
+                                  day: "2-digit",
+                                  month: "long",
+                                  year: "numeric",
+                                },
+                              )}
+                            </strong>
                           </p>
                         </div>
 

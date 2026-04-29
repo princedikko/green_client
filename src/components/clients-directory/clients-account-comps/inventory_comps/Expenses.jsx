@@ -7,11 +7,10 @@ import { useSelector } from "react-redux";
 import * as Action from "../../../../store/redux/client_reducer.js";
 import { useSnackbar } from "notistack";
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-import salesData from "../data";
 import IsLoading from "../../../../IsLoading.jsx";
 import FilterDiscount from "./filters/FilterExpenses.jsx";
 import ExportPDFButton from "./exports/ExpensesPDFExport.jsx";
-import ExportExcelJSButton from "./exports/DiscripanciesExcelExport.jsx";
+import ExportExcelJSButton from "./exports/ExpensesExcelExport.jsx";
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 // import from MUI
@@ -129,11 +128,11 @@ export default function Expenses({ breadcrumbs }) {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/expenses/get?start_date=2024-01-01&end_date=2024-12-31`,
       )
       .then((response) => {
-        expensesData = response.data.data;
-        console.log("expensesData: ", response);
+        expensesData = response.data.expenseData;
+        console.log("expensesData: ", expensesData);
         if (response.data.status === 201) {
           setLoading(false);
           enqueueSnackbar(`${response.data.message}`, {
@@ -294,13 +293,13 @@ export default function Expenses({ breadcrumbs }) {
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item.sku}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
+                  <td>{item.barcode}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>test alpha</td>
                   <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
+                  <td>{item.brand}</td>
                   <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
@@ -533,13 +532,13 @@ export default function Expenses({ breadcrumbs }) {
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item.sku}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
+                  <td>{item.barcode}</td>
                   <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
+                  <td>test alpha</td>
                   <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
+                  <td>{item.brand}</td>
                   <td>₦{item.sellDue?.toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>

@@ -58,49 +58,14 @@ export default function Categories({ breadcrumbs }) {
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
 
-  const payload = {
-    name: "products array",
-  };
-
-  async function apiPostProducts() {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/h3jk45345y3j53k4ghj23mn/products/add_product`,
-        payload,
-      );
-      if (response?.data?.status === 200) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-      } else {
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
-      }
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-
-      enqueueSnackbar("Server error while fetching products", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  }
-
   const apiGetCategories = async () => {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/manage_products/client/691a663dc9f64e6b9b8be48e/categories/get_categories`,
       )
       .then((response) => {
-        categoriesData = response.data.data;
+        categoriesData = response.data.categoriesData;
         console.log("categoriesData: ", response);
         if (response.data.status === 201) {
           setLoading(false);
@@ -246,14 +211,10 @@ export default function Categories({ breadcrumbs }) {
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
+                <th>Category</th>
+                <th>Category ID</th>
+                <th>Description</th>
+                <th>Created</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -262,17 +223,13 @@ export default function Categories({ breadcrumbs }) {
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item.nameOfcategory}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
-                  <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue?.toLocaleString()}</td>
-                  <td>{item.date}</td>
+                  <td>{item.categoryId}</td>
+                  <td>{item.description}</td>
+                  <td>{item.createdAt}</td>
                   <td>
-                    <button>{item.action}</button>
+                    <button>buttons</button>
                   </td>
                 </tr>
               ))}
@@ -487,14 +444,10 @@ export default function Categories({ breadcrumbs }) {
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
+                <th>Category</th>
+                <th>Category ID</th>
+                <th>Description</th>
+                <th>Created</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -503,17 +456,13 @@ export default function Categories({ breadcrumbs }) {
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item.nameOfcategory}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
-                  <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue?.toLocaleString()}</td>
-                  <td>{item.date}</td>
+                  <td>{item.categoryId}</td>
+                  <td>{item.description}</td>
+                  <td>{item.createdAt}</td>
                   <td>
-                    <button>{item.action}</button>
+                    <button>buttons</button>
                   </td>
                 </tr>
               ))}
@@ -668,40 +617,15 @@ export default function Categories({ breadcrumbs }) {
     // /////////////////////////////////////////////////////////
 
     const payload = {
-      sku: "MILK-PEAK-001",
-      barcode: "6224001234567", // EAN / UPC
-      name: "Peak Milk 170g",
-      brand: "Peak",
-      category: {
-        name: "Dairy",
-      },
-
-      unit: "tin",
-      costPrice: 820,
-      sellingPrice: 950,
-      taxRate: 2.5, // VAT %
-
-      stock: {
-        quantity: 245,
-        minLevel: 20,
-        reorderLevel: 50,
-      },
-
-      batchTracking: true,
-      expiryTracking: true,
-
-      batches: [
-        {
-          batchNo: "PK0124A",
-          costPrice: 800,
-        },
-      ],
-
-      supplier: {
-        name: "UAC Foods",
-      },
-
-      status: "ACTIVE",
+      nameOfcategory: "Dairy product",
+      categoryId: "CTG/001/2024",
+      description:
+        "Products made from milk such as cheese, butter, yogurt, and other dairy items.",
+      createdAt: new Date().toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      }),
     };
 
     async function createCategory() {
@@ -754,14 +678,10 @@ export default function Categories({ breadcrumbs }) {
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
+                <th>Category</th>
+                <th>Category ID</th>
+                <th>Description</th>
+                <th>Created</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -770,17 +690,13 @@ export default function Categories({ breadcrumbs }) {
                 <tr key={item.invoiceNo}>
                   {/* <td>{index + 1}</td> */}
                   <td>
-                    <strong>{item.customerName}</strong>
+                    <strong>{item.nameOfcategory}</strong>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
-                  <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue?.toLocaleString()}</td>
-                  <td>{item.date}</td>
+                  <td>{item.categoryId}</td>
+                  <td>{item.description}</td>
+                  <td>{item.createdAt}</td>
                   <td>
-                    <button>{item.action}</button>
+                    <button>buttons</button>
                   </td>
                 </tr>
               ))}

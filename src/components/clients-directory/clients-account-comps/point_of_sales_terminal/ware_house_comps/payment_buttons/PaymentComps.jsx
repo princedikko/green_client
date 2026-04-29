@@ -13,6 +13,7 @@ import MultiplePayment from "../MultiplePayment";
 import EventRoundedIcon from "@mui/icons-material/EventRounded";
 import WorkspacePremiumRoundedIcon from "@mui/icons-material/WorkspacePremiumRounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
+import ForumRoundedIcon from "@mui/icons-material/ForumRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 export function CashPayment({ salesPayload }) {
@@ -52,6 +53,7 @@ export function CashPayment({ salesPayload }) {
       name: "Yasmeen",
     },
     payment: {
+      payId: "",
       method: "cash", // cash, card, transfer, wallet
       status: "paid",
     },
@@ -63,6 +65,7 @@ export function CashPayment({ salesPayload }) {
     }),
     updatedAt: "",
   };
+
   async function cashPaidSubmit() {
     try {
       setLoading(true);
@@ -177,6 +180,10 @@ export function CashPayment({ salesPayload }) {
             Submit
           </button>
         </div>
+      </div>
+      <div className="discountFoot fx-ac fx-jc">
+        <ForumRoundedIcon /> Highly secured and encryped by jools JFK Terminal,
+        Nairobi, Kenya
       </div>
     </div>
   );
@@ -808,6 +815,7 @@ export function Shipping({ salesPayload }) {
       name: "Yasmeen",
     },
     payment: {
+      payId: "",
       method: "cash", // cash, card, transfer, wallet
       status: "paid",
     },

@@ -41,7 +41,6 @@ export default function ProductServices({ breadcrumbs }) {
   // Paginations Functions
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-
   const [openLimit, setOpenLimit] = useState(false);
   const totalPages = Math.ceil(productsServicesData?.length / rowsPerPage);
   const start = (currentPage - 1) * rowsPerPage;
@@ -96,11 +95,11 @@ export default function ProductServices({ breadcrumbs }) {
       setLoading(true);
 
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/5sd4fg56we6r4d/products/fetch_product`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/products_services/fetch_services`,
       );
       productsServicesData = response?.data.productsServicesData;
 
-      if (response?.data?.status === 200) {
+      if (response?.data?.status === 201) {
         enqueueSnackbar(response?.data?.message, {
           variant: "success",
           autoHideDuration: 3000,
@@ -369,40 +368,42 @@ export default function ProductServices({ breadcrumbs }) {
               {switchView()}
             </div>
             <div className="fx-jc">
-              <div className="productservices_pagination fx-ac space2">
-                <button
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage((p) => p - 1)}
-                >
-                  Previous
-                </button>
-                <div className="fx-ac">
-                  {getPagination(currentPage, totalPages).map((page, i) =>
-                    page === "..." ? (
-                      <span key={i} className="dots">
-                        …
-                      </span>
-                    ) : (
-                      <button
-                        key={i}
-                        className={`productservices_jumpto ${
-                          currentPage === page ? "active" : ""
-                        }`}
-                        onClick={() => setCurrentPage(page)}
-                      >
-                        {page}
-                      </button>
-                    ),
-                  )}
-                </div>
+              {currentRows && (
+                <div className="productservices_pagination fx-ac space2">
+                  <button
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage((p) => p - 1)}
+                  >
+                    Previous
+                  </button>
+                  <div className="fx-ac">
+                    {getPagination(currentPage, totalPages).map((page, i) =>
+                      page === "..." ? (
+                        <span key={i} className="dots">
+                          …
+                        </span>
+                      ) : (
+                        <button
+                          key={i}
+                          className={`productservices_jumpto ${
+                            currentPage === page ? "active" : ""
+                          }`}
+                          onClick={() => setCurrentPage(page)}
+                        >
+                          {page}
+                        </button>
+                      ),
+                    )}
+                  </div>
 
-                <button
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage((p) => p + 1)}
-                >
-                  Next
-                </button>
-              </div>
+                  <button
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage((p) => p + 1)}
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -949,8 +950,10 @@ export default function ProductServices({ breadcrumbs }) {
               {breadcrumbs.active_title}
             </h2>
             <p style={{ fontSize: "1.2rem" }}>
-              This module stores services instead of physical products: A
-              service has no stock.
+              This module stores services of the product and entire inventory.
+              services includes any work done for customers <br /> that are not
+              directly related to a product. Examples include repairs,
+              maintenance, consulting, <br /> and other non-tangible offerings.
             </p>
           </div>
           <div className="fx-ac fx-jb spacem">

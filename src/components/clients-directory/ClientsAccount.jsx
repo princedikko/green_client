@@ -62,7 +62,7 @@ import Orders from "./clients-account-comps/inventory_comps/Orders.jsx";
 import Transfers from "./clients-account-comps/inventory_comps/Transfers.jsx";
 import OpeningStock from "./clients-account-comps/inventory_comps/OpeningStock.jsx";
 import Reconciliation from "./clients-account-comps/inventory_comps/Reconciliation.jsx";
-import Discripancies from "./clients-account-comps/inventory_comps/Discripancies.jsx";
+import Discrepancies from "./clients-account-comps/inventory_comps/Discrepancies.jsx";
 import FilterAdjustment from "./clients-account-comps/inventory_comps/filters/FilterAdjustment.jsx";
 import Adjustment from "./clients-account-comps/inventory_comps/Adjustment.jsx";
 import Expenses from "./clients-account-comps/inventory_comps/Expenses.jsx";
@@ -71,6 +71,8 @@ import Invoicing from "./clients-account-comps/inventory_comps/Invoicing.jsx";
 import Production from "./clients-account-comps/inventory_comps/Production.jsx";
 import ReportsMain from "./clients-account-comps/reports_comps/ReportsMain.jsx";
 import Products from "./clients-account-comps/inventory_comps/Products.jsx";
+import Services from "./clients-account-comps/inventory_comps/Services.jsx";
+import Delivery from "./clients-account-comps/inventory_comps/Delivery.jsx";
 
 export default function ClientsAccount() {
   const dispatch = useDispatch();
@@ -173,6 +175,8 @@ export default function ClientsAccount() {
         return <Drafts breadcrumbs={breads} />;
       case "products":
         return <Products breadcrumbs={breads} />;
+      case "services":
+        return <Services breadcrumbs={breads} />;
       case "product_services":
         return <ProductServices breadcrumbs={breads} />;
       case "imports":
@@ -203,10 +207,12 @@ export default function ClientsAccount() {
         return <OpeningStock breadcrumbs={breads} />;
       case "reconciliation":
         return <Reconciliation breadcrumbs={breads} />;
-      case "discripancies":
-        return <Discripancies breadcrumbs={breads} />;
+      case "discrepancies":
+        return <Discrepancies breadcrumbs={breads} />;
       case "adjusment":
         return <Adjustment breadcrumbs={breads} />;
+      case "deliveries":
+        return <Delivery breadcrumbs={breads} />;
       case "expenses":
         return <Expenses breadcrumbs={breads} />;
       case "expense_category":
@@ -217,7 +223,6 @@ export default function ClientsAccount() {
         return <Production breadcrumbs={breads} />;
       case "reports_main":
         return <ReportsMain breadcrumbs={breads} />;
-
       // /.....................................
       case "setting":
         return "Change your Password here ...";
@@ -331,7 +336,7 @@ export default function ClientsAccount() {
         },
         {
           title: "Services",
-          hook: "product_services",
+          hook: "services",
           tabs: ["main", "completed", "pending"],
         },
       ],
@@ -386,13 +391,18 @@ export default function ClientsAccount() {
           tabs: ["main", "completed", "pending"],
         },
         {
-          title: "Discripancies",
-          hook: "discripancies",
+          title: "Discrepancies",
+          hook: "discrepancies",
           tabs: ["main", "completed", "pending"],
         },
         {
           title: "Adjusment",
           hook: "adjusment",
+          tabs: ["main", "completed", "pending"],
+        },
+        {
+          title: "Services",
+          hook: "product_services",
           tabs: ["main", "completed", "pending"],
         },
       ],

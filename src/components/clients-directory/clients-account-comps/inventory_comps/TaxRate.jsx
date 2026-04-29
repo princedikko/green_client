@@ -57,10 +57,10 @@ export default function TaxRate({ breadcrumbs }) {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/${id}/manage_products/get-tax-rates`,
       )
       .then((response) => {
-        taxRateData = response.data.data;
+        taxRateData = response.data.taxRates;
         console.log("taxRateData: ", response);
         if (response.data.status === 201) {
           setLoading(false);
@@ -142,8 +142,8 @@ export default function TaxRate({ breadcrumbs }) {
     switch (currentTab) {
       case "taxrate":
         return <TaxRates />;
-      case "completed":
-        return <Completed />;
+      case "tax_group":
+        return <TaxGroup />;
       case "new-record":
         return <AddNew />;
       default:
@@ -206,33 +206,34 @@ export default function TaxRate({ breadcrumbs }) {
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
-                <th>Action</th>
+                <th>Currency</th>
+                <th>Default Tax</th>
+                <th>Tax Rate</th>
+                <th>Tax Type</th>
+                <th>Applies To</th>
+                <th>Country</th>
+                <th>Stackable</th>
+                <th>Compound Tax</th>
+                <th>Rounding</th>
+                <th>Tax Inclusive</th>
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
               {currentRows?.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
+                <tr key={item.taxId}>
+                  <td>{item.currency}</td>
+                  <td>{item.defaultTax}</td>
+                  {/* taxRules (only VAT shown since your payload has single object) */}
+                  <td>{item.taxRules?.rate}%</td>
+                  <td>{item.taxRules?.type}</td>
+                  <td>{item.taxRules?.appliesTo?.join(", ")}</td>
+                  <td>{item.taxRules?.country}</td>
+                  {/* rulesEngine */}
+                  <td>{item.rulesEngine?.stackable ? "Yes" : "No"}</td>
+                  <td>{item.rulesEngine?.compoundTax ? "Yes" : "No"}</td>
+                  <td>{item.rulesEngine?.roundingMethod}</td>
                   <td>
-                    <strong>{item.customerName}</strong>
-                  </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
-                  <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue?.toLocaleString()}</td>
-                  <td>{item.date}</td>
-                  <td>
-                    <button>{item.action}</button>
+                    {item.rulesEngine?.displayTaxInclusive ? "Yes" : "No"}
                   </td>
                 </tr>
               ))}
@@ -428,7 +429,7 @@ export default function TaxRate({ breadcrumbs }) {
       </div>
     );
   }
-  function Completed() {
+  function TaxGroup() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -441,7 +442,7 @@ export default function TaxRate({ breadcrumbs }) {
     }
     function TableView({ currentRows }) {
       return (
-        <div className="completed">
+        <div className="tax_group">
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
@@ -627,40 +628,47 @@ export default function TaxRate({ breadcrumbs }) {
     // /////////////////////////////////////////////////////////
 
     const payload = {
-      sku: "MILK-PEAK-001",
-      barcode: "6224001234567", // EAN / UPC
-      name: "Peak Milk 170g",
-      brand: "Peak",
-      category: {
-        name: "Dairy",
+      inventoryId: "JDK-MLN-O9KL-56T8",
+      taxId: "tax_config_001",
+      currency: "NGN",
+      defaultTax: "VAT",
+      taxRules: {
+        rate: 7.5,
+        type: "percentage",
+        appliesTo: ["physical_goods", "digital_goods"],
+        isActive: true,
+        priority: 1,
+        country: "NG",
       },
 
-      unit: "tin",
-      costPrice: 820,
-      sellingPrice: 950,
-      taxRate: 2.5, // VAT %
+      //  LUXURY_TAX: {
+      //     rate: 10,
+      //     type: "percentage",
+      //     appliesTo: ["luxury_goods"],
+      //     isActive: true,
+      //     priority: 2,
+      //     country: "NG",
+      //   },
 
-      stock: {
-        quantity: 245,
-        minLevel: 20,
-        reorderLevel: 50,
+      //   ZERO_TAX: {
+      //     rate: 0,
+      //     type: "percentage",
+      //     appliesTo: ["basic_food", "essential_items"],
+      //     isActive: true,
+      //     priority: 3,
+      //     country: "NG",
+      //   },
+      rulesEngine: {
+        stackable: false,
+        compoundTax: false,
+        roundingMethod: "nearest",
+        displayTaxInclusive: true,
       },
-
-      batchTracking: true,
-      expiryTracking: true,
-
-      batches: [
-        {
-          batchNo: "PK0124A",
-          costPrice: 800,
-        },
-      ],
-
-      supplier: {
-        name: "UAC Foods",
+      audit: {
+        createdAt: new Date().toISOString(),
+        updatedAt: "",
+        updatedBy: "admin",
       },
-
-      status: "ACTIVE",
     };
 
     async function addNewTaxRecord() {
@@ -967,12 +975,12 @@ export default function TaxRate({ breadcrumbs }) {
               <figure>{currentRows?.length || 0}</figure>
             </li>
             <li
-              onClick={() => handleCurrentTAB("completed")}
+              onClick={() => handleCurrentTAB("tax_group")}
               className={`fx-ac  spacem ${
-                currentTab == "completed" && "active"
+                currentTab == "tax_group" && "active"
               }`}
             >
-              <span>Completed</span>
+              <span>Tax Group</span>
               <figure>{currentRows?.length || 0}</figure>
             </li>
             <li

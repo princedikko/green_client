@@ -24,6 +24,11 @@ import PlaceIcon from "@mui/icons-material/Place";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
+
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 // image imports
 import ImgOne from "./img1.jpg";
 
@@ -57,40 +62,129 @@ export default function Returns({ breadcrumbs }) {
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    sku: "MILK-PEAK-001",
-    barcode: "6224001234567", // EAN / UPC
-    name: "Peak Milk 170g",
-    brand: "Peak",
-    category: {
-      name: "Dairy",
+    returnId: "RTN-00045",
+    originalPurchaseOrderId: "PO-00981",
+    receiveId: "RCV-00021",
+
+    supplier: {
+      supplierId: "SUP-0023",
+      name: "ABC Supplies Ltd",
+      contact: "+2348012345678",
     },
 
-    unit: "tin",
-    costPrice: 820,
-    sellingPrice: 950,
-    taxRate: 2.5, // VAT %
-
-    stock: {
-      quantity: 245,
-      minLevel: 20,
-      reorderLevel: 50,
+    warehouse: {
+      warehouseId: "WH-01",
+      name: "Main Warehouse",
     },
 
-    batchTracking: true,
-    expiryTracking: true,
+    processedBy: {
+      userId: "USR-1001",
+      name: "Amina",
+    },
 
-    batches: [
+    returnDate: "2026-04-29T11:20:00Z",
+
+    status: "APPROVED", // PENDING | APPROVED | REJECTED | SENT_TO_SUPPLIER | COMPLETED
+
+    returnType: "PARTIAL", // FULL_RETURN | PARTIAL_RETURN
+
+    reasonSummary: "Damaged and wrong items delivered",
+
+    items: [
       {
-        batchNo: "PK0124A",
-        costPrice: 800,
+        productId: "PRD-001",
+        name: "Laptop HP EliteBook",
+
+        quantityReturned: 5,
+        unitPrice: 1200,
+        totalRefundValue: 6000,
+
+        reason: "DAMAGED",
+        // DAMAGED | EXPIRED | WRONG_ITEM | QUALITY_ISSUE
+
+        condition: "UNUSABLE",
+
+        batchNumber: "BCH-7781",
+
+        serialNumbers: ["SN001", "SN002"],
+
+        inspection: {
+          checked: true,
+          inspector: "USR-2002",
+          notes: "Screen cracked, cannot be restocked",
+        },
+
+        resolution: "RETURN_TO_SUPPLIER",
+        // RETURN_TO_SUPPLIER | REPLACE | WRITE_OFF
+      },
+
+      {
+        productId: "PRD-003",
+        name: "Keyboard Logitech K120",
+
+        quantityReturned: 10,
+        unitPrice: 25,
+        totalRefundValue: 250,
+
+        reason: "WRONG_ITEM",
+        condition: "NEW",
+
+        batchNumber: "BCH-9911",
+
+        serialNumbers: [],
+
+        inspection: {
+          checked: true,
+          inspector: "USR-2002",
+          notes: "Wrong model delivered (K120 instead of K270)",
+        },
+
+        resolution: "REPLACE",
       },
     ],
 
-    supplier: {
-      name: "UAC Foods",
+    financials: {
+      totalItemsReturned: 2,
+      totalQuantityReturned: 15,
+      totalRefundValue: 6250,
+      currency: "USD",
     },
 
-    status: "ACTIVE",
+    supplierAction: {
+      responseStatus: "PENDING", // PENDING | ACCEPTED | DISPUTED | REFUNDED
+      returnReferenceCode: "SUP-RMA-77821",
+      expectedResolutionDate: "2026-05-05",
+    },
+
+    logistics: {
+      shippedBack: true,
+      shippingMethod: "DHL",
+      trackingNumber: "DHL-99887766",
+      shippingCost: 120,
+      pickupDate: "2026-04-30",
+    },
+
+    attachments: [
+      "damage_report_001.jpg",
+      "return_invoice.pdf",
+      "inspection_video.mp4",
+    ],
+
+    auditTrail: [
+      {
+        action: "CREATED",
+        by: "USR-1001",
+        date: "2026-04-29T11:20:00Z",
+      },
+      {
+        action: "APPROVED",
+        by: "MANAGER-001",
+        date: "2026-04-29T11:45:00Z",
+      },
+    ],
+
+    createdAt: "2026-04-29T11:20:00Z",
+    updatedAt: "2026-04-29T11:50:00Z",
   };
 
   async function postReturn() {
@@ -129,10 +223,10 @@ export default function Returns({ breadcrumbs }) {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/purchases/client/691a663dc9f64e6b9b8be48e/get_returns`,
       )
       .then((response) => {
-        returnsData = response.data.data;
+        returnsData = response.data.returnsData;
         console.log("returnsData: ", response);
         if (response.data.status === 201) {
           setLoading(false);
@@ -273,39 +367,183 @@ export default function Returns({ breadcrumbs }) {
       }
     }
     function TableView({ currentRows }) {
+      const [openItemDrpdwn, setOpenItemDrpdwn] = useState(false);
+      const [accordion, setAccordion] = useState(null);
+      const [brands, setBrands] = useState("All brands");
+      const [activeRow, setActiveRow] = useState(null);
+      const dispatch = useDispatch();
+
+      function handleItemDrpdwn(index) {
+        setOpenItemDrpdwn(!openItemDrpdwn);
+        if (activeRow === index) {
+          setActiveRow(null);
+        } else {
+          setActiveRow(index);
+        }
+      }
+
       return (
-        <div className="returns">
+        <div className="products">
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
-                <th>Action</th>
+                <th>Return ID</th>
+                <th>Purchase Order ID</th>
+                <th>Receive ID</th>
+                <th>Supplier</th>
+                <th>Warehouse</th>
+                <th>Processed By</th>
+                <th>Return Date</th>
+                <th>Status</th>
+                <th>Total Refund</th>
               </tr>
             </thead>
+
             <tbody className="fx-cl spacem">
               {currentRows?.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
-                  <td>
-                    <strong>{item.customerName}</strong>
+                <tr
+                  key={index}
+                  id={`${accordion == index && "productsAccordionOpen"}`}
+                  className="productsRowTdCont fx-cl space1"
+                >
+                  <td
+                    id={item?.returnId}
+                    className={`productsRowTd ${activeRow == index && "active_warehauseRow"}`}
+                    onClick={() =>
+                      accordion == index
+                        ? setAccordion(null)
+                        : setAccordion(index)
+                    }
+                  >
+                    <span>
+                      <strong>{item?.returnId}</strong>
+                    </span>
+                    <span>{item?.originalPurchaseOrderId}</span>
+                    <span>{item?.receiveId}</span>
+                    <span>{item?.supplier?.name}</span>
+                    <span>{item?.warehouse?.name}</span>
+                    <span>{item?.processedBy?.name}</span>
+                    <span>
+                      {new Date(item?.returnDate).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <span>{item?.status}</span>
+                    <span>
+                      {item?.financials?.currency}{" "}
+                      {item?.financials?.totalRefundValue?.toLocaleString()}
+                    </span>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
-                  <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue?.toLocaleString()}</td>
-                  <td>{item.date}</td>
-                  <td>
-                    <button>{item.action}</button>
-                  </td>
+
+                  <span className="productsAccordionCont">
+                    <div className="productsAccordionDisc fx-ac space1">
+                      <figure className="fx-ac fx-jc">
+                        <ShoppingCartIcon
+                          style={{
+                            fontSize: "9.5rem",
+                            color: "rgb(233 245 243)",
+                          }}
+                        />
+                      </figure>
+
+                      <div className="productsAccordionDetails g g4 space1">
+                        <div className="fx-cl spacem">
+                          <span>Return ID</span>
+                          <p>
+                            <strong>{item?.returnId}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Return Type</span>
+                          <p>
+                            <strong>{item?.returnType}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Supplier Contact</span>
+                          <p>
+                            <strong>{item?.supplier?.contact}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Reason Summary</span>
+                          <p>
+                            <strong>{item?.reasonSummary}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Total Quantity Returned</span>
+                          <p>
+                            <strong>
+                              {item?.financials?.totalQuantityReturned}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Total Refund Value</span>
+                          <p>
+                            <strong>
+                              {item?.financials?.currency}{" "}
+                              {item?.financials?.totalRefundValue?.toLocaleString()}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Shipping Method</span>
+                          <p>
+                            <strong>{item?.logistics?.shippingMethod}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Tracking Number</span>
+                          <p>
+                            <strong>{item?.logistics?.trackingNumber}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Created At</span>
+                          <p>
+                            <strong>
+                              {new Date(item?.createdAt).toLocaleDateString(
+                                "en-GB",
+                                {
+                                  day: "2-digit",
+                                  month: "long",
+                                  year: "numeric",
+                                },
+                              )}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-ac space1">
+                          <button className="controlButtons">
+                            <span>View Return</span>
+                          </button>
+
+                          <button className="controlButtons">
+                            <RemoveCircleOutlineIcon />
+                            <span>Edit</span>
+                          </button>
+
+                          <button className="controlButtons">
+                            <LocalPrintshopIcon />
+                            <span>Export</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
                 </tr>
               ))}
             </tbody>

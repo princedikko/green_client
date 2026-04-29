@@ -3,6 +3,7 @@ import CountUp from "react-countup"; // Importing CountUp for counting numbers
 import { Typewriter } from "react-simple-typewriter"; // Importing Typewriter for text animation
 import "./Hero.css"; // Importing CSS for styling
 import HeroSwiper from "./hero_folder/HeroSwiper";
+import Imag1 from "./homepage_images/test/adsf1.png";
 
 import Logo from "../logo/greenlg.png"; // Importing logo image
 // importing icons from material user interface
@@ -13,7 +14,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 const Hero = () => {
   return (
     <div className="heroWrap">
-      <section className="hero-section ">
+      <section className="hero-section fx-cl fx-jc fx-ac space2">
         <div className="fx-jc">
           <motion.div
             className="hero-text fx-cl fx-ac space2"
@@ -85,8 +86,14 @@ const Hero = () => {
             <div className="heroImage">
               <HeroSwiper />
             </div>
-
-            <div className="heroBaseStatus fx-ac space2">
+          </motion.div>
+        </div>
+        <figure className="heroBaseBar fx-ac spacem">
+          {" "}
+          <img src={Imag1} alt="HomeComp3 image" />{" "}
+          <div className="fx-cl spacem">
+            <p className="heroBaseDesc fx-ac spacem">
+              We provide{" "}
               <motion.figure
                 className="fx-cl"
                 initial={{ scale: 0, opacity: 0 }}
@@ -99,30 +106,12 @@ const Hero = () => {
                 }}
               >
                 <h4>
-                  <CountUp end={354} duration={4} />+
+                  <CountUp end={365} duration={4} />+
                 </h4>
-                <span>Completed</span>
                 {/* <span>graduate</span> */}
-              </motion.figure>
-
-              <motion.figure
-                className="fx-cl"
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 100,
-                  damping: 10,
-                  delay: 0.5,
-                }}
-              >
-                <h4>
-                  <CountUp end={20994} duration={5} />
-                </h4>
-                <span>Graduated</span>
-                {/* <span>since 1989</span> */}
-              </motion.figure>
-
+              </motion.figure>{" "}
+              days of uninterrupted availability, trusted by thousands of users,
+              with{" "}
               <motion.figure
                 className="fx-cl"
                 initial={{ scale: 0, opacity: 0 }}
@@ -135,26 +124,15 @@ const Hero = () => {
                 }}
               >
                 <h4>
-                  <CountUp end={89} suffix="%" duration={4} />
+                  <CountUp end={99} suffix="%" duration={4} />
                 </h4>
-                <span>Completed</span>
                 {/* <span>clients</span> */}
-              </motion.figure>
-            </div>
-          </motion.div>
-
-          {/* <HeroCompFirst
-        currentHero={currentHero}
-        setCurrentHero={setCurrentHero}
-      /> */}
-        </div>
+              </motion.figure>{" "}
+              fast processing speed for efficient and reliable performance.
+            </p>{" "}
+          </div>{" "}
+        </figure>
       </section>
-      <figure className="heroBase">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab soluta
-        autem similique deserunt quasi corporis quas eligendi error rerum
-        mollitia. Quibusdam ea, reiciendis, tempora vero laudantium maxime unde
-        consectetur harum maiores tempore commodi.
-      </figure>
     </div>
   );
 };

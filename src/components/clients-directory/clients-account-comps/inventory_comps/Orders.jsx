@@ -24,6 +24,10 @@ import PlaceIcon from "@mui/icons-material/Place";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 // image imports
 import ImgOne from "./img1.jpg";
 
@@ -57,40 +61,109 @@ export default function Orders({ breadcrumbs }) {
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    sku: "MILK-PEAK-001",
-    barcode: "6224001234567", // EAN / UPC
-    name: "Peak Milk 170g",
-    brand: "Peak",
-    category: {
-      name: "Dairy",
+    orderId: "PO-2026-000981",
+    orderType: "PURCHASE_ORDER",
+
+    status: {
+      current: "APPROVED",
+      history: [
+        {
+          state: "PENDING",
+          timestamp: "2026-04-28T08:00:00Z",
+        },
+        {
+          state: "APPROVED",
+          timestamp: "2026-04-28T10:30:00Z",
+          approvedBy: "USR-1002",
+        },
+      ],
     },
 
-    unit: "tin",
-    costPrice: 820,
-    sellingPrice: 950,
-    taxRate: 2.5, // VAT %
-
-    stock: {
-      quantity: 245,
-      minLevel: 20,
-      reorderLevel: 50,
+    supplier: {
+      supplierId: "SUP-0023",
+      name: "ABC Supplies Ltd",
+      email: "sales@abcsupplies.com",
+      phone: "+2348012345678",
+      address: "Lagos Industrial Area",
     },
 
-    batchTracking: true,
-    expiryTracking: true,
+    warehouse: {
+      warehouseId: "WH-01",
+      name: "Main Warehouse",
+      location: "Ikeja, Lagos",
+    },
 
-    batches: [
+    items: [
       {
-        batchNo: "PK0124A",
-        costPrice: 800,
+        productId: "PRD-1001",
+        name: "Peak Milk",
+        quantity: 200,
+        unitPrice: 1200,
+        total: 240000,
+      },
+      {
+        productId: "PRD-1002",
+        name: "Coca Cola",
+        quantity: 300,
+        unitPrice: 800,
+        total: 240000,
       },
     ],
 
-    supplier: {
-      name: "UAC Foods",
+    pricing: {
+      subtotal: 480000,
+      tax: 38400,
+      discount: 0,
+      totalAmount: 518400,
+      currency: "NGN",
     },
 
-    status: "ACTIVE",
+    workflow: {
+      createdBy: "USR-1001",
+      approvedBy: "USR-1002",
+      sentToSupplierAt: "2026-04-28T11:00:00Z",
+      receivedAt: null,
+    },
+
+    delivery: {
+      expectedDeliveryDate: "2026-05-03",
+      actualDeliveryDate: null,
+      deliveryStatus: "PENDING",
+      trackingNumber: null,
+    },
+
+    payment: {
+      paymentStatus: "UNPAID",
+      paymentMethod: "BANK_TRANSFER",
+      paidAmount: 0,
+      dueAmount: 518400,
+    },
+
+    approval: {
+      required: true,
+      level: "MANAGEMENT",
+      status: "APPROVED",
+    },
+
+    notes: "Urgent stock replenishment for supermarket operations",
+
+    auditTrail: [
+      {
+        action: "CREATED",
+        by: "USR-1001",
+        timestamp: "2026-04-28T08:00:00Z",
+      },
+      {
+        action: "APPROVED",
+        by: "USR-1002",
+        timestamp: "2026-04-28T10:30:00Z",
+      },
+      {
+        action: "SENT_TO_SUPPLIER",
+        by: "USR-1001",
+        timestamp: "2026-04-28T11:00:00Z",
+      },
+    ],
   };
 
   async function apiPostOrders() {
@@ -129,10 +202,10 @@ export default function Orders({ breadcrumbs }) {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/inventory/client/:id/get_sales`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/purchases/client/691a663dc9f64e6b9b8be48e/get_orders`,
       )
       .then((response) => {
-        ordersData = response.data.data;
+        ordersData = response.data.ordersData;
         console.log("ordersData: ", response);
         if (response.data.status === 201) {
           setLoading(false);
@@ -273,39 +346,204 @@ export default function Orders({ breadcrumbs }) {
       }
     }
     function TableView({ currentRows }) {
+      const [openItemDrpdwn, setOpenItemDrpdwn] = useState(false);
+      const [accordion, setAccordion] = useState(null);
+      const [brands, setBrands] = useState("All brands");
+      const [activeRow, setActiveRow] = useState(null);
+      const dispatch = useDispatch();
+
+      function handleItemDrpdwn(index) {
+        setOpenItemDrpdwn(!openItemDrpdwn);
+        if (activeRow === index) {
+          setActiveRow(null);
+        } else {
+          setActiveRow(index);
+        }
+      }
+
       return (
-        <div className="orders">
+        <div className="products">
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
-                <th>Action</th>
+                <th>Order ID</th>
+                <th>Supplier</th>
+                <th>Warehouse</th>
+                <th>Created By</th>
+                <th>Approved By</th>
+                <th>Sent To Supplier</th>
+                <th>Expected Delivery</th>
+                <th>Status</th>
+                <th>Total Amount</th>
               </tr>
             </thead>
             <tbody className="fx-cl spacem">
               {currentRows?.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
-                  <td>
-                    <strong>{item.customerName}</strong>
+                <tr
+                  key={index}
+                  id={`${accordion == index && "productsAccordionOpen"}`}
+                  className="productsRowTdCont fx-cl space1"
+                >
+                  <td
+                    id={item?.orderId}
+                    className={`productsRowTd ${activeRow == index && "active_warehauseRow"}`}
+                    onClick={() =>
+                      accordion == index
+                        ? setAccordion(null)
+                        : setAccordion(index)
+                    }
+                  >
+                    <span>
+                      <strong>{item?.orderId}</strong>
+                    </span>
+
+                    <span>{item?.supplier?.name}</span>
+
+                    <span>{item?.warehouse?.name}</span>
+
+                    <span>{item?.workflow?.createdBy}</span>
+
+                    <span>{item?.workflow?.approvedBy || "Pending"}</span>
+
+                    <span>
+                      {item?.workflow?.sentToSupplierAt
+                        ? new Date(
+                            item.workflow.sentToSupplierAt,
+                          ).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                          })
+                        : "Not Sent"}
+                    </span>
+
+                    <span>
+                      {item?.delivery?.expectedDeliveryDate
+                        ? new Date(
+                            item.delivery.expectedDeliveryDate,
+                          ).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                          })
+                        : "Pending"}
+                    </span>
+
+                    <span>{item?.status?.current}</span>
+
+                    <span>
+                      {item?.pricing?.currency}{" "}
+                      {item?.pricing?.totalAmount?.toLocaleString()}
+                    </span>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
-                  <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue?.toLocaleString()}</td>
-                  <td>{item.date}</td>
-                  <td>
-                    <button>{item.action}</button>
-                  </td>
+
+                  <span className="productsAccordionCont">
+                    <div className="productsAccordionDisc fx-ac space1">
+                      <figure className="fx-ac fx-jc">
+                        <ShoppingCartIcon
+                          style={{
+                            fontSize: "9.5rem",
+                            color: "rgb(233 245 243)",
+                          }}
+                        />
+                      </figure>
+
+                      <div className="productsAccordionDetails g g4 space1">
+                        <div className="fx-cl spacem">
+                          <span>Order ID</span>
+                          <p>
+                            <strong>{item?.orderId}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Supplier Email</span>
+                          <p>
+                            <strong>{item?.supplier?.email}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Delivery Status</span>
+                          <p>
+                            <strong>{item?.delivery?.deliveryStatus}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Payment Status</span>
+                          <p>
+                            <strong>{item?.payment?.paymentStatus}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Total Items</span>
+                          <p>
+                            <strong>{item?.items?.length}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Total Amount</span>
+                          <p>
+                            <strong>
+                              {item?.pricing?.currency}{" "}
+                              {item?.pricing?.totalAmount?.toLocaleString()}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Payment Method</span>
+                          <p>
+                            <strong>{item?.payment?.paymentMethod}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Tracking Number</span>
+                          <p>
+                            <strong>
+                              {item?.delivery?.trackingNumber || "N/A"}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Created At</span>
+                          <p>
+                            <strong>
+                              {new Date(
+                                item?.workflow?.sentToSupplierAt ||
+                                  item?.createdAt,
+                              ).toLocaleDateString("en-GB", {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric",
+                              })}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-ac space1">
+                          <button className="controlButtons">
+                            <span>View Order</span>
+                          </button>
+
+                          <button className="controlButtons">
+                            <RemoveCircleOutlineIcon />
+                            <span>Edit</span>
+                          </button>
+
+                          <button className="controlButtons">
+                            <LocalPrintshopIcon />
+                            <span>Export</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
                 </tr>
               ))}
             </tbody>
