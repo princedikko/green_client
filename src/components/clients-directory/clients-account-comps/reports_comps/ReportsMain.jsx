@@ -96,10 +96,6 @@ export default function ReportsMain({ breadcrumbs }) {
     switch (currentTab) {
       case "reportsmain":
         return <MainPage />;
-      case "completed":
-        return <Completed />;
-      case "progress":
-        return <Progress />;
       default:
         return <MainPage />;
     }
@@ -151,24 +147,6 @@ export default function ReportsMain({ breadcrumbs }) {
         ) : (
           <div className="fx-cl space2">
             <div className="fx-cl spacem">
-              <div
-                className="fx-ac fx-jb space2"
-                style={{ fontSize: "1.2rem" }}
-              >
-                <span className="fx-ac spacem">
-                  <strong className="fx-jc" style={{ color: "#3a84f8" }}>
-                    Display:
-                  </strong>
-                  <span>
-                    {salesData.length === 0
-                      ? "0 to 0 of 0 entries"
-                      : `${start + 1} to ${Math.min(
-                          end,
-                          salesData.length,
-                        )} of ${salesData.length} entries`}
-                  </span>
-                </span>
-              </div>
               <div className="reportsmain_row" id="printable">
                 <div className="reportsmainCardGrid g g3 space2">
                   <div className="reportsmainGridCard">
@@ -283,7 +261,112 @@ export default function ReportsMain({ breadcrumbs }) {
                       <img alt="customer" className="avatar" src={ImgOne} />
 
                       <div className="cardInfo">
-                        <h4>Contact & CRM</h4>
+                        <h4>Customer Relationship Management</h4>
+                        <p>Invoice #454345</p>
+
+                        <div className="ratingRow">
+                          <span className="rating">5.3</span>
+                          <span className="location">📍 12/21/2002</span>
+                        </div>
+
+                        <small>254 items</small>
+                      </div>
+                    </div>
+
+                    {/* Tags */}
+                    <div className="tags">
+                      <span>Total</span>
+                      <span>Paid</span>
+                      <span>+211132</span>
+                    </div>
+
+                    {/* Footer */}
+                    <div className="cardFooter">
+                      <div className="price">
+                        ₦365,125
+                        <small> / sale</small>
+                      </div>
+
+                      <button className="cardBtn">View Sale</button>
+                    </div>
+                  </div>
+                  <div className="reportsmainGridCard">
+                    {/* Header */}
+                    <div className="cardHeader">
+                      <img alt="customer" className="avatar" src={ImgOne} />
+
+                      <div className="cardInfo">
+                        <h4>Services Report</h4>
+                        <p>Invoice #454345</p>
+
+                        <div className="ratingRow">
+                          <span className="rating">5.3</span>
+                          <span className="location">📍 12/21/2002</span>
+                        </div>
+
+                        <small>254 items</small>
+                      </div>
+                    </div>
+
+                    {/* Tags */}
+                    <div className="tags">
+                      <span>Total</span>
+                      <span>Paid</span>
+                      <span>+211132</span>
+                    </div>
+
+                    {/* Footer */}
+                    <div className="cardFooter">
+                      <div className="price">
+                        ₦365,125
+                        <small> / sale</small>
+                      </div>
+
+                      <button className="cardBtn">View Sale</button>
+                    </div>
+                  </div>
+                  <div className="reportsmainGridCard">
+                    {/* Header */}
+                    <div className="cardHeader">
+                      <img alt="customer" className="avatar" src={ImgOne} />
+
+                      <div className="cardInfo">
+                        <h4>Productions Report</h4>
+                        <p>Invoice #454345</p>
+
+                        <div className="ratingRow">
+                          <span className="rating">5.3</span>
+                          <span className="location">📍 12/21/2002</span>
+                        </div>
+
+                        <small>254 items</small>
+                      </div>
+                    </div>
+
+                    {/* Tags */}
+                    <div className="tags">
+                      <span>Total</span>
+                      <span>Paid</span>
+                      <span>+211132</span>
+                    </div>
+
+                    {/* Footer */}
+                    <div className="cardFooter">
+                      <div className="price">
+                        ₦365,125
+                        <small> / sale</small>
+                      </div>
+
+                      <button className="cardBtn">View Sale</button>
+                    </div>
+                  </div>
+                  <div className="reportsmainGridCard">
+                    {/* Header */}
+                    <div className="cardHeader">
+                      <img alt="customer" className="avatar" src={ImgOne} />
+
+                      <div className="cardInfo">
+                        <h4>Contact Report</h4>
                         <p>Invoice #454345</p>
 
                         <div className="ratingRow">
@@ -390,404 +473,7 @@ export default function ReportsMain({ breadcrumbs }) {
       </div>
     );
   }
-  function Completed() {
-    function switchView() {
-      switch (changeview) {
-        case "grid":
-          return <CardView currentRows={currentRows} />;
-        case "table":
-          return <TableView currentRows={currentRows} />;
-        default:
-          return <TableView currentRows={currentRows} />;
-      }
-    }
-    function TableView({ currentRows }) {
-      return (
-        <div className="completed">
-          <table className="fx-cl spacem">
-            <thead className="fx-cl spacem">
-              <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
-                  <td>
-                    <strong>{item.customerName}</strong>
-                  </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
-                  <td>
-                    <button>{item.action}</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      );
-    }
 
-    function CardView({ currentRows }) {
-      return (
-        <div className="reportsmainCardGrid g g4 space2">
-          {currentRows.map((item) => (
-            <div key={item.invoiceNo} className="reportsmainGridCard">
-              {/* Header */}
-              <div className="cardHeader">
-                <img alt="customer" className="avatar" src={ImgOne} />
-
-                <div className="cardInfo">
-                  <h4>{item.customerName}</h4>
-                  <p>Invoice #{item.invoiceNo}</p>
-
-                  <div className="ratingRow">
-                    <span className="rating">
-                      ⭐ {item.paymentStatus === "Paid" ? "5.0" : "4.0"}
-                    </span>
-                    <span className="location">📍 {item.date}</span>
-                  </div>
-
-                  <small>{item.totalItems} items</small>
-                </div>
-              </div>
-
-              {/* Tags */}
-              <div className="tags">
-                <span>Total</span>
-                <span>Paid</span>
-                <span>+{item.totalItems}</span>
-              </div>
-
-              {/* Footer */}
-              <div className="cardFooter">
-                <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
-                  <small> / sale</small>
-                </div>
-
-                <button className="cardBtn">View Sale</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      );
-    }
-    return (
-      <div className="fx-cl space2">
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="fx-cl space2">
-            <div className="fx-cl spacem">
-              <div
-                className="fx-ac fx-jb space2"
-                style={{ fontSize: "1.2rem" }}
-              >
-                <span className="fx-ac spacem">
-                  <strong className="fx-jc" style={{ color: "#3a84f8" }}>
-                    Display:
-                  </strong>
-                  <span>
-                    {salesData.length === 0
-                      ? "0 to 0 of 0 entries"
-                      : `${start + 1} to ${Math.min(
-                          end,
-                          salesData.length,
-                        )} of ${salesData.length} entries`}
-                  </span>
-                </span>
-                <div className="reportsmain_entries-info fx-ac spacem">
-                  <h4>Rows</h4>
-                  <div className="reportsmain-page-limit">
-                    <button
-                      className="reportsmain-page-limit-btn"
-                      onClick={() => setOpenLimit(!openLimit)}
-                    >
-                      {rowsPerPage} / page
-                      <span className="reportsmain-page-limit-arrow">▾</span>
-                    </button>
-
-                    {openLimit && (
-                      <ul className="reportsmain-limit-dropdown">
-                        {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
-                          <li
-                            key={n}
-                            className="reportsmain-limit-item"
-                            onClick={() => {
-                              setRowsPerPage(n);
-                              setCurrentPage(1);
-                              setOpenLimit(false);
-                            }}
-                          >
-                            {n} / page
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="reportsmain_row" id="printable">
-                {switchView()}
-              </div>
-              <div className="fx-jc">
-                <div className="reportsmain_pagination fx-ac space2">
-                  <button
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((p) => p - 1)}
-                  >
-                    Previous
-                  </button>
-                  <div className="fx-ac">
-                    {getPagination(currentPage, totalPages).map((page, i) =>
-                      page === "..." ? (
-                        <span key={i} className="dots">
-                          …
-                        </span>
-                      ) : (
-                        <button
-                          key={i}
-                          className={`reportsmain_jumpto ${
-                            currentPage === page ? "active" : ""
-                          }`}
-                          onClick={() => setCurrentPage(page)}
-                        >
-                          {page}
-                        </button>
-                      ),
-                    )}
-                  </div>
-
-                  <button
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage((p) => p + 1)}
-                  >
-                    Next
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-        <div className="reportsmain_footer">Footer here</div>
-      </div>
-    );
-  }
-  function Progress() {
-    function switchView() {
-      switch (changeview) {
-        case "grid":
-          return <CardView currentRows={currentRows} />;
-        case "table":
-          return <TableView currentRows={currentRows} />;
-        default:
-          return <TableView currentRows={currentRows} />;
-      }
-    }
-    function TableView({ currentRows }) {
-      return (
-        <div className="prog">
-          <table className="fx-cl spacem">
-            <thead className="fx-cl spacem">
-              <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody className="fx-cl spacem">
-              {currentRows.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
-                  <td>
-                    <strong>{item.customerName}</strong>
-                  </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount.toLocaleString()}</td>
-                  <td>₦{item.totalPaid.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue.toLocaleString()}</td>
-                  <td>{item.date}</td>
-                  <td>
-                    <button>{item.action}</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      );
-    }
-
-    function CardView({ currentRows }) {
-      return (
-        <div className="reportsmainCardGrid g g4 space2">
-          {currentRows.map((item) => (
-            <div key={item.invoiceNo} className="reportsmainGridCard">
-              {/* Header */}
-              <div className="cardHeader">
-                <img alt="customer" className="avatar" src={ImgOne} />
-
-                <div className="cardInfo">
-                  <h4>{item.customerName}</h4>
-                  <p>Invoice #{item.invoiceNo}</p>
-
-                  <div className="ratingRow">
-                    <span className="rating">
-                      ⭐ {item.paymentStatus === "Paid" ? "5.0" : "4.0"}
-                    </span>
-                    <span className="location">📍 {item.date}</span>
-                  </div>
-
-                  <small>{item.totalItems} items</small>
-                </div>
-              </div>
-
-              {/* Tags */}
-              <div className="tags">
-                <span>Total</span>
-                <span>Paid</span>
-                <span>+{item.totalItems}</span>
-              </div>
-
-              {/* Footer */}
-              <div className="cardFooter">
-                <div className="price">
-                  ₦{item.totalAmount.toLocaleString()}
-                  <small> / sale</small>
-                </div>
-
-                <button className="cardBtn">View Sale</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      );
-    }
-    return (
-      <div className="fx-cl space2">
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="fx-cl space2">
-            <div className="fx-cl spacem">
-              <div
-                className="fx-ac fx-jb space2"
-                style={{ fontSize: "1.2rem" }}
-              >
-                <span className="fx-ac spacem">
-                  <strong className="fx-jc" style={{ color: "#3a84f8" }}>
-                    Display:
-                  </strong>
-                  <span>
-                    {salesData.length === 0
-                      ? "0 to 0 of 0 entries"
-                      : `${start + 1} to ${Math.min(
-                          end,
-                          salesData.length,
-                        )} of ${salesData.length} entries`}
-                  </span>
-                </span>
-                <div className="reportsmain_entries-info fx-ac spacem">
-                  <h4>Rows</h4>
-                  <div className="reportsmain-page-limit">
-                    <button
-                      className="reportsmain-page-limit-btn"
-                      onClick={() => setOpenLimit(!openLimit)}
-                    >
-                      {rowsPerPage} / page
-                      <span className="reportsmain-page-limit-arrow">▾</span>
-                    </button>
-
-                    {openLimit && (
-                      <ul className="reportsmain-limit-dropdown">
-                        {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
-                          <li
-                            key={n}
-                            className="reportsmain-limit-item"
-                            onClick={() => {
-                              setRowsPerPage(n);
-                              setCurrentPage(1);
-                              setOpenLimit(false);
-                            }}
-                          >
-                            {n} / page
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="reportsmain_row" id="printable">
-                {switchView()}
-              </div>
-              <div className="fx-jc">
-                <div className="reportsmain_pagination fx-ac space2">
-                  <button
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((p) => p - 1)}
-                  >
-                    Previous
-                  </button>
-                  <div className="fx-ac">
-                    {getPagination(currentPage, totalPages).map((page, i) =>
-                      page === "..." ? (
-                        <span key={i} className="dots">
-                          …
-                        </span>
-                      ) : (
-                        <button
-                          key={i}
-                          className={`reportsmain_jumpto ${
-                            currentPage === page ? "active" : ""
-                          }`}
-                          onClick={() => setCurrentPage(page)}
-                        >
-                          {page}
-                        </button>
-                      ),
-                    )}
-                  </div>
-
-                  <button
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage((p) => p + 1)}
-                  >
-                    Next
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-        <div className="reportsmain_footer">Footer here</div>
-      </div>
-    );
-  }
   console.log(
     "PRINTING:",
     useSelector((state) => state.clientFunction?.printData),
@@ -803,119 +489,6 @@ export default function ReportsMain({ breadcrumbs }) {
           <Link className="fx-ac spacem">
             <span>{currentTab && currentTab}</span>
           </Link>
-        </div>
-        <div className="reportsmain_headings fx-jb space4">
-          <div className="fx-cl">
-            <h2 style={{ textTransform: "capitalize" }}>
-              {breadcrumbs.active}
-            </h2>
-            <p style={{ fontSize: "1.2rem" }}>
-              Here is a list of reportsmain you have made
-            </p>
-          </div>
-          <div className="fx-ac fx-jb spacem">
-            <div className=" fx-ac spacem">
-              <div>
-                {changeview === "grid" ? (
-                  <button
-                    className="iconBtn"
-                    onClick={() => setChangeView("table")}
-                  >
-                    <ListAltIcon fontSize="large" />
-                  </button>
-                ) : (
-                  <button
-                    className="iconBtn"
-                    onClick={() => setChangeView("grid")}
-                  >
-                    <AppsOutlinedIcon fontSize="large" />
-                  </button>
-                )}
-              </div>
-              <button
-                className="iconBtn printingBtn"
-                onClick={() =>
-                  handlePrint({
-                    currentRows: currentRows,
-                    tab: currentTab,
-                  })
-                }
-              >
-                <PrintIcon fontSize="large" />
-              </button>
-              <ExportPDFButton currentRows={currentRows} />
-            </div>
-
-            <div className="fx-ac space1">
-              <ExportExcelJSButton currentRows={currentRows} />
-            </div>
-          </div>
-        </div>
-        <div className="reportsmain_actionBar fx-jb space4">
-          <ul className="left fx-ac">
-            <li
-              onClick={() => handleCurrentTAB("reportsmain")}
-              className={`fx-ac  spacem ${
-                currentTab == "reportsmain" && "active"
-              }`}
-            >
-              <span>Todo</span>
-              <figure>34</figure>
-            </li>
-            <li
-              onClick={() => handleCurrentTAB("completed")}
-              className={`fx-ac  spacem ${
-                currentTab == "completed" && "active"
-              }`}
-            >
-              <span>Completed</span>
-              <figure>45</figure>
-            </li>
-            <li
-              onClick={() => handleCurrentTAB("progress")}
-              className={`fx-ac  spacem ${
-                currentTab == "progress" && "active"
-              }`}
-            >
-              <span>In Progress</span>
-              <figure>89</figure>
-            </li>
-          </ul>
-          <div className="right fx-ac fx-jb space1">
-            <div className="fx-ac space1">
-              <button
-                className="reportsmain_export_btn fx-ac spacem"
-                onClick={(e) => {
-                  e.stopPropagation(); // stop bubbling to document
-                  setreportsmainFilterOpen(!reportsmainFilterOpen);
-                }}
-              >
-                <CandlestickChartIcon fontSize="large" />
-                <span>Filter & Sort</span>
-              </button>
-              {reportsmainFilterOpen && (
-                <div
-                  className="reportsmain_filter_modal_overlay fx-jc fx-ac"
-                  onClick={() => setreportsmainFilterOpen(false)} // click outside → close
-                >
-                  <div
-                    className="reportsmain_filter_modal"
-                    onClick={(e) => e.stopPropagation()} // click inside → stay open
-                  >
-                    <FilterDiscount />
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="fx-ac space1">
-              <button
-                className="reportsmain_export_btn fx-ac spacem"
-                onClick={() => navigate("/clients/warehouse_terminal")}
-              >
-                <AddIcon fontSize="large" /> <span>Add new</span>
-              </button>
-            </div>
-          </div>
         </div>
         <div className="reportsmain_main">{switchActiveTab()}</div>
       </div>

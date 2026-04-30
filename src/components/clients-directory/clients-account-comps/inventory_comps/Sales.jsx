@@ -876,7 +876,7 @@ export default function Sales({ breadcrumbs }) {
                 onClick={() => handleCurrentTAB("sales")}
                 className={`fx-ac  spacem ${currentTab == "sales" && "active"}`}
               >
-                <span>All Sales</span>
+                <span>All Transaction</span>
                 <figure>{soldItems?.length}</figure>
               </li>
               <li
@@ -885,7 +885,16 @@ export default function Sales({ breadcrumbs }) {
                   currentTab == "completed" && "active"
                 }`}
               >
-                <span>Credit Sales</span>
+                <span>Soled Products</span>
+                <figure>45</figure>
+              </li>
+              <li
+                onClick={() => handleCurrentTAB("completed")}
+                className={`fx-ac  spacem ${
+                  currentTab == "completed" && "active"
+                }`}
+              >
+                <span>Soled Production</span>
                 <figure>45</figure>
               </li>
               <li
@@ -894,7 +903,7 @@ export default function Sales({ breadcrumbs }) {
                   currentTab == "progress" && "active"
                 }`}
               >
-                <span>This Month</span>
+                <span>Services</span>
                 <figure>89</figure>
               </li>
             </ul>

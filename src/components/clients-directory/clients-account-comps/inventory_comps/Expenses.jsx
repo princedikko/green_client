@@ -22,6 +22,10 @@ import PlaceIcon from "@mui/icons-material/Place";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 // image imports
 import ImgOne from "./img1.jpg";
 import ImgTwo from "./img2.jpg";
@@ -56,40 +60,100 @@ export default function Expenses({ breadcrumbs }) {
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    sku: "MILK-PEAK-001",
-    barcode: "6224001234567", // EAN / UPC
-    name: "Peak Milk 170g",
-    brand: "Peak",
-    category: {
-      name: "Dairy",
+    expenseId: "EXP-2026-000321",
+    expenseType: "OPERATING_EXPENSE",
+
+    status: {
+      current: "APPROVED",
+      submittedAt: "2026-04-30T09:00:00Z",
+      approvedAt: "2026-04-30T10:30:00Z",
     },
 
-    unit: "tin",
-    costPrice: 820,
-    sellingPrice: 950,
-    taxRate: 2.5, // VAT %
+    category: "UTILITIES",
 
-    stock: {
-      quantity: 245,
-      minLevel: 20,
-      reorderLevel: 50,
-    },
-
-    batchTracking: true,
-    expiryTracking: true,
-
-    batches: [
+    items: [
       {
-        batchNo: "PK0124A",
-        costPrice: 800,
+        name: "Electricity",
+        amount: 45000,
+        currency: "NGN",
+        description: "Monthly electricity bill",
+      },
+      {
+        name: "Internet",
+        amount: 15000,
+        currency: "NGN",
+        description: "Office internet subscription",
       },
     ],
 
-    supplier: {
-      name: "UAC Foods",
+    payment: {
+      totalAmount: 60000,
+      currency: "NGN",
+      paymentMethod: "BANK_TRANSFER",
+      paid: true,
+      paidAt: "2026-04-30T11:00:00Z",
+      reference: "PAY-INV-88921",
     },
 
-    status: "ACTIVE",
+    vendor: {
+      name: "IKEDC",
+      type: "UTILITY_PROVIDER",
+      contact: "support@ikedc.com",
+    },
+
+    location: {
+      branchId: "BR-001",
+      name: "Main Store - Lagos",
+    },
+
+    approvedBy: {
+      userId: "USR-2001",
+      name: "Finance Manager",
+    },
+
+    submittedBy: {
+      userId: "USR-1001",
+      name: "Account Officer",
+    },
+
+    receipt: {
+      hasReceipt: true,
+      receiptUrl: "https://cdn.example.com/expenses/exp-321.pdf",
+    },
+
+    schedule: {
+      expenseDate: "2026-04-30",
+      recurring: false,
+      frequency: null,
+    },
+
+    impact: {
+      affectsInventory: false,
+      affectsProfit: true,
+      affectsCashFlow: true,
+    },
+
+    notes: "Monthly operational expenses for store running",
+
+    createdAt: "2026-04-30T09:00:00Z",
+
+    auditTrail: [
+      {
+        action: "CREATED",
+        by: "USR-1001",
+        timestamp: "2026-04-30T09:00:00Z",
+      },
+      {
+        action: "APPROVED",
+        by: "USR-2001",
+        timestamp: "2026-04-30T10:30:00Z",
+      },
+      {
+        action: "PAID",
+        by: "USR-1001",
+        timestamp: "2026-04-30T11:00:00Z",
+      },
+    ],
   };
 
   async function apiPostExpense() {
@@ -272,39 +336,181 @@ export default function Expenses({ breadcrumbs }) {
       }
     }
     function TableView({ currentRows }) {
+      const [openItemDrpdwn, setOpenItemDrpdwn] = useState(false);
+      const [accordion, setAccordion] = useState(null);
+      const [brands, setBrands] = useState("All brands");
+      const [activeRow, setActiveRow] = useState(null);
+      const dispatch = useDispatch();
+
+      function handleItemDrpdwn(index) {
+        setOpenItemDrpdwn(!openItemDrpdwn);
+        if (activeRow === index) {
+          setActiveRow(null);
+        } else {
+          setActiveRow(index);
+        }
+      }
       return (
-        <div className="expenses">
+        <div className="products">
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
-                <th>Action</th>
+                <th>Expense ID</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Vendor</th>
+                <th>Branch</th>
+                <th>Total Amount</th>
+                <th>Payment Method</th>
+                <th>Status</th>
+                <th>Paid</th>
               </tr>
             </thead>
+
             <tbody className="fx-cl spacem">
               {currentRows?.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
-                  <td>
-                    <strong>{item.sku}</strong>
+                <tr
+                  key={index}
+                  id={`${accordion == index && "productsAccordionOpen"}`}
+                  className="productsRowTdCont fx-cl space1"
+                >
+                  <td
+                    id={item?.expenseId}
+                    className={`productsRowTd ${activeRow == index && "active_warehauseRow"}`}
+                    onClick={() =>
+                      accordion == index
+                        ? setAccordion(null)
+                        : setAccordion(index)
+                    }
+                  >
+                    <span>
+                      <strong>{item?.expenseId}</strong>
+                    </span>
+                    <span>{item?.expenseType}</span>
+                    <span>{item?.category}</span>
+                    <span>{item?.vendor?.name}</span>
+                    <span>{item?.location?.name}</span>
+                    <span>
+                      {item?.payment?.currency}{" "}
+                      {item?.payment?.totalAmount?.toLocaleString()}
+                    </span>
+                    <span>{item?.payment?.paymentMethod}</span>
+                    <span>{item?.status?.current}</span>
+                    <span>{item?.payment?.paid ? "Yes" : "No"}</span>
                   </td>
-                  <td>{item.barcode}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>test alpha</td>
-                  <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.brand}</td>
-                  <td>₦{item.sellDue?.toLocaleString()}</td>
-                  <td>{item.date}</td>
-                  <td>
-                    <button>{item.action}</button>
-                  </td>
+
+                  <span className="productsAccordionCont">
+                    <div className="productsAccordionDisc fx-ac space1">
+                      <figure className="fx-ac fx-jc">
+                        <ShoppingCartIcon
+                          style={{
+                            fontSize: "9.5rem",
+                            color: "rgb(233 245 243)",
+                          }}
+                        />
+                      </figure>
+
+                      <div className="productsAccordionDetails g g4 space1">
+                        <div className="fx-cl spacem">
+                          <span>Vendor Contact</span>
+                          <p>
+                            <strong>{item?.vendor?.contact}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Submitted By</span>
+                          <p>
+                            <strong>{item?.submittedBy?.name}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Approved By</span>
+                          <p>
+                            <strong>{item?.approvedBy?.name}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Payment Reference</span>
+                          <p>
+                            <strong>{item?.payment?.reference}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Paid At</span>
+                          <p>
+                            <strong>
+                              {new Date(
+                                item?.payment?.paidAt,
+                              ).toLocaleDateString("en-GB", {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric",
+                              })}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Expense Date</span>
+                          <p>
+                            <strong>{item?.schedule?.expenseDate}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Impact Profit</span>
+                          <p>
+                            <strong>
+                              {item?.impact?.affectsProfit ? "Yes" : "No"}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Notes</span>
+                          <p>
+                            <strong>{item?.notes}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Created At</span>
+                          <p>
+                            <strong>
+                              {new Date(item?.createdAt).toLocaleDateString(
+                                "en-GB",
+                                {
+                                  day: "2-digit",
+                                  month: "long",
+                                  year: "numeric",
+                                },
+                              )}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-ac space1">
+                          <button className="controlButtons">
+                            <span>View Expense</span>
+                          </button>
+
+                          <button className="controlButtons">
+                            <RemoveCircleOutlineIcon />
+                            <span>Edit</span>
+                          </button>
+
+                          <button className="controlButtons">
+                            <LocalPrintshopIcon />
+                            <span>Export</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
                 </tr>
               ))}
             </tbody>

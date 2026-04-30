@@ -12,8 +12,11 @@ import FilterDelivery from "./filters/FilterDelivery.jsx";
 import ExportPDFButton from "./exports/OpeningStockPDFExport.jsx";
 import ExportExcelJSButton from "./exports/OpeningStockExcelExport.jsx";
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
 // import from MUI
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import PrintIcon from "@mui/icons-material/Print";
@@ -70,6 +73,10 @@ export default function Delivery({ breadcrumbs }) {
         },
         {
           state: "IN_TRANSIT",
+          timestamp: "2026-04-29T12:00:00Z",
+        },
+        {
+          state: "DELIVERED",
           timestamp: "2026-04-29T12:00:00Z",
         },
       ],
@@ -352,39 +359,193 @@ export default function Delivery({ breadcrumbs }) {
       }
     }
     function TableView({ currentRows }) {
+      const [openItemDrpdwn, setOpenItemDrpdwn] = useState(false);
+      const [accordion, setAccordion] = useState(null);
+      const [brands, setBrands] = useState("All brands");
+      const [activeRow, setActiveRow] = useState(null);
+      const dispatch = useDispatch();
+
+      function handleItemDrpdwn(index) {
+        setOpenItemDrpdwn(!openItemDrpdwn);
+        if (activeRow === index) {
+          setActiveRow(null);
+        } else {
+          setActiveRow(index);
+        }
+      }
       return (
-        <div className="delivery">
+        <div className="products">
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
-                <th>Action</th>
+                <th>Delivery ID</th>
+                <th>Reference ID</th>
+                <th>Supplier</th>
+                <th>Warehouse</th>
+                <th>Driver</th>
+                <th>Dispatch Date</th>
+                <th>Status</th>
+                <th>Tracking No</th>
+                <th>Shipping Cost</th>
               </tr>
             </thead>
+
             <tbody className="fx-cl spacem">
               {currentRows?.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
-                  <td>
-                    <strong>{item.brand}</strong>
+                <tr
+                  key={index}
+                  id={`${accordion == index && "productsAccordionOpen"}`}
+                  className="productsRowTdCont fx-cl space1"
+                >
+                  <td
+                    id={item?.deliveryId}
+                    className={`productsRowTd ${activeRow == index && "active_warehauseRow"}`}
+                    onClick={() =>
+                      accordion == index
+                        ? setAccordion(null)
+                        : setAccordion(index)
+                    }
+                  >
+                    <span>
+                      <strong>{item?.deliveryId}</strong>
+                    </span>
+                    <span>{item?.reference?.referenceId}</span>
+                    <span>{item?.parties?.supplier?.name}</span>
+                    <span>{item?.parties?.warehouse?.name}</span>
+                    <span>{item?.transport?.vehicle?.driverName}</span>
+                    <span>
+                      {new Date(
+                        item?.schedule?.dispatchDate,
+                      ).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <span>{item?.status?.current}</span>
+                    <span>{item?.tracking?.trackingNumber}</span>
+                    <span>
+                      {item?.financials?.currency}{" "}
+                      {item?.financials?.shippingCost?.toLocaleString()}
+                    </span>
                   </td>
-                  <td>{item.barcode}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
-                  <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue?.toLocaleString()}</td>
-                  <td>{item.date}</td>
-                  <td>
-                    <button>{item.action}</button>
-                  </td>
+
+                  <span className="productsAccordionCont">
+                    <div className="productsAccordionDisc fx-ac space1">
+                      <figure className="fx-ac fx-jc">
+                        <ShoppingCartIcon
+                          style={{
+                            fontSize: "9.5rem",
+                            color: "rgb(233 245 243)",
+                          }}
+                        />
+                      </figure>
+
+                      <div className="productsAccordionDetails g g4 space1">
+                        <div className="fx-cl spacem">
+                          <span>Delivery Type</span>
+                          <p>
+                            <strong>{item?.deliveryType}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Reference Type</span>
+                          <p>
+                            <strong>{item?.reference?.referenceType}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Supplier Contact</span>
+                          <p>
+                            <strong>{item?.parties?.supplier?.contact}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Warehouse Location</span>
+                          <p>
+                            <strong>
+                              {item?.parties?.warehouse?.location}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Items</span>
+                          <p>
+                            <strong>
+                              {item?.items?.map((i) => i.name).join(", ")}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Current Location</span>
+                          <p>
+                            <strong>{item?.tracking?.currentLocation}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Estimated Arrival</span>
+                          <p>
+                            <strong>
+                              {new Date(
+                                item?.schedule?.estimatedArrival,
+                              ).toLocaleDateString("en-GB", {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric",
+                              })}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Exception</span>
+                          <p>
+                            <strong>
+                              {item?.exceptions?.[0]?.description}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Created At</span>
+                          <p>
+                            <strong>
+                              {new Date(item?.createdAt).toLocaleDateString(
+                                "en-GB",
+                                {
+                                  day: "2-digit",
+                                  month: "long",
+                                  year: "numeric",
+                                },
+                              )}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-ac space1">
+                          <button className="controlButtons">
+                            <span>View Delivery</span>
+                          </button>
+
+                          <button className="controlButtons">
+                            <RemoveCircleOutlineIcon />
+                            <span>Edit</span>
+                          </button>
+
+                          <button className="controlButtons">
+                            <LocalPrintshopIcon />
+                            <span>Export</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
                 </tr>
               ))}
             </tbody>

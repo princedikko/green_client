@@ -103,132 +103,484 @@ export default function Registration() {
   };
 
   const payload = {
-    candidateId: "CBT2025-00123",
-    account: {
-      email: "info@skillpoint.com",
-      phone: "+2348012345678",
-      passwordHash: "6666",
-      status: "active",
-      role: "candidate",
-      lastLogin: "",
-      registeredAt: new Date().toLocaleDateString(),
-    },
-    auth: {
-      loginUsername: "info@skillpoint.com",
-      loginNumber: "+2348012345678",
-      hashedPassword: "3333",
-      examPin: "6666",
-      loginAttempts: 1,
-      emailVerified: false,
-      twoFactorEnabled: false,
-      twoFactorMethod: "email",
-      recoveryCodes: ["code1", "code2", "code3"],
-      passwordResetToken: "",
-      passwordResetExpires: "",
-    },
-    profile: {
-      firstName: "Othman",
-      lastName: "Omar Dikko",
-      gender: "male",
-      dob: "1995-08-15",
-      photoURL:
-        "https://mangaconsadministrationstafffilesbucket.s3.eu-north-1.amazonaws.com/passport.jpg",
-      education: {
-        institution: "Usmanu Danfodiyo University",
-        department: "Mathematics",
-        level: "Undergraduate",
-        yearOfStudy: 3,
+    clientId: "CLT-2026-000045",
+
+    businessProfile: {
+      businessId: "BIZ-2026-000045",
+
+      basicInfo: {
+        businessName: "Dikko Supermarket Ltd",
+        legalName: "Dikko Supermarket and Stores Limited",
+        tradingName: "Dikko Supermarket",
+        businessType: "RETAIL_SUPERMARKET",
+        industry: "Fast Moving Consumer Goods (FMCG)",
+        description:
+          "Retail supermarket chain dealing in food, beverages, household goods, and daily essentials",
       },
-    },
-    permission: {
-      accessLevel: "standard",
-      features: ["mock_tests", "performance_tracking", "test_reviews"],
-    },
-    enrollments: {
-      programme: selectedProgramme,
-      courses: selectedSubjects,
+      businessRankingModule: {
+        growthRanking: {
+          currentRank: "BRONZE",
+
+          score: 42,
+
+          metrics: {
+            employeeCountScore: 10,
+            transactionVolumeScore: 15,
+            revenueEstimateScore: 10,
+            systemUsageScore: 7,
+            multiBranchScore: 0,
+          },
+
+          upgradeProgress: {
+            nextRank: "SILVER",
+            pointsNeeded: 58,
+            progressPercentage: 42,
+          },
+        },
+
+        // 🟤 BRONZE (0 - 49)
+        // Small business stage
+        // - 1 branch or single store
+        // - Low transaction volume
+        // - Basic ERP usage
+        // - Limited staff (1–20)
+        // - Mostly manual operations
+
+        // ⚪ SILVER (50 - 74)
+        // Growing business stage
+        // - Multiple users actively using system
+        // - Medium transaction volume
+        // - Some automation (alerts, reorder)
+        // - 2–5 branches
+        // - Stable revenue flow
+
+        // 🟡 GOLD (75 - 89)
+        // Advanced business stage
+        // - Multi-warehouse operations
+        // - High transaction volume
+        // - Strong system dependency
+        // - Inventory + finance fully integrated
+        // - Real-time reporting used daily
+
+        // 🔵 PLATINUM (90 - 100)
+        // Enterprise level
+        // - Chain businesses / franchises
+        // - Full automation (AI + alerts + API)
+        // – High financial throughput
+        // - Multi-location synchronized operations
+        // - Full ERP dependency (business runs on system)
+      },
+      registration: {
+        registrationNumber: "RC-1234567",
+        registrationType: "LIMITED_LIABILITY_COMPANY",
+        registrationCountry: "Nigeria",
+        registrationDate: "2020-06-15",
+        taxIdentificationNumber: "TIN-0987654321",
+        vatRegistered: true,
+        vatNumber: "VAT-2026-998877",
+        regulatoryStatus: "COMPLIANT",
+      },
+
+      operationalProfile: {
+        businessStage: "GROWTH",
+        numberOfBranches: 2,
+        employeeCount: 25,
+        dailyTransactionVolume: "MEDIUM",
+        operatingHours: {
+          open: "08:00",
+          close: "22:00",
+          timezone: "Africa/Lagos",
+        },
+      },
+
+      location: {
+        headOffice: {
+          country: "Nigeria",
+          state: "Lagos",
+          city: "Ikeja",
+          address: "12 Allen Avenue",
+          postalCode: "100001",
+        },
+      },
+
+      branding: {
+        logoUrl: "https://cdn.example.com/logo.png",
+        primaryColor: "#1E90FF",
+        secondaryColor: "#FFFFFF",
+        website: "https://dikkosupermarket.com",
+      },
+
+      financialProfile: {
+        baseCurrency: "NGN",
+        taxRateDefault: 7.5,
+        fiscalYearStart: "JANUARY",
+        revenueCategory: "MID_MARKET_RETAIL",
+      },
+
+      compliance: {
+        kybStatus: "VERIFIED",
+        riskLevel: "LOW",
+        auditRequired: true,
+        regulatoryBodies: ["CAC", "FIRS"],
+      },
+
+      systemSettings: {
+        multiWarehouseEnabled: true,
+        multiUserAccess: true,
+        apiAccessEnabled: true,
+        dataRetentionPolicyDays: 3650,
+      },
+
+      status: "ACTIVE",
+
+      createdAt: "2026-04-30T08:00:00Z",
+
+      auditTrail: [
+        {
+          action: "BUSINESS_REGISTERED",
+          timestamp: "2026-04-30T08:00:00Z",
+        },
+      ],
     },
 
-    tests: {
-      scheduled: [
+    owner: {
+      ownerId: "OWN-2026-000045",
+
+      personalInfo: {
+        fullName: "Abdullahi Dikko",
+        firstName: "Abdullahi",
+        lastName: "Dikko",
+        email: "dikko@supermarket.com",
+        phone: "+2348012345678",
+        dateOfBirth: "1988-05-12",
+        gender: "male",
+        nationality: "Nigerian",
+      },
+
+      identityVerification: {
+        bvn: {
+          value: "12345678901",
+          verified: true,
+          verifiedAt: "2026-04-01T10:00:00Z",
+        },
+        nin: {
+          value: "98765432101",
+          verified: true,
+          verifiedAt: "2026-04-01T10:05:00Z",
+        },
+        kycLevel: "LEVEL_2",
+        kycStatus: "VERIFIED",
+      },
+
+      contactVerification: {
+        emailVerified: true,
+        emailVerifiedAt: "2026-04-01T09:30:00Z",
+        phoneVerified: true,
+        phoneVerifiedAt: "2026-04-01T09:35:00Z",
+      },
+
+      address: {
+        country: "Nigeria",
+        state: "Lagos",
+        city: "Ikeja",
+        street: "12 Allen Avenue",
+        postalCode: "100001",
+      },
+
+      role: {
+        type: "BUSINESS_OWNER",
+        permissions: ["ALL"],
+        isPrimaryOwner: true,
+      },
+
+      security: {
+        twoFactorEnabled: true,
+        loginAlertsEnabled: true,
+        riskLevel: "LOW",
+        accountStatus: "ACTIVE",
+      },
+
+      linkedClientId: "CLT-2026-000045",
+
+      documents: [
         {
-          testId: "",
-          title: "Math Mock CBT 1",
-          subject: "Mathematics",
-          scheduledFor: "",
-          duration: 60,
-          status: "pending",
+          type: "IDENTITY_CARD",
+          url: "https://cdn.example.com/docs/nin.pdf",
+          verified: true,
+        },
+        {
+          type: "UTILITY_BILL",
+          url: "https://cdn.example.com/docs/bill.pdf",
+          verified: true,
         },
       ],
-      completed: [
+
+      auditTrail: [
         {
-          testId: "",
-          title: "English Diagnostic Test",
-          subject: "English",
-          score: 82,
-          accuracy: 0.88,
-          attempted: 40,
-          correct: 35,
-          wrong: 5,
-          duration: 52,
-          completedAt: "",
-          resultStatus: "passed",
-          rank: 9,
-          reviewLink: "https://cbtportal.ng/review/671a3ec45a2f9e3cbd812ab2",
+          action: "OWNER_CREATED",
+          timestamp: "2026-04-01T09:00:00Z",
+        },
+        {
+          action: "KYC_VERIFIED",
+          timestamp: "2026-04-01T10:05:00Z",
+        },
+      ],
+      communicationSettings: {
+        emailAlerts: {
+          enabled: true,
+          provider: "SMTP",
+          alertTypes: [
+            "ORDER_CREATED",
+            "STOCK_LOW",
+            "PAYMENT_RECEIVED",
+            "EXPENSE_APPROVED",
+            "RECONCILIATION_ALERT",
+          ],
+          dailyDigestEnabled: true,
+        },
+
+        smsAlerts: {
+          enabled: true,
+          provider: "TWILIO",
+          alertTypes: [
+            "CRITICAL_STOCK_ALERT",
+            "LOGIN_SECURITY_ALERT",
+            "PAYMENT_ALERT",
+          ],
+          senderId: "DIKKO-ERP",
+          countryCoverage: ["NG"],
+        },
+
+        pushNotifications: {
+          enabled: true,
+          mobileAppEnabled: true,
+        },
+      },
+    },
+
+    auth: {
+      authId: "AUTH-2026-000112",
+
+      clientId: "CLT-2026-000045",
+
+      user: {
+        userId: "USR-1001",
+        fullName: "Abdullahi Dikko",
+        email: "admin@dikko.com",
+        phone: "+2348012345678",
+        emailVerified: true,
+        phoneVerified: true,
+      },
+
+      credentials: {
+        passwordHash: "$2b$10$XyZEncryptedHashExample",
+        passwordUpdatedAt: "2026-04-01T10:00:00Z",
+        lastPasswordResetAt: null,
+      },
+
+      authentication: {
+        method: "EMAIL_PASSWORD",
+        status: "ACTIVE",
+        lastLoginAt: "2026-04-30T08:10:00Z",
+        failedLoginAttempts: 1,
+        locked: false,
+        lockReason: null,
+      },
+
+      sessions: [
+        {
+          sessionId: "SES-778899",
+          device: "Chrome - Windows",
+          ipAddress: "102.89.12.45",
+          location: "Lagos, Nigeria",
+          loginAt: "2026-04-30T08:10:00Z",
+          expiresAt: "2026-04-30T18:10:00Z",
+          active: true,
+        },
+      ],
+
+      tokens: {
+        accessToken: "",
+        refreshToken: "",
+        expiresIn: 3600,
+      },
+
+      multiFactorAuth: {
+        enabled: true,
+        method: "TOTP",
+        verifiedApps: ["Google Authenticator"],
+        backupCodesGenerated: true,
+      },
+
+      roles: [
+        {
+          role: "ADMIN",
+          permissions: ["ALL"],
+        },
+      ],
+
+      security: {
+        passwordPolicyCompliant: true,
+        twoFactorRequired: true,
+        loginAlertsEnabled: true,
+        suspiciousActivityMonitoring: true,
+      },
+
+      oauthProviders: {
+        google: null,
+        facebook: null,
+      },
+
+      auditTrail: [
+        {
+          action: "LOGIN_SUCCESS",
+          timestamp: "2026-04-30T08:10:00Z",
+          ip: "102.89.12.45",
+        },
+        {
+          action: "PASSWORD_LOGIN",
+          timestamp: "2026-04-01T10:00:00Z",
         },
       ],
     },
-    performance: {
-      totalTests: 18,
-      averageScore: 76.9,
-      bestScore: 94,
-      totalTimeSpent: 1560,
-      weakAreas: [
-        { topic: "Probability", avgAccuracy: 0.52 },
-        { topic: "Reading Comprehension", avgAccuracy: 0.61 },
-      ],
-      strongAreas: [
-        { topic: "Algebra", avgAccuracy: 0.94 },
-        { topic: "Grammar", avgAccuracy: 0.88 },
-      ],
-      monthlyTrend: [
-        { month: "July", avgScore: 73 },
-        { month: "August", avgScore: 78 },
-        { month: "September", avgScore: 81 },
-        { month: "October", avgScore: 83 },
-      ],
+
+    address: {
+      country: "Nigeria",
+      state: "Lagos",
+      city: "Ikeja",
+      street: "12 Allen Avenue",
+      postalCode: "100001",
+      geoLocation: {
+        latitude: 6.605874,
+        longitude: 3.349149,
+        mapUrl: "https://maps.google.com/?q=6.605874,3.349149",
+      },
     },
-    achievements: [
+
+    bankingDetails: {
+      bankName: "Access Bank",
+      accountName: "Dikko Supermarket Ltd",
+      accountNumber: "0123456789",
+      bankCode: "044",
+      swiftCode: "ABNGNGLA",
+      currency: "NGN",
+    },
+
+    taxAndCompliance: {
+      taxAuthority: "FIRS",
+      vatRegistered: true,
+      vatNumber: "VAT-2026-998877",
+      taxRateDefault: 7.5,
+      complianceLevel: "STANDARD",
+      auditRequired: true,
+    },
+
+    subscription: {
+      plan: "ENTERPRISE",
+      status: "ACTIVE",
+      startDate: "2026-04-01T00:00:00Z",
+      expiryDate: "2027-04-01T00:00:00Z",
+      billingCycle: "YEARLY",
+      autoRenew: true,
+      paymentMethod: "BANK_TRANSFER",
+      lastPaymentDate: "2026-04-01T00:00:00Z",
+    },
+
+    inventorySettings: {
+      multiWarehouseEnabled: true,
+      batchTrackingEnabled: true,
+      expiryTrackingEnabled: true,
+      serialNumberTracking: false,
+      autoReorderEnabled: true,
+      negativeStockAllowed: false,
+      defaultReorderMethod: "MIN_MAX",
+      stockValuationMethod: "FIFO",
+    },
+
+    financialSettings: {
+      baseCurrency: "NGN",
+      allowedCurrencies: ["NGN", "USD"],
+      fiscalYearStart: "JANUARY",
+      taxInclusivePricing: false,
+      roundingMethod: "NEAREST",
+    },
+
+    warehouses: [
       {
-        badgeId: "",
-        badgeTitle: "Top 10% Performer",
-        issuedOn: "",
-        description: "Ranked in top 10% of candidates during national mock CBT",
+        warehouseId: "WH-001",
+        name: "Main Warehouse",
+        type: "PRIMARY",
+        location: "Ikeja",
+        capacity: 5000,
+        manager: "USR-2001",
+      },
+      {
+        warehouseId: "WH-002",
+        name: "Shop Floor",
+        type: "RETAIL",
+        location: "Surulere",
+        capacity: 1200,
+        manager: "USR-2002",
       },
     ],
-    notifications: [
+
+    users: [
       {
-        notificationId: "",
-        title: "Upcoming Test Reminder",
-        message: "Math Mock CBT 1 starts tomorrow at 9:00 AM.",
-        isRead: false,
-        sentAt: "",
+        userId: "USR-1001",
+        name: "Admin User",
+        role: "ADMIN",
+        email: "admin@dikko.com",
+        permissions: ["ALL"],
+      },
+      {
+        userId: "USR-1002",
+        name: "Inventory Manager",
+        role: "MANAGER",
+        permissions: ["INVENTORY", "RECONCILIATION"],
       },
     ],
-    settings: {
-      language: "en",
-      theme: "dark",
-      notifications: true,
-      timezone: "Africa/Lagos",
+
+    modulesEnabled: {
+      inventory: true,
+      orders: true,
+      deliveries: true,
+      production: true,
+      returns: true,
+      transfers: true,
+      expenses: true,
+      reconciliation: true,
+      accounting: true,
+      reporting: true,
     },
-    system: {
-      device: "Android",
-      browser: "Chrome Mobile 127",
-      ipAddress: "102.89.215.42",
-      lastActive: "",
+
+    securitySettings: {
+      twoFactorAuthEnabled: true,
+      sessionTimeoutMinutes: 30,
+      passwordPolicy: {
+        minLength: 8,
+        requireSpecialChars: true,
+        requireNumbers: true,
+      },
     },
-    createdAt: "",
-    updatedAt: "",
+
+    apiSettings: {
+      apiEnabled: true,
+      apiKey: "sk_live_xxxxxxx",
+      webhookUrl: "https://dikko.com/webhook",
+      rateLimitPerMinute: 120,
+    },
+
+    status: "ACTIVE",
+
+    createdAt: "2026-04-30T08:00:00Z",
+
+    auditTrail: [
+      {
+        action: "REGISTERED",
+        by: "SYSTEM",
+        timestamp: "2026-04-30T08:00:00Z",
+      },
+    ],
   };
 
   const RegFormFilling = () => {

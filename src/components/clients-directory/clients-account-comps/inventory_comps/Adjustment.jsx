@@ -16,6 +16,10 @@ import ExportExcelJSButton from "./exports/AdjustmetExcelExport.jsx";
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 // import from MUI
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import PrintIcon from "@mui/icons-material/Print";
@@ -58,42 +62,110 @@ export default function Adjustment({ breadcrumbs }) {
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
   const payload = {
-    sku: "MILK-PEAK-001",
-    barcode: "6224001234567", // EAN / UPC
-    name: "Peak Milk 170g",
-    brand: "Peak",
-    category: {
-      name: "Dairy",
+    adjustmentId: "ADJ-2026-000078",
+    adjustmentType: "RECONCILIATION",
+
+    reference: {
+      referenceType: "RECONCILIATION",
+      referenceId: "REC-2026-000045",
     },
 
-    unit: "tin",
-    costPrice: 820,
-    sellingPrice: 950,
-    taxRate: 2.5, // VAT %
-
-    stock: {
-      quantity: 245,
-      minLevel: 20,
-      reorderLevel: 50,
+    status: {
+      current: "POSTED",
+      createdAt: "2026-04-30T13:30:00Z",
+      postedAt: "2026-04-30T14:00:00Z",
     },
 
-    batchTracking: true,
-    expiryTracking: true,
+    location: {
+      locationId: "LOC-WH-01",
+      type: "WAREHOUSE",
+      name: "Main Warehouse",
+    },
 
-    batches: [
+    items: [
       {
-        batchNo: "PK0124A",
-        costPrice: 800,
+        productId: "PRD-1001",
+        name: "Peak Milk",
+        sku: "PM-200",
+
+        systemQuantityBefore: 200,
+        physicalQuantity: 190,
+
+        adjustmentQuantity: -10,
+        systemQuantityAfter: 190,
+
+        adjustmentType: "DECREASE",
+        reason: "Stock shortage from reconciliation",
+
+        discrepancy: {
+          type: "SHORTAGE",
+          severity: "HIGH",
+        },
+      },
+      {
+        productId: "PRD-1002",
+        name: "Coca Cola",
+        sku: "CC-300",
+
+        systemQuantityBefore: 300,
+        physicalQuantity: 305,
+
+        adjustmentQuantity: 5,
+        systemQuantityAfter: 305,
+
+        adjustmentType: "INCREASE",
+        reason: "Stock overage from reconciliation",
+
+        discrepancy: {
+          type: "OVERAGE",
+          severity: "LOW",
+        },
       },
     ],
 
-    supplier: {
-      name: "UAC Foods",
+    summary: {
+      totalAdjustedItems: 2,
+      totalIncrease: 5,
+      totalDecrease: 10,
+      netAdjustment: -5,
     },
 
-    status: "ACTIVE",
-  };
+    approval: {
+      required: true,
+      approvedBy: "USR-2001",
+      approvedAt: "2026-04-30T13:50:00Z",
+    },
 
+    financialImpact: {
+      totalValueIncrease: 4000,
+      totalValueDecrease: 12000,
+      netValueImpact: -8000,
+      currency: "NGN",
+    },
+
+    notes: "Adjustment after weekly stock reconciliation",
+
+    createdBy: "USR-3001",
+    createdAt: "2026-04-30T13:30:00Z",
+
+    auditTrail: [
+      {
+        action: "CREATED",
+        by: "USR-3001",
+        timestamp: "2026-04-30T13:30:00Z",
+      },
+      {
+        action: "APPROVED",
+        by: "USR-2001",
+        timestamp: "2026-04-30T13:50:00Z",
+      },
+      {
+        action: "POSTED",
+        by: "USR-3001",
+        timestamp: "2026-04-30T14:00:00Z",
+      },
+    ],
+  };
   async function apiPostAdjustment() {
     try {
       setLoading(true);
@@ -272,40 +344,191 @@ export default function Adjustment({ breadcrumbs }) {
           return <TableView currentRows={currentRows} />;
       }
     }
+
     function TableView({ currentRows }) {
+      const [openItemDrpdwn, setOpenItemDrpdwn] = useState(false);
+      const [accordion, setAccordion] = useState(null);
+      const [brands, setBrands] = useState("All brands");
+      const [activeRow, setActiveRow] = useState(null);
+      const dispatch = useDispatch();
+
+      function handleItemDrpdwn(index) {
+        setOpenItemDrpdwn(!openItemDrpdwn);
+        if (activeRow === index) {
+          setActiveRow(null);
+        } else {
+          setActiveRow(index);
+        }
+      }
       return (
-        <div className="adjustment">
+        <div className="products">
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
-                <th>Action</th>
+                <th>Adjustment ID</th>
+                <th>Reference ID</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Approved By</th>
+                <th>Created Date</th>
+                <th>Status</th>
+                <th>Total Items</th>
+                <th>Net Adjustment</th>
               </tr>
             </thead>
+
             <tbody className="fx-cl spacem">
               {currentRows?.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
-                  <td>
-                    <strong>{item.sku}</strong>
+                <tr
+                  key={index}
+                  id={`${accordion == index && "productsAccordionOpen"}`}
+                  className="productsRowTdCont fx-cl space1"
+                >
+                  <td
+                    id={item?.adjustmentId}
+                    className={`productsRowTd ${activeRow == index && "active_warehauseRow"}`}
+                    onClick={() =>
+                      accordion == index
+                        ? setAccordion(null)
+                        : setAccordion(index)
+                    }
+                  >
+                    <span>
+                      <strong>{item?.adjustmentId}</strong>
+                    </span>
+                    <span>{item?.reference?.referenceId}</span>
+                    <span>{item?.adjustmentType}</span>
+                    <span>{item?.location?.name}</span>
+                    <span>{item?.approval?.approvedBy}</span>
+                    <span>
+                      {new Date(item?.status?.createdAt).toLocaleDateString(
+                        "en-GB",
+                        {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                        },
+                      )}
+                    </span>
+                    <span>{item?.status?.current}</span>
+                    <span>{item?.summary?.totalAdjustedItems}</span>
+                    <span>{item?.summary?.netAdjustment}</span>
                   </td>
-                  <td>{item.brand}</td>
-                  <td>{item.barcode}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
-                  <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue?.toLocaleString()}</td>
-                  <td>{item.date}</td>
-                  <td>
-                    <button>{item.action}</button>
-                  </td>
+
+                  <span className="productsAccordionCont">
+                    <div className="productsAccordionDisc fx-ac space1">
+                      <figure className="fx-ac fx-jc">
+                        <ShoppingCartIcon
+                          style={{
+                            fontSize: "9.5rem",
+                            color: "rgb(233 245 243)",
+                          }}
+                        />
+                      </figure>
+
+                      <div className="productsAccordionDetails g g4 space1">
+                        <div className="fx-cl spacem">
+                          <span>Reference Type</span>
+                          <p>
+                            <strong>{item?.reference?.referenceType}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Posted At</span>
+                          <p>
+                            <strong>
+                              {new Date(
+                                item?.status?.postedAt,
+                              ).toLocaleDateString("en-GB", {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric",
+                              })}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Total Increase</span>
+                          <p>
+                            <strong>{item?.summary?.totalIncrease}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Total Decrease</span>
+                          <p>
+                            <strong>{item?.summary?.totalDecrease}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Net Value Impact</span>
+                          <p>
+                            <strong>
+                              {item?.financialImpact?.currency}{" "}
+                              {item?.financialImpact?.netValueImpact?.toLocaleString()}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Approved At</span>
+                          <p>
+                            <strong>
+                              {new Date(
+                                item?.approval?.approvedAt,
+                              ).toLocaleDateString("en-GB", {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric",
+                              })}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Notes</span>
+                          <p>
+                            <strong>{item?.notes}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Created At</span>
+                          <p>
+                            <strong>
+                              {new Date(item?.createdAt).toLocaleDateString(
+                                "en-GB",
+                                {
+                                  day: "2-digit",
+                                  month: "long",
+                                  year: "numeric",
+                                },
+                              )}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-ac space1">
+                          <button className="controlButtons">
+                            <span>View Adjustment</span>
+                          </button>
+
+                          <button className="controlButtons">
+                            <RemoveCircleOutlineIcon />
+                            <span>Edit</span>
+                          </button>
+
+                          <button className="controlButtons">
+                            <LocalPrintshopIcon />
+                            <span>Export</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
                 </tr>
               ))}
             </tbody>

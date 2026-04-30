@@ -22,6 +22,10 @@ import PlaceIcon from "@mui/icons-material/Place";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 // image imports
 import ImgOne from "./img1.jpg";
 
@@ -55,40 +59,107 @@ export default function Production({ breadcrumbs }) {
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    sku: "MILK-PEAK-001",
-    barcode: "6224001234567", // EAN / UPC
-    name: "Peak Milk 170g",
-    brand: "Peak",
-    category: {
-      name: "Dairy",
+    productionId: "PROD-2026-000011",
+    productionType: "MANUFACTURING",
+
+    status: {
+      current: "IN_PROGRESS",
+      startedAt: "2026-04-30T06:00:00Z",
+      completedAt: null,
     },
 
-    unit: "tin",
-    costPrice: 820,
-    sellingPrice: 950,
-    taxRate: 2.5, // VAT %
-
-    stock: {
-      quantity: 245,
-      minLevel: 20,
-      reorderLevel: 50,
+    product: {
+      productId: "MILK-PEAK-001",
+      name: "Peak Milk 170g",
+      sku: "MILK-PEAK-001",
+      batchNo: "PM-APR-2026-A",
     },
 
-    batchTracking: true,
-    expiryTracking: true,
-
-    batches: [
+    billOfMaterials: [
       {
-        batchNo: "PK0124A",
-        costPrice: 800,
+        ingredientId: "RAW-FLOUR-001",
+        name: "Flour",
+        requiredQuantity: 5,
+        unit: "kg",
+        costPerUnit: 300,
+        totalCost: 1500,
+      },
+      {
+        ingredientId: "RAW-SUGAR-001",
+        name: "Sugar",
+        requiredQuantity: 1,
+        unit: "kg",
+        costPerUnit: 500,
+        totalCost: 500,
+      },
+      {
+        ingredientId: "RAW-YEAST-001",
+        name: "Yeast",
+        requiredQuantity: 0.2,
+        unit: "kg",
+        costPerUnit: 2000,
+        totalCost: 400,
       },
     ],
 
-    supplier: {
-      name: "UAC Foods",
+    output: {
+      plannedQuantity: 100,
+      completedQuantity: 0,
+      unit: "tin",
     },
 
-    status: "ACTIVE",
+    wastage: {
+      expectedWaste: 2,
+      actualWaste: 0,
+      unit: "kg",
+    },
+
+    costing: {
+      totalMaterialCost: 2400,
+      laborCost: 1000,
+      overheadCost: 600,
+      totalProductionCost: 4000,
+      costPerUnit: 40,
+    },
+
+    warehouse: {
+      productionLocationId: "LOC-PROD-01",
+      outputWarehouseId: "sdr3-1234-sdfg-5678",
+    },
+
+    inventoryImpact: {
+      rawMaterialsConsumed: true,
+      finishedGoodsAdded: false,
+    },
+
+    qualityControl: {
+      checked: false,
+      passed: null,
+      notes: "",
+    },
+
+    schedule: {
+      plannedStart: "2026-04-30T06:00:00Z",
+      plannedEnd: "2026-04-30T14:00:00Z",
+    },
+
+    createdBy: "userId",
+    approvedBy: null,
+
+    notes: "Morning production batch",
+
+    auditTrail: [
+      {
+        action: "CREATED",
+        by: "userId",
+        timestamp: "2026-04-30T05:50:00Z",
+      },
+      {
+        action: "STARTED",
+        by: "userId",
+        timestamp: "2026-04-30T06:00:00Z",
+      },
+    ],
   };
 
   async function apiPostProduction() {
@@ -271,39 +342,186 @@ export default function Production({ breadcrumbs }) {
       }
     }
     function TableView({ currentRows }) {
+      const [openItemDrpdwn, setOpenItemDrpdwn] = useState(false);
+      const [accordion, setAccordion] = useState(null);
+      const [brands, setBrands] = useState("All brands");
+      const [activeRow, setActiveRow] = useState(null);
+      const dispatch = useDispatch();
+
+      function handleItemDrpdwn(index) {
+        setOpenItemDrpdwn(!openItemDrpdwn);
+        if (activeRow === index) {
+          setActiveRow(null);
+        } else {
+          setActiveRow(index);
+        }
+      }
       return (
-        <div className="production">
+        <div className="products">
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
-                <th>Action</th>
+                <th>Production ID</th>
+                <th>Product</th>
+                <th>SKU</th>
+                <th>Type</th>
+                <th>Planned Qty</th>
+                <th>Completed Qty</th>
+                <th>Cost Per Unit</th>
+                <th>Total Cost</th>
+                <th>Status</th>
               </tr>
             </thead>
+
             <tbody className="fx-cl spacem">
               {currentRows?.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
-                  <td>
-                    <strong>{item.brand}</strong>
+                <tr
+                  key={index}
+                  id={`${accordion == index && "productsAccordionOpen"}`}
+                  className="productsRowTdCont fx-cl space1"
+                >
+                  <td
+                    id={item?.productionId}
+                    className={`productsRowTd ${activeRow == index && "active_warehauseRow"}`}
+                    onClick={() =>
+                      accordion == index
+                        ? setAccordion(null)
+                        : setAccordion(index)
+                    }
+                  >
+                    <span>
+                      <strong>{item?.productionId}</strong>
+                    </span>
+                    <span>{item?.product?.name}</span>
+                    <span>{item?.product?.sku}</span>
+                    <span>{item?.productionType}</span>
+                    <span>{item?.output?.plannedQuantity}</span>
+                    <span>{item?.output?.actualQuantity}</span>
+                    <span>₦{item?.costing?.costPerUnit?.toLocaleString()}</span>
+                    <span>
+                      ₦{item?.costing?.totalProductionCost?.toLocaleString()}
+                    </span>
+                    <span>{item?.status?.current}</span>
                   </td>
-                  <td>{item.sku}</td>
-                  <td>{item.name}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
-                  <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue?.toLocaleString()}</td>
-                  <td>{item.barcode}</td>
-                  <td>
-                    <button>{item.action}</button>
-                  </td>
+
+                  <span className="productsAccordionCont">
+                    <div className="productsAccordionDisc fx-ac space1">
+                      <figure className="fx-ac fx-jc">
+                        <ShoppingCartIcon
+                          style={{
+                            fontSize: "9.5rem",
+                            color: "rgb(233 245 243)",
+                          }}
+                        />
+                      </figure>
+
+                      <div className="productsAccordionDetails g g4 space1">
+                        <div className="fx-cl spacem">
+                          <span>Batch No</span>
+                          <p>
+                            <strong>{item?.product?.batchNo}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Started At</span>
+                          <p>
+                            <strong>
+                              {new Date(
+                                item?.status?.startedAt,
+                              ).toLocaleDateString("en-GB", {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric",
+                              })}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Planned End</span>
+                          <p>
+                            <strong>
+                              {new Date(
+                                item?.schedule?.plannedEnd,
+                              ).toLocaleDateString("en-GB", {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric",
+                              })}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Labor Cost</span>
+                          <p>
+                            <strong>
+                              ₦{item?.costing?.laborCost?.toLocaleString()}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Overhead Cost</span>
+                          <p>
+                            <strong>
+                              ₦{item?.costing?.overheadCost?.toLocaleString()}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Total Material Cost</span>
+                          <p>
+                            <strong>
+                              ₦
+                              {item?.costing?.totalMaterialCost?.toLocaleString()}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Warehouse</span>
+                          <p>
+                            <strong>
+                              {item?.warehouse?.productionLocationId}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Notes</span>
+                          <p>
+                            <strong>{item?.notes}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Created By</span>
+                          <p>
+                            <strong>{item?.createdBy}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-ac space1">
+                          <button className="controlButtons">
+                            <span>View Production</span>
+                          </button>
+
+                          <button className="controlButtons">
+                            <RemoveCircleOutlineIcon />
+                            <span>Edit</span>
+                          </button>
+
+                          <button className="controlButtons">
+                            <LocalPrintshopIcon />
+                            <span>Export</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
                 </tr>
               ))}
             </tbody>

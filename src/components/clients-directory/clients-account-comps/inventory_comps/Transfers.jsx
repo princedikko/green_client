@@ -24,6 +24,11 @@ import PlaceIcon from "@mui/icons-material/Place";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
+
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 // image imports
 import ImgOne from "./img1.jpg";
 
@@ -53,42 +58,105 @@ export default function Transfers({ breadcrumbs }) {
   );
 
   const payload = {
-    sku: "MILK-PEAK-001",
-    barcode: "6224001234567", // EAN / UPC
-    name: "Peak Milk 170g",
-    brand: "Peak",
-    category: {
-      name: "Dairy",
+    transferId: "TRF-2026-000112",
+    transferType: "INTERNAL",
+
+    status: {
+      current: "IN_TRANSIT",
+      history: [
+        {
+          state: "CREATED",
+          timestamp: "2026-04-30T08:00:00Z",
+        },
+        {
+          state: "APPROVED",
+          timestamp: "2026-04-30T09:00:00Z",
+        },
+        {
+          state: "DISPATCHED",
+          timestamp: "2026-04-30T10:30:00Z",
+        },
+      ],
     },
 
-    unit: "tin",
-    costPrice: 820,
-    sellingPrice: 950,
-    taxRate: 2.5, // VAT %
-
-    stock: {
-      quantity: 245,
-      minLevel: 20,
-      reorderLevel: 50,
+    locations: {
+      from: {
+        locationId: "LOC-WH-01",
+        type: "WAREHOUSE",
+        name: "Main Warehouse",
+        address: "Ikeja, Lagos",
+      },
+      to: {
+        locationId: "LOC-SHOP-02",
+        type: "SHOP_FLOOR",
+        name: "Retail Shop Floor",
+        address: "Surulere, Lagos",
+      },
     },
 
-    batchTracking: true,
-    expiryTracking: true,
-
-    batches: [
+    items: [
       {
-        batchNo: "PK0124A",
-        costPrice: 800,
+        productId: "PRD-1001",
+        name: "Peak Milk",
+        sku: "PM-200",
+        quantityRequested: 50,
+        quantityDispatched: 50,
+        quantityReceived: 0,
+        unit: "Cartons",
       },
     ],
 
-    supplier: {
-      name: "UAC Foods",
+    transport: {
+      mode: "ROAD",
+      vehicle: {
+        vehicleId: "VEH-010",
+        plateNumber: "LAG-556-AA",
+        driverName: "Sani Bello",
+        driverPhone: "+2348011122233",
+      },
     },
 
-    status: "ACTIVE",
-  };
+    schedule: {
+      requestedDate: "2026-04-30T08:00:00Z",
+      dispatchDate: "2026-04-30T10:30:00Z",
+      expectedArrival: "2026-04-30T14:00:00Z",
+      actualArrival: null,
+    },
 
+    inventoryImpact: {
+      sourceDeducted: true,
+      destinationAdded: false,
+    },
+
+    approval: {
+      required: true,
+      approvedBy: "USR-2002",
+      approvedAt: "2026-04-30T09:00:00Z",
+    },
+
+    notes: "Restocking shop floor for daily sales",
+
+    createdBy: "USR-1001",
+    createdAt: "2026-04-30T08:00:00Z",
+
+    auditTrail: [
+      {
+        action: "CREATED",
+        by: "USR-1001",
+        timestamp: "2026-04-30T08:00:00Z",
+      },
+      {
+        action: "APPROVED",
+        by: "USR-2002",
+        timestamp: "2026-04-30T09:00:00Z",
+      },
+      {
+        action: "DISPATCHED",
+        by: "USR-1003",
+        timestamp: "2026-04-30T10:30:00Z",
+      },
+    ],
+  };
   async function executeTransfers() {
     try {
       setLoading(true);
@@ -269,39 +337,203 @@ export default function Transfers({ breadcrumbs }) {
       }
     }
     function TableView({ currentRows }) {
+      const [openItemDrpdwn, setOpenItemDrpdwn] = useState(false);
+      const [accordion, setAccordion] = useState(null);
+      const [brands, setBrands] = useState("All brands");
+      const [activeRow, setActiveRow] = useState(null);
+      const dispatch = useDispatch();
+
+      function handleItemDrpdwn(index) {
+        setOpenItemDrpdwn(!openItemDrpdwn);
+        if (activeRow === index) {
+          setActiveRow(null);
+        } else {
+          setActiveRow(index);
+        }
+      }
       return (
-        <div className="transfers">
+        <div className="products">
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
+                <th>Transfer ID</th>
+                <th>From Location</th>
+                <th>To Location</th>
+                <th>Transfer Type</th>
+                <th>Driver</th>
+                <th>Dispatch Date</th>
+                <th>Status</th>
+                <th>Items</th>
                 <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
-                <th>Action</th>
               </tr>
             </thead>
+
             <tbody className="fx-cl spacem">
               {currentRows?.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
-                  <td>
-                    <strong>{item.barcode}</strong>
+                <tr
+                  key={index}
+                  id={`${accordion == index && "productsAccordionOpen"}`}
+                  className="productsRowTdCont fx-cl space1"
+                >
+                  <td
+                    id={item?.transferId}
+                    className={`productsRowTd ${activeRow == index && "active_warehauseRow"}`}
+                    onClick={() =>
+                      accordion == index
+                        ? setAccordion(null)
+                        : setAccordion(index)
+                    }
+                  >
+                    <span>
+                      <strong>{item?.transferId}</strong>
+                    </span>
+                    <span>{item?.locations?.from?.name}</span>
+                    <span>{item?.locations?.to?.name}</span>
+                    <span>{item?.transferType}</span>
+                    <span>{item?.transport?.vehicle?.driverName}</span>
+                    <span>
+                      {new Date(
+                        item?.schedule?.dispatchDate,
+                      ).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <span>{item?.status?.current}</span>
+                    <span>{item?.items?.map((i) => i.name).join(", ")}</span>
+                    <span>
+                      {item?.items?.reduce(
+                        (acc, i) => acc + (i.quantityDispatched || 0),
+                        0,
+                      )}
+                    </span>
                   </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.brand}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
-                  <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue?.toLocaleString()}</td>
-                  <td>{item.date}</td>
-                  <td>
-                    <button>{item.action}</button>
-                  </td>
+
+                  <span className="productsAccordionCont">
+                    <div className="productsAccordionDisc fx-ac space1">
+                      <figure className="fx-ac fx-jc">
+                        <ShoppingCartIcon
+                          style={{
+                            fontSize: "9.5rem",
+                            color: "rgb(233 245 243)",
+                          }}
+                        />
+                      </figure>
+
+                      <div className="productsAccordionDetails g g4 space1">
+                        <div className="fx-cl spacem">
+                          <span>Transfer Type</span>
+                          <p>
+                            <strong>{item?.transferType}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>From Address</span>
+                          <p>
+                            <strong>{item?.locations?.from?.address}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>To Address</span>
+                          <p>
+                            <strong>{item?.locations?.to?.address}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Vehicle Plate</span>
+                          <p>
+                            <strong>
+                              {item?.transport?.vehicle?.plateNumber}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Driver Phone</span>
+                          <p>
+                            <strong>
+                              {item?.transport?.vehicle?.driverPhone}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Expected Arrival</span>
+                          <p>
+                            <strong>
+                              {new Date(
+                                item?.schedule?.expectedArrival,
+                              ).toLocaleDateString("en-GB", {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric",
+                              })}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Approval</span>
+                          <p>
+                            <strong>
+                              {item?.approval?.approvedBy} (
+                              {new Date(
+                                item?.approval?.approvedAt,
+                              ).toLocaleDateString("en-GB", {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric",
+                              })}
+                              )
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Notes</span>
+                          <p>
+                            <strong>{item?.notes}</strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-cl spacem">
+                          <span>Created At</span>
+                          <p>
+                            <strong>
+                              {new Date(item?.createdAt).toLocaleDateString(
+                                "en-GB",
+                                {
+                                  day: "2-digit",
+                                  month: "long",
+                                  year: "numeric",
+                                },
+                              )}
+                            </strong>
+                          </p>
+                        </div>
+
+                        <div className="fx-ac space1">
+                          <button className="controlButtons">
+                            <span>View Transfer</span>
+                          </button>
+
+                          <button className="controlButtons">
+                            <RemoveCircleOutlineIcon />
+                            <span>Edit</span>
+                          </button>
+
+                          <button className="controlButtons">
+                            <LocalPrintshopIcon />
+                            <span>Export</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
                 </tr>
               ))}
             </tbody>

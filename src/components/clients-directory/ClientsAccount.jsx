@@ -62,7 +62,6 @@ import Orders from "./clients-account-comps/inventory_comps/Orders.jsx";
 import Transfers from "./clients-account-comps/inventory_comps/Transfers.jsx";
 import OpeningStock from "./clients-account-comps/inventory_comps/OpeningStock.jsx";
 import Reconciliation from "./clients-account-comps/inventory_comps/Reconciliation.jsx";
-import Discrepancies from "./clients-account-comps/inventory_comps/Discrepancies.jsx";
 import FilterAdjustment from "./clients-account-comps/inventory_comps/filters/FilterAdjustment.jsx";
 import Adjustment from "./clients-account-comps/inventory_comps/Adjustment.jsx";
 import Expenses from "./clients-account-comps/inventory_comps/Expenses.jsx";
@@ -207,8 +206,6 @@ export default function ClientsAccount() {
         return <OpeningStock breadcrumbs={breads} />;
       case "reconciliation":
         return <Reconciliation breadcrumbs={breads} />;
-      case "discrepancies":
-        return <Discrepancies breadcrumbs={breads} />;
       case "adjusment":
         return <Adjustment breadcrumbs={breads} />;
       case "deliveries":
@@ -390,11 +387,7 @@ export default function ClientsAccount() {
           hook: "reconciliation",
           tabs: ["main", "completed", "pending"],
         },
-        {
-          title: "Discrepancies",
-          hook: "discrepancies",
-          tabs: ["main", "completed", "pending"],
-        },
+
         {
           title: "Adjusment",
           hook: "adjusment",

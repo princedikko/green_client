@@ -1,3 +1,150 @@
+// USERS COLLECTION (For Cashiers, Managers, Admins)
+[
+  {
+    userId: "USR-1001",
+    clientId: "CLT-2026-000045",
+
+    personalInfo: {
+      fullName: "Abdullahi Dikko",
+      email: "admin@dikko.com",
+      phone: "+2348012345678",
+      profileImage: null,
+    },
+
+    auth: {
+      authProvider: "LOCAL",
+      emailVerified: true,
+      phoneVerified: true,
+      twoFactorEnabled: true,
+      lastLoginAt: "2026-04-30T08:10:00Z",
+    },
+
+    role: {
+      roleName: "SUPER_ADMIN",
+      level: 1,
+      permissions: ["ALL"],
+    },
+
+    employment: {
+      jobTitle: "Business Owner",
+      department: "Management",
+      employeeType: "OWNER",
+      status: "ACTIVE",
+      joinedAt: "2026-04-01T00:00:00Z",
+    },
+
+    accessControl: {
+      warehouseAccess: ["WH-001", "WH-002"],
+      moduleAccess: [
+        "inventory",
+        "orders",
+        "production",
+        "expenses",
+        "reconciliation",
+      ],
+      restrictedActions: [],
+    },
+
+    activity: {
+      status: "ONLINE",
+      lastActiveAt: "2026-04-30T08:15:00Z",
+      loginCount: 120,
+    },
+  },
+
+  {
+    userId: "USR-1002",
+    clientId: "CLT-2026-000045",
+
+    personalInfo: {
+      fullName: "Aisha Mohammed",
+      email: "inventory@dikko.com",
+      phone: "+2348091122334",
+      profileImage: null,
+    },
+
+    auth: {
+      authProvider: "LOCAL",
+      emailVerified: true,
+      phoneVerified: true,
+      twoFactorEnabled: false,
+      lastLoginAt: "2026-04-29T18:30:00Z",
+    },
+
+    role: {
+      roleName: "INVENTORY_MANAGER",
+      level: 3,
+      permissions: ["INVENTORY_VIEW", "INVENTORY_UPDATE", "RECONCILIATION"],
+    },
+
+    employment: {
+      jobTitle: "Inventory Manager",
+      department: "Operations",
+      employeeType: "STAFF",
+      status: "ACTIVE",
+      joinedAt: "2026-02-10T00:00:00Z",
+    },
+
+    accessControl: {
+      warehouseAccess: ["WH-001"],
+      moduleAccess: ["inventory", "reconciliation", "transfers"],
+      restrictedActions: ["DELETE_PRODUCTS"],
+    },
+
+    activity: {
+      status: "OFFLINE",
+      lastActiveAt: "2026-04-29T18:30:00Z",
+      loginCount: 45,
+    },
+  },
+
+  {
+    userId: "USR-1003",
+    clientId: "CLT-2026-000045",
+
+    personalInfo: {
+      fullName: "John Peters",
+      email: "cashier@dikko.com",
+      phone: "+2348074455667",
+      profileImage: null,
+    },
+
+    auth: {
+      authProvider: "LOCAL",
+      emailVerified: true,
+      phoneVerified: false,
+      twoFactorEnabled: false,
+      lastLoginAt: "2026-04-28T12:00:00Z",
+    },
+
+    role: {
+      roleName: "CASHIER",
+      level: 5,
+      permissions: ["SALES_CREATE", "VIEW_PRODUCTS"],
+    },
+
+    employment: {
+      jobTitle: "Cashier",
+      department: "Sales",
+      employeeType: "STAFF",
+      status: "ACTIVE",
+      joinedAt: "2026-03-01T00:00:00Z",
+    },
+
+    accessControl: {
+      warehouseAccess: ["WH-002"],
+      moduleAccess: ["orders"],
+      restrictedActions: ["DELETE_ORDERS", "VIEW_EXPENSES"],
+    },
+
+    activity: {
+      status: "OFFLINE",
+      lastActiveAt: "2026-04-28T12:00:00Z",
+      loginCount: 18,
+    },
+  },
+];
+
 // 1️⃣ Product Collection (Master Inventory)
 const product_collection = {
   _id: ObjectId("..."),
