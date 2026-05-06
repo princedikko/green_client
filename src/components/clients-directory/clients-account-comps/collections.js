@@ -190,6 +190,80 @@ const product_collection = {
   createdAt: ISODate(),
   updatedAt: ISODate(),
 };
+
+const payload = {
+  sku: "MILK-PEAK-001",
+  barcode: "6224001234567",
+  qrcode: "1234567890123",
+  name: "Peak Milk 170g",
+  brand: "Peak",
+  productType: "inventory", // service, digital, subscription
+  units: {
+    baseUnit: "tin",
+    purchaseUnit: "carton",
+    conversionRate: 24,
+    salesUnit: "tin",
+  },
+  description: "Business laptop",
+  categoryId: "cat-1234",
+  supplierId: "uac-5678",
+
+  pricing: {
+    costPrice: 650,
+    sellingPrice: 820,
+    taxRate: 7.5,
+    currency: "NGN",
+  },
+
+  stock: {
+    reorderLevel: 5,
+    reorderQuantity: 10,
+    minLevel: 20,
+    sellingQuantity: 1,
+  },
+
+  warehouses: [
+    {
+      warehouseId: "sdr3-1234-sdfg-5678",
+      location: "Aisle 3 - Rack B",
+      quantity: 35,
+      reservedQuantity: 0,
+      damagedQuantity: 0,
+    },
+  ],
+
+  batch: {
+    batchTracking: true,
+    expiryTracking: true,
+    trackingMethod: "FEFO",
+    batches: [
+      {
+        batchNo: "PK0124A",
+        costPrice: 800,
+        quantityAvailable: 35,
+        manufactureDate: "2024-01-01",
+        expiryDate: "2026-01-30",
+        warehouseId: "sdr3-1234-sdfg-5678",
+      },
+    ],
+  },
+  dimensions: {
+    weight: null,
+    length: null,
+    width: null,
+    height: null,
+  },
+  images: [],
+  trackInventory: true,
+  status: "active",
+  createdBy: "userId",
+  updatedBy: "userId",
+  createdAt: new Date().toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  }),
+};
 // 📌 Used when scanning barcode
 
 // Finds product by barcode

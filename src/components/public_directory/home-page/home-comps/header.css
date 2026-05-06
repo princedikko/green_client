@@ -9,11 +9,11 @@
   background-color: transparent;
   /* backdrop-filter: blur(10px); */
   font-size: 1.4rem;
-  padding: 1.5rem 4.5rem;
+  padding: 1.5rem 0rem;
 }
 
 .navbar-logo img {
-  width: 3.4rem;
+  width: 18.4rem;
   height: auto;
 }
 .navbar {
@@ -23,12 +23,6 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-}
-.navbar a.navbar-logo:link,
-.navbar a.navbar-logo:visited {
-  font-weight: 600;
-  font-size: 3rem;
-  color: #000;
 }
 .navbar-container {
   display: flex;
@@ -45,18 +39,29 @@
   display: flex;
   list-style: none;
   gap: 20px;
+  padding: 0.4rem 4.2rem;
+  /* background-color: red; */
+  background: linear-gradient(to bottom right, #e8eaeb, #deede8);
+  border-radius: 1rem;
+  color: #fff;
 }
-
 .dropdown {
   position: relative;
 }
 
 .nav-links a:link,
 .nav-links a:visited {
+  border-radius: 1rem;
   color: #000;
   text-decoration: none;
-  padding: 8px;
+  padding: 8px 12px;
   display: block;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.nav-links a:hover,
+.nav-links a:active {
+  color: #3a84f8;
 }
 
 .dropdown-content a:link,
@@ -79,7 +84,7 @@
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #000;
+  background-color: #fbfbfb;
   color: #000;
   min-width: 160px;
   top: 100%;
@@ -128,12 +133,12 @@
 
 .navbar-buttons a.btn-student_portal:link,
 .navbar-buttons a.btn-student_portal:visited {
-  background-color: #000;
+  background-color: #3a84f8;
   color: #fff;
   padding: 0.6rem 2.2rem;
   font-weight: bold;
   border-radius: 0.4rem;
-  border-radius: 33rem;
+  border-radius: 0.8rem;
 }
 .mobile-menu-toggle {
   display: none;
@@ -142,6 +147,39 @@
   color: #000;
   border: none;
   cursor: pointer;
+}
+
+.headerBtn {
+  padding: 0.6rem;
+  padding-right: 2.4rem;
+  background-color: #000000;
+  border-radius: 55rem;
+  color: #fff;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.headerBtn figure {
+  height: 2.6rem;
+  width: 4.5rem;
+  border-radius: 66rem;
+  background-color: #fff;
+  color: #1b1c1c;
+  padding: 0.4rem;
+  transition: all 0.3s;
+}
+
+.headerBtnOne {
+  background-color: #e0ece8;
+  color: #333;
+}
+.headerBtn:hover figure {
+  color: #8ec0af;
+}
+.headerBtn:hover {
+  background-color: #8ec0af;
+  color: #293a34;
+  font-weight: 600;
 }
 
 @media (max-width: 768px) {

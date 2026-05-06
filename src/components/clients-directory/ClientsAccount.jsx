@@ -14,7 +14,7 @@ import "./styles.css";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/scrollbar";
-
+import UniLogo from "./client_account_images/universelogo.png";
 // Import required modules
 import { FreeMode, Scrollbar, Mousewheel } from "swiper/modules";
 // importing components
@@ -560,11 +560,14 @@ export default function ClientsAccount() {
                 style={{
                   width: "100%",
                   marginBottom: "2rem",
-                  fontSize: "1.8rem",
+                  fontSize: "1.4rem",
+                  fontWeight: "bold",
                 }}
               >
-                <figure className="dashboardLogo fx-ac space2 fx-jc">SP</figure>
-                <span>Green&copy;</span>
+                <figure className="dashboardLogo fx-ac space2 fx-jc">
+                  <img src={UniLogo} alt="" />
+                </figure>
+                Universe Inventory
               </div>
               <div>
                 <span style={{ textTransform: "capitalize" }}>{active}</span>

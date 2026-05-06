@@ -539,46 +539,87 @@ export function PostSubscriptions({ salesPayload }) {
     0,
   );
 
+  const [subscribePayloads, setSubscribePayloads] = useReducer(
+    (state, action) => {
+      return { ...state, ...action };
+    },
+    {
+      subscriptionId: "SE-000145",
+
+      // sale.customer flattened
+      saleCustomerId: "cust-3344",
+      saleCustomerName: customerName,
+      saleCustomerLocation: "Area One, Abuja Nigeria",
+
+      // sale.items (kept as is)
+      saleItems: cart,
+
+      // sale.totals flattened
+      saleTotalsSubtotal: subTotal,
+      saleTotalsDiscount: discount,
+      saleTotalsTax: tax,
+      saleTotalsTotal: subTotal + discount + tax,
+
+      // sale.saveBy flattened
+      saleSaveByUserId: "user-22",
+      saleSaveByName: "Yasmeen",
+
+      // sale.dates flattened
+      saleDatesCreatedAt: new Date().toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      }),
+      saleDatesUpdatedAt: "",
+
+      // subscription flattened
+      subscriptionInterval: "monthly",
+      subscriptionRepetitions: 12,
+      subscriptionGenerated_invoices: 3,
+      subscriptionLast_generated: "05 April 2026",
+      subscriptionUpcoming_invoice: "05 May 2026",
+    },
+  );
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
 
   const payload = {
-    subscriptionId: "SE-000145", // invoice or receipt ID
+    subscriptionId: subscribePayloads.subscriptionId,
+
     sale: {
       customer: {
-        id: "cust-3344",
-        name: customerName,
-        location: "Area One, Abuja Nigeria",
+        id: subscribePayloads.saleCustomerId,
+        name: subscribePayloads.saleCustomerName,
+        location: subscribePayloads.saleCustomerLocation,
       },
 
-      items: cart,
+      items: subscribePayloads.saleItems,
 
       totals: {
-        subtotal: subTotal,
-        discount: discount,
-        tax: tax,
-        total: subTotal + discount + tax,
+        subtotal: subscribePayloads.saleTotalsSubtotal,
+        discount: subscribePayloads.saleTotalsDiscount,
+        tax: subscribePayloads.saleTotalsTax,
+        total: subscribePayloads.saleTotalsTotal,
       },
+
       saveBy: {
-        userId: "user-22",
-        name: "Yasmeen",
+        userId: subscribePayloads.saleSaveByUserId,
+        name: subscribePayloads.saleSaveByName,
       },
+
       dates: {
-        createdAt: new Date().toLocaleDateString("en-GB", {
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
-        }),
-        updatedAt: "",
+        createdAt: subscribePayloads.saleDatesCreatedAt,
+        updatedAt: subscribePayloads.saleDatesUpdatedAt,
       },
     },
+
     subscription: {
-      subscription_interval: "monthly",
-      repetitions: 12,
-      generated_invoices: 3,
-      last_generated: "05 April 2026",
-      upcoming_invoice: "05 May 2026",
+      subscription_interval: subscribePayloads.subscriptionInterval,
+      repetitions: subscribePayloads.subscriptionRepetitions,
+      generated_invoices: subscribePayloads.subscriptionGenerated_invoices,
+      last_generated: subscribePayloads.subscriptionLast_generated,
+      upcoming_invoice: subscribePayloads.subscriptionUpcoming_invoice,
     },
   };
 
@@ -638,6 +679,179 @@ export function PostSubscriptions({ salesPayload }) {
         >
           Subscribe
         </button>
+      </div>
+      <div className="fx-cl" style={{ gap: "12px", padding: "20px" }}>
+        <button onClick={() => postSubscribe()}>Post</button>
+
+        {/* BASIC INFO */}
+        <input
+          placeholder="Subscription ID"
+          value={subscribePayloads.subscriptionId}
+          onChange={(e) =>
+            setSubscribePayloads({ subscriptionId: e.target.value })
+          }
+        />
+
+        {/* CUSTOMER */}
+        <input
+          placeholder="Customer ID"
+          value={subscribePayloads.saleCustomerId}
+          onChange={(e) =>
+            setSubscribePayloads({ saleCustomerId: e.target.value })
+          }
+        />
+        <input
+          placeholder="Customer Name"
+          value={subscribePayloads.saleCustomerName}
+          onChange={(e) =>
+            setSubscribePayloads({ saleCustomerName: e.target.value })
+          }
+        />
+        <input
+          placeholder="Customer Location"
+          value={subscribePayloads.saleCustomerLocation}
+          onChange={(e) =>
+            setSubscribePayloads({ saleCustomerLocation: e.target.value })
+          }
+        />
+
+        {/* ITEMS */}
+        <input
+          placeholder="Items (JSON)"
+          value={JSON.stringify(subscribePayloads.saleItems)}
+          onChange={(e) =>
+            setSubscribePayloads({
+              saleItems: JSON.parse(e.target.value || "[]"),
+            })
+          }
+        />
+
+        {/* TOTALS */}
+        <input
+          type="number"
+          placeholder="Subtotal"
+          value={subscribePayloads.saleTotalsSubtotal}
+          onChange={(e) =>
+            setSubscribePayloads({
+              saleTotalsSubtotal: Number(e.target.value),
+            })
+          }
+        />
+        <input
+          type="number"
+          placeholder="Discount"
+          value={subscribePayloads.saleTotalsDiscount}
+          onChange={(e) =>
+            setSubscribePayloads({
+              saleTotalsDiscount: Number(e.target.value),
+            })
+          }
+        />
+        <input
+          type="number"
+          placeholder="Tax"
+          value={subscribePayloads.saleTotalsTax}
+          onChange={(e) =>
+            setSubscribePayloads({
+              saleTotalsTax: Number(e.target.value),
+            })
+          }
+        />
+        <input
+          type="number"
+          placeholder="Total"
+          value={subscribePayloads.saleTotalsTotal}
+          onChange={(e) =>
+            setSubscribePayloads({
+              saleTotalsTotal: Number(e.target.value),
+            })
+          }
+        />
+
+        {/* SAVED BY */}
+        <input
+          placeholder="User ID"
+          value={subscribePayloads.saleSaveByUserId}
+          onChange={(e) =>
+            setSubscribePayloads({ saleSaveByUserId: e.target.value })
+          }
+        />
+        <input
+          placeholder="Name"
+          value={subscribePayloads.saleSaveByName}
+          onChange={(e) =>
+            setSubscribePayloads({ saleSaveByName: e.target.value })
+          }
+        />
+
+        {/* DATES */}
+        <input
+          placeholder="Created At"
+          value={subscribePayloads.saleDatesCreatedAt}
+          onChange={(e) =>
+            setSubscribePayloads({
+              saleDatesCreatedAt: e.target.value,
+            })
+          }
+        />
+        <input
+          placeholder="Updated At"
+          value={subscribePayloads.saleDatesUpdatedAt}
+          onChange={(e) =>
+            setSubscribePayloads({
+              saleDatesUpdatedAt: e.target.value,
+            })
+          }
+        />
+
+        {/* SUBSCRIPTION */}
+        <input
+          placeholder="Interval"
+          value={subscribePayloads.subscriptionInterval}
+          onChange={(e) =>
+            setSubscribePayloads({
+              subscriptionInterval: e.target.value,
+            })
+          }
+        />
+        <input
+          type="number"
+          placeholder="Repetitions"
+          value={subscribePayloads.subscriptionRepetitions}
+          onChange={(e) =>
+            setSubscribePayloads({
+              subscriptionRepetitions: Number(e.target.value),
+            })
+          }
+        />
+        <input
+          type="number"
+          placeholder="Generated Invoices"
+          value={subscribePayloads.subscriptionGenerated_invoices}
+          onChange={(e) =>
+            setSubscribePayloads({
+              subscriptionGenerated_invoices: Number(e.target.value),
+            })
+          }
+        />
+        <input
+          placeholder="Last Generated"
+          value={subscribePayloads.subscriptionLast_generated}
+          onChange={(e) =>
+            setSubscribePayloads({
+              subscriptionLast_generated: e.target.value,
+            })
+          }
+        />
+        <input
+          placeholder="Upcoming Invoice"
+          value={subscribePayloads.subscriptionUpcoming_invoice}
+          onChange={(e) =>
+            setSubscribePayloads({
+              subscriptionUpcoming_invoice: e.target.value,
+            })
+          }
+        />
       </div>
     </div>
   );

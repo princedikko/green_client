@@ -27,7 +27,7 @@ export default function Registration() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const navigateTo = useNavigate();
   const dispatch = useDispatch();
-  const [selectedProgramme, setSelectedProgramme] = useState([]);
+  const [selectedCurrency, setSelectedCurrency] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
 
   // ****************************** GENERATING APPLICATION NUMBER FOR APPLICANTS **************************************
@@ -44,6 +44,7 @@ export default function Registration() {
   };
   // ------------------------
   const [loading, setLoading] = useState(false);
+  const [plan, setPlan] = useState("professional");
   const [applicantData, setApplicantData] = useReducer(
     (request, response) => {
       return { ...request, ...response };
@@ -57,50 +58,6 @@ export default function Registration() {
   );
 
   const actions = useSelector((state) => state.applictaionForm);
-  const executeApplication = async () => {
-    setLoading(true);
-    await axios
-      .post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/candidate_registration`,
-        payload,
-      )
-      .then((response) => {
-        applicationData = response.data.data;
-        if (response.data.status === 203) {
-          setLoading(false);
-          enqueueSnackbar(`${response.data.message}`, {
-            variant: "error",
-            autoHideDuration: 3000,
-            ContentProps: {
-              style: { fontSize: "16px", fontWeight: "bold" },
-            },
-          });
-        } else {
-          enqueueSnackbar(`${response.data.message}`, {
-            variant: "success",
-            autoHideDuration: 3000,
-            ContentProps: {
-              style: { fontSize: "16px", fontWeight: "bold" },
-            },
-          });
-          navigateTo(
-            `/registrations/${response.data?.data?.auth.loginUsername}/print_reciept`,
-          );
-          setLoading(false);
-        }
-      })
-      .catch((error) => {
-        enqueueSnackbar(`error: something went wrong!`, {
-          variant: "error",
-          autoHideDuration: 3000,
-          ContentProps: {
-            style: { fontSize: "16px", fontWeight: "bold" },
-          },
-        });
-        console.log(error);
-        setLoading(false);
-      });
-  };
 
   const payload = {
     clientId: "CLT-2026-000045",
@@ -583,6 +540,51 @@ export default function Registration() {
     ],
   };
 
+  const executeApplication = async () => {
+    setLoading(true);
+    await axios
+      .post(
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/candidate_registration`,
+        payload,
+      )
+      .then((response) => {
+        applicationData = response.data.data;
+        if (response.data.status === 203) {
+          setLoading(false);
+          enqueueSnackbar(`${response.data.message}`, {
+            variant: "error",
+            autoHideDuration: 3000,
+            ContentProps: {
+              style: { fontSize: "16px", fontWeight: "bold" },
+            },
+          });
+        } else {
+          enqueueSnackbar(`${response.data.message}`, {
+            variant: "success",
+            autoHideDuration: 3000,
+            ContentProps: {
+              style: { fontSize: "16px", fontWeight: "bold" },
+            },
+          });
+          navigateTo(
+            `/registrations/${response.data?.data?.auth.loginUsername}/print_reciept`,
+          );
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        enqueueSnackbar(`error: something went wrong!`, {
+          variant: "error",
+          autoHideDuration: 3000,
+          ContentProps: {
+            style: { fontSize: "16px", fontWeight: "bold" },
+          },
+        });
+        console.log(error);
+        setLoading(false);
+      });
+  };
+
   const RegFormFilling = () => {
     const [appFormData, setAppFormData] = useReducer(
       (request, response) => {
@@ -639,15 +641,15 @@ export default function Registration() {
     };
 
     return (
-      <div className="regMainCont fx-cl space3">
-        <div className="regHeader fx-cl fx-ac space3">
+      <div className="regMainCont fx-cl space2">
+        <div className="regHeader fx-cl fx-ac space2">
           <h3>High-speed, Secure & Stress-Free to your Business</h3>
           <div className="regHTag fx-ac">
             <figure className="fx-ac space2">
               <span>
                 <DashboardRoundedIcon fontSize="large" />
               </span>
-              <span>Open source</span>
+              <span>Real time sales</span>
             </figure>
             <figure className="fx-ac space2">
               <span>
@@ -659,7 +661,7 @@ export default function Registration() {
               <span>
                 <PeopleAltRoundedIcon fontSize="large" />
               </span>
-              <span>Protected by Jool Inventory Laws</span>
+              <span>Protected by Universe Inventory Laws</span>
             </figure>
             <figure className="fx-ac space2">
               <span>
@@ -676,23 +678,23 @@ export default function Registration() {
         <div className="regMainDiv fx-cl space3">
           <div className="fx-ac fx-jb space4">
             <div className=" regStep fx-ac space2">
-              <figure>Step 1</figure> <h3>Select your pricing plan</h3>
+              <figure>Step 1</figure> <h3>Select your plan</h3>
             </div>
-            <select name="" id="">
-              <option value="">Change Programme</option>
-            </select>
           </div>
 
           <div className="regPricing fx-as space2">
-            <figure className="regPricingCard  fx-cl">
+            <figure
+              onClick={() => setPlan("standard")}
+              className={`regPricingCard ${plan == "standard" && "active"} fx-cl bestValue`}
+            >
               <div className="fx-cl space2">
                 <div className="fx-ac space1">
-                  <input type="radio" name="" id="" />
-                  <h5>2 months</h5>
+                  <span className="regPlanRadius">&nbsp;</span>
+                  <h5>Standard</h5>
                 </div>
                 <div className="fx-cl spacem">
                   <p className="discountReg">
-                    <span>5950 </span>
+                    <span>Yearly ₦2,985</span>
                     <strong
                       style={{
                         color: "#5AC2AE",
@@ -704,22 +706,26 @@ export default function Registration() {
                       SAVE 68%
                     </strong>
                   </p>
-                  <p className="regPrice">N2,500</p>
-                  <span>2 months</span>
+                  <p className="regPrice">₦3,865 </p>
+                  <span>Monthly</span>
                 </div>
-                {/* <button>Make the payment</button> */}
+
+                {plan == "standard" && <button>Make the payment</button>}
               </div>
             </figure>
-            <figure className="regPricingCard active fx-cl bestValue">
+            <figure
+              onClick={() => setPlan("professional")}
+              className={`regPricingCard ${plan == "professional" && "active"} fx-cl bestValue`}
+            >
               <span className="bestValueTag">Best value</span>
               <div className="fx-cl space2">
                 <div className="fx-ac space1">
-                  <input type="radio" name="" id="" />
-                  <h5>6 months</h5>
+                  <span className="regPlanRadius">&nbsp;</span>
+                  <h5>Professional</h5>
                 </div>
                 <div className="fx-cl spacem">
                   <p className="discountReg">
-                    <span>5950 </span>
+                    <span>Yearly -12%</span>
                     <strong
                       style={{
                         color: "#5AC2AE",
@@ -731,23 +737,29 @@ export default function Registration() {
                       SAVE 68%
                     </strong>
                   </p>
-                  <p className="regPrice">N3,450</p>
-                  <span>6 months</span>
+                  <p className="regPrice">₦5,950</p>
+                  <span>Monthly</span>
                 </div>
-                <button onClick={() => executeApplication()}>
-                  Make the payment
-                </button>
+
+                {plan == "professional" && (
+                  <button onClick={() => executeApplication()}>
+                    Make the payment
+                  </button>
+                )}
               </div>
             </figure>
-            <figure className="regPricingCard fx-cl ">
+            <figure
+              onClick={() => setPlan("premium")}
+              className={`regPricingCard ${plan == "premium" && "active"} fx-cl bestValue`}
+            >
               <div className="fx-cl space2">
                 <div className="fx-ac space1">
-                  <input type="radio" name="" id="" />
-                  <h5>12 months</h5>
+                  <span className="regPlanRadius">&nbsp;</span>
+                  <h5>Premuim</h5>
                 </div>
                 <div className="fx-cl spacem">
                   <p className="discountReg">
-                    <span>5950 </span>
+                    <span>Yearly -12%</span>
                     <strong
                       style={{
                         color: "#5AC2AE",
@@ -759,24 +771,52 @@ export default function Registration() {
                       SAVE 68%
                     </strong>
                   </p>
-                  <p className="regPrice">N5,750</p>
-                  <span>12 months</span>
+                  <p className="regPrice"> ₦16,500 </p>
+                  <span>Monthly</span>
                 </div>
-                {/* <button>Make the payment</button> */}
+                {plan == "premium" && <button>Make the payment</button>}
+              </div>
+            </figure>
+            <figure
+              onClick={() => setPlan("enterprise")}
+              className={`regPricingCard ${plan == "enterprise" && "active"} fx-cl bestValue`}
+            >
+              <div className="fx-cl space2">
+                <div className="fx-ac space1">
+                  <span className="regPlanRadius">&nbsp;</span>
+                  <h5>Enterprise</h5>
+                </div>
+                <div className="fx-cl spacem">
+                  <p className="discountReg">
+                    <span>Yearly -12%</span>
+                    <strong
+                      style={{
+                        color: "#5AC2AE",
+                        backgroundColor: "#EBFFFA",
+                        padding: ".3rem",
+                        borderRadius: ".4rem",
+                      }}
+                    >
+                      SAVE 68%
+                    </strong>
+                  </p>
+                  <p className="regPrice">₦25,850</p>
+                  <span>Monthly</span>
+                </div>
+                {plan == "enterprise" && <button>Make the payment</button>}
               </div>
             </figure>
           </div>
         </div>
-        <div className="regMainDiv regFormData fx-cl space2">
+        <div className="regMainDiv regFormData fx-cl">
           <div className="fx-cl space3">
             <div className=" regStep fx-ac space2">
-              <figure>Step 2</figure> <h3>Select your pricing plan</h3>
+              <figure>Step 2</figure> <h3>Select your account plan</h3>
             </div>
 
             <div className="fx-cl space2 ">
               <div className="fx-ac space2 regFormfloat">
                 <div className="fx-cl spacem">
-                  <label htmlFor="text">First name:</label>
                   <div
                     className="fx-ac space1 regInputCont"
                     style={{
@@ -785,39 +825,41 @@ export default function Registration() {
                       }`,
                     }}
                   >
-                    <input
-                      value={appFormData.firstName}
-                      onChange={(event) =>
-                        setAppFormData({ firstName: event.target.value })
-                      }
-                      type="text"
-                      name="first_name"
-                      style={{ borderColor: errors.firstName ? "red" : "" }}
-                    />
-                    {/* {errors.firstName && (
-                <div style={{ color: "red" }}>{errors.firstName}</div>
-              )} */}
+                    <div className="fx-cl">
+                      <label htmlFor="text">First name:</label>
+                      <input
+                        value={appFormData.firstName}
+                        onChange={(event) =>
+                          setAppFormData({ firstName: event.target.value })
+                        }
+                        type="text"
+                        name="first_name"
+                        style={{ borderColor: errors.firstName ? "red" : "" }}
+                      />
+                    </div>
                   </div>
                 </div>
                 <div className="fx-cl spacem">
-                  <label htmlFor="text">Sur name:</label>
                   <div
-                    className="fx-ac space1 regInputCont"
+                    className="fx-cl space1 regInputCont"
                     style={{
                       boxShadow: `${
                         errors.surName && "inset 0rem 0rem 0rem 0.1rem red"
                       }`,
                     }}
                   >
-                    <input
-                      value={appFormData.surName}
-                      onChange={(event) =>
-                        setAppFormData({ surName: event.target.value })
-                      }
-                      type="text"
-                      name="sur_name"
-                      style={{ borderColor: errors.surName ? "red" : "" }}
-                    />
+                    <div className="fx-cl">
+                      <label htmlFor="text">Sur name:</label>
+                      <input
+                        value={appFormData.surName}
+                        onChange={(event) =>
+                          setAppFormData({ surName: event.target.value })
+                        }
+                        type="text"
+                        name="sur_name"
+                        style={{ borderColor: errors.surName ? "red" : "" }}
+                      />
+                    </div>
                     {/* {errors.surName && (
                 <div style={{ color: "red" }}>{errors.surName}</div>
               )} */}
@@ -945,13 +987,117 @@ export default function Registration() {
                   </div>
                 </div>
               </div>
+              <div className="fx-cl space3">
+                <h2>Industry</h2>
+
+                <select id="Industry" name="Industry">
+                  <option value="">Select...</option>
+                  <option value="3PL">3PL</option>
+                  <option value="Aerospace &amp; Defense">
+                    Aerospace &amp; Defense
+                  </option>
+                  <option value="Agriculture">Agriculture</option>
+                  <option value="Apparel">Apparel</option>
+                  <option value="Automotive">Automotive</option>
+                  <option value="Biotechnology">Biotechnology</option>
+                  <option value="Building Materials">Building Materials</option>
+                  <option value="Cannabis">Cannabis</option>
+                  <option value="Chemicals">Chemicals</option>
+                  <option value="Construction">Construction</option>
+                  <option value="Consultant">Consultant</option>
+                  <option value="Consumer Goods">Consumer Goods</option>
+                  <option value="Distribution">Distribution</option>
+                  <option value="Ecommerce">Ecommerce</option>
+                  <option value="Education">Education</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="EngineertoOrder">EngineertoOrder</option>
+                  <option value="Fabrication">Fabrication</option>
+                  <option value="Fasteners">Fasteners</option>
+                  <option value="Firearms">Firearms</option>
+                  <option value="Food &amp; Beverage">
+                    Food &amp; Beverage
+                  </option>
+                  <option value="Furniture &amp; Home Decor">
+                    Furniture &amp; Home Decor
+                  </option>
+                  <option value="Gas &amp; Oil">Gas &amp; Oil</option>
+                  <option value="GovernmentAndMilitary">
+                    GovernmentAndMilitary
+                  </option>
+                  <option value="Soap &amp; Shampoo">Soap &amp; Shampoo</option>
+                  <option value="High Tech Manufacturing">
+                    High Tech Manufacturing
+                  </option>
+                  <option value="HospitalAndHealthcare">
+                    HospitalAndHealthcare
+                  </option>
+                  <option value="HotelAndHospitality">
+                    HotelAndHospitality
+                  </option>
+                  <option value="IndustrialMachinery">
+                    IndustrialMachinery
+                  </option>
+                  <option value="Job Shop">Job Shop</option>
+                  <option value="Manufacturing-Other">
+                    Manufacturing-Other
+                  </option>
+                  <option value="Marine Parts">Marine Parts</option>
+                  <option value="Medical">Medical</option>
+                  <option value="Metal Fabrication">Metal Fabrication</option>
+                  <option value="Mining">Mining</option>
+                  <option value="Paper &amp; Packaging">
+                    Paper &amp; Packaging
+                  </option>
+                  <option value="Pet Products">Pet Products</option>
+                  <option value="Pharmaceuticals">Pharmaceuticals</option>
+                  <option value="Plastics &amp; Rubber">
+                    Plastics &amp; Rubber
+                  </option>
+                  <option value="Professional Services">
+                    Professional Services
+                  </option>
+                  <option value="Retail">Retail</option>
+                  <option value="Semiconductors">Semiconductors</option>
+                  <option value="Telecom">Telecom</option>
+                  <option value="Wire &amp; Cable">Wire &amp; Cable</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div className="fx-cl space3">
+                <h2>Which accounting system are you using?</h2>
+                <select id="Accounting_System__c" name="Accounting_System__c">
+                  <option value="">Select...</option>
+                  <option value="QuickBooks Enterprise">
+                    QuickBooks Enterprise
+                  </option>
+                  <option value="QuickBooks Premier">QuickBooks Premier</option>
+                  <option value="QuickBooks Premier Plus (subscription)">
+                    QuickBooks Premier Plus (subscription)
+                  </option>
+                  <option value="QuickBooks Pro">QuickBooks Pro</option>
+                  <option value="QuickBooks Pro Plus (subscription)">
+                    QuickBooks Pro Plus (subscription)
+                  </option>
+                  <option value="QuickBooks Online">QuickBooks Online</option>
+                  <option value="Xero">Xero</option>
+                  <option value="Sage">Sage</option>
+                  <option value="NetSuite">NetSuite</option>
+                  <option value="Sage Pastel">Sage Pastel</option>
+                  <option value="Reckon">Reckon</option>
+                  <option value="Reckon Hosted">Reckon Hosted</option>
+                  <option value="MYOB">MYOB</option>
+                  <option value="Other">Other</option>
+                  <option value="Standalone">Standalone</option>
+                  <option value="None">None</option>
+                  <option value="Unknown">Unknown</option>
+                </select>
+              </div>
 
               <div className="fx-jb space2 regFormfloat">
                 <div className="g g2 space1">
                   <div className="fx-cl spacem">
-                    <label htmlFor="text">State:</label>
                     <div
-                      className="fx-ac space1 regInputCont"
+                      className="fx-cl regInputCont"
                       style={{
                         boxShadow: `${
                           errors.programme_of_study &&
@@ -959,6 +1105,7 @@ export default function Registration() {
                         }`,
                       }}
                     >
+                      <label htmlFor="text">State:</label>
                       <select
                         value={selectedState}
                         onChange={handleStateChange}
@@ -975,9 +1122,8 @@ export default function Registration() {
                     </div>
                   </div>
                   <div className="fx-cl spacem">
-                    <label htmlFor="text">LGA:</label>
                     <div
-                      className="fx-ac space1 regInputCont"
+                      className="fx-cl  regInputCont"
                       style={{
                         boxShadow: `${
                           errors.programme_of_study &&
@@ -985,6 +1131,7 @@ export default function Registration() {
                         }`,
                       }}
                     >
+                      <label htmlFor="text">LGA:</label>
                       <select
                         disabled={!selectedState}
                         value={appFormData.lga_address}
@@ -1016,16 +1163,17 @@ export default function Registration() {
             <div className="fx-cl">
               <p>
                 <strong>
-                  Already have an account? <Link>Sign in</Link>
+                  Already have an account?{" "}
+                  <Link to="/clients_login">Sign in</Link>
                 </strong>
               </p>
               Your information is safe with us. We'll only contact when it's
               required to provide our services.
             </div>
           </div>
-          <ProgrammeSelection
-            selectedProgramme={selectedProgramme}
-            setSelectedProgramme={setSelectedProgramme}
+          <CurrencySelection
+            selectedCurrency={selectedCurrency}
+            setSelectedCurrency={setSelectedCurrency}
           />
         </div>
         <div className="regMainDiv regFormData fx-cl">
@@ -1058,109 +1206,6 @@ export default function Registration() {
             </select>
           </div>
         </header> */}
-        <div className="fx-cl space3">
-          <h2>Industry</h2>
-
-          <select
-            id="Industry"
-            name="Industry"
-            aria-labelledby="LblIndustry InstructIndustry"
-            class="mktoField mktoHasWidth mktoRequired mktoInvalid"
-            aria-required="true"
-            style="width: 150px;"
-            aria-describedby="ValidMsgIndustry"
-            aria-invalid="true"
-          >
-            <option value="">Select...</option>
-            <option value="3PL">3PL</option>
-            <option value="Aerospace &amp; Defense">
-              Aerospace &amp; Defense
-            </option>
-            <option value="Agriculture">Agriculture</option>
-            <option value="Apparel">Apparel</option>
-            <option value="Automotive">Automotive</option>
-            <option value="Biotechnology">Biotechnology</option>
-            <option value="Building Materials">Building Materials</option>
-            <option value="Cannabis">Cannabis</option>
-            <option value="Chemicals">Chemicals</option>
-            <option value="Construction">Construction</option>
-            <option value="Consultant">Consultant</option>
-            <option value="Consumer Goods">Consumer Goods</option>
-            <option value="Distribution">Distribution</option>
-            <option value="Ecommerce">Ecommerce</option>
-            <option value="Education">Education</option>
-            <option value="Electronics">Electronics</option>
-            <option value="EngineertoOrder">EngineertoOrder</option>
-            <option value="Fabrication">Fabrication</option>
-            <option value="Fasteners">Fasteners</option>
-            <option value="Firearms">Firearms</option>
-            <option value="Food &amp; Beverage">Food &amp; Beverage</option>
-            <option value="Furniture &amp; Home Decor">
-              Furniture &amp; Home Decor
-            </option>
-            <option value="Gas &amp; Oil">Gas &amp; Oil</option>
-            <option value="GovernmentAndMilitary">GovernmentAndMilitary</option>
-            <option value="Soap &amp; Shampoo">Soap &amp; Shampoo</option>
-            <option value="High Tech Manufacturing">
-              High Tech Manufacturing
-            </option>
-            <option value="HospitalAndHealthcare">HospitalAndHealthcare</option>
-            <option value="HotelAndHospitality">HotelAndHospitality</option>
-            <option value="IndustrialMachinery">IndustrialMachinery</option>
-            <option value="Job Shop">Job Shop</option>
-            <option value="Manufacturing-Other">Manufacturing-Other</option>
-            <option value="Marine Parts">Marine Parts</option>
-            <option value="Medical">Medical</option>
-            <option value="Metal Fabrication">Metal Fabrication</option>
-            <option value="Mining">Mining</option>
-            <option value="Paper &amp; Packaging">Paper &amp; Packaging</option>
-            <option value="Pet Products">Pet Products</option>
-            <option value="Pharmaceuticals">Pharmaceuticals</option>
-            <option value="Plastics &amp; Rubber">Plastics &amp; Rubber</option>
-            <option value="Professional Services">Professional Services</option>
-            <option value="Retail">Retail</option>
-            <option value="Semiconductors">Semiconductors</option>
-            <option value="Telecom">Telecom</option>
-            <option value="Wire &amp; Cable">Wire &amp; Cable</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div className="fx-cl space3">
-          <h2>Which accounting system are you using?</h2>
-          <select
-            id="Accounting_System__c"
-            name="Accounting_System__c"
-            aria-labelledby="LblAccounting_System__c InstructAccounting_System__c"
-            class="mktoField mktoHasWidth mktoRequired mktoValid"
-            aria-required="true"
-            style="width: 150px;"
-            aria-invalid="false"
-            data-gtm-form-interact-field-id="6"
-          >
-            <option value="">Select...</option>
-            <option value="QuickBooks Enterprise">QuickBooks Enterprise</option>
-            <option value="QuickBooks Premier">QuickBooks Premier</option>
-            <option value="QuickBooks Premier Plus (subscription)">
-              QuickBooks Premier Plus (subscription)
-            </option>
-            <option value="QuickBooks Pro">QuickBooks Pro</option>
-            <option value="QuickBooks Pro Plus (subscription)">
-              QuickBooks Pro Plus (subscription)
-            </option>
-            <option value="QuickBooks Online">QuickBooks Online</option>
-            <option value="Xero">Xero</option>
-            <option value="Sage">Sage</option>
-            <option value="NetSuite">NetSuite</option>
-            <option value="Sage Pastel">Sage Pastel</option>
-            <option value="Reckon">Reckon</option>
-            <option value="Reckon Hosted">Reckon Hosted</option>
-            <option value="MYOB">MYOB</option>
-            <option value="Other">Other</option>
-            <option value="Standalone">Standalone</option>
-            <option value="None">None</option>
-            <option value="Unknown">Unknown</option>
-          </select>
-        </div>
 
         <div className="fx-jc">
           <RegFormFilling />
@@ -1170,10 +1215,10 @@ export default function Registration() {
   );
 }
 
-function ProgrammeSelection({ selectedProgramme, setSelectedProgramme }) {
+function CurrencySelection({ selectedCurrency, setSelectedCurrency }) {
   // Toggle handler
-  const toggleProgramme = (title) => {
-    setSelectedProgramme((prev) => {
+  const toggleCurrency = (title) => {
+    setSelectedCurrency((prev) => {
       if (prev.includes(title)) {
         // remove it
         return prev.filter((s) => s !== title);
@@ -1190,48 +1235,55 @@ function ProgrammeSelection({ selectedProgramme, setSelectedProgramme }) {
     });
   };
 
-  console.log(selectedProgramme);
+  console.log(selectedCurrency);
 
-  const programmes = [
+  const currency = [
     {
-      programme: "neco",
-      displayName: "National Examinations Council (NECO)",
-      url: "neco",
+      currency: "NGN",
+      country: "Nigeria",
+      symbol: "₦",
     },
     {
-      programme: "waec",
-      displayName: "West African Examinations Council (WAEC)",
-      url: "waec",
+      currency: "USD",
+      country: "United State",
+      symbol: "$",
     },
     {
-      programme: "nabteb",
-      displayName: "National Business and Technical Examinations Board",
-      url: "coming",
+      currency: "NGN",
+      country: "Nigeria",
+      symbol: "₦",
     },
     {
-      programme: "jamb",
-      displayName: "Joint Admissions and Matriculation Board (JAMB)",
-      url: "jamb",
-    },
-    { programme: "post-utme", displayName: "Post-UTME", url: "post-utme" },
-    { programme: "nigerian army", displayName: "Nigerian Army", url: "ume" },
-    { programme: "nigerian navy", displayName: "Nigerian Navy", url: "pome" },
-    {
-      programme: "nigeria airforce",
-      displayName: "Nigeria Airforce",
-      url: "potme",
+      currency: "USD",
+      country: "United State",
+      symbol: "$",
     },
     {
-      programme: "nigerian police",
-      displayName: "Nigerian Police Force",
-      url: "poste",
+      currency: "NGN",
+      country: "Nigeria",
+      symbol: "₦",
+    },
+    {
+      currency: "USD",
+      country: "United State",
+      symbol: "$",
+    },
+    {
+      currency: "NGN",
+      country: "Nigeria",
+      symbol: "₦",
+    },
+    {
+      currency: "USD",
+      country: "United State",
+      symbol: "$",
     },
   ];
 
   return (
     <div className="fx-cl space3">
       <div className=" regStep fx-cl ">
-        <figure>Programme</figure> <h3>Select Programme</h3>
+        <figure>Programme</figure> <h3>Select Currencies</h3>
       </div>
 
       <div className="fx-cl">
@@ -1240,17 +1292,19 @@ function ProgrammeSelection({ selectedProgramme, setSelectedProgramme }) {
           required to provide our services.
         </p>
       </div>
-      <div className="g g3 space2">
-        {programmes?.map((item, index) => {
-          const isChecked = selectedProgramme.includes(item);
+      <div className="g g3 space1">
+        {currency?.map((item, index) => {
+          const isChecked = selectedCurrency.includes(item);
 
           return (
             <figure
               key={index}
-              onClick={() => toggleProgramme(item.programme)}
-              className={`regCourses ${isChecked && "checked"}`}
+              onClick={() => toggleCurrency(item.currency)}
+              className={`regCourses fx-cl ${isChecked && "checked"}`}
             >
-              <figcaption>{item.programme}</figcaption>
+              <h3>{item.symbol}</h3>
+              <span>{item.currency}</span>
+              <figcaption>{item.country}</figcaption>
             </figure>
           );
         })}

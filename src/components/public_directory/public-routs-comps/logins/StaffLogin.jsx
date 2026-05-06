@@ -7,7 +7,7 @@ import * as Action from "../../../../store/redux/staff_reducer.js";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-import Logo from "../../home-page/logo/udus_logo_3d.png";
+import Logo from "../../home-page/logo/universeInventorylogo.png";
 import { Link, useNavigate } from "react-router-dom";
 
 import IsLoading from "../../../../IsLoading.jsx";

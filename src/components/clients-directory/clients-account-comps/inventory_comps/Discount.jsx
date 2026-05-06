@@ -27,6 +27,7 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 // image imports
 import ImgOne from "./img1.jpg";
 import ImgTwo from "./img2.jpg";
+import CreateDiscount from "./create/CreateDiscount.jsx";
 
 let discountData;
 
@@ -56,65 +57,7 @@ export default function Discount({ breadcrumbs }) {
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
-  const payload = {
-    discountId: "DISC-00021",
-    name: "Ramadan Promo",
-    startsAt: new Date("2026-01-20").toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    }),
-    endsAt: new Date("2026-03-30").toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    }),
-    discountType: "percentage",
-    discountAmount: 10,
-    priority: 1,
-    brand: "Nestle",
-    category: "Beverages",
-    products: [{ productId: "prod-101", name: "Peak Milk 170g" }],
-    location: { warehouseId: "wh-001", name: "Main Store" },
-    active: true,
-    createdAt: new Date().toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    }),
-    updatedAt: "",
-  };
 
-  async function saveDiscount() {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/inventory/discount/create`,
-        payload,
-      );
-      if (response?.data?.status === 201) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-      } else {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
-      }
-      console.log("Quotation response:", response);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-
-      enqueueSnackbar("An error occurred while submitting the quotation", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  }
   // -------------------------------------------------------------------
 
   async function apiGetDiscount() {
@@ -209,7 +152,7 @@ export default function Discount({ breadcrumbs }) {
       case "completed":
         return <Completed />;
       case "progress":
-        return <Progress />;
+        return <CreateDiscount />;
       default:
         return <CurrentBill />;
     }
@@ -1013,12 +956,7 @@ export default function Discount({ breadcrumbs }) {
               )}
             </div>
             <div className="fx-ac space1">
-              <button
-                className="discount2026_export_btn fx-ac spacem"
-                onClick={
-                  () => saveDiscount() /* open modal to add new discount2026 */
-                }
-              >
+              <button className="discount2026_export_btn fx-ac spacem">
                 <AddIcon fontSize="large" /> <span>Create</span>
               </button>
             </div>

@@ -3,7 +3,10 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: right; */
-  background: linear-gradient(to bottom, #f2f2f0 97%, #fff 3%);
+  background:
+    url("./homepage_images/patterns.png"),
+    linear-gradient(to bottom, #f2f2f0 97%, #fff 3%);
+  background-size: contain;
   margin: 0;
   padding: 0;
   position: relative;
@@ -15,7 +18,7 @@
   padding-top: 9rem;
   /* background-color: #f8f7f1; */
   /* background-color: #4b97ee7a; */
-  backdrop-filter: blur(16px);
+  /* backdrop-filter: blur(16px); */
   position: relative;
   overflow: hidden;
 }
@@ -70,15 +73,16 @@
   }
 }
 
-.hero-text {
-  margin-bottom: 6.3rem;
+.heroGenCont {
   padding: 2.4rem 6.5rem;
 }
 
 .subheading {
-  padding: 0.4rem 1rem;
+  width: 100%;
+  max-width: 44rem;
+  padding: 0.4rem 2.6rem;
+
   border-radius: 0.8rem;
-  width: 32rem;
   color: #333;
   display: inline-block;
   background-color: #fff;
@@ -105,16 +109,16 @@
 }
 
 .shop-btn {
-  width: 18rem;
   text-align: center;
   margin-top: 1.5rem;
   background-color: #000;
   color: #fff;
-  padding: 1.3rem 2.4rem;
+  padding: 0.8rem 2.4rem;
   border: none;
   font-size: 1.3rem;
-  border-radius: 8.4rem;
+  border-radius: 1.4rem;
   cursor: pointer;
+  transition: all 0.3s ease-in;
 }
 
 .shop-btn:last-child {

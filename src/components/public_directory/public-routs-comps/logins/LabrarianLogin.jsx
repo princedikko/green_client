@@ -9,7 +9,7 @@ import * as Action from "../../../../store/redux/library_reducer.js";
 import "./managementlogin.css";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Logo from "../../home-page/logo/udus_logo.png";
+import Logo from "../../home-page/logo/universeInventorylogo.png";
 let libraryData;
 
 export default function LabrarianLogin() {

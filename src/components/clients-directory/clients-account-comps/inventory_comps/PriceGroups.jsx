@@ -56,44 +56,6 @@ export default function PriceGroups({ breadcrumbs }) {
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
 
-  const payload = {
-    name: "products array",
-  };
-
-  async function apiPostPriceGroup() {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_products/price_groups/add_price_group`,
-        payload,
-      );
-      if (response?.data?.status === 200) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-      } else {
-        enqueueSnackbar(
-          response?.data?.message || "Failed to fetch price groups",
-          {
-            variant: "error",
-            autoHideDuration: 3000,
-          },
-        );
-      }
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-
-      enqueueSnackbar("Server error while fetching products", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  }
-
   async function apiGetSales() {
     setLoading(true);
     await axios

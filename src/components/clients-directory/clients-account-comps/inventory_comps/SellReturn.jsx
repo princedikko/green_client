@@ -27,6 +27,7 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 // image imports
 import ImgOne from "./img1.jpg";
 import ImgTwo from "./img2.jpg";
+import AcceptReturn from "./create/AcceptReturn.jsx";
 
 let sellreturnData;
 
@@ -90,37 +91,6 @@ export default function SellReturn({ breadcrumbs }) {
       year: "numeric",
     }),
   };
-  async function acceptSellReturn() {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/manage_products/sellreturn/post`,
-        payload,
-      );
-      if (response?.data?.status === 201) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-      } else {
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
-      }
-
-      console.log("Production response:", response);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-
-      enqueueSnackbar("Server error while fetching products", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  }
 
   const fetSellReturns = async () => {
     setLoading(true);
@@ -214,7 +184,7 @@ export default function SellReturn({ breadcrumbs }) {
       case "completed":
         return <Completed />;
       case "progress":
-        return <Progress />;
+        return <AcceptReturn />;
       default:
         return <ReturnsList />;
     }
@@ -1007,10 +977,7 @@ export default function SellReturn({ breadcrumbs }) {
               )}
             </div>
             <div className="fx-ac space1">
-              <button
-                className="sellreturn_export_btn fx-ac spacem"
-                onClick={() => acceptSellReturn()}
-              >
+              <button className="sellreturn_export_btn fx-ac spacem">
                 <AddIcon fontSize="large" /> <span>Accept Returns</span>
               </button>
             </div>
