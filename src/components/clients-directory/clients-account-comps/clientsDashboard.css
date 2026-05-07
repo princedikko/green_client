@@ -61,3 +61,22 @@
   border-radius: 55rem;
   overflow: hidden;
 }
+
+#createCont {
+  border-radius: 1.8rem;
+  border: 1px solid #999;
+  padding: 4.5rem;
+}
+#createCont div {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 3rem;
+}
+
+#createCont div input {
+  padding: 0.9rem 1.2rem;
+  background-color: #fafaff;
+  color: #666;
+  border-radius: 0.6rem;
+  font-size: 1.4rem;
+}

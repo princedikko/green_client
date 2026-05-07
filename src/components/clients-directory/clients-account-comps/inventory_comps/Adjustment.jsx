@@ -31,6 +31,7 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 // image imports
 import ImgOne from "./img1.jpg";
 import ImgTwo from "./img2.jpg";
+import AdjustStocks from "./create/AdjustStocks.jsx";
 
 let adjustmentsData;
 
@@ -61,142 +62,7 @@ export default function Adjustment({ breadcrumbs }) {
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
-  const payload = {
-    adjustmentId: "ADJ-2026-000078",
-    adjustmentType: "RECONCILIATION",
 
-    reference: {
-      referenceType: "RECONCILIATION",
-      referenceId: "REC-2026-000045",
-    },
-
-    status: {
-      current: "POSTED",
-      createdAt: "2026-04-30T13:30:00Z",
-      postedAt: "2026-04-30T14:00:00Z",
-    },
-
-    location: {
-      locationId: "LOC-WH-01",
-      type: "WAREHOUSE",
-      name: "Main Warehouse",
-    },
-
-    items: [
-      {
-        productId: "PRD-1001",
-        name: "Peak Milk",
-        sku: "PM-200",
-
-        systemQuantityBefore: 200,
-        physicalQuantity: 190,
-
-        adjustmentQuantity: -10,
-        systemQuantityAfter: 190,
-
-        adjustmentType: "DECREASE",
-        reason: "Stock shortage from reconciliation",
-
-        discrepancy: {
-          type: "SHORTAGE",
-          severity: "HIGH",
-        },
-      },
-      {
-        productId: "PRD-1002",
-        name: "Coca Cola",
-        sku: "CC-300",
-
-        systemQuantityBefore: 300,
-        physicalQuantity: 305,
-
-        adjustmentQuantity: 5,
-        systemQuantityAfter: 305,
-
-        adjustmentType: "INCREASE",
-        reason: "Stock overage from reconciliation",
-
-        discrepancy: {
-          type: "OVERAGE",
-          severity: "LOW",
-        },
-      },
-    ],
-
-    summary: {
-      totalAdjustedItems: 2,
-      totalIncrease: 5,
-      totalDecrease: 10,
-      netAdjustment: -5,
-    },
-
-    approval: {
-      required: true,
-      approvedBy: "USR-2001",
-      approvedAt: "2026-04-30T13:50:00Z",
-    },
-
-    financialImpact: {
-      totalValueIncrease: 4000,
-      totalValueDecrease: 12000,
-      netValueImpact: -8000,
-      currency: "NGN",
-    },
-
-    notes: "Adjustment after weekly stock reconciliation",
-
-    createdBy: "USR-3001",
-    createdAt: "2026-04-30T13:30:00Z",
-
-    auditTrail: [
-      {
-        action: "CREATED",
-        by: "USR-3001",
-        timestamp: "2026-04-30T13:30:00Z",
-      },
-      {
-        action: "APPROVED",
-        by: "USR-2001",
-        timestamp: "2026-04-30T13:50:00Z",
-      },
-      {
-        action: "POSTED",
-        by: "USR-3001",
-        timestamp: "2026-04-30T14:00:00Z",
-      },
-    ],
-  };
-  async function apiPostAdjustment() {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/stock_management/stock-adjustment`,
-        payload,
-      );
-      if (response?.data?.status === 201) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-      } else {
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
-      }
-
-      console.log("Adjustment response:", response);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-
-      enqueueSnackbar("Server error while fetching products", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  }
   const apiGetAdjustments = async () => {
     setLoading(true);
     await axios
@@ -289,7 +155,7 @@ export default function Adjustment({ breadcrumbs }) {
       case "completed":
         return <Completed />;
       case "progress":
-        return <Progress />;
+        return <AdjustStocks />;
       default:
         return <ToDo />;
     }
@@ -931,9 +797,7 @@ export default function Adjustment({ breadcrumbs }) {
     function TableView({ currentRows }) {
       return (
         <div className="prog">
-          <button className="btnTemporary" onClick={() => apiPostAdjustment()}>
-            Post Adjustment
-          </button>
+          <button className="btnTemporary">Post Adjustment</button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>

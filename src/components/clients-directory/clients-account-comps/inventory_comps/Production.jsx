@@ -28,6 +28,7 @@ import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 // image imports
 import ImgOne from "./img1.jpg";
+import CreateProduction from "./create/CreateProduction.jsx";
 
 let productionData;
 
@@ -57,142 +58,6 @@ export default function Production({ breadcrumbs }) {
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
-
-  const payload = {
-    productionId: "PROD-2026-000011",
-    productionType: "MANUFACTURING",
-
-    status: {
-      current: "IN_PROGRESS",
-      startedAt: "2026-04-30T06:00:00Z",
-      completedAt: null,
-    },
-
-    product: {
-      productId: "MILK-PEAK-001",
-      name: "Peak Milk 170g",
-      sku: "MILK-PEAK-001",
-      batchNo: "PM-APR-2026-A",
-    },
-
-    billOfMaterials: [
-      {
-        ingredientId: "RAW-FLOUR-001",
-        name: "Flour",
-        requiredQuantity: 5,
-        unit: "kg",
-        costPerUnit: 300,
-        totalCost: 1500,
-      },
-      {
-        ingredientId: "RAW-SUGAR-001",
-        name: "Sugar",
-        requiredQuantity: 1,
-        unit: "kg",
-        costPerUnit: 500,
-        totalCost: 500,
-      },
-      {
-        ingredientId: "RAW-YEAST-001",
-        name: "Yeast",
-        requiredQuantity: 0.2,
-        unit: "kg",
-        costPerUnit: 2000,
-        totalCost: 400,
-      },
-    ],
-
-    output: {
-      plannedQuantity: 100,
-      completedQuantity: 0,
-      unit: "tin",
-    },
-
-    wastage: {
-      expectedWaste: 2,
-      actualWaste: 0,
-      unit: "kg",
-    },
-
-    costing: {
-      totalMaterialCost: 2400,
-      laborCost: 1000,
-      overheadCost: 600,
-      totalProductionCost: 4000,
-      costPerUnit: 40,
-    },
-
-    warehouse: {
-      productionLocationId: "LOC-PROD-01",
-      outputWarehouseId: "sdr3-1234-sdfg-5678",
-    },
-
-    inventoryImpact: {
-      rawMaterialsConsumed: true,
-      finishedGoodsAdded: false,
-    },
-
-    qualityControl: {
-      checked: false,
-      passed: null,
-      notes: "",
-    },
-
-    schedule: {
-      plannedStart: "2026-04-30T06:00:00Z",
-      plannedEnd: "2026-04-30T14:00:00Z",
-    },
-
-    createdBy: "userId",
-    approvedBy: null,
-
-    notes: "Morning production batch",
-
-    auditTrail: [
-      {
-        action: "CREATED",
-        by: "userId",
-        timestamp: "2026-04-30T05:50:00Z",
-      },
-      {
-        action: "STARTED",
-        by: "userId",
-        timestamp: "2026-04-30T06:00:00Z",
-      },
-    ],
-  };
-
-  async function apiPostProduction() {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/account/production/post`,
-        payload,
-      );
-      if (response?.data?.status === 201) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-      } else {
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
-      }
-
-      console.log("Production response:", response);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-
-      enqueueSnackbar("Server error while fetching products", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  }
 
   async function apiFetchProductions() {
     setLoading(true);
@@ -286,7 +151,7 @@ export default function Production({ breadcrumbs }) {
       case "completed":
         return <Completed />;
       case "progress":
-        return <Progress />;
+        return <CreateProduction />;
       default:
         return <Productions />;
     }
@@ -910,198 +775,6 @@ export default function Production({ breadcrumbs }) {
       </div>
     );
   }
-  function Progress() {
-    function switchView() {
-      switch (changeview) {
-        case "grid":
-          return <CardView currentRows={currentRows} />;
-        case "table":
-          return <TableView currentRows={currentRows} />;
-        default:
-          return <TableView currentRows={currentRows} />;
-      }
-    }
-    function TableView({ currentRows }) {
-      return (
-        <div className="prog">
-          <table className="fx-cl spacem">
-            <thead className="fx-cl spacem">
-              <tr>
-                <th>Customer name</th>
-                <th>Invoice No.</th>
-                <th>Payment status</th>
-                <th>Total amount</th>
-                <th>Total paid</th>
-                <th>Quantity</th>
-                <th>Sell Due</th>
-                <th>Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody className="fx-cl spacem">
-              {currentRows?.map((item, index) => (
-                <tr key={item.invoiceNo}>
-                  {/* <td>{index + 1}</td> */}
-                  <td>
-                    <strong>{item.customerName}</strong>
-                  </td>
-                  <td>{item.invoiceNo}</td>
-                  <td>{item.paymentStatus}</td>
-                  <td>₦{item.totalAmount?.toLocaleString()}</td>
-                  <td>₦{item.totalPaid?.toLocaleString()}</td>
-                  <td>{item.totalItems}</td>
-                  <td>₦{item.sellDue?.toLocaleString()}</td>
-                  <td>{item.date}</td>
-                  <td>
-                    <button>{item.action}</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      );
-    }
-
-    function CardView({ currentRows }) {
-      return (
-        <div className="productionCardGrid g g4 space2">
-          {currentRows?.map((item) => (
-            <div key={item.invoiceNo} className="productionGridCard">
-              {/* Header */}
-              <div className="cardHeader">
-                <img alt="customer" className="avatar" src={ImgOne} />
-
-                <div className="cardInfo">
-                  <h4>{item.customerName}</h4>
-                  <p>Invoice #{item.invoiceNo}</p>
-
-                  <div className="ratingRow">
-                    <span className="rating">
-                      ⭐ {item.paymentStatus === "Paid" ? "5.0" : "4.0"}
-                    </span>
-                    <span className="location">📍 {item.date}</span>
-                  </div>
-
-                  <small>{item.totalItems} items</small>
-                </div>
-              </div>
-
-              {/* Tags */}
-              <div className="tags">
-                <span>Total</span>
-                <span>Paid</span>
-                <span>+{item.totalItems}</span>
-              </div>
-
-              {/* Footer */}
-              <div className="cardFooter">
-                <div className="price">
-                  ₦{item.totalAmount?.toLocaleString()}
-                  <small> / sale</small>
-                </div>
-
-                <button className="cardBtn">View Sale</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      );
-    }
-    return (
-      <div className="fx-cl space2">
-        <div className="fx-cl space2">
-          <div className="fx-cl spacem">
-            <div className="fx-ac fx-jb space2" style={{ fontSize: "1.2rem" }}>
-              <span className="fx-ac spacem">
-                <strong className="fx-jc" style={{ color: "#3a84f8" }}>
-                  Display:
-                </strong>
-                <span>
-                  {productionData?.length === 0
-                    ? "0 to 0 of 0 entries"
-                    : `${start + 1} to ${Math.min(
-                        end,
-                        productionData?.length,
-                      )} of ${productionData?.length} entries`}
-                </span>
-              </span>
-              <div className="production_entries-info fx-ac spacem">
-                <h4>Rows</h4>
-                <div className="production-page-limit">
-                  <button
-                    className="production-page-limit-btn"
-                    onClick={() => setOpenLimit(!openLimit)}
-                  >
-                    {rowsPerPage} / page
-                    <span className="production-page-limit-arrow">▾</span>
-                  </button>
-
-                  {openLimit && (
-                    <ul className="production-limit-dropdown">
-                      {[10, 20, 50, 100, 200, 500, 1000].map((n) => (
-                        <li
-                          key={n}
-                          className="production-limit-item"
-                          onClick={() => {
-                            setRowsPerPage(n);
-                            setCurrentPage(1);
-                            setOpenLimit(false);
-                          }}
-                        >
-                          {n} / page
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="production_row" id="printable">
-              {switchView()}
-            </div>
-            <div className="fx-jc">
-              <div className="production_pagination fx-ac space2">
-                <button
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage((p) => p - 1)}
-                >
-                  Previous
-                </button>
-                <div className="fx-ac">
-                  {getPagination(currentPage, totalPages).map((page, i) =>
-                    page === "..." ? (
-                      <span key={i} className="dots">
-                        …
-                      </span>
-                    ) : (
-                      <button
-                        key={i}
-                        className={`production_jumpto ${
-                          currentPage === page ? "active" : ""
-                        }`}
-                        onClick={() => setCurrentPage(page)}
-                      >
-                        {page}
-                      </button>
-                    ),
-                  )}
-                </div>
-
-                <button
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage((p) => p + 1)}
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="production_footer">Footer here</div>
-      </div>
-    );
-  }
   useEffect(() => {
     apiFetchProductions();
   }, []);
@@ -1202,7 +875,6 @@ export default function Production({ breadcrumbs }) {
               <figure>{currentRows?.length || 0}</figure>
             </li>
             <li
-              onClick={() => handleCurrentTAB("progress")}
               className={`fx-ac  spacem ${
                 currentTab == "progress" && "active"
               }`}
@@ -1246,10 +918,10 @@ export default function Production({ breadcrumbs }) {
             </div>
             <div className="fx-ac space1">
               <button
+                onClick={() => handleCurrentTAB("progress")}
                 className="production_export_btn fx-ac spacem"
-                onClick={() => apiPostProduction()}
               >
-                <AddIcon fontSize="large" /> <span>Add new</span>
+                <AddIcon fontSize="large" /> <span>Create production</span>
               </button>
             </div>
           </div>

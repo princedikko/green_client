@@ -245,7 +245,7 @@ export default function RecordReturned() {
   }
 
   return (
-    <div className="fx-cl space2">
+    <div id="createCont" className="fx-cl space2">
       <h3>Record Returned</h3>
       <div className="fx-cl" style={{ gap: "12px", padding: "20px" }}>
         <button onClick={() => postReturn()}>Post</button>

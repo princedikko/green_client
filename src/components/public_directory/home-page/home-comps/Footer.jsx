@@ -40,7 +40,7 @@ function Footer({ setLoading }) {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/subscribe_to_news`,
-        subscriber_email
+        subscriber_email,
       );
 
       const { data } = response; // Get response data
@@ -86,7 +86,7 @@ function Footer({ setLoading }) {
           <h2>UDUPS</h2>
           <Link to="management_login">
             <button className="langbtn" type="lang">
-              <SupervisorAccountIcon style={{ fontSize: "3rem" }} /> Admin hub
+              <SupervisorAccountIcon style={{ fontSize: "3rem" }} /> Company
             </button>
           </Link>
         </div>

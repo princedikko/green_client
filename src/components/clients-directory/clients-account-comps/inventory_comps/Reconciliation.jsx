@@ -29,6 +29,7 @@ import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 // image imports
 import ImgOne from "./img1.jpg";
+import ReconcileStocks from "./create/ReconcileStocks.jsx";
 
 let reconciliationData;
 
@@ -59,151 +60,6 @@ export default function Reconciliation({ breadcrumbs }) {
   // /////////////////////////////////////////////////////////
   // Cross Origin Resource Sharing CRUD - Functions
   // /////////////////////////////////////////////////////////
-  const payload = {
-    reconciliationId: "REC-2026-000045",
-    reconciliationType: "CYCLE_COUNT",
-
-    status: {
-      current: "COMPLETED",
-      startedAt: "2026-04-30T07:00:00Z",
-      completedAt: "2026-04-30T12:30:00Z",
-    },
-
-    location: {
-      locationId: "LOC-WH-01",
-      type: "WAREHOUSE",
-      name: "Main Warehouse",
-      address: "Ikeja, Lagos",
-    },
-
-    conductedBy: {
-      userId: "USR-3001",
-      name: "Inventory Officer",
-    },
-
-    approvedBy: {
-      userId: "USR-2001",
-      name: "Supervisor",
-      approvedAt: "2026-04-30T13:00:00Z",
-    },
-
-    items: [
-      {
-        productId: "PRD-1001",
-        name: "Peak Milk",
-        sku: "PM-200",
-
-        systemQuantity: 200,
-        physicalQuantity: 190,
-
-        variance: -10,
-        varianceType: "SHORTAGE",
-
-        reason: "Possible theft or miscount",
-        adjustmentRequired: true,
-      },
-      {
-        productId: "PRD-1002",
-        name: "Coca Cola",
-        sku: "CC-300",
-
-        systemQuantity: 300,
-        physicalQuantity: 305,
-
-        variance: 5,
-        varianceType: "OVERAGE",
-
-        reason: "Scanning error during sales",
-        adjustmentRequired: true,
-      },
-    ],
-
-    summary: {
-      totalItemsChecked: 2,
-      totalShortage: 10,
-      totalOverage: 5,
-      netVariance: -5,
-    },
-
-    inventoryAdjustment: {
-      adjustmentId: "ADJ-2026-000078",
-      status: "POSTED",
-      adjustedAt: "2026-04-30T14:00:00Z",
-    },
-
-    method: {
-      countMethod: "MANUAL",
-      frequency: "WEEKLY",
-      notes: "Routine weekly stock verification",
-    },
-
-    attachments: [
-      {
-        type: "IMAGE",
-        url: "https://cdn.example.com/reconciliation/photo1.jpg",
-      },
-    ],
-
-    exceptions: [
-      {
-        type: "THEFT_SUSPECTED",
-        description: "Repeated shortage detected for Peak Milk",
-        reportedAt: "2026-04-30T12:45:00Z",
-      },
-    ],
-
-    createdAt: "2026-04-30T07:00:00Z",
-
-    auditTrail: [
-      {
-        action: "STARTED",
-        by: "USR-3001",
-        timestamp: "2026-04-30T07:00:00Z",
-      },
-      {
-        action: "COMPLETED",
-        by: "USR-3001",
-        timestamp: "2026-04-30T12:30:00Z",
-      },
-      {
-        action: "APPROVED",
-        by: "USR-2001",
-        timestamp: "2026-04-30T13:00:00Z",
-      },
-    ],
-  };
-
-  async function apiPostReconciliation() {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/stock_management/stock-reconciliation`,
-        payload,
-      );
-      if (response?.data?.status === 201) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-      } else {
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
-      }
-
-      console.log("Order response:", response);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-
-      enqueueSnackbar("Server error while fetching products", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  }
 
   async function apiFetchReconciliations() {
     setLoading(true);
@@ -282,11 +138,9 @@ export default function Reconciliation({ breadcrumbs }) {
     if (current <= 4) {
       return [1, 2, 3, 4, 5, "...", total];
     }
-
     if (current >= total - 3) {
       return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
     }
-
     return [1, "...", current - 1, current, current + 1, "...", total];
   }
 
@@ -297,7 +151,7 @@ export default function Reconciliation({ breadcrumbs }) {
       case "completed":
         return <Completed />;
       case "progress":
-        return <Progress />;
+        return <ReconcileStocks />;
       default:
         return <Reconciliations />;
     }
@@ -936,12 +790,7 @@ export default function Reconciliation({ breadcrumbs }) {
     function TableView({ currentRows }) {
       return (
         <div className="prog">
-          <button
-            className="btnTemporary"
-            onClick={() => apiPostReconciliation()}
-          >
-            Post Return
-          </button>
+          <button className="btnTemporary">Post Return</button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>

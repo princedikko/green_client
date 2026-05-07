@@ -706,7 +706,9 @@ export default function Registration() {
                       SAVE 68%
                     </strong>
                   </p>
-                  <p className="regPrice">₦3,865 </p>
+                  <p className="regPrice">
+                    ₦3,865<span style={{ fontSize: "1rem" }}>/Month</span>
+                  </p>
                   <span>Monthly</span>
                 </div>
 
@@ -737,7 +739,9 @@ export default function Registration() {
                       SAVE 68%
                     </strong>
                   </p>
-                  <p className="regPrice">₦5,950</p>
+                  <p className="regPrice">
+                    ₦5,950<span style={{ fontSize: "1rem" }}>/Month</span>
+                  </p>
                   <span>Monthly</span>
                 </div>
 
@@ -771,7 +775,10 @@ export default function Registration() {
                       SAVE 68%
                     </strong>
                   </p>
-                  <p className="regPrice"> ₦16,500 </p>
+                  <p className="regPrice">
+                    {" "}
+                    ₦16,500<span style={{ fontSize: "1rem" }}>/Month</span>{" "}
+                  </p>
                   <span>Monthly</span>
                 </div>
                 {plan == "premium" && <button>Make the payment</button>}
@@ -779,8 +786,9 @@ export default function Registration() {
             </figure>
             <figure
               onClick={() => setPlan("enterprise")}
-              className={`regPricingCard ${plan == "enterprise" && "active"} fx-cl bestValue`}
+              className={`regPricingCard enterprise ${plan == "enterprise" && "active"} fx-cl bestValue`}
             >
+              <span className="bestValueTag ">Advance</span>
               <div className="fx-cl space2">
                 <div className="fx-ac space1">
                   <span className="regPlanRadius">&nbsp;</span>
@@ -800,7 +808,9 @@ export default function Registration() {
                       SAVE 68%
                     </strong>
                   </p>
-                  <p className="regPrice">₦25,850</p>
+                  <p className="regPrice">
+                    ₦25,850<span style={{ fontSize: "1rem" }}>/Month</span>{" "}
+                  </p>
                   <span>Monthly</span>
                 </div>
                 {plan == "enterprise" && <button>Make the payment</button>}

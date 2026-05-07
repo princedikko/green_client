@@ -132,7 +132,7 @@ export default function CreateTax() {
   }
 
   return (
-    <div className="fx-cl space2">
+    <div id="createCont" className="fx-cl space2">
       <h1>Create Tax</h1>
       <div className="fx-cl" style={{ gap: "12px", padding: "20px" }}>
         <button onClick={() => addNewTaxRecord()}>Post</button>

@@ -27,6 +27,7 @@ import AddIcon from "@mui/icons-material/Add";
 import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 // image imports
 import ImgOne from "./img1.jpg";
+import CreateDelivery from "./create/CreateDelivery.jsx";
 
 let deliveryData;
 
@@ -51,165 +52,6 @@ export default function Delivery({ breadcrumbs }) {
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
   );
-
-  const payload = {
-    deliveryId: "DEL-2026-000321",
-    deliveryType: "INBOUND",
-    reference: {
-      referenceType: "PURCHASE_ORDER",
-      referenceId: "PO-2026-000981",
-    },
-
-    status: {
-      current: "IN_TRANSIT",
-      history: [
-        {
-          state: "CREATED",
-          timestamp: "2026-04-29T08:00:00Z",
-        },
-        {
-          state: "DISPATCHED",
-          timestamp: "2026-04-29T10:00:00Z",
-        },
-        {
-          state: "IN_TRANSIT",
-          timestamp: "2026-04-29T12:00:00Z",
-        },
-        {
-          state: "DELIVERED",
-          timestamp: "2026-04-29T12:00:00Z",
-        },
-      ],
-    },
-
-    parties: {
-      supplier: {
-        supplierId: "SUP-0023",
-        name: "ABC Supplies Ltd",
-        contact: "+2348012345678",
-      },
-      customer: null,
-      warehouse: {
-        warehouseId: "WH-01",
-        name: "Main Warehouse",
-        location: "Ikeja, Lagos",
-      },
-    },
-
-    items: [
-      {
-        productId: "PRD-1001",
-        name: "Peak Milk",
-        orderedQuantity: 200,
-        shippedQuantity: 200,
-        receivedQuantity: 0,
-        damagedQuantity: 0,
-        unit: "Cartons",
-      },
-      {
-        productId: "PRD-1002",
-        name: "Coca Cola",
-        orderedQuantity: 300,
-        shippedQuantity: 300,
-        receivedQuantity: 0,
-        damagedQuantity: 0,
-        unit: "Crates",
-      },
-    ],
-
-    transport: {
-      mode: "ROAD",
-      vehicle: {
-        vehicleId: "VEH-009",
-        plateNumber: "LAG-234-XY",
-        driverName: "Ibrahim Musa",
-        driverPhone: "+2348098765432",
-      },
-      carrier: "DHL Logistics",
-    },
-
-    tracking: {
-      trackingNumber: "TRK-88990011",
-      trackingUrl: "https://tracking.example.com/TRK-88990011",
-      currentLocation: "Ibadan",
-      lastUpdated: "2026-04-29T13:30:00Z",
-    },
-
-    schedule: {
-      dispatchDate: "2026-04-29T10:00:00Z",
-      estimatedArrival: "2026-04-30T18:00:00Z",
-      actualArrival: null,
-    },
-
-    proofOfDelivery: {
-      receivedBy: null,
-      signatureUrl: null,
-      receivedAt: null,
-      notes: null,
-    },
-
-    exceptions: [
-      {
-        type: "DELAY",
-        description: "Traffic congestion on Lagos-Ibadan expressway",
-        reportedAt: "2026-04-29T14:00:00Z",
-      },
-    ],
-
-    financials: {
-      shippingCost: 25000,
-      currency: "NGN",
-      paid: false,
-    },
-
-    createdBy: "USR-1001",
-    createdAt: "2026-04-29T08:00:00Z",
-
-    auditTrail: [
-      {
-        action: "CREATED",
-        by: "USR-1001",
-        timestamp: "2026-04-29T08:00:00Z",
-      },
-      {
-        action: "DISPATCHED",
-        by: "USR-1003",
-        timestamp: "2026-04-29T10:00:00Z",
-      },
-    ],
-  };
-
-  async function apiPostDelivery() {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/stock_management/post_delivery`,
-        payload,
-      );
-      if (response?.data?.status === 201) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-      } else {
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
-      }
-
-      console.log("Order response:", response);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-
-      enqueueSnackbar("Server error while fetching products", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  }
 
   async function apiGetDeliveries() {
     setLoading(true);
@@ -304,6 +146,8 @@ export default function Delivery({ breadcrumbs }) {
         return <Completed />;
       case "progress":
         return <Progress />;
+      case "create":
+        return <CreateDelivery />;
       default:
         return <ToDo />;
     }
@@ -946,9 +790,7 @@ export default function Delivery({ breadcrumbs }) {
     function TableView({ currentRows }) {
       return (
         <div className="prog">
-          <button className="btnTemporary" onClick={() => apiPostDelivery()}>
-            Post Delivery
-          </button>
+          <button className="btnTemporary">Post Delivery</button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
@@ -1255,9 +1097,9 @@ export default function Delivery({ breadcrumbs }) {
             <div className="fx-ac space1">
               <button
                 className="delivery_export_btn fx-ac spacem"
-                onClick={() => navigate("/clients/warehouse_terminal")}
+                onClick={() => handleCurrentTAB("create")}
               >
-                <AddIcon fontSize="large" /> <span>Add new</span>
+                <AddIcon fontSize="large" /> <span>Create</span>
               </button>
             </div>
           </div>

@@ -198,7 +198,7 @@ export default function InsertRecieve() {
     }
   }
   return (
-    <div className="fx-cl space2">
+    <div id="createCont" className="fx-cl space2">
       <h3>Insert Receive</h3>
       <div className="fx-cl" style={{ gap: "12px", padding: "20px" }}>
         <button onClick={() => insertRecieve()}>Post</button>

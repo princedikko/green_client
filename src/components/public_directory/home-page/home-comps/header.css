@@ -38,10 +38,8 @@
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 20px;
   padding: 0.4rem 4.2rem;
-  /* background-color: red; */
-  background: linear-gradient(to bottom right, #e8eaeb, #deede8);
+  background: linear-gradient(to bottom right, #e8eff3, #e8eff3);
   border-radius: 1rem;
   color: #fff;
 }
@@ -61,7 +59,8 @@
 }
 .nav-links a:hover,
 .nav-links a:active {
-  color: #3a84f8;
+  color: #8ec0af;
+  background-color: #eff6f6;
 }
 
 .dropdown-content a:link,
@@ -170,14 +169,14 @@
 }
 
 .headerBtnOne {
-  background-color: #e0ece8;
+  background-color: #e8eff3;
   color: #333;
 }
 .headerBtn:hover figure {
   color: #8ec0af;
 }
 .headerBtn:hover {
-  background-color: #8ec0af;
+  background-color: rgb(224, 236, 232);
   color: #293a34;
   font-weight: 600;
 }

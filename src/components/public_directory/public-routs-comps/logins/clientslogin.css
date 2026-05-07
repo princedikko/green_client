@@ -70,6 +70,11 @@
   font-size: 1.3rem;
   font-weight: 200;
 }
+
+.client-login-form div:focus-within {
+  border: 3px solid #065ad8;
+}
+
 .client-login-form button {
   width: 100%;
   height: 6.7rem;

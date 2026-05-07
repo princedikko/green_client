@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./header.css";
 
-import Logo from "../logo/universeInventorylogo.png"; // Importing logo image
+import Logo from "../logo/universeLogo.png"; // Importing logo image
 
 import DiscountIcon from "@mui/icons-material/Discount";
 

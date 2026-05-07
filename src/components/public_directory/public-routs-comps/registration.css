@@ -111,6 +111,15 @@
   transition: all 0.3s ease-in-out;
 }
 
+.regPricingCard:hover .regPlanRadius {
+  border: 4px solid #fff;
+  background-color: #e0daff;
+}
+.regPricingCard.active:hover .regPlanRadius {
+  border: 4px solid #6d4aff;
+  background-color: #fff;
+}
+
 .regPricingCard.active .regPlanRadius {
   border: 4px solid #6d4aff;
   outline-offset: 2px;
@@ -152,6 +161,20 @@
   top: 0;
   right: 4rem;
   transform: translate(-50%, -50%);
+}
+
+.enterprise {
+  overflow: hidden;
+}
+
+.enterprise .bestValueTag {
+  top: 20px;
+  right: -30px;
+  text-align: center;
+  width: 12rem;
+  border-radius: 0.2rem;
+  transform: rotate(48deg);
+  font-weight: bold;
 }
 
 .regInputCont {

@@ -31,6 +31,7 @@ import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 // image imports
 import ImgOne from "./img1.jpg";
+import TransferStuff from "./create/TransferStuff.jsx";
 
 let transferedStockData;
 
@@ -56,138 +57,6 @@ export default function Transfers({ breadcrumbs }) {
   const currentTab = useSelector(
     (state) => state.clientFunction?.dashboard?.currentTab,
   );
-
-  const payload = {
-    transferId: "TRF-2026-000112",
-    transferType: "INTERNAL",
-
-    status: {
-      current: "IN_TRANSIT",
-      history: [
-        {
-          state: "CREATED",
-          timestamp: "2026-04-30T08:00:00Z",
-        },
-        {
-          state: "APPROVED",
-          timestamp: "2026-04-30T09:00:00Z",
-        },
-        {
-          state: "DISPATCHED",
-          timestamp: "2026-04-30T10:30:00Z",
-        },
-      ],
-    },
-
-    locations: {
-      from: {
-        locationId: "LOC-WH-01",
-        type: "WAREHOUSE",
-        name: "Main Warehouse",
-        address: "Ikeja, Lagos",
-      },
-      to: {
-        locationId: "LOC-SHOP-02",
-        type: "SHOP_FLOOR",
-        name: "Retail Shop Floor",
-        address: "Surulere, Lagos",
-      },
-    },
-
-    items: [
-      {
-        productId: "PRD-1001",
-        name: "Peak Milk",
-        sku: "PM-200",
-        quantityRequested: 50,
-        quantityDispatched: 50,
-        quantityReceived: 0,
-        unit: "Cartons",
-      },
-    ],
-
-    transport: {
-      mode: "ROAD",
-      vehicle: {
-        vehicleId: "VEH-010",
-        plateNumber: "LAG-556-AA",
-        driverName: "Sani Bello",
-        driverPhone: "+2348011122233",
-      },
-    },
-
-    schedule: {
-      requestedDate: "2026-04-30T08:00:00Z",
-      dispatchDate: "2026-04-30T10:30:00Z",
-      expectedArrival: "2026-04-30T14:00:00Z",
-      actualArrival: null,
-    },
-
-    inventoryImpact: {
-      sourceDeducted: true,
-      destinationAdded: false,
-    },
-
-    approval: {
-      required: true,
-      approvedBy: "USR-2002",
-      approvedAt: "2026-04-30T09:00:00Z",
-    },
-
-    notes: "Restocking shop floor for daily sales",
-
-    createdBy: "USR-1001",
-    createdAt: "2026-04-30T08:00:00Z",
-
-    auditTrail: [
-      {
-        action: "CREATED",
-        by: "USR-1001",
-        timestamp: "2026-04-30T08:00:00Z",
-      },
-      {
-        action: "APPROVED",
-        by: "USR-2002",
-        timestamp: "2026-04-30T09:00:00Z",
-      },
-      {
-        action: "DISPATCHED",
-        by: "USR-1003",
-        timestamp: "2026-04-30T10:30:00Z",
-      },
-    ],
-  };
-  async function executeTransfers() {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/client/691a663dc9f64e6b9b8be48e/stock_management/execute_transfers`,
-        payload,
-      );
-      if (response?.data?.status === 201) {
-        enqueueSnackbar(response?.data?.message, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-      } else {
-        enqueueSnackbar(response?.data?.message || "Failed to fetch products", {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
-      }
-
-      console.log("Order response:", response);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-
-      enqueueSnackbar("Server error while fetching products", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  }
 
   async function apiGetTransfers() {
     setLoading(true);
@@ -277,13 +146,13 @@ export default function Transfers({ breadcrumbs }) {
   function switchActiveTab() {
     switch (currentTab) {
       case "transfers":
-        return <ToDo />;
+        return <AllTransfers />;
       case "completed":
         return <Completed />;
       case "progress":
-        return <Progress />;
+        return <TransferStuff />;
       default:
-        return <ToDo />;
+        return <AllTransfers />;
     }
   }
 
@@ -325,7 +194,7 @@ export default function Transfers({ breadcrumbs }) {
   // COMPONENTS OF transfers PAGE
   // //////////////////////////////////////////////////////////////////////////
 
-  function ToDo() {
+  function AllTransfers() {
     function switchView() {
       switch (changeview) {
         case "grid":
@@ -936,9 +805,7 @@ export default function Transfers({ breadcrumbs }) {
     function TableView({ currentRows }) {
       return (
         <div className="prog">
-          <button className="btnTemporary" onClick={() => executeTransfers()}>
-            Post Return
-          </button>
+          <button className="btnTemporary">Post Return</button>
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
@@ -1195,7 +1062,7 @@ export default function Transfers({ breadcrumbs }) {
                 currentTab == "transfers" && "active"
               }`}
             >
-              <span>Todo</span>
+              <span>All Transfers</span>
               <figure>34</figure>
             </li>
             <li

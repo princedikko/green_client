@@ -155,7 +155,11 @@ export default function CreateProductServices() {
     }
   }
   return (
-    <div className="fx-cl" style={{ gap: "12px", padding: "20px" }}>
+    <div
+      id="createCont"
+      className="fx-cl"
+      style={{ gap: "12px", padding: "20px" }}
+    >
       <button onClick={() => postServices()}>Post</button>
       {/* BASIC INFO */}
       <input

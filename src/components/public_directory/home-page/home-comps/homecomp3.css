@@ -10,8 +10,8 @@
 }
 .ourSrvc figure {
   border-radius: 1.2rem;
-  border: 1px solid #ddd;
-  background-color: #fff;
+  /* border: 1px solid #ddd; */
+  background-color: #e8eff3;
   padding: 0.3rem;
 }
 
@@ -22,7 +22,7 @@
 }
 
 .ourSrvc figure .srvcTag {
-  background-color: #f3f0e8;
+  background-color: #fff;
   color: #333;
   border-radius: 0.5rem;
   padding: 0.4rem 1.5rem;
