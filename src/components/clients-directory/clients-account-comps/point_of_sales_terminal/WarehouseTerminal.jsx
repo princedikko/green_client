@@ -110,6 +110,8 @@ function WarehouseTerminal() {
   const [discount, setDiscount] = useState(0);
   const [tax, setTax] = useState({});
 
+  const [temporaryAuth, setTemporaryAuth] = useState(false);
+
   // FULLSCREEN TOGGLE FUNCTION------------------
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -442,7 +444,7 @@ function WarehouseTerminal() {
   // useEffect(() => {
   //   !isFullscreen && toggleFullscreen();
   // }, [isFullscreen]);
-
+  console.log(wrapperRef);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -756,7 +758,7 @@ function WarehouseTerminal() {
                     </button>
 
                     {openBrands && (
-                      <ul className="brands-limit-dropdown">
+                      <ul ref={wrapperRef} className="brands-limit-dropdown">
                         <li>
                           <input
                             type="text"
@@ -1002,142 +1004,161 @@ function WarehouseTerminal() {
     );
   }
   return (
-    <section className="sectionwarehouseHub fx-cl">
-      {alert && <WarehouseAlert alert={alert} setAlert={setAlert} />}
-
-      {loading && <IsLoading />}
-      {openModal && (
-        <div id="modalContainer" onClick={() => closeModalDiv()}>
-          {toggleModalBoxContents()}
-        </div>
-      )}
-      {!switchWarehouseView ? (
-        <div className="warehouseHubCont fx-cl space2" id="largeView">
-          <div className="taskBar fx-cl space1">
-            <button onClick={() => handleModalSwitch("discount")}>
-              <WorkspacePremiumRoundedIcon fontSize="large" />
-            </button>
-            <button onClick={() => handleModalSwitch("on_hold_sales")}>
-              <DiscountIcon fontSize="large" />
-            </button>
-            <button onClick={() => handleModalSwitch("shipping")}>
-              <LocalShippingIcon fontSize="large" />
-            </button>
-            <button onClick={() => handleModalSwitch("subscription")}>
-              <SubscriptionsIcon fontSize="large" />
-            </button>
-            <button onClick={() => handleModalSwitch("transactions")}>
-              <ReceiptLongIcon fontSize="large" />
-            </button>
-            <button onClick={() => handleModalSwitch("payments")}>
-              <AccountBalanceIcon fontSize="large" />
-            </button>
+    <>
+      {!temporaryAuth ? (
+        <div className="pointOfSaleAuthCont fx-ac fx-jc">
+          <div className="pointOfSaleAuth fx-cl spacem">
+            <h3>Enter Pin</h3>
+            <div className=" space2 fx-ac fx-jc">
+              <input type="password" />
+              <input type="password" />
+              <input type="password" />
+              <input type="password" />
+              <input type="password" />
+              <input type="password" />
+            </div>
+            <button onClick={() => setTemporaryAuth(true)}> Continue</button>
           </div>
-          <SpecialWorkFlow
-            handleCloseRegister={handleCloseRegister}
-            addToCart={addToCart}
-            handleModalSwitch={handleModalSwitch}
-            toggleScreen={toggleScreen}
-            setAlert={setAlert}
-          />
-          <Main />
         </div>
       ) : (
-        <div className="warehouseHubCont">
-          <div className="warehouseHubHeader">
-            <div className="warehouseHubheaderCont fx-ac fx-jb space6">
-              <figure className="fx-ac space1">
-                <div
-                  className="fx-ac fx-jc"
-                  style={{
-                    backgroundColor: "#F5F5F5",
-                    borderRadius: "300rem",
-                    width: "4rem",
-                    height: "4rem",
-                    padding: ".5rem",
-                  }}
-                >
-                  <SchoolIcon fontSize="large" />
-                </div>
-                <div className="fx-cl">
-                  <p className="warehousehubHeading">
-                    <strong>Juwairiyyah Pharmacy:</strong> Sales Terminal
-                  </p>
-                  <div className="warehousehubStatusBar fx-ac spacem">
-                    <span>
-                      <strong>User: </strong> Fahad
-                    </span>
-                    <span
-                      className="fx-ac spacem"
+        <section className="sectionwarehouseHub fx-cl">
+          {alert && <WarehouseAlert alert={alert} setAlert={setAlert} />}
+
+          {loading && <IsLoading />}
+          {openModal && (
+            <div id="modalContainer" onClick={() => closeModalDiv()}>
+              {toggleModalBoxContents()}
+            </div>
+          )}
+          {!switchWarehouseView ? (
+            <div className="warehouseHubCont fx-cl space2" id="largeView">
+              <div className="taskBar fx-cl space1">
+                <button onClick={() => handleModalSwitch("discount")}>
+                  <WorkspacePremiumRoundedIcon fontSize="large" />
+                </button>
+                <button onClick={() => handleModalSwitch("on_hold_sales")}>
+                  <DiscountIcon fontSize="large" />
+                </button>
+                <button onClick={() => handleModalSwitch("shipping")}>
+                  <LocalShippingIcon fontSize="large" />
+                </button>
+                <button onClick={() => handleModalSwitch("subscription")}>
+                  <SubscriptionsIcon fontSize="large" />
+                </button>
+                <button onClick={() => handleModalSwitch("transactions")}>
+                  <ReceiptLongIcon fontSize="large" />
+                </button>
+                <button onClick={() => handleModalSwitch("payments")}>
+                  <AccountBalanceIcon fontSize="large" />
+                </button>
+              </div>
+              <SpecialWorkFlow
+                handleCloseRegister={handleCloseRegister}
+                addToCart={addToCart}
+                handleModalSwitch={handleModalSwitch}
+                toggleScreen={toggleScreen}
+                setAlert={setAlert}
+              />
+              <Main />
+            </div>
+          ) : (
+            <div className="warehouseHubCont">
+              <div className="warehouseHubHeader">
+                <div className="warehouseHubheaderCont fx-ac fx-jb space6">
+                  <figure className="fx-ac space1">
+                    <div
+                      className="fx-ac fx-jc"
                       style={{
-                        borderRight: "1px solid #999",
-                        borderLeft: "1px solid #999",
-                        padding: "0rem .4rem",
+                        backgroundColor: "#F5F5F5",
+                        borderRadius: "300rem",
+                        width: "4rem",
+                        height: "4rem",
+                        padding: ".5rem",
                       }}
                     >
-                      <ShoppingCartCheckoutIcon />
-                      <span>
-                        <strong> 263 </strong>
-                        SOLD ITEMS
-                      </span>
-                    </span>
-                    <span className="fx-ac spacem">
-                      <AccessTimeIcon />
-                      <span>02:36hours</span>
-                    </span>
+                      <SchoolIcon fontSize="large" />
+                    </div>
+                    <div className="fx-cl">
+                      <p className="warehousehubHeading">
+                        <strong>Juwairiyyah Pharmacy:</strong> Sales Terminal
+                      </p>
+                      <div className="warehousehubStatusBar fx-ac spacem">
+                        <span>
+                          <strong>User: </strong> Fahad
+                        </span>
+                        <span
+                          className="fx-ac spacem"
+                          style={{
+                            borderRight: "1px solid #999",
+                            borderLeft: "1px solid #999",
+                            padding: "0rem .4rem",
+                          }}
+                        >
+                          <ShoppingCartCheckoutIcon />
+                          <span>
+                            <strong> 263 </strong>
+                            SOLD ITEMS
+                          </span>
+                        </span>
+                        <span className="fx-ac spacem">
+                          <AccessTimeIcon />
+                          <span>02:36hours</span>
+                        </span>
+                      </div>
+                    </div>
+                  </figure>
+
+                  <figure className="warehouseHubRight fx-ac spacem">
+                    <SatelliteAltIcon
+                      style={{ color: "#f16b4c", fontSize: "2.8rem" }}
+                    />
+                    <div className="fx-ac">
+                      <button
+                        className="fx-ac fx-jc cbtdp"
+                        onClick={() => handleCloseRegister()}
+                      >
+                        <PowerSettingsNewIcon fontSize="large" />
+                      </button>
+                    </div>
+                  </figure>
+                </div>
+              </div>
+              <div className="warehouseHubMain fx-jc space1">
+                <Main />
+                <div className=" fx-cl fx-ac">
+                  <div className="warehouseHubAsideNav fx-ac spacem">
+                    <button
+                      onClick={() => setToggleAside("products")}
+                      className={`fx-ac spacem ${toggleAside === "products" && "active"}`}
+                    >
+                      <CasesIcon /> <span>Products</span>
+                    </button>
+                    <button
+                      onClick={() => setToggleAside("properties")}
+                      className={`fx-ac spacem ${toggleAside === "properties" && "active"}`}
+                    >
+                      <VideoLibraryRoundedIcon /> <span>Properties </span>
+                    </button>
+                    <button
+                      onClick={() => setToggleAside("activity_log")}
+                      className={`fx-ac spacem ${toggleAside === "activity_log" && "active"}`}
+                    >
+                      <EventRoundedIcon /> <span>Activity log</span>
+                    </button>
+                  </div>
+                  <div className="aside fx-cl space1">
+                    <div>{switchAsideComp()}</div>
                   </div>
                 </div>
-              </figure>
-
-              <figure className="warehouseHubRight fx-ac spacem">
-                <SatelliteAltIcon
-                  style={{ color: "#f16b4c", fontSize: "2.8rem" }}
-                />
-                <div className="fx-ac">
-                  <button
-                    className="fx-ac fx-jc cbtdp"
-                    onClick={() => handleCloseRegister()}
-                  >
-                    <PowerSettingsNewIcon fontSize="large" />
-                  </button>
-                </div>
-              </figure>
-            </div>
-          </div>
-          <div className="warehouseHubMain fx-jc space1">
-            <Main />
-            <div className=" fx-cl fx-ac">
-              <div className="warehouseHubAsideNav fx-ac spacem">
-                <button
-                  onClick={() => setToggleAside("products")}
-                  className={`fx-ac spacem ${toggleAside === "products" && "active"}`}
-                >
-                  <CasesIcon /> <span>Products</span>
-                </button>
-                <button
-                  onClick={() => setToggleAside("properties")}
-                  className={`fx-ac spacem ${toggleAside === "properties" && "active"}`}
-                >
-                  <VideoLibraryRoundedIcon /> <span>Properties </span>
-                </button>
-                <button
-                  onClick={() => setToggleAside("activity_log")}
-                  className={`fx-ac spacem ${toggleAside === "activity_log" && "active"}`}
-                >
-                  <EventRoundedIcon /> <span>Activity log</span>
-                </button>
               </div>
-              <div className="aside fx-cl space1">
-                <div>{switchAsideComp()}</div>
-              </div>
-            </div>
-          </div>
-          {/* <div className="warehouseHubFooter fx-ac fx-jc">
+              {/* <div className="warehouseHubFooter fx-ac fx-jc">
             <span>status bar contents</span>
           </div> */}
-        </div>
+            </div>
+          )}
+        </section>
       )}
-    </section>
+    </>
   );
 }
 

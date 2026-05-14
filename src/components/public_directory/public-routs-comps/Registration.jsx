@@ -61,7 +61,6 @@ export default function Registration() {
 
   const payload = {
     clientId: "CLT-2026-000045",
-
     businessProfile: {
       businessId: "BIZ-2026-000045",
 
@@ -1031,20 +1030,20 @@ export default function Registration() {
                     Furniture &amp; Home Decor
                   </option>
                   <option value="Gas &amp; Oil">Gas &amp; Oil</option>
-                  <option value="GovernmentAndMilitary">
-                    GovernmentAndMilitary
+                  <option value="Government and Military">
+                    Government and Military
                   </option>
                   <option value="Soap &amp; Shampoo">Soap &amp; Shampoo</option>
                   <option value="High Tech Manufacturing">
                     High Tech Manufacturing
                   </option>
-                  <option value="HospitalAndHealthcare">
+                  <option value="Hospital and Healthcare">
                     HospitalAndHealthcare
                   </option>
-                  <option value="HotelAndHospitality">
+                  <option value="Hotel and Hospitality">
                     HotelAndHospitality
                   </option>
-                  <option value="IndustrialMachinery">
+                  <option value="Industrial Machinery">
                     IndustrialMachinery
                   </option>
                   <option value="Job Shop">Job Shop</option>
@@ -1187,10 +1186,7 @@ export default function Registration() {
           />
         </div>
         <div className="regMainDiv regFormData fx-cl">
-          <CoursesSelection
-            selectedSubjects={selectedSubjects}
-            setSelectedSubjects={setSelectedSubjects}
-          />
+          <Checkout />
           <div>
             aside contents, preferable graphic designed image attracting
           </div>
@@ -1318,6 +1314,25 @@ function CurrencySelection({ selectedCurrency, setSelectedCurrency }) {
             </figure>
           );
         })}
+      </div>
+    </div>
+  );
+}
+
+function Checkout() {
+  // Toggle handler
+
+  return (
+    <div className="fx-cl space3">
+      <div className=" regStep fx-ac space2">
+        <figure>Step 3</figure> <h3>Checkout</h3>
+      </div>
+
+      <div className="fx-cl">
+        <p>
+          Your information is safe with us. We'll only contact when it's
+          required to provide our services.
+        </p>
       </div>
     </div>
   );

@@ -35,7 +35,8 @@ export default function OpeningStock({ breadcrumbs }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [changeview, setChangeView] = useState("");
-  const [openingstockFilterOpen, setopeningstockFilterOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalInfo, setModalInfo] = useState("");
 
   // Paginations Functions
   const [currentPage, setCurrentPage] = useState(1);
@@ -886,11 +887,40 @@ export default function OpeningStock({ breadcrumbs }) {
       </div>
     );
   }
+  function handleModalFunction(toggleModal, displayModal) {
+    setModalInfo(displayModal);
+    setModalOpen(toggleModal);
+  }
+  function loopingModalInfo() {
+    switch (modalInfo) {
+      case "filters":
+        return <FilterOpeningStock />;
+      case "previewAlpha":
+        return "PREVIEWS COMPONENTS";
+        break;
+
+      default:
+        break;
+    }
+  }
   useEffect(() => {
     apiGetOpeningStocks();
   }, []);
   return (
     <div className="openingstockCompContainer">
+      {modalOpen && (
+        <div
+          className="client_modal_overlay fx-jc fx-ac"
+          onClick={() => handleModalFunction(false, "")} // click outside → close
+        >
+          <div
+            className="client_modal"
+            onClick={(e) => e.stopPropagation()} // click inside → stay open
+          >
+            {loopingModalInfo()}
+          </div>
+        </div>
+      )}
       <div className="fx-cl space2">
         <div className="openingstock_breadcrumbs fx-ac">
           <Link className="fx-ac spacem">
@@ -991,25 +1021,21 @@ export default function OpeningStock({ breadcrumbs }) {
                 className="openingstock_export_btn fx-ac spacem"
                 onClick={(e) => {
                   e.stopPropagation(); // stop bubbling to document
-                  setopeningstockFilterOpen(!openingstockFilterOpen);
+                  handleModalFunction(!modalOpen, "previewAlpha");
+                }}
+              >
+                <span>Ftset</span>
+              </button>
+              <button
+                className="openingstock_export_btn fx-ac spacem"
+                onClick={(e) => {
+                  e.stopPropagation(); // stop bubbling to document
+                  handleModalFunction(!modalOpen, "filters");
                 }}
               >
                 <CandlestickChartIcon fontSize="large" />
                 <span>Filter & Sort</span>
               </button>
-              {openingstockFilterOpen && (
-                <div
-                  className="openingstock_filter_modal_overlay fx-jc fx-ac"
-                  onClick={() => setopeningstockFilterOpen(false)} // click outside → close
-                >
-                  <div
-                    className="openingstock_filter_modal"
-                    onClick={(e) => e.stopPropagation()} // click inside → stay open
-                  >
-                    <FilterOpeningStock />
-                  </div>
-                </div>
-              )}
             </div>
             <div className="fx-ac space1">
               <button

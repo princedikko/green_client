@@ -38,7 +38,8 @@ export default function TaxRate({ breadcrumbs }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [changeview, setChangeView] = useState("");
-  const [taxrateFilterOpen, settaxrateFilterOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalInfo, setModalInfo] = useState("");
 
   // Paginations Functions
   const [currentPage, setCurrentPage] = useState(1);
@@ -623,11 +624,40 @@ export default function TaxRate({ breadcrumbs }) {
     );
   }
 
+  function handleModalFunction(toggleModal, displayModal) {
+    setModalInfo(displayModal);
+    setModalOpen(toggleModal);
+  }
+  function loopingModalInfo() {
+    switch (modalInfo) {
+      case "filters":
+        return <FilterDiscount />;
+      case "previewAlpha":
+        return "PREVIEWS COMPONENTS";
+        break;
+
+      default:
+        break;
+    }
+  }
   useEffect(() => {
     apiGetTaxRates();
   }, []);
   return (
     <div className="taxrateCompContainer">
+      {modalOpen && (
+        <div
+          className="client_modal_overlay fx-jc fx-ac"
+          onClick={() => handleModalFunction(false, "")} // click outside → close
+        >
+          <div
+            className="client_modal"
+            onClick={(e) => e.stopPropagation()} // click inside → stay open
+          >
+            {loopingModalInfo()}
+          </div>
+        </div>
+      )}
       <div className="fx-cl space2">
         <div className="taxrate_breadcrumbs fx-ac">
           <Link className="fx-ac spacem">
@@ -725,25 +755,22 @@ export default function TaxRate({ breadcrumbs }) {
                 className="taxrate_export_btn fx-ac spacem"
                 onClick={(e) => {
                   e.stopPropagation(); // stop bubbling to document
-                  settaxrateFilterOpen(!taxrateFilterOpen);
+                  handleModalFunction(!modalOpen, "previewAlpha");
+                }}
+              >
+                <CandlestickChartIcon fontSize="large" />
+                <span>test</span>
+              </button>
+              <button
+                className="taxrate_export_btn fx-ac spacem"
+                onClick={(e) => {
+                  e.stopPropagation(); // stop bubbling to document
+                  handleModalFunction(!modalOpen, "filters");
                 }}
               >
                 <CandlestickChartIcon fontSize="large" />
                 <span>Filter & Sort</span>
               </button>
-              {taxrateFilterOpen && (
-                <div
-                  className="taxrate_filter_modal_overlay fx-jc fx-ac"
-                  onClick={() => settaxrateFilterOpen(false)} // click outside → close
-                >
-                  <div
-                    className="taxrate_filter_modal"
-                    onClick={(e) => e.stopPropagation()} // click inside → stay open
-                  >
-                    <FilterDiscount />
-                  </div>
-                </div>
-              )}
             </div>
             <div className="fx-ac space1">
               <button

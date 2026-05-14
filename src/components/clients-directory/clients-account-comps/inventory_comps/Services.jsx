@@ -41,8 +41,8 @@ export default function Services({ breadcrumbs }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [changeview, setChangeView] = useState("");
-  const [productservicesFilterOpen, setproductservicesFilterOpen] =
-    useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalInfo, setModalInfo] = useState("");
 
   // Paginations Functions
   const [currentPage, setCurrentPage] = useState(1);
@@ -756,12 +756,41 @@ export default function Services({ breadcrumbs }) {
     );
   }
 
+  function handleModalFunction(toggleModal, displayModal) {
+    setModalInfo(displayModal);
+    setModalOpen(toggleModal);
+  }
+  function loopingModalInfo() {
+    switch (modalInfo) {
+      case "filters":
+        return <FilterServices />;
+      case "previewAlpha":
+        return "PREVIEWS COMPONENTS";
+        break;
+
+      default:
+        break;
+    }
+  }
   useEffect(() => {
     apiGetServices();
   }, []);
 
   return (
     <div className="productservicesCompContainer">
+      {modalOpen && (
+        <div
+          className="client_modal_overlay fx-jc fx-ac"
+          onClick={() => handleModalFunction(false, "")} // click outside → close
+        >
+          <div
+            className="client_modal"
+            onClick={(e) => e.stopPropagation()} // click inside → stay open
+          >
+            {loopingModalInfo()}
+          </div>
+        </div>
+      )}
       <div className="fx-cl space2">
         <div className="productservices_breadcrumbs fx-ac">
           <Link className="fx-ac spacem">
@@ -864,25 +893,22 @@ export default function Services({ breadcrumbs }) {
                 className="productservices_export_btn fx-ac spacem"
                 onClick={(e) => {
                   e.stopPropagation(); // stop bubbling to document
-                  setproductservicesFilterOpen(!productservicesFilterOpen);
+                  handleModalFunction(!modalOpen, "previewAlpha");
+                }}
+              >
+                <CandlestickChartIcon fontSize="large" />
+                <span>test</span>
+              </button>
+              <button
+                className="productservices_export_btn fx-ac spacem"
+                onClick={(e) => {
+                  e.stopPropagation(); // stop bubbling to document
+                  handleModalFunction(!modalOpen, "filters");
                 }}
               >
                 <CandlestickChartIcon fontSize="large" />
                 <span>Filter & Sort</span>
               </button>
-              {productservicesFilterOpen && (
-                <div
-                  className="productservices_filter_modal_overlay fx-jc fx-ac"
-                  onClick={() => setproductservicesFilterOpen(false)} // click outside → close
-                >
-                  <div
-                    className="productservices_filter_modal"
-                    onClick={(e) => e.stopPropagation()} // click inside → stay open
-                  >
-                    <FilterServices />
-                  </div>
-                </div>
-              )}
             </div>
             <div className="fx-ac space1">
               <button

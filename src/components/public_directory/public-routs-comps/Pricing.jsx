@@ -10,6 +10,7 @@ const plans = [
     actualPrice: 3850,
     currency: "NGN",
     discount: "46% off for 3 months",
+    class: "standard",
     features: [
       {
         discription: "40 barcode label creation",
@@ -48,6 +49,7 @@ const plans = [
     actualPrice: 5950.94,
     currency: "NGN",
     discount: "46% off for 3 months",
+    class: "professional",
     features: [
       {
         discription: "40 barcode label creation",
@@ -74,7 +76,7 @@ const plans = [
         logo: ImageOne,
       },
       {
-        discription: "7 user",
+        discription: "4 users",
         logo: ImageOne,
       },
     ],
@@ -86,6 +88,7 @@ const plans = [
     actualPrice: 16500.0,
     currency: "NGN",
     discount: "46% off for 3 months",
+    class: "premium",
     features: [
       {
         discription: "40 barcode label creation",
@@ -125,6 +128,7 @@ const plans = [
     actualPrice: 20850.0,
     currency: "NGN",
     discount: "46% off for 3 months",
+    class: "enterprise",
     features: [
       {
         discription: "40 barcode label creation",
@@ -151,7 +155,7 @@ const plans = [
         logo: ImageOne,
       },
       {
-        discription: "45 user +",
+        discription: "45 users +",
         logo: ImageOne,
       },
     ],
@@ -188,7 +192,7 @@ const comparisonRows = [
 export default function PricingPage() {
   return (
     <div className="pricing-container">
-      <h1 className="title">Start Your 14-Day Free Trial Today</h1>
+      <h1 className="title">Start Your Inventory Management Today</h1>
       <p className="subtitle">
         Transform how your business does inventory with our powerful system.
       </p>
@@ -204,7 +208,7 @@ export default function PricingPage() {
             <h3>{plan.name}</h3>
 
             <div className="price">
-              asdf
+              {plan?.priceMonthly}
               <span>/mo</span>
             </div>
 

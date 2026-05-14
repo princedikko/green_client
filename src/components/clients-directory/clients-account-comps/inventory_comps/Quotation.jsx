@@ -35,7 +35,8 @@ export default function Quotation({ breadcrumbs }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [changeview, setChangeView] = useState("");
-  const [quatationsFilterOpen, setquatationsFilterOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalInfo, setModalInfo] = useState("");
 
   // Paginations Functions
   const [currentPage, setCurrentPage] = useState(1);
@@ -825,12 +826,41 @@ export default function Quotation({ breadcrumbs }) {
     );
   }
 
+  function handleModalFunction(toggleModal, displayModal) {
+    setModalInfo(displayModal);
+    setModalOpen(toggleModal);
+  }
+  function loopingModalInfo() {
+    switch (modalInfo) {
+      case "filters":
+        return <FilterQuotation />;
+      case "previewAlpha":
+        return "PREVIEWS COMPONENTS";
+        break;
+
+      default:
+        break;
+    }
+  }
   useEffect(() => {
     apiGetQuotation();
   }, []);
 
   return (
     <div className="quatationsCompContainer">
+      {modalOpen && (
+        <div
+          className="client_modal_overlay fx-jc fx-ac"
+          onClick={() => handleModalFunction(false, "")} // click outside → close
+        >
+          <div
+            className="client_modal"
+            onClick={(e) => e.stopPropagation()} // click inside → stay open
+          >
+            {loopingModalInfo()}
+          </div>
+        </div>
+      )}
       <div className="fx-cl space2">
         <div className="quatations_breadcrumbs fx-ac">
           <Link className="fx-ac spacem">
@@ -929,25 +959,22 @@ export default function Quotation({ breadcrumbs }) {
                 className="quatations_export_btn fx-ac spacem"
                 onClick={(e) => {
                   e.stopPropagation(); // stop bubbling to document
-                  setquatationsFilterOpen(!quatationsFilterOpen);
+                  handleModalFunction(!modalOpen, "previewAlpha");
+                }}
+              >
+                <CandlestickChartIcon fontSize="large" />
+                <span>test</span>
+              </button>
+              <button
+                className="quatations_export_btn fx-ac spacem"
+                onClick={(e) => {
+                  e.stopPropagation(); // stop bubbling to document
+                  handleModalFunction(!modalOpen, "filters");
                 }}
               >
                 <CandlestickChartIcon fontSize="large" />
                 <span>Filter & Sort</span>
               </button>
-              {quatationsFilterOpen && (
-                <div
-                  className="quatations_filter_modal_overlay fx-jc fx-ac"
-                  onClick={() => setquatationsFilterOpen(false)} // click outside → close
-                >
-                  <div
-                    className="quatations_filter_modal"
-                    onClick={(e) => e.stopPropagation()} // click inside → stay open
-                  >
-                    <FilterQuotation />
-                  </div>
-                </div>
-              )}
             </div>
             <div className="fx-ac space1">
               <button

@@ -116,13 +116,12 @@
 
 .shop-btn {
   text-align: center;
-  margin-top: 1.5rem;
   background-color: #000;
   color: #fff;
-  padding: 0.8rem 2.4rem;
+  padding: 1rem 0.8rem 1rem 2.4rem;
   border: none;
   font-size: 1.3rem;
-  border-radius: 1.4rem;
+  border-radius: 55rem;
   cursor: pointer;
   transition: all 0.3s ease-in;
 }
@@ -207,4 +206,24 @@
   width: 6.4rem;
   height: 4.2rem;
   border-radius: 1.2rem;
+}
+
+.heroFigure {
+  max-width: 26rem;
+  font-size: 1.4rem;
+}
+
+.heroFigure div img {
+  width: 3.8rem;
+  height: 3.8rem;
+  border-radius: 55rem;
+  border: 3px solid #eff5f5;
+  margin-left: -1rem;
+}
+.getStrtIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #fff;
+  color: #000;
+  border-radius: 55rem;
 }

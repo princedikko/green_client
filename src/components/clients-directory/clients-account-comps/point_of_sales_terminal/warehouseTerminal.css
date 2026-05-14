@@ -749,3 +749,30 @@ button.wareHouseAddnewProd:hover {
   background-color: #3a84f8;
   color: #fff;
 }
+
+.pointOfSaleAuthCont {
+  height: 100vh;
+  background-image: linear-gradient(red, blue);
+}
+
+.pointOfSaleAuth {
+  width: 100%;
+  max-width: 67rem;
+  background-color: #fafaff;
+  padding: 3.4rem;
+}
+
+.pointOfSaleAuth input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 6.4rem;
+  height: 6.4rem;
+  border: 1px solid #0354d5;
+  border-radius: 1.9rem;
+  padding: 0.3rem;
+  color: #518ae6;
+  font-size: 6.8rem;
+  font-weight: 300;
+}

@@ -264,7 +264,7 @@ const payload = {
     year: "numeric",
   }),
 };
-const ProductoinCollection = {
+export const ProductoinCollection = {
   productionId: "PROD-2026-000011",
   productionType: "MANUFACTURING",
 

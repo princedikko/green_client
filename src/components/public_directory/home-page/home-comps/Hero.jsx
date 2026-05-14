@@ -5,12 +5,14 @@ import { Typewriter } from "react-simple-typewriter"; // Importing Typewriter fo
 import "./Hero.css"; // Importing CSS for styling
 import HeroSwiper from "./hero_folder/HeroSwiper";
 import Imag1 from "./homepage_images/test/adsf1.png";
+import Love from "./homepage_images/love.jpg";
 
 import Logo from "../logo/universeInventorylogo.png"; // Importing logo image
 // importing icons from material user interface
 
 import IsoIcon from "@mui/icons-material/Iso";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const Hero = () => {
   const redirect = useNavigate();
@@ -74,18 +76,30 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9 }}
             >
-              <div className="fx-ac space1">
+              <div className="fx-ac space3">
                 <button
                   className="shop-btn fx-ac spacem"
                   onClick={() => redirect("/create_new_account")}
                 >
-                  <IsoIcon fontSize="large" />
                   <span>Get started in few steps</span>
+                  <div className="getStrtIcon fx-ac fx-jc">
+                    <ArrowForwardIcon />
+                  </div>
                 </button>
-                <button className="shop-btn fx-ac spacem">
+                {/* <button className="shop-btn fx-ac spacem">
                   <CloudUploadIcon fontSize="large" />
                   <span>See how it works</span>
-                </button>
+                </button> */}
+                <figure className="heroFigure fx-ac space1">
+                  <div className="fx-ac">
+                    <img src={Love} alt="" />
+                    <img src={Love} alt="" />
+                    <img src={Love} alt="" />
+                  </div>
+                  <div className="fx-cl spacem">
+                    <p>Trusted by over + 20M people in Globally</p>
+                  </div>
+                </figure>
               </div>
             </motion.div>
             <div className="heroImage">

@@ -43,7 +43,8 @@ export default function Products({ breadcrumbs }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [changeview, setChangeView] = useState("");
-  const [productsFilterOpen, setproductsFilterOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalInfo, setModalInfo] = useState("");
 
   // Paginations Functions
   const [currentPage, setCurrentPage] = useState(1);
@@ -66,7 +67,6 @@ export default function Products({ breadcrumbs }) {
   async function apiGetProducts() {
     try {
       setLoading(true);
-
       const response = await axios.get(
         `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/manage_products/client/691a663dc9f64e6b9b8be48e/products/fetch_product`,
       );
@@ -146,8 +146,6 @@ export default function Products({ breadcrumbs }) {
         return <AllProducts />;
       case "codes":
         return <ProductCode />;
-      case "add_product":
-        return <AddProduct />;
       default:
         return <AllProducts />;
     }
@@ -771,145 +769,170 @@ export default function Products({ breadcrumbs }) {
     );
   }
 
+  function handleModalFunction(toggleModal, displayModal) {
+    setModalInfo(displayModal);
+    setModalOpen(toggleModal);
+  }
+  function loopingModalInfo() {
+    switch (modalInfo) {
+      case "filters":
+        return <FilterProducts />;
+      case "previewAlpha":
+        return "PREVIEWS COMPONENTS";
+        break;
+
+      default:
+        break;
+    }
+  }
   useEffect(() => {
     apiGetProducts();
   }, []);
 
   return (
     <div className="productsCompContainer">
-      <div className="fx-cl space2">
-        <div className="products_breadcrumbs fx-ac">
-          <Link className="fx-ac spacem">
-            <strong>{breadcrumbs.active && breadcrumbs.active_title}</strong>{" "}
-            <KeyboardArrowRightIcon fontSize="small" />{" "}
-          </Link>
-          <Link className="fx-ac spacem">
-            <span>
-              {breadcrumbs.active_display_title &&
-                breadcrumbs.active_display_title}
-            </span>
-            <KeyboardArrowRightIcon fontSize="small" />
-            <span>{currentTab && currentTab}</span>
-          </Link>
-        </div>
-        <div className="products_headings fx-jb space4">
-          <div className="fx-cl">
-            <h2 style={{ textTransform: "capitalize" }}>
-              {breadcrumbs.active_title}
-            </h2>
-            <p style={{ fontSize: "1.2rem" }}>
-              This module stores services instead of physical products: A
-              service has no stock.
-            </p>
-          </div>
-          <div className="fx-ac fx-jb spacem">
-            <div className=" fx-ac spacem">
-              <div>
-                {changeview === "grid" ? (
-                  <button
-                    className="iconBtn"
-                    onClick={() => setChangeView("table")}
-                  >
-                    <ListAltIcon fontSize="large" />
-                  </button>
-                ) : (
-                  <button
-                    className="iconBtn"
-                    onClick={() => setChangeView("grid")}
-                  >
-                    <AppsOutlinedIcon fontSize="large" />
-                  </button>
-                )}
+      {currentTab === "add_product" ? (
+        <AddProduct />
+      ) : (
+        <>
+          {modalOpen && (
+            <div
+              className="client_modal_overlay fx-jc fx-ac"
+              onClick={() => handleModalFunction(false, "")} // click outside → close
+            >
+              <div
+                className="client_modal"
+                onClick={(e) => e.stopPropagation()} // click inside → stay open
+              >
+                {loopingModalInfo()}
               </div>
-              <button
-                className="iconBtn printingBtn"
-                onClick={() =>
-                  handlePrint({
-                    currentRows: currentRows,
-                    tab: currentTab,
-                  })
-                }
-              >
-                <PrintIcon fontSize="large" />
-              </button>
-              <ExportPDFButton currentRows={currentRows} />
             </div>
-
-            <div className="fx-ac space1">
-              <ExportExcelJSButton currentRows={currentRows} />
+          )}
+          <div className="fx-cl space2">
+            <div className="products_breadcrumbs fx-ac">
+              <Link className="fx-ac spacem">
+                <strong>
+                  {breadcrumbs.active && breadcrumbs.active_title}
+                </strong>{" "}
+                <KeyboardArrowRightIcon fontSize="small" />{" "}
+              </Link>
+              <Link className="fx-ac spacem">
+                <span>
+                  {breadcrumbs.active_display_title &&
+                    breadcrumbs.active_display_title}
+                </span>
+                <KeyboardArrowRightIcon fontSize="small" />
+                <span>{currentTab && currentTab}</span>
+              </Link>
             </div>
-          </div>
-        </div>
-        <div className="products_actionBar fx-jb space4">
-          <ul className="left fx-ac">
-            <li
-              onClick={() => handleCurrentTAB("products")}
-              className={`fx-ac  spacem ${
-                currentTab == "products" && "active"
-              }`}
-            >
-              <span>All Products</span>
-              <figure>{productsData?.length || 0}</figure>
-            </li>
-            <li
-              onClick={() => handleCurrentTAB("codes")}
-              className={`fx-ac  spacem ${currentTab == "codes" && "active"}`}
-            >
-              <span>Product Codes</span>
-              <figure>{productsData?.length || 0}</figure>
-            </li>
-            <li
-              onClick={() => handleCurrentTAB("add_product")}
-              className={`fx-ac  spacem ${
-                currentTab == "add_product" && "active"
-              }`}
-            >
-              <span>Add New Product</span>
-              <figure>+</figure>
-            </li>
-          </ul>
-          <div className="right fx-ac fx-jb space1">
-            <div className="fx-ac space1">
-              <button
-                className="products_export_btn fx-ac spacem"
-                onClick={(e) => {
-                  e.stopPropagation(); // stop bubbling to document
-                  setproductsFilterOpen(!productsFilterOpen);
-                }}
-              >
-                <CandlestickChartIcon fontSize="large" />
-                <span>Filter & Sort</span>
-              </button>
-              {productsFilterOpen && (
-                <div
-                  className="products_filter_modal_overlay fx-jc fx-ac"
-                  onClick={() => setproductsFilterOpen(false)} // click outside → close
-                >
-                  <div
-                    className="products_filter_modal"
-                    onClick={(e) => e.stopPropagation()} // click inside → stay open
-                  >
-                    <FilterProducts />
+            <div className="products_headings fx-jb space4">
+              <div className="fx-cl">
+                <h2 style={{ textTransform: "capitalize" }}>
+                  {breadcrumbs.active_title}
+                </h2>
+                <p style={{ fontSize: "1.2rem" }}>
+                  This module stores services instead of physical products: A
+                  service has no stock.
+                </p>
+              </div>
+              <div className="fx-ac fx-jb spacem">
+                <div className=" fx-ac spacem">
+                  <div>
+                    {changeview === "grid" ? (
+                      <button
+                        className="iconBtn"
+                        onClick={() => setChangeView("table")}
+                      >
+                        <ListAltIcon fontSize="large" />
+                      </button>
+                    ) : (
+                      <button
+                        className="iconBtn"
+                        onClick={() => setChangeView("grid")}
+                      >
+                        <AppsOutlinedIcon fontSize="large" />
+                      </button>
+                    )}
                   </div>
+                  <button
+                    className="iconBtn printingBtn"
+                    onClick={() =>
+                      handlePrint({
+                        currentRows: currentRows,
+                        tab: currentTab,
+                      })
+                    }
+                  >
+                    <PrintIcon fontSize="large" />
+                  </button>
+                  <ExportPDFButton currentRows={currentRows} />
                 </div>
-              )}
+
+                <div className="fx-ac space1">
+                  <ExportExcelJSButton currentRows={currentRows} />
+                </div>
+              </div>
             </div>
-            <div className="fx-ac space1">
-              <button
-                className="products_export_btn fx-ac spacem"
-                onClick={() => navigate("/clients/warehouse_terminal")}
-              >
-                <AddIcon fontSize="large" /> <span>Add new</span>
-              </button>
+            <div className="products_actionBar fx-jb space4">
+              <ul className="left fx-ac">
+                <li
+                  onClick={() => handleCurrentTAB("products")}
+                  className={`fx-ac  spacem ${
+                    currentTab == "products" && "active"
+                  }`}
+                >
+                  <span>All Products</span>
+                  <figure>{productsData?.length || 0}</figure>
+                </li>
+                <li
+                  onClick={() => handleCurrentTAB("codes")}
+                  className={`fx-ac  spacem ${currentTab == "codes" && "active"}`}
+                >
+                  <span>Product Codes</span>
+                  <figure>{productsData?.length || 0}</figure>
+                </li>
+              </ul>
+              <div className="right fx-ac fx-jb space1">
+                <div className="fx-ac space1">
+                  <button
+                    className="products_export_btn fx-ac spacem"
+                    onClick={(e) => {
+                      e.stopPropagation(); // stop bubbling to document
+                      handleModalFunction(!modalOpen, "previewAlpha");
+                    }}
+                  >
+                    <CandlestickChartIcon fontSize="large" />
+                    <span>test</span>
+                  </button>
+                  <button
+                    className="products_export_btn fx-ac spacem"
+                    onClick={(e) => {
+                      e.stopPropagation(); // stop bubbling to document
+                      handleModalFunction(!modalOpen, "filters");
+                    }}
+                  >
+                    <CandlestickChartIcon fontSize="large" />
+                    <span>Filter & Sort</span>
+                  </button>
+                </div>
+                <div className="fx-ac space1">
+                  <button
+                    className="products_export_btn fx-ac spacem"
+                    onClick={() => handleCurrentTAB("add_product")}
+                  >
+                    <AddIcon fontSize="large" /> <span>Add New Product</span>
+                  </button>
+                </div>
+              </div>
             </div>
+            {loading ? (
+              <IsLoading />
+            ) : (
+              <div className="products_main">{switchActiveTab()}</div>
+            )}
           </div>
-        </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="products_main">{switchActiveTab()}</div>
-        )}
-      </div>
+        </>
+      )}
     </div>
   );
 }

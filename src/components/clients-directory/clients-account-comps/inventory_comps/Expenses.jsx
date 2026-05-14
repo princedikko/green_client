@@ -40,8 +40,8 @@ export default function Expenses({ breadcrumbs }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [changeview, setChangeView] = useState("");
-  const [expensesFilterOpen, setexpensesFilterOpen] = useState(false);
-
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalInfo, setModalInfo] = useState("");
   // Paginations Functions
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -769,12 +769,41 @@ export default function Expenses({ breadcrumbs }) {
       </div>
     );
   }
+  function handleModalFunction(toggleModal, displayModal) {
+    setModalInfo(displayModal);
+    setModalOpen(toggleModal);
+  }
+  function loopingModalInfo() {
+    switch (modalInfo) {
+      case "filters":
+        return <FilterDiscount />;
+      case "previewAlpha":
+        return "PREVIEWS COMPONENTS";
+        break;
+
+      default:
+        break;
+    }
+  }
   useEffect(() => {
     apiGetExpense();
   }, []);
 
   return (
     <div className="expensesCompContainer">
+      {modalOpen && (
+        <div
+          className="client_modal_overlay fx-jc fx-ac"
+          onClick={() => handleModalFunction(false, "")} // click outside → close
+        >
+          <div
+            className="client_modal"
+            onClick={(e) => e.stopPropagation()} // click inside → stay open
+          >
+            {loopingModalInfo()}
+          </div>
+        </div>
+      )}
       <div className="fx-cl space2">
         <div className="expenses_breadcrumbs fx-ac">
           <Link className="fx-ac spacem">
@@ -874,25 +903,21 @@ export default function Expenses({ breadcrumbs }) {
                 className="expenses_export_btn fx-ac spacem"
                 onClick={(e) => {
                   e.stopPropagation(); // stop bubbling to document
-                  setexpensesFilterOpen(!expensesFilterOpen);
+                  handleModalFunction(!modalOpen, "previewAlpha");
+                }}
+              >
+                <span>test</span>
+              </button>
+              <button
+                className="expenses_export_btn fx-ac spacem"
+                onClick={(e) => {
+                  e.stopPropagation(); // stop bubbling to document
+                  handleModalFunction(!modalOpen, "filters");
                 }}
               >
                 <CandlestickChartIcon fontSize="large" />
                 <span>Filter & Sort</span>
               </button>
-              {expensesFilterOpen && (
-                <div
-                  className="expenses_filter_modal_overlay fx-jc fx-ac"
-                  onClick={() => setexpensesFilterOpen(false)} // click outside → close
-                >
-                  <div
-                    className="expenses_filter_modal"
-                    onClick={(e) => e.stopPropagation()} // click inside → stay open
-                  >
-                    <FilterDiscount />
-                  </div>
-                </div>
-              )}
             </div>
             <div className="fx-ac space1">
               <button

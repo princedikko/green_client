@@ -28,6 +28,7 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 // image imports
 import ImgOne from "./img1.jpg";
 import ImgTwo from "./img2.jpg";
+import PreviewProduct from "./previews/PreviewProduct.jsx";
 
 let salesAxios, soldItems;
 
@@ -37,7 +38,8 @@ export default function Sales({ breadcrumbs }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [changeview, setChangeView] = useState("");
-  const [salesFilterOpen, setSalesFilterOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalInfo, setModalInfo] = useState("");
 
   // Paginations Functions
   const [currentPage, setCurrentPage] = useState(1);
@@ -140,7 +142,7 @@ export default function Sales({ breadcrumbs }) {
     switch (currentTab) {
       case "sales":
         return <SoldItems />;
-      case "completed":
+      case "sold-products":
         return <Completed />;
       case "progress":
         return <Progress />;
@@ -447,7 +449,7 @@ export default function Sales({ breadcrumbs }) {
     }
     function TableView({ currentRows }) {
       return (
-        <div className="completed">
+        <div className="sold-products">
           <table className="fx-cl spacem">
             <thead className="fx-cl spacem">
               <tr>
@@ -801,11 +803,41 @@ export default function Sales({ breadcrumbs }) {
     );
   }
 
+  function handleModalFunction(toggleModal, displayModal) {
+    setModalInfo(displayModal);
+    setModalOpen(toggleModal);
+  }
+  function loopingModalInfo() {
+    switch (modalInfo) {
+      case "filters":
+        return <FilterSales />;
+      case "previewAlpha":
+        return <PreviewProduct />;
+        break;
+
+      default:
+        break;
+    }
+  }
   useEffect(() => {
     apiGetSales();
   }, []);
+
   return (
     <div className="salesCompContainer">
+      {modalOpen && (
+        <div
+          className="client_modal_overlay fx-jc fx-ac"
+          onClick={() => handleModalFunction(false, "")} // click outside → close
+        >
+          <div
+            className="client_modal"
+            onClick={(e) => e.stopPropagation()} // click inside → stay open
+          >
+            {loopingModalInfo()}
+          </div>
+        </div>
+      )}
       <div className="fx-cl space2">
         <div className="sales_breadcrumbs fx-ac">
           <Link className="fx-ac spacem">
@@ -880,18 +912,18 @@ export default function Sales({ breadcrumbs }) {
                 <figure>{soldItems?.length}</figure>
               </li>
               <li
-                onClick={() => handleCurrentTAB("completed")}
+                onClick={() => handleCurrentTAB("sold-products")}
                 className={`fx-ac  spacem ${
-                  currentTab == "completed" && "active"
+                  currentTab == "sold-products" && "active"
                 }`}
               >
                 <span>Soled Products</span>
                 <figure>45</figure>
               </li>
               <li
-                onClick={() => handleCurrentTAB("completed")}
+                onClick={() => handleCurrentTAB("sold-production")}
                 className={`fx-ac  spacem ${
-                  currentTab == "completed" && "active"
+                  currentTab == "sold-production" && "active"
                 }`}
               >
                 <span>Soled Production</span>
@@ -913,25 +945,22 @@ export default function Sales({ breadcrumbs }) {
                   className="sales_export_btn fx-ac spacem"
                   onClick={(e) => {
                     e.stopPropagation(); // stop bubbling to document
-                    setSalesFilterOpen(!salesFilterOpen);
+                    handleModalFunction(!modalOpen, "previewAlpha");
+                  }}
+                >
+                  <CandlestickChartIcon fontSize="large" />
+                  <span>Preview test</span>
+                </button>
+                <button
+                  className="sales_export_btn fx-ac spacem"
+                  onClick={(e) => {
+                    e.stopPropagation(); // stop bubbling to document
+                    handleModalFunction(!modalOpen, "filters");
                   }}
                 >
                   <CandlestickChartIcon fontSize="large" />
                   <span>Filter & Sort</span>
                 </button>
-                {salesFilterOpen && (
-                  <div
-                    className="sales_filter_modal_overlay fx-jc fx-ac"
-                    onClick={() => setSalesFilterOpen(false)} // click outside → close
-                  >
-                    <div
-                      className="sales_filter_modal"
-                      onClick={(e) => e.stopPropagation()} // click inside → stay open
-                    >
-                      <FilterSales />
-                    </div>
-                  </div>
-                )}
               </div>
               <div className="fx-ac space1">
                 <button

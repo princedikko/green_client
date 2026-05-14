@@ -298,3 +298,22 @@
 .clientDashboardHeadRight {
   color: #666;
 }
+
+/* ??????????????/////////////////////////////////////////// */
+.client_modal_overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+  padding: 80px 30px;
+}
+
+.client_modal {
+  background: rgba(255, 255, 255, 0.69);
+  width: 84rem;
+  border-radius: 1.2rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  backdrop-filter: blur(12px);
+}

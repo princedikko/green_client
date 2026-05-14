@@ -72,6 +72,10 @@ import ReportsMain from "./clients-account-comps/reports_comps/ReportsMain.jsx";
 import Products from "./clients-account-comps/inventory_comps/Products.jsx";
 import Services from "./clients-account-comps/inventory_comps/Services.jsx";
 import Delivery from "./clients-account-comps/inventory_comps/Delivery.jsx";
+import Profile from "./clients-account-comps/account/Profile.jsx";
+import Setting from "./clients-account-comps/account/Setting.jsx";
+import Users from "./clients-account-comps/account/Users.jsx";
+import Language from "./clients-account-comps/account/Language.jsx";
 
 export default function ClientsAccount() {
   const dispatch = useDispatch();
@@ -79,6 +83,8 @@ export default function ClientsAccount() {
   const data = useSelector(
     (state) => state.clientFunction?.queue?.clientData?.info,
   );
+
+  console.log(data);
 
   const active_title = useSelector(
     (state) => state.clientFunction?.dashboard?.nav_title,
@@ -128,7 +134,6 @@ export default function ClientsAccount() {
         children,
       }),
     );
-
     if (openIndex == index) {
       dispatch(DispatchOpenIndex(""));
       return;
@@ -158,8 +163,8 @@ export default function ClientsAccount() {
   const breads = { active, active_display, active_title, active_display_title };
   function switchComponents() {
     switch (active_display) {
-      case "account":
-        return "account";
+      case "profile":
+        return <Profile />;
       case "dashboard":
         return <ClientsDashboard />;
       case "sales":
@@ -222,7 +227,11 @@ export default function ClientsAccount() {
         return <ReportsMain breadcrumbs={breads} />;
       // /.....................................
       case "setting":
-        return "Change your Password here ...";
+        return <Setting />;
+      case "users":
+        return <Users />;
+      case "language":
+        return <Language />;
       default:
         return <ClientsDashboard />;
     }
@@ -508,22 +517,17 @@ export default function ClientsAccount() {
         },
         {
           title: "Settings",
-          hook: "settings",
+          hook: "setting",
           tabs: ["main", "completed", "pending"],
         },
         {
           title: "Users",
-          hook: "user",
+          hook: "users",
           tabs: ["main", "completed", "pending"],
         },
         {
           title: "Language",
           hook: "language",
-          tabs: ["main", "completed", "pending"],
-        },
-        {
-          title: "Logout",
-          hook: "logout",
           tabs: ["main", "completed", "pending"],
         },
       ],
@@ -534,16 +538,14 @@ export default function ClientsAccount() {
       hooks: "support",
       active: "support",
       children: [
-        { title: "FAQs", hook: "faqs", tabs: ["main", "completed", "pending"] },
+        { title: "FAQs", uri: "/clients/691a663dc9f64e6b9b8be48e/faqs" },
         {
           title: "Contact Support",
-          hook: "contactsupport",
-          tabs: ["main", "completed", "pending"],
+          uri: "/clients/691a663dc9f64e6b9b8be48e/support",
         },
         {
           title: "System Guide",
-          hook: "systemguide",
-          tabs: ["main", "completed", "pending"],
+          uri: "/clients/691a663dc9f64e6b9b8be48e/guide",
         },
       ],
     },

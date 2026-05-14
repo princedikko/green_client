@@ -43,7 +43,8 @@ export default function Adjustment({ breadcrumbs }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [changeview, setChangeView] = useState("");
-  const [adjustmentFilterOpen, setadjustmentFilterOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalInfo, setModalInfo] = useState("");
 
   // Paginations Functions
   const [currentPage, setCurrentPage] = useState(1);
@@ -977,11 +978,40 @@ export default function Adjustment({ breadcrumbs }) {
     );
   }
 
+  function handleModalFunction(toggleModal, displayModal) {
+    setModalInfo(displayModal);
+    setModalOpen(toggleModal);
+  }
+  function loopingModalInfo() {
+    switch (modalInfo) {
+      case "filters":
+        return <FilterAdjustment />;
+      case "previewAlpha":
+        return "PREVIEWS COMPONENT";
+        break;
+
+      default:
+        break;
+    }
+  }
   useEffect(() => {
     apiGetAdjustments();
   }, []);
   return (
     <div className="adjustmentCompContainer">
+      {modalOpen && (
+        <div
+          className="client_modal_overlay fx-jc fx-ac"
+          onClick={() => handleModalFunction(false, "")} // click outside → close
+        >
+          <div
+            className="client_modal"
+            onClick={(e) => e.stopPropagation()} // click inside → stay open
+          >
+            {loopingModalInfo()}
+          </div>
+        </div>
+      )}
       <div className="fx-cl space2">
         <div className="adjustment_breadcrumbs fx-ac">
           <Link className="fx-ac spacem">
@@ -1080,25 +1110,21 @@ export default function Adjustment({ breadcrumbs }) {
                 className="adjustment_export_btn fx-ac spacem"
                 onClick={(e) => {
                   e.stopPropagation(); // stop bubbling to document
-                  setadjustmentFilterOpen(!adjustmentFilterOpen);
+                  handleModalFunction(!modalOpen, "filters");
                 }}
               >
                 <CandlestickChartIcon fontSize="large" />
                 <span>Filter & Sort</span>
               </button>
-              {adjustmentFilterOpen && (
-                <div
-                  className="adjustment_filter_modal_overlay fx-jc fx-ac"
-                  onClick={() => setadjustmentFilterOpen(false)} // click outside → close
-                >
-                  <div
-                    className="adjustment_filter_modal"
-                    onClick={(e) => e.stopPropagation()} // click inside → stay open
-                  >
-                    <FilterAdjustment />
-                  </div>
-                </div>
-              )}
+              <button
+                className="adjustment_export_btn fx-ac spacem"
+                onClick={(e) => {
+                  e.stopPropagation(); // stop bubbling to document
+                  handleModalFunction(!modalOpen, "previewAlpha");
+                }}
+              >
+                <span>test</span>
+              </button>
             </div>
             <div className="fx-ac space1">
               <button

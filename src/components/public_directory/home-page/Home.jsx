@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import IsLoading from "../../../IsLoading";
 // IMPORTING COMPONENTS_______________________
 import Header from "./home-comps/Header";
@@ -17,25 +17,34 @@ import Ourservices from "./home-comps/Ourservices";
 import Test from "../../../test/Test";
 
 export default function Home() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
   return (
-    <section className="sectionHomeCont fx-cl">
-      {loading ? <IsLoading></IsLoading> : null}
-      <Header />
-      <Hero />
-      <HomeComp3 />
-      <HomeComp4 />
-      <HomeComp5 />
-      <HomeComp6 />
-      <Ourservices />
-      <HomeComp8 />
-      <HomeComp7 />
-      <GalleryS />
-      {/* <CTA /> */}
-      {/* <HomeCards /> */}
-      <GalleryStaff />
-      <Future />
-      <Footer />
-    </section>
+    <>
+      {loading ? (
+        <IsLoading></IsLoading>
+      ) : (
+        <section className="sectionHomeCont fx-cl">
+          <Header />
+          <Hero />
+          <HomeComp3 />
+          <HomeComp4 />
+          <HomeComp5 />
+          <HomeComp6 />
+          <Ourservices />
+          <HomeComp8 />
+          <HomeComp7 />
+          <GalleryS />
+          {/* <CTA /> */}
+          {/* <HomeCards /> */}
+          <GalleryStaff />
+          <Future />
+          <Footer />
+        </section>
+      )}
+    </>
   );
 }
