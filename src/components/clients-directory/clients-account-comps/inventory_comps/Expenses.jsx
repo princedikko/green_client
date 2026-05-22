@@ -929,11 +929,13 @@ export default function Expenses({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="expenses_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="expenses_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

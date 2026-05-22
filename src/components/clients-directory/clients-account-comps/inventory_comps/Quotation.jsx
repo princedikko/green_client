@@ -986,11 +986,13 @@ export default function Quotation({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="quatations_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="quatations_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

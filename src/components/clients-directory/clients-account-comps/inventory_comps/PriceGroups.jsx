@@ -1056,11 +1056,13 @@ export default function PriceGroups({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="pricegroups_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="pricegroups_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

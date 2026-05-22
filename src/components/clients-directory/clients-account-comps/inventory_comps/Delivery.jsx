@@ -1130,11 +1130,13 @@ export default function Delivery({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="delivery_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="delivery_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

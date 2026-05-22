@@ -933,11 +933,13 @@ export default function Returns({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="returns_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="returns_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

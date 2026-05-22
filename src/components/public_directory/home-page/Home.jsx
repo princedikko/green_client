@@ -34,14 +34,14 @@ export default function Home() {
           <HomeComp4 />
           <HomeComp5 />
           <HomeComp6 />
-          <Ourservices />
+          {/* <Ourservices /> */}
           <HomeComp8 />
           <HomeComp7 />
           <GalleryS />
           {/* <CTA /> */}
           {/* <HomeCards /> */}
-          <GalleryStaff />
-          <Future />
+          {/* <GalleryStaff /> */}
+          {/* <Future /> */}
           <Footer />
         </section>
       )}

@@ -1,5 +1,5 @@
 .pricing-container {
-  max-width: 1200px;
+  max-width: 147rem;
   margin: auto;
   padding: 60px 20px;
   font-size: 1.6rem;
@@ -7,14 +7,44 @@
 
 .title {
   text-align: center;
-  font-size: 36px;
-  margin-bottom: 10px;
+  font-size: 3.8rem;
+  font-weight: 400;
 }
 
 .subtitle {
   text-align: center;
   color: #666;
-  margin-bottom: 40px;
+  font-size: 1.8rem;
+}
+
+.pricingBtnPln {
+  padding: 0.8rem;
+  border-radius: 1.2rem;
+  background-color: #f3f3f3;
+}
+
+.pricingBtnPln button {
+  padding: 1.2rem;
+  border-radius: 0.8rem;
+  font-weight: 600;
+  font-size: 1.8rem;
+}
+.pricingBtnPln button:first-child {
+  width: 18rem;
+}
+.pricingBtnPln button.active {
+  background-color: #409eef;
+  color: #fff;
+}
+.pricingBtnPln button:hover {
+  background-color: #fff;
+}
+.pricingDiscount {
+  background-color: #f8e15c;
+  color: #333;
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.5rem;
+  font-style: italic;
 }
 
 .pricing-grid {
@@ -25,33 +55,40 @@
 }
 
 .pricing-card {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 25px;
-  background: white;
+  border: 4px solid #e7ebfb;
+  border-radius: 3.2rem;
+  padding: 5rem 3rem;
+  background: #ffffff;
   text-align: center;
   transition: 0.3s;
 }
 
-.pricing-card:hover {
-  transform: translateY(-5px);
+.pricing-card h3 {
+  font-size: 2.4rem;
+  font-weight: 500;
 }
-
 .highlight {
   border: 2px solid #ff4d4f;
 }
 
-.price {
-  font-size: 36px;
-  font-weight: bold;
-  margin: 15px 0;
+.actualPrice {
+  font-size: 3.4rem;
+  font-weight: 600;
 }
 
-.price span {
-  font-size: 14px;
-  color: #777;
+.pastPrice {
+  font-size: 1.2rem;
+  font-weight: 500;
 }
 
+.perOff {
+  background-color: #e6f4ea;
+  color: #333;
+  padding: 0.5rem 0.8rem;
+  border-radius: 55rem;
+  font-style: italic;
+  font-size: 1.2rem;
+}
 .users {
   color: #666;
   margin-bottom: 20px;
@@ -69,16 +106,18 @@
   color: #444;
 }
 
-.kjljlasdfa {
-  padding: 10px 20px;
+.planExecuteBtn {
+  padding: 1.2rem 2rem;
   border: none;
-  background: #ff4d4f;
+  background: #1958f7;
   color: white;
-  border-radius: 5px;
+  border-radius: 55rem;
   cursor: pointer;
+  font-size: 1.6rem;
+  font-weight: 500;
 }
 
-.kjljlasdfa:hover {
+.planExecuteBtn:hover {
   opacity: 0.9;
 }
 
@@ -101,4 +140,15 @@
 
 .compare-table th {
   background: #f7f7f7;
+}
+
+.featuresIcon {
+  color: #a8c1ff;
+}
+
+.featuresDisc {
+  color: #444;
+  text-transform: capitalize;
+  font-weight: 500;
+  font-size: 1.4rem;
 }

@@ -1042,11 +1042,13 @@ export default function Invoicing({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="invoicing_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="invoicing_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

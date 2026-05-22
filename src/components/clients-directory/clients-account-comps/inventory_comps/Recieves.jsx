@@ -923,11 +923,13 @@ export default function Recives({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="recieves_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="recieves_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

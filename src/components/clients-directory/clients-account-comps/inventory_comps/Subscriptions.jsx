@@ -941,11 +941,13 @@ export default function Subscriptions({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="subscription_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="subscription_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

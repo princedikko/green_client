@@ -1,8 +1,8 @@
 export default function PreviewProduct() {
   return (
-    <section className="sectionProductsPre">
+    <div className="contProductsPre">
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis, porro
       ipsa.
-    </section>
+    </div>
   );
 }

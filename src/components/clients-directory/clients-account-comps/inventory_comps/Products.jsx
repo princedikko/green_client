@@ -925,11 +925,14 @@ export default function Products({ breadcrumbs }) {
                 </div>
               </div>
             </div>
-            {loading ? (
-              <IsLoading />
-            ) : (
-              <div className="products_main">{switchActiveTab()}</div>
-            )}
+
+            <div>
+              {loading ? (
+                <IsLoading />
+              ) : (
+                <div className="products_main">{switchActiveTab()}</div>
+              )}
+            </div>
           </div>
         </>
       )}

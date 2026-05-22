@@ -782,11 +782,13 @@ export default function TaxRate({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="taxrate_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="taxrate_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

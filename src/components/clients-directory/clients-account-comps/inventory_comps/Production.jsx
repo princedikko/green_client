@@ -953,11 +953,13 @@ export default function Production({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="production_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="production_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

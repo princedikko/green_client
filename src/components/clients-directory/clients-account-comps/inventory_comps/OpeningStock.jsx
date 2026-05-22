@@ -1047,11 +1047,13 @@ export default function OpeningStock({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="openingstock_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="openingstock_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

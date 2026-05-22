@@ -572,7 +572,9 @@ export default function ClientsAccount() {
                 Universe Inventory
               </div>
               <div>
-                <span style={{ textTransform: "capitalize" }}>{active}</span>
+                <span style={{ textTransform: "capitalize" }}>
+                  {active_title}
+                </span>
               </div>
               <div className="clientProfileItemsCont fx-cl spacem">
                 {menuItems.map((item, index) => (

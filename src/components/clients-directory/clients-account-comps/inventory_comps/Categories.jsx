@@ -771,11 +771,13 @@ export default function Categories({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="categories_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="categories_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

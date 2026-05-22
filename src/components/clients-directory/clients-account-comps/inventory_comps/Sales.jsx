@@ -29,6 +29,7 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 import ImgOne from "./img1.jpg";
 import ImgTwo from "./img2.jpg";
 import PreviewProduct from "./previews/PreviewProduct.jsx";
+import PreviewSales from "./previews/PreviewSales.jsx";
 
 let salesAxios, soldItems;
 
@@ -812,7 +813,7 @@ export default function Sales({ breadcrumbs }) {
       case "filters":
         return <FilterSales />;
       case "previewAlpha":
-        return <PreviewProduct />;
+        return <PreviewSales />;
         break;
 
       default:
@@ -831,7 +832,6 @@ export default function Sales({ breadcrumbs }) {
           onClick={() => handleModalFunction(false, "")} // click outside → close
         >
           <div
-            className="client_modal"
             onClick={(e) => e.stopPropagation()} // click inside → stay open
           >
             {loopingModalInfo()}
@@ -972,11 +972,13 @@ export default function Sales({ breadcrumbs }) {
               </div>
             </div>
           </div>
-          {loading ? (
-            <IsLoading />
-          ) : (
-            <div className="sales_main">{switchActiveTab()}</div>
-          )}
+          <div>
+            {loading ? (
+              <IsLoading />
+            ) : (
+              <div className="sales_main">{switchActiveTab()}</div>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -988,11 +988,13 @@ export default function Discount({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="discount2026_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="discount2026_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -575,11 +575,13 @@ export default function Units({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="units_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="units_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -785,11 +785,13 @@ export default function Variations({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="variations_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="variations_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

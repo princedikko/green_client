@@ -970,11 +970,13 @@ export default function Drafts({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="drafts_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="drafts_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -1021,11 +1021,13 @@ export default function ExpenseCategory({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="categoriesx_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="categoriesx_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

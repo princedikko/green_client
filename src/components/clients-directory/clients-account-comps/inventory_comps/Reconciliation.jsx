@@ -1137,11 +1137,13 @@ export default function Reconciliation({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="reconciliation_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="reconciliation_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );

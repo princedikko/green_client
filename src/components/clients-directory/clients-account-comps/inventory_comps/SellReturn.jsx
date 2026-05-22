@@ -1010,11 +1010,13 @@ export default function SellReturn({ breadcrumbs }) {
             </div>
           </div>
         </div>
-        {loading ? (
-          <IsLoading />
-        ) : (
-          <div className="sellreturn_main">{switchActiveTab()}</div>
-        )}
+        <div>
+          {loading ? (
+            <IsLoading />
+          ) : (
+            <div className="sellreturn_main">{switchActiveTab()}</div>
+          )}
+        </div>
       </div>
     </div>
   );
