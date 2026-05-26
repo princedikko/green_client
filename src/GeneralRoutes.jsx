@@ -13,12 +13,8 @@ import ExecutiveLogin from "./components/public_directory/public-routs-comps/log
 
 // Admin routes
 import AdminProfile from "./components/admin_directory/AdminProfile";
-// Staffs routes
-// Cleints routes
 import ClientsAccount from "./components/clients-directory/ClientsAccount";
 import WarehouseTerminal from "./components/clients-directory/clients-account-comps/point_of_sales_terminal/WarehouseTerminal";
-// WEB REAL TIME COMMUNICAITON COMPONENTS
-// COMPUTER BASE COMMUNICATION COMPONENTS
 import SystemAdminAccount from "./components/system_admin_directory/SystemAdminAccount";
 import FinanceAccount from "./components/finance_directory/FinanceAccount";
 import AgentAccount from "./components/agent_directory/AgentAccount";
@@ -29,6 +25,25 @@ import AgentLogin from "./components/public_directory/public-routs-comps/logins/
 import SystemAdminLogin from "./components/public_directory/public-routs-comps/logins/SystemAdminLogin";
 import AdminStaffAccount from "./components/staff_directory/AdminStaffAccount";
 import CLIENTPrinting from "./components/clients-directory/clients-account-comps/printing/CLIENTPrinting";
+import RealtimeDetailPage from "./components/public_directory/destination-pages/RealtimeDetailPage";
+import IndustriesCategories from "./components/public_directory/destination-pages/IndustriesCategories";
+import SolutionsCategories from "./components/public_directory/destination-pages/SolutionsCategories";
+import CompanyFeatures from "./components/public_directory/destination-pages/CompanyFeatures";
+import Enterprise from "./components/public_directory/Enterprise";
+import MobileAppDetailPage from "./components/public_directory/destination-pages/MobileAppDetailPage";
+import InventoryPhotosDetailPage from "./components/public_directory/destination-pages/InventoryPhotoDetailPage";
+import AlertsDetailPage from "./components/public_directory/destination-pages/AlertsDetailPage";
+import BarcodeQrCodeDetailPage from "./components/public_directory/destination-pages/BarQrCodeDetailPage";
+import ReportingAnalyticsDetailPage from "./components/public_directory/destination-pages/ReportingAnalyticsDetailPage";
+import InventoryManagementDetailPage from "./components/public_directory/destination-pages/InventoryManagementDetailPage";
+import SuppliesConsumablesDetailPage from "./components/public_directory/destination-pages/SuppliesConsumablesDetailPage";
+import AssetTrackingDetailPage from "./components/public_directory/destination-pages/AssetTrackingDetailPage";
+import PharmacyChemistDetailPage from "./components/public_directory/destination-pages/PharmacyChemistDetailPage";
+import BuildingMaterialsDetailPage from "./components/public_directory/destination-pages/BuildingMaterialsDetailPage";
+import ProvisionStoreDetailPage from "./components/public_directory/destination-pages/ProvisionStoreDetailPage";
+import FurnituresDetailPage from "./components/public_directory/destination-pages/FurnituresDetailPage";
+import ElectronicsDetailPage from "./components/public_directory/destination-pages/ElectronicsDetailPage";
+import WholesaleDetailPage from "./components/public_directory/destination-pages/WholesaleDetailPage";
 
 const greenRoutes = [
   // PUBLIC ROUTES
@@ -96,6 +111,121 @@ const greenRoutes = [
     path: "/administration/admin_login",
     name: "admin staff_login",
     element: <AdminStaffLogin />,
+    isPublic: true,
+  },
+  {
+    path: "/enterprise",
+    name: "Enterprise",
+    element: <Enterprise />,
+    isPublic: true,
+  },
+  // Destination PAGE ROUTES
+  {
+    path: "/company/features",
+    name: "",
+    element: <CompanyFeatures />,
+    isPublic: true,
+  },
+  {
+    path: "/solutions/industries",
+    name: "",
+    element: <IndustriesCategories />,
+    isPublic: true,
+  },
+  {
+    path: "/solutions/all-solutions",
+    name: "",
+    element: <SolutionsCategories />,
+    isPublic: true,
+  },
+  {
+    path: "/features/realtime_sales_tracking",
+    name: "",
+    element: <RealtimeDetailPage />,
+    isPublic: true,
+  },
+  {
+    path: "/features/mobile_application",
+    name: "",
+    element: <MobileAppDetailPage />,
+    isPublic: true,
+  },
+  {
+    path: "/features/inventory_photos",
+    name: "",
+    element: <InventoryPhotosDetailPage />,
+    isPublic: true,
+  },
+  {
+    path: "/features/alerts",
+    name: "",
+    element: <AlertsDetailPage />,
+    isPublic: true,
+  },
+  {
+    path: "/features/qr_barcoding",
+    name: "",
+    element: <BarcodeQrCodeDetailPage />,
+    isPublic: true,
+  },
+  {
+    path: "/features/reporting-analytics",
+    name: "",
+    element: <ReportingAnalyticsDetailPage />,
+    isPublic: true,
+  },
+  {
+    path: "/solutions/inventory_management",
+    name: "",
+    element: <InventoryManagementDetailPage />,
+    isPublic: true,
+  },
+  {
+    path: "/solutions/supplies_tracking",
+    name: "",
+    element: <SuppliesConsumablesDetailPage />,
+    isPublic: true,
+  },
+  {
+    path: "/solutions/asset_tracking",
+    name: "",
+    element: <AssetTrackingDetailPage />,
+    isPublic: true,
+  },
+  {
+    path: "/solutions/industries/healthcare/pharmacy_chemist",
+    name: "",
+    element: <PharmacyChemistDetailPage />,
+    isPublic: true,
+  },
+  {
+    path: "/solutions/industries/construction/building_materials",
+    name: "",
+    element: <BuildingMaterialsDetailPage />,
+    isPublic: true,
+  },
+  {
+    path: "/solutions/industries/provision_store",
+    name: "",
+    element: <ProvisionStoreDetailPage />,
+    isPublic: true,
+  },
+  {
+    path: "/solutions/industries/electronics",
+    name: "",
+    element: <ElectronicsDetailPage />,
+    isPublic: true,
+  },
+  {
+    path: "/solutions/industries/furnitures",
+    name: "",
+    element: <FurnituresDetailPage />,
+    isPublic: true,
+  },
+  {
+    path: "/solutions/industries/wholesale_distribution",
+    name: "",
+    element: <WholesaleDetailPage />,
     isPublic: true,
   },
 

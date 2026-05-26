@@ -1,100 +1,124 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./header.css";
+import { useTranslation } from "react-i18next";
 
-import Logo from "../logo/universeLogo.png"; // Importing logo image
-
+import Logo from "../logo/universeLogo.png";
 import DiscountIcon from "@mui/icons-material/Discount";
+import LanguageIcon from "@mui/icons-material/Language";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import SolutionDropdown from "./header-comps/SolutionDropdown.jsx";
+import FeaturesDropdown from "./header-comps/FeaturesDropdown";
+import LearningDropdown from "./header-comps/LearningDropdown.jsx";
+import CompanyDropdown from "./header-comps/CompanyDropdown.jsx";
 
 export default function Header() {
+  const { t, i18n } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [openIndex, setOpenIndex] = useState(null);
   const redirect = useNavigate();
 
   const toggleMobileMenu = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  const navItems = [
+    {
+      title: "Features",
+      dropdown: ["Principal", "Vice Principal", "Departments"],
+    },
+    {
+      title: "Solutions",
+      dropdown: ["Programs", "Curriculum", "Calendar"],
+    },
+    {
+      title: "Enterprise",
+      link: "/enterprise",
+    },
+    {
+      title: "Learn",
+      dropdown: [
+        { label: "New Registration", link: "/create_new_account" },
+        { label: "Track Status", link: "#" },
+      ],
+    },
+    {
+      title: "Pricing",
+      link: "/pricing",
+    },
+    {
+      title: "Company",
+      dropdown: [
+        { label: "Career", link: "/institution/instructor-login" },
+        { label: "Agent", link: "/agent_unit/login" },
+        { label: "Become Affiliate", link: "/learners/parent-login" },
+        { label: "About Company", link: "/executive/login" },
+        { label: "Contact Us", link: "/administration/admin_login" },
+      ],
+    },
+    {
+      title: "Sign Up",
+      link: "/create_new_account",
+    },
+  ];
+
   return (
-    <div className="header ">
+    <div className="header fx-cl">
       <nav className="navbar">
-        <div className="navbar-container fx-jb space4">
+        <div className="navbar-container fx-jb space4 nav-wrapper">
           <div className="fx-ac space4">
-            <div className="navbar-logo fx-ac">
+            <div className="navbar-logo fx-ac" onClick={() => redirect("/")}>
               <img src={Logo} alt="uni logo" />
             </div>
+
             <button className="mobile-menu-toggle" onClick={toggleMobileMenu}>
               ☰
             </button>
-            <ul className={`nav-links ${mobileOpen ? "active" : ""}`}>
-              <li className="dropdown">
-                <Link to="#">Features</Link>
-                <ul className="dropdown-content-full">
-                  <li>
-                    <Link to="#">Principal</Link>
-                  </li>
-                  <li>
-                    <Link to="#">Vice Principal</Link>
-                  </li>
-                  <li>
-                    <Link to="#">Departments</Link>
-                  </li>
-                </ul>
-              </li>
-              <li className="dropdown">
-                <Link to="#">Solutions</Link>
-                <ul className="dropdown-content-full">
-                  <li>
-                    <Link to="#">Programs</Link>
-                  </li>
-                  <li>
-                    <Link to="#">Curriculum</Link>
-                  </li>
-                  <li>
-                    <Link to="#">Calendar</Link>
-                  </li>
-                </ul>
-              </li>
-              <li className="dropdown">
-                <Link to="#">Enterprise</Link>
-              </li>
-              <li className="dropdown">
-                <Link to="#">Courses</Link>
-                <ul className="dropdown-content">
-                  <li>
-                    <Link to="/create_new_account">New Registration</Link>
-                  </li>
-                  <li>
-                    <Link to="#">Track Status</Link>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <Link to="/pricing">Pricing</Link>
-              </li>
-              <li className="dropdown">
-                <Link to="#">Company</Link>
-                <div className="dropdown-content fx-cl">
-                  <Link to="/institution/instructor-login">Career</Link>
-                  <Link to="/agent_unit/login">Agent</Link>
-                  <Link to="/learners/parent-login">Become Affiliate</Link>
-                  <Link to="/executive/login">About Company</Link>
-                  <Link to="/administration/admin_login">Contact Us</Link>
-                </div>
-              </li>
-              <li>
-                <Link to="/create_new_account">Sign Up</Link>
-              </li>
+
+            <ul className={`nav-links fx-ac ${mobileOpen ? "active" : ""}`}>
+              {navItems.map((item, i) => (
+                <li
+                  key={i}
+                  className="dropdown"
+                  onMouseEnter={() => setOpenIndex(i)}
+                >
+                  <Link to={item.link || "#"} className="fx-ac">
+                    <span>{item.title} </span>
+                    {item.title === "Features" ||
+                    item.title === "Solutions" ||
+                    item.title === "Company" ||
+                    item.title === "Learn" ? (
+                      <span
+                        className="dropDwnArrow"
+                        style={{ padding: "0.2rem" }}
+                      >
+                        <KeyboardArrowDownIcon fontSize="large" />
+                      </span>
+                    ) : null}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
+
           <div className="navbar-buttons fx-ac fx-jb space1">
-            <button className="headerBtn headerBtnOne  fx-ac spacem">
-              <figure className="fx-ac fx-jc">
-                <DiscountIcon fontSize="large" />
-              </figure>
-              <span>Enterprise</span>
-            </button>
             <button
-              className="headerBtn  fx-ac spacem"
+              className="headerBtn headerBtnOne fx-ac spacem"
+              onClick={() => i18n.changeLanguage("fr")}
+            >
+              <figure className="fx-ac fx-jc">
+                <LanguageIcon fontSize="large" />
+              </figure>
+              <span className="fx-ac fx-jc">
+                <span>{t("Welcome")}</span>
+                <span style={{ padding: "0.2rem" }}>
+                  <KeyboardArrowDownIcon fontSize="large" />
+                </span>
+              </span>
+            </button>
+
+            <button
+              className="headerBtn fx-ac spacem"
               onClick={() => redirect("/clients_login")}
             >
               <figure className="fx-ac fx-jc">
@@ -105,6 +129,25 @@ export default function Header() {
           </div>
         </div>
       </nav>
+
+      {/* DROPDOWN INSIDE CONTAINER */}
+      {openIndex !== null && navItems[openIndex]?.dropdown && (
+        <>
+          {navItems[openIndex].title === "Features" && (
+            <FeaturesDropdown setOpenIndex={setOpenIndex} />
+          )}
+          {navItems[openIndex].title === "Solutions" && (
+            <SolutionDropdown setOpenIndex={setOpenIndex} />
+          )}
+          {navItems[openIndex].title === "Learn" && (
+            <LearningDropdown setOpenIndex={setOpenIndex} />
+          )}
+          {navItems[openIndex].title === "Company" && (
+            <CompanyDropdown setOpenIndex={setOpenIndex} />
+          )}
+          {/* Add similar conditions for other dropdowns if needed */}
+        </>
+      )}
     </div>
   );
 }

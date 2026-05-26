@@ -1,4 +1,5 @@
 import { useState, useReducer, useEffect } from "react";
+
 import { FlutterWaveButton, closePaymentModal } from "flutterwave-react-v3";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
@@ -11,7 +12,7 @@ import axios from "axios";
 import "./registration.css";
 import Logo from "../public-routes-images/logos/Manga_Cons _Logo3.png";
 import IsLoading from "../../../IsLoading";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { statesAndLgas } from "./registrationStatesAndLGA.js";
 
 // imported icon
@@ -24,6 +25,7 @@ import SchoolIcon from "@mui/icons-material/School";
 let applicationData;
 
 export default function Registration() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const navigateTo = useNavigate();
   const dispatch = useDispatch();
@@ -639,6 +641,13 @@ export default function Registration() {
       }
     };
 
+    // URL is the source of truth
+    const plan = searchParams.get("plan") || "professional";
+
+    // change plan safely
+    const changePlan = (newPlan) => {
+      setSearchParams({ plan: newPlan });
+    };
     return (
       <div className="regMainCont fx-cl space2">
         <div className="regHeader fx-cl fx-ac space2">
@@ -683,7 +692,7 @@ export default function Registration() {
 
           <div className="regPricing fx-as space2">
             <figure
-              onClick={() => setPlan("standard")}
+              onClick={() => changePlan("standard")}
               className={`regPricingCard ${plan == "standard" && "active"} fx-cl bestValue`}
             >
               <div className="fx-cl space2">
@@ -715,7 +724,7 @@ export default function Registration() {
               </div>
             </figure>
             <figure
-              onClick={() => setPlan("professional")}
+              onClick={() => changePlan("professional")}
               className={`regPricingCard ${plan == "professional" && "active"} fx-cl bestValue`}
             >
               <span className="bestValueTag">Best value</span>
@@ -752,7 +761,7 @@ export default function Registration() {
               </div>
             </figure>
             <figure
-              onClick={() => setPlan("premium")}
+              onClick={() => changePlan("premium")}
               className={`regPricingCard ${plan == "premium" && "active"} fx-cl bestValue`}
             >
               <div className="fx-cl space2">
@@ -784,7 +793,7 @@ export default function Registration() {
               </div>
             </figure>
             <figure
-              onClick={() => setPlan("enterprise")}
+              onClick={() => changePlan("enterprise")}
               className={`regPricingCard enterprise ${plan == "enterprise" && "active"} fx-cl bestValue`}
             >
               <span className="bestValueTag ">Advance</span>
@@ -996,7 +1005,43 @@ export default function Registration() {
                   </div>
                 </div>
               </div>
-              <div className="fx-cl space3">
+
+              <div className="fx-ac space2">
+                <div className="fx-cl fg1 spacem">
+                  <label htmlFor="text">Password:</label>
+                  <div
+                    className="fx-ac space1 regInputCont"
+                    style={{
+                      boxShadow: `${
+                        errors.password && "inset 0rem 0rem 0rem 0.1rem red"
+                      }`,
+                    }}
+                  >
+                    <input
+                      value={appFormData.password}
+                      onChange={(event) =>
+                        setAppFormData({ password: event.target.value })
+                      }
+                      type="password"
+                      name="password"
+                      style={{ borderColor: errors.password ? "red" : "" }}
+                    />
+                    {/* {errors.password && <div style={{ color: "red" }}>{errors.password}</div>} */}
+                  </div>
+                </div>
+              </div>
+              <div className="fx-jb space2 regFormfloat">
+                <span>&nbsp;</span>
+                <button
+                  className="regbtnSubmit"
+                  onClick={execute}
+                  disabled={isSubmitting}
+                >
+                  Submit application
+                </button>
+              </div>
+
+              {/* <div className="fx-cl space3">
                 <h2>Industry</h2>
 
                 <select id="Industry" name="Industry">
@@ -1071,8 +1116,8 @@ export default function Registration() {
                   <option value="Wire &amp; Cable">Wire &amp; Cable</option>
                   <option value="Other">Other</option>
                 </select>
-              </div>
-              <div className="fx-cl space3">
+              </div> */}
+              {/* <div className="fx-cl space3">
                 <h2>Which accounting system are you using?</h2>
                 <select id="Accounting_System__c" name="Accounting_System__c">
                   <option value="">Select...</option>
@@ -1100,9 +1145,9 @@ export default function Registration() {
                   <option value="None">None</option>
                   <option value="Unknown">Unknown</option>
                 </select>
-              </div>
-
-              <div className="fx-jb space2 regFormfloat">
+              </div> */}
+              {/* STATE AND LOCAL GOVERNMENTS ON NIGERIA */}
+              {/* <div className="fx-jb space2 regFormfloat">
                 <div className="g g2 space1">
                   <div className="fx-cl spacem">
                     <div
@@ -1167,7 +1212,7 @@ export default function Registration() {
                 >
                   Next
                 </button>
-              </div>
+              </div> */}
             </div>
             <div className="fx-cl">
               <p>
@@ -1187,6 +1232,7 @@ export default function Registration() {
         </div>
         <div className="regMainDiv regFormData fx-cl">
           <Checkout />
+
           <div>
             aside contents, preferable graphic designed image attracting
           </div>

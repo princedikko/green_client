@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+
 import IsLoading from "../../../IsLoading";
 // IMPORTING COMPONENTS_______________________
 import Header from "./home-comps/Header";
@@ -19,6 +21,7 @@ import Test from "../../../test/Test";
 export default function Home() {
   const [loading, setLoading] = useState(true);
 
+  const { t, i18n } = useTranslation();
   useEffect(() => {
     setLoading(false);
   }, []);

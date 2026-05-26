@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./store/front_end_data_base/store.js"; // Ensure you export persistor from your store
+import "./i18n";
 
 // ____________________________________________________________
 

@@ -11,6 +11,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import TelegramIcon from "@mui/icons-material/Telegram";
+import LanguageIcon from "@mui/icons-material/Language";
 
 function SocialMediaIcons() {
   return (
@@ -35,6 +36,7 @@ function SocialMediaIcons() {
 function Footer({ setLoading }) {
   const [subscriber_email, setSubscriber_email] = useState("");
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   async function subscribe() {
     setLoading(true);
     try {
@@ -43,7 +45,8 @@ function Footer({ setLoading }) {
         subscriber_email,
       );
 
-      const { data } = response; // Get response data
+      const { data } = response;
+
       enqueueSnackbar(`${data.message}`, {
         variant: data.status === 201 ? "success" : "error",
         autoHideDuration: 3000,
@@ -55,6 +58,7 @@ function Footer({ setLoading }) {
       const errorMessage =
         error.response?.data?.message ||
         "Something went wrong, please try again";
+
       enqueueSnackbar(errorMessage, {
         variant: "error",
         autoHideDuration: 3000,
@@ -62,6 +66,7 @@ function Footer({ setLoading }) {
           style: { fontSize: "16px", fontWeight: "bold" },
         },
       });
+
       console.error(error);
     } finally {
       setLoading(false);
@@ -69,71 +74,73 @@ function Footer({ setLoading }) {
   }
 
   const currentYear = new Date().getFullYear();
+
   return (
     <footer>
       <div className="footerStart">
         <div className="footerBanner g g2">
           <div className="fx-cl space2">
-            <h3>Confidence that builds a brigther future.</h3>
+            <h3>Smart inventory that powers smarter business decisions.</h3>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo
-              quia fugiat tenetur labore, nisi repellendus natus a assumenda
-              ipsum deleniti distinctio quo
+              Manage your stock, sales, and operations in real time with a
+              powerful inventory management system built for modern businesses.
             </p>
           </div>
         </div>
+
         <div className="headingFooter">
-          <h2>UDUPS</h2>
+          <h2>Universe Inventory Management System</h2>
           <Link to="management_login">
             <button className="langbtn" type="lang">
-              <SupervisorAccountIcon style={{ fontSize: "3rem" }} /> Company
+              <LanguageIcon style={{ fontSize: "3rem" }} /> Language
             </button>
           </Link>
         </div>
+
         <div className="footerItems rwdG3">
           <ul>
             <li>
-              <Link to="/mangacons_requirement">Admission</Link>
+              <Link to="/solutions">Solutions</Link>
             </li>
             <li>
-              <Link to="/coming_soon">Shedule of classes</Link>
+              <Link to="/features">Features</Link>
             </li>
             <li>
-              <Link to="/coming_soon">Study plans</Link>
+              <Link to="/industries">Industries</Link>
             </li>
             <li>
-              <Link to="/aboutcompany">Academic calendar</Link>
+              <Link to="/learning">Learning</Link>
             </li>
             <li>
-              <Link to="/administration">Admin staff</Link>
+              <Link to="/pricing">Pricing</Link>
             </li>
           </ul>
+
           <ul>
             <li>
-              <Link to="/student_login">Student portal</Link>
+              <Link to="/login">Login</Link>
             </li>
             <li>
-              <Link to="/library">Library</Link>
+              <Link to="/register">Create Account</Link>
             </li>
             <li>
-              <Link to="/coming_soon">Research</Link>
-            </li>
-
-            <li>
-              <Link to="/coming_soon">Career</Link>
+              <Link to="/dashboard">Dashboard</Link>
             </li>
             <li>
-              <Link to="/coming_soon">Application form</Link>
+              <Link to="/support">Support</Link>
+            </li>
+            <li>
+              <Link to="/api">API Docs</Link>
             </li>
           </ul>
+
           <ul>
             <li>
-              <Link to="/coming_soon">Press & Media</Link>
+              <Link to="/blog">Blog & Updates</Link>
             </li>
             <li>
-              <Link to="/coming_soon">Terms</Link>
+              <Link to="/terms">Terms</Link>
             </li>
-
             <li>
               <Link to="/about-us">About Us</Link>
             </li>
@@ -141,14 +148,18 @@ function Footer({ setLoading }) {
               <Link to="/contact-us">Contact Us</Link>
             </li>
             <li>
-              <Link to="/contact-us">Report a problem</Link>
+              <Link to="/report">Report a problem</Link>
             </li>
           </ul>
         </div>
       </div>
+
       <div className="footerMiddle rwdG2">
-        <p className="subscribe">Subscribe to our news letter</p>
-        <div action="#" name="footerForm" className="flex">
+        <p className="subscribe">
+          Subscribe to inventory updates & product news
+        </p>
+
+        <div className="flex">
           <input
             type="email"
             name="subscriber_email"
@@ -157,24 +168,31 @@ function Footer({ setLoading }) {
             onChange={(event) => setSubscriber_email(event.target.value)}
             required
           />
+
           <button type="footerSubmit" onClick={() => subscribe()}>
             Subscribe
           </button>
         </div>
+
         <SocialMediaIcons />
       </div>
+
       <div className="footerEnd">
         <div className="copyRight">
-          <p>Copyright &copy; {currentYear} UDUPS all rights reserved.</p>
+          <p>
+            Copyright &copy; {currentYear} Universe Inventory Management System.
+            All rights reserved.
+          </p>
+
           <ul className="listEnd">
             <li>
-              <Link to="/coming_soon">Terms of services</Link>
+              <Link to="/terms">Terms of service</Link>
             </li>
             <li>
-              <Link to="/coming_soon">Privacy policy</Link>
+              <Link to="/privacy">Privacy policy</Link>
             </li>
             <li>
-              <Link to="/coming_soon">Cookie setting</Link>
+              <Link to="/cookies">Cookie settings</Link>
             </li>
           </ul>
         </div>

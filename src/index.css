@@ -27,6 +27,14 @@ body {
   overflow-x: hidden;
 }
 
+:root {
+  --primary-color: #3a84f8;
+  --secondary-color: #e7ebfb;
+  --accent-color: #f8e15c;
+  --text-color: #333;
+  --background-color: #fff;
+}
+
 /* SCROLL BAR DECORATION BLOCKS */
 
 /* Scrollbar styles for WebKit browsers */
@@ -88,6 +96,7 @@ input:focus {
 button {
   cursor: pointer;
   background: none;
+  border: none;
 }
 
 /* Css classes implement */
@@ -95,6 +104,11 @@ button {
 .fx {
   display: flex;
 }
+
+.fg1 {
+  flex-grow: 1;
+}
+
 .fx-as {
   display: flex;
   align-items: flex-start;
@@ -223,6 +237,35 @@ button {
   font-size: 9.6rem;
 }
 
+.fwb {
+  font-weight: bold;
+}
+
+.fw600 {
+  font-weight: 600;
+}
+.fw500 {
+  font-weight: 500;
+}
+.fw400 {
+  font-weight: 400;
+}
+.fw300 {
+  font-weight: 300;
+}
+.lh1 {
+  line-height: 1.2;
+}
+.lh2 {
+  line-height: 1.4;
+}
+.lh3 {
+  line-height: 1.6;
+}
+.lh4 {
+  line-height: 1.8;
+}
+
 .cw {
   color: #fff;
 }
@@ -293,6 +336,24 @@ button {
 }
 .pd2 {
   padding: 2.4rem 2.8rem;
+}
+.pd3 {
+  padding: 4.2rem 3.2rem;
+}
+.pd4 {
+  padding: 6rem 4rem;
+}
+.pd5 {
+  padding: 7.5rem 5rem;
+}
+.pd6 {
+  padding: 6rem 6rem;
+}
+.pdlargeX {
+  padding: 9.6rem 0rem;
+}
+.pdlargeY {
+  padding: 0rem 9.6rem;
 }
 
 /* STYLING FOR SELECT OPTIONS */

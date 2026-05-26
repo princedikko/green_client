@@ -1,0 +1,119 @@
+.learningDrpdWrap {
+  background-color: #fff;
+  border-radius: 1.2rem;
+  margin: 0rem 6.2rem;
+  right: 6rem;
+  position: absolute;
+  top: 8.6rem;
+  box-shadow: 0rem 2.5rem 2rem -2rem rgba(0, 0, 0, 0.35);
+}
+
+.megalearningsDropdwn {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  width: 100%;
+  padding: 6rem;
+  border-radius: 1.6rem;
+  font-size: 1.6rem;
+}
+
+.learningsDropdwnLabel {
+  font-weight: 700;
+  color: #9a9a9a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.learningsDropdwnDescription {
+  color: #777;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+.industriesSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.learningsDropdwnCard {
+  padding: 1rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.learningsDropdwnCard:hover {
+  background: #f7f7f7;
+}
+
+.learningsDropdwnIcon {
+  width: 42px;
+  height: 42px;
+  border-radius: 0.8rem;
+  background: #f4f4f4;
+  flex-shrink: 0;
+}
+
+.learningsDropdwnCard h4 {
+  font-weight: 600;
+  color: #111;
+}
+
+.learningsDropdwnCard p {
+  font-size: 1.4rem;
+  color: #777;
+  line-height: 1.5;
+}
+
+.promoCard {
+  padding: 3.4rem;
+  border-radius: 2.4rem;
+  background: #f7f7f7;
+  font-size: 1.4rem;
+}
+
+.promoCard h3 {
+  color: #111;
+}
+
+.promoCard p {
+  color: #666;
+  line-height: 1.5;
+}
+
+.learningBanner {
+  overflow: hidden;
+  border-radius: 1.6rem;
+}
+
+.learningBanner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.playBtn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+}
+
+.promoBtn {
+  height: 48px;
+  border: none;
+  border-radius: 0.9rem;
+  background: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.promoBtn:hover {
+  background: #ececec;
+}

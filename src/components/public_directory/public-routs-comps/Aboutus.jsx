@@ -2,88 +2,94 @@ import React from "react";
 import "./aboutus.css";
 import AboutusImg from "./publicImages/asdfdf.png";
 
-export default function Aboutus() {
+export default function AboutUs() {
   return (
-    <div className="about-us-container">
-      <header className="about-us-header fx-cl space1">
-        <h1>About Manga College of Nursing Sciences</h1>
-        <p>Empowering Future Healthcare Leaders</p>
-      </header>
-      <section className="about-us-introduction">
-        <div className="about-us-text">
-          <h2>Our Mission</h2>
-          <p>
-            At Manga College of Nursing Sciences, our mission is to deliver
-            exceptional nursing education and training through innovative
-            teaching, comprehensive clinical experiences, and a commitment to
-            excellence. We aim to produce compassionate and skilled nursing
-            professionals who will lead and transform healthcare globally.
-          </p>
-          <p>
-            Our mission is to deliver exceptional nursing education and training
-            through innovative teaching, comprehensive clinical experiences, and
-            a commitment to excellence. We aim to produce compassionate and
-            skilled nursing professionals who will lead and transform healthcare
-            globally.
+    <section className="fx-cl space6 pd4">
+      {/* HERO SECTION */}
+      <div className="fx-cl space2 fx-ac">
+        <h1 className="fs8 fwb cb">About Universe Inventory</h1>
+        <p className="fs4 cb fx-ac">
+          A modern inventory management system built to help businesses track,
+          manage, and scale with ease.
+        </p>
+      </div>
+
+      {/* MISSION / VISION */}
+      <div className="g g2 space4">
+        <div className="fx-cl space2 pd3 bd-f3 br3">
+          <h2 className="fs6 fw600">Our Mission</h2>
+          <p className="fs4 cb">
+            To simplify inventory and business operations for SMEs by providing
+            a fast, reliable, and real-time tracking system that works anywhere.
           </p>
         </div>
-        <div className="about-us-image">
-          <img src={AboutusImg} alt="Nursing students in action" />
+
+        <div className="fx-cl space2 pd3 bd-f3 br3">
+          <h2 className="fs6 fw600">Our Vision</h2>
+          <p className="fs4 cb">
+            To become the leading inventory and POS platform in Africa,
+            empowering every business with smart digital tools.
+          </p>
         </div>
-      </section>
-      <section className="about-us-values fx-cl space3">
-        <h2>Our Core Values</h2>
-        <div className="values-container">
-          <div className="value-item fx-cl space1">
-            <h3>Compassion</h3>
-            <p>
-              We believe in the power of empathy and kindness in delivering
-              quality patient care.
+      </div>
+
+      {/* WHAT WE DO */}
+      <div className="fx-cl space3">
+        <h2 className="fs6 fw600">What We Do</h2>
+
+        <div className="g g3 space3">
+          <div className="fx-cl space2 pd3 bd-f3 br3">
+            <h3 className="fs5 fw600">Inventory Tracking</h3>
+            <p className="fs4 cb">
+              Track stock levels, items, and product movements in real time.
             </p>
           </div>
-          <div className="value-item fx-cl space1">
-            <h3>Excellence</h3>
-            <p>
-              We strive for the highest standards in education, clinical
-              practice, and research.
+
+          <div className="fx-cl space2 pd3 bd-f3 br3">
+            <h3 className="fs5 fw600">POS System</h3>
+            <p className="fs4 cb">
+              Sell products, manage receipts, and update inventory instantly.
             </p>
           </div>
-          <div className="value-item fx-cl space1">
-            <h3>Integrity</h3>
-            <p>
-              We uphold honesty and transparency in all our endeavors and
-              interactions.
-            </p>
-          </div>
-          <div className="value-item fx-cl space1">
-            <h3>Innovation</h3>
-            <p>
-              We embrace new ideas and approaches to advance nursing practice
-              and education.
+
+          <div className="fx-cl space2 pd3 bd-f3 br3">
+            <h3 className="fs5 fw600">Mobile Management</h3>
+            <p className="fs4 cb">
+              Run your business from anywhere using our mobile-first system.
             </p>
           </div>
         </div>
-      </section>
-      <section className="about-us-history fx-cl space3">
-        <h2>Our History</h2>
-        <p>
-          {/* Founded in 2024,  */}
-          Manga College of Nursing Sciences has grown into a leading center for
-          nursing education. Our commitment to nurturing talent and advancing
-          healthcare practices has made us a beacon of excellence in the field
-          of nursing. With state-of-the-art facilities and a dedicated faculty,
-          we continue to shape the future of nursing.
-        </p>
-      </section>
-      <footer className="about-us-footer">
-        <p>
-          Contact us:{" "}
-          <a href="mailto:info@mangacons.edu.ng">info@mangacons.edu.ng</a>
-        </p>
-        <p>
-          &copy; {new Date().getFullYear()} Manga College of Nursing Sciences
-        </p>
-      </footer>
-    </div>
+      </div>
+
+      {/* WHY CHOOSE US */}
+      <div className="fx-cl space3">
+        <h2 className="fs6 fw600">Why Choose Us</h2>
+
+        <div className="g g2 space3">
+          <div className="fx-cl space2 pd3 bd-f3 br3">
+            <h3 className="fs5 fw600">Real-Time Updates</h3>
+            <p className="fs4 cb">
+              Every sale, stock update, and action is tracked instantly.
+            </p>
+          </div>
+
+          <div className="fx-cl space2 pd3 bd-f3 br3">
+            <h3 className="fs5 fw600">Easy to Use</h3>
+            <p className="fs4 cb">
+              Simple UI designed for both beginners and advanced users.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div className="fx-cl space2 fx-ac pd4 bd-blue br3">
+        <h2 className="fs6 cw">Ready to upgrade your business?</h2>
+
+        <p className="fs4 cw">Start managing your inventory smarter today.</p>
+
+        <button className="pd-btn br2 cblue fw600 bd-w">Get Started</button>
+      </div>
+    </section>
   );
 }
