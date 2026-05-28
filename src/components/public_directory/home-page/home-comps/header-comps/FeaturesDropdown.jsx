@@ -67,10 +67,7 @@ export default function FeaturesDropdown({ setOpenIndex }) {
   };
 
   return (
-    <div
-      className="featureDrpdWrap fx-cl space"
-      onMouseLeave={() => setOpenIndex(null)}
-    >
+    <div className="dropDownContent featureDrpdWrap ">
       <div className="megafeaturesDropdwn space3">
         {/* LEFT CONTENT */}
         <div className="featureBanner">

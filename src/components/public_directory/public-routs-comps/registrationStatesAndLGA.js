@@ -764,3 +764,201 @@ export const statesAndLgas = {
     "Wasa",
   ],
 };
+
+export const countriesOnEarth = [
+  {
+    country: "Afghanistan",
+    code: "+93",
+    flag: "https://flagcdn.com/w40/af.png",
+  },
+  { country: "Albania", code: "+355", flag: "https://flagcdn.com/w40/al.png" },
+  { country: "Algeria", code: "+213", flag: "https://flagcdn.com/w40/dz.png" },
+  { country: "Andorra", code: "+376", flag: "https://flagcdn.com/w40/ad.png" },
+  { country: "Angola", code: "+244", flag: "https://flagcdn.com/w40/ao.png" },
+  { country: "Argentina", code: "+54", flag: "https://flagcdn.com/w40/ar.png" },
+  { country: "Armenia", code: "+374", flag: "https://flagcdn.com/w40/am.png" },
+  { country: "Australia", code: "+61", flag: "https://flagcdn.com/w40/au.png" },
+  { country: "Austria", code: "+43", flag: "https://flagcdn.com/w40/at.png" },
+  {
+    country: "Azerbaijan",
+    code: "+994",
+    flag: "https://flagcdn.com/w40/az.png",
+  },
+
+  {
+    country: "Bahamas",
+    code: "+1-242",
+    flag: "https://flagcdn.com/w40/bs.png",
+  },
+  { country: "Bahrain", code: "+973", flag: "https://flagcdn.com/w40/bh.png" },
+  {
+    country: "Bangladesh",
+    code: "+880",
+    flag: "https://flagcdn.com/w40/bd.png",
+  },
+  { country: "Belarus", code: "+375", flag: "https://flagcdn.com/w40/by.png" },
+  { country: "Belgium", code: "+32", flag: "https://flagcdn.com/w40/be.png" },
+  { country: "Belize", code: "+501", flag: "https://flagcdn.com/w40/bz.png" },
+  { country: "Benin", code: "+229", flag: "https://flagcdn.com/w40/bj.png" },
+  { country: "Bhutan", code: "+975", flag: "https://flagcdn.com/w40/bt.png" },
+  { country: "Bolivia", code: "+591", flag: "https://flagcdn.com/w40/bo.png" },
+  {
+    country: "Bosnia and Herzegovina",
+    code: "+387",
+    flag: "https://flagcdn.com/w40/ba.png",
+  },
+
+  { country: "Botswana", code: "+267", flag: "https://flagcdn.com/w40/bw.png" },
+  { country: "Brazil", code: "+55", flag: "https://flagcdn.com/w40/br.png" },
+  { country: "Brunei", code: "+673", flag: "https://flagcdn.com/w40/bn.png" },
+  { country: "Bulgaria", code: "+359", flag: "https://flagcdn.com/w40/bg.png" },
+  {
+    country: "Burkina Faso",
+    code: "+226",
+    flag: "https://flagcdn.com/w40/bf.png",
+  },
+  { country: "Burundi", code: "+257", flag: "https://flagcdn.com/w40/bi.png" },
+
+  { country: "Cambodia", code: "+855", flag: "https://flagcdn.com/w40/kh.png" },
+  { country: "Cameroon", code: "+237", flag: "https://flagcdn.com/w40/cm.png" },
+  { country: "Canada", code: "+1", flag: "https://flagcdn.com/w40/ca.png" },
+  { country: "Chad", code: "+235", flag: "https://flagcdn.com/w40/td.png" },
+  { country: "Chile", code: "+56", flag: "https://flagcdn.com/w40/cl.png" },
+  { country: "China", code: "+86", flag: "https://flagcdn.com/w40/cn.png" },
+
+  { country: "Colombia", code: "+57", flag: "https://flagcdn.com/w40/co.png" },
+  { country: "Congo", code: "+242", flag: "https://flagcdn.com/w40/cg.png" },
+  {
+    country: "Costa Rica",
+    code: "+506",
+    flag: "https://flagcdn.com/w40/cr.png",
+  },
+  { country: "Croatia", code: "+385", flag: "https://flagcdn.com/w40/hr.png" },
+  { country: "Cuba", code: "+53", flag: "https://flagcdn.com/w40/cu.png" },
+  { country: "Cyprus", code: "+357", flag: "https://flagcdn.com/w40/cy.png" },
+
+  {
+    country: "Czech Republic",
+    code: "+420",
+    flag: "https://flagcdn.com/w40/cz.png",
+  },
+  { country: "Denmark", code: "+45", flag: "https://flagcdn.com/w40/dk.png" },
+  {
+    country: "Dominican Republic",
+    code: "+1-809",
+    flag: "https://flagcdn.com/w40/do.png",
+  },
+
+  { country: "Ecuador", code: "+593", flag: "https://flagcdn.com/w40/ec.png" },
+  { country: "Egypt", code: "+20", flag: "https://flagcdn.com/w40/eg.png" },
+  {
+    country: "El Salvador",
+    code: "+503",
+    flag: "https://flagcdn.com/w40/sv.png",
+  },
+
+  { country: "Estonia", code: "+372", flag: "https://flagcdn.com/w40/ee.png" },
+  { country: "Ethiopia", code: "+251", flag: "https://flagcdn.com/w40/et.png" },
+
+  { country: "Finland", code: "+358", flag: "https://flagcdn.com/w40/fi.png" },
+  { country: "France", code: "+33", flag: "https://flagcdn.com/w40/fr.png" },
+
+  { country: "Gambia", code: "+220", flag: "https://flagcdn.com/w40/gm.png" },
+  { country: "Georgia", code: "+995", flag: "https://flagcdn.com/w40/ge.png" },
+  { country: "Germany", code: "+49", flag: "https://flagcdn.com/w40/de.png" },
+  { country: "Ghana", code: "+233", flag: "https://flagcdn.com/w40/gh.png" },
+  { country: "Greece", code: "+30", flag: "https://flagcdn.com/w40/gr.png" },
+
+  { country: "Guinea", code: "+224", flag: "https://flagcdn.com/w40/gn.png" },
+  { country: "Haiti", code: "+509", flag: "https://flagcdn.com/w40/ht.png" },
+  { country: "Honduras", code: "+504", flag: "https://flagcdn.com/w40/hn.png" },
+  { country: "Hungary", code: "+36", flag: "https://flagcdn.com/w40/hu.png" },
+
+  { country: "Iceland", code: "+354", flag: "https://flagcdn.com/w40/is.png" },
+  { country: "India", code: "+91", flag: "https://flagcdn.com/w40/in.png" },
+  { country: "Indonesia", code: "+62", flag: "https://flagcdn.com/w40/id.png" },
+  { country: "Iran", code: "+98", flag: "https://flagcdn.com/w40/ir.png" },
+  { country: "Iraq", code: "+964", flag: "https://flagcdn.com/w40/iq.png" },
+  { country: "Ireland", code: "+353", flag: "https://flagcdn.com/w40/ie.png" },
+  { country: "Italy", code: "+39", flag: "https://flagcdn.com/w40/it.png" },
+
+  { country: "Japan", code: "+81", flag: "https://flagcdn.com/w40/jp.png" },
+  { country: "Jordan", code: "+962", flag: "https://flagcdn.com/w40/jo.png" },
+
+  { country: "Kenya", code: "+254", flag: "https://flagcdn.com/w40/ke.png" },
+  { country: "Kuwait", code: "+965", flag: "https://flagcdn.com/w40/kw.png" },
+
+  { country: "Lebanon", code: "+961", flag: "https://flagcdn.com/w40/lb.png" },
+  { country: "Libya", code: "+218", flag: "https://flagcdn.com/w40/ly.png" },
+
+  { country: "Malaysia", code: "+60", flag: "https://flagcdn.com/w40/my.png" },
+  { country: "Mexico", code: "+52", flag: "https://flagcdn.com/w40/mx.png" },
+  { country: "Morocco", code: "+212", flag: "https://flagcdn.com/w40/ma.png" },
+
+  {
+    country: "Netherlands",
+    code: "+31",
+    flag: "https://flagcdn.com/w40/nl.png",
+  },
+  {
+    country: "New Zealand",
+    code: "+64",
+    flag: "https://flagcdn.com/w40/nz.png",
+  },
+  { country: "Nigeria", code: "+234", flag: "https://flagcdn.com/w40/ng.png" },
+
+  { country: "Norway", code: "+47", flag: "https://flagcdn.com/w40/no.png" },
+  { country: "Pakistan", code: "+92", flag: "https://flagcdn.com/w40/pk.png" },
+  {
+    country: "Palestine",
+    code: "+970",
+    flag: "https://flagcdn.com/w40/ps.png",
+  },
+  {
+    country: "Philippines",
+    code: "+63",
+    flag: "https://flagcdn.com/w40/ph.png",
+  },
+
+  { country: "Poland", code: "+48", flag: "https://flagcdn.com/w40/pl.png" },
+  { country: "Portugal", code: "+351", flag: "https://flagcdn.com/w40/pt.png" },
+  { country: "Qatar", code: "+974", flag: "https://flagcdn.com/w40/qa.png" },
+
+  { country: "Russia", code: "+7", flag: "https://flagcdn.com/w40/ru.png" },
+  {
+    country: "Saudi Arabia",
+    code: "+966",
+    flag: "https://flagcdn.com/w40/sa.png",
+  },
+  {
+    country: "South Africa",
+    code: "+27",
+    flag: "https://flagcdn.com/w40/za.png",
+  },
+
+  { country: "Spain", code: "+34", flag: "https://flagcdn.com/w40/es.png" },
+  { country: "Sweden", code: "+46", flag: "https://flagcdn.com/w40/se.png" },
+  {
+    country: "Switzerland",
+    code: "+41",
+    flag: "https://flagcdn.com/w40/ch.png",
+  },
+
+  { country: "Turkey", code: "+90", flag: "https://flagcdn.com/w40/tr.png" },
+  { country: "Uganda", code: "+256", flag: "https://flagcdn.com/w40/ug.png" },
+  { country: "Ukraine", code: "+380", flag: "https://flagcdn.com/w40/ua.png" },
+
+  {
+    country: "United Kingdom",
+    code: "+44",
+    flag: "https://flagcdn.com/w40/gb.png",
+  },
+  {
+    country: "United States",
+    code: "+1",
+    flag: "https://flagcdn.com/w40/us.png",
+  },
+
+  { country: "Vietnam", code: "+84", flag: "https://flagcdn.com/w40/vn.png" },
+  { country: "Zimbabwe", code: "+263", flag: "https://flagcdn.com/w40/zw.png" },
+];

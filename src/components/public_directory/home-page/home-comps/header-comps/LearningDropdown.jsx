@@ -95,11 +95,8 @@ export default function LearningDropdown({ setOpenIndex }) {
   ];
   const redirect = useNavigate();
   return (
-    <section
-      className="learningDrpdWrap fx-cl fx-ac space6"
-      onMouseLeave={() => setOpenIndex(null)}
-    >
-      <div className="fx-cl pd3 space6" style={{ maxWidth: "130rem" }}>
+    <section className="dropDownContent learningDrpdWrap ">
+      <div className="fx-cl pd3 space6">
         {learningDropdownData.map((group, index) => (
           <div key={index} className={`fx-cl space4 ${group.class || ""}`}>
             {/* Section Title */}
@@ -126,7 +123,7 @@ export default function LearningDropdown({ setOpenIndex }) {
                   <div className="fx-cl spacem">
                     <h4 className="fs5 fw500">{item.title}</h4>
 
-                    {item.desc && <p className="fs4">{item.desc}</p>}
+                    {item.desc && <p className="fs2 lh3">{item.desc}</p>}
                   </div>
                 </div>
               ))}

@@ -68,6 +68,10 @@ a:visited {
   transition: all 0.3s;
 }
 
+a:focus {
+  background-color: transparent;
+}
+
 a {
   color: #2d5ecf;
 }
@@ -401,4 +405,10 @@ input[type="number"]::-webkit-inner-spin-button {
 
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+/* enqueur snack bar styling  */
+
+#notistack-snackbar.go946087465 {
+  font-size: 1.4rem;
 }

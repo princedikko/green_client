@@ -1,18 +1,18 @@
-.solutionsDrpdWrap {
+.companyDrpdWrap {
   width: 100vw;
-  padding: 3.2rem;
+  /* padding: 4.5rem; */
   background-color: #fff;
   position: absolute;
   top: 8.6rem;
   box-shadow: 0rem 1.5rem 2rem -1rem rgba(0, 0, 0, 0.35);
 }
 
-.solutionsDrpdWrap.dropDownContent {
+.companyDrpdWrap.dropDownContent {
   right: 50%;
-  transform: translateX(69.4%);
+  transform: translateX(44.4%);
 }
 
-.megasolutionsDropdwn {
+.megacompanyDropdwn {
   display: grid;
   grid-template-columns: 3fr 1fr;
   width: 100%;
@@ -23,19 +23,61 @@
   font-size: 1.6rem;
 }
 
-.solutionsDropdwnLabel {
+.companyDrpdFlot {
+  display: grid;
+  grid-template-columns: 2.5fr 6fr 3.6fr;
+}
+
+.companyDrpdFlotDesc {
+  border-right: 2px solid #f4f5f7;
+  padding: 2rem;
+  padding-top: 4rem;
+}
+
+.companyDrpdFlotDesc a:link,
+.companyDrpdFlotDesc a:visited {
+  color: var(--primary-color);
+  background-color: #f0ffff;
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.8rem;
+  font-weight: bold;
+  max-width: 15rem;
+}
+
+.companyDrpdFlotContents {
+  padding: 2rem;
+  /* max-height: 65rem;
+  overflow: auto; */
+}
+.companyDrpdFlotCards {
+  padding: 2rem;
+  padding-top: 4rem;
+  background-color: #f4f5f7;
+}
+
+.companyDrpdFlotCardsCont figure img {
+  width: 15rem;
+  border-radius: 0.5rem;
+}
+.companyDrpdFlotCardsCont figure button {
+  color: var(--primary-color);
+  /* background-color: #f0ffff; */
+  max-width: 14rem;
+}
+
+.companyDropdwnLabel {
   font-weight: 700;
   color: #9a9a9a;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
-.solutionsItemsCont {
+.companyItemsCont {
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 2rem;
 }
-.solutionsDropdwnDescription {
+.companyDropdwnDescription {
   color: #777;
   line-height: 1.6;
   margin-bottom: 1rem;
@@ -46,18 +88,23 @@
   gap: 1.5rem;
 }
 
-.solutionsDropdwnCard {
-  padding: 1rem;
+.companyDropdwnCard {
+  padding: 0.8rem 1.7rem;
   border-radius: 1rem;
   cursor: pointer;
   transition: 0.25s ease;
 }
 
-.solutionsDropdwnCard:hover {
-  background: #f7f7f7;
+.companyDropdwnCard:hover {
+  background-color: #f9faff;
 }
 
-.solutionsDropdwnIcon {
+.companyDropdwnCard:hover .compDrpCardHead h4,
+.companyDropdwnCard:hover .compDrpCardHead {
+  color: var(--primary-color);
+}
+
+.companyDropdwnIcon {
   width: 42px;
   height: 42px;
   border-radius: 0.8rem;
@@ -65,12 +112,12 @@
   flex-shrink: 0;
 }
 
-.solutionsDropdwnCard h4 {
+.companyDropdwnCard h4 {
   font-weight: 600;
   color: #111;
 }
 
-.solutionsDropdwnCard p {
+.companyDropdwnCard p {
   font-size: 1.3rem;
   color: #777;
   line-height: 1.5;
@@ -103,23 +150,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.playBtn {
-  display: flex;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.9rem;
-  color: #666;
 }
 
 .promoBtn {

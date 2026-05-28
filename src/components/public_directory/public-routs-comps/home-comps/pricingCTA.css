@@ -1,0 +1,170 @@
+.homeCTAComparePlans {
+  width: 90%;
+  padding: 9.6rem 3.2rem;
+  margin: 0 auto;
+}
+
+.advanceTableHomeComparePlanCTA {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
+}
+
+div.advanceTableTbodyFirst {
+  padding: 6.4rem 0rem;
+  border-radius: 1.8rem;
+}
+.advanceTableHomeComparePlanCTA div.advanceTableTbody {
+  cursor: pointer;
+  padding: 6.4rem 0rem;
+  border-radius: 1.8rem;
+}
+
+.advanceTableTbody.adtbEnterprise {
+  background-color: #f3f7fc;
+  border: 1px solid #3e5fff;
+}
+
+.advanceTableHomeComparePlanCTA div.advanceTableTbody:hover {
+  background-color: #fafaff;
+}
+.advanceTableHomeComparePlanCTA div.advanceTableTbodyFirst:hover {
+  background-color: transparent;
+}
+.advanceTableHomeComparePlanCTA .tableHeaderPrices {
+  display: block;
+  height: 8.8rem;
+}
+
+.cellDataHmPricing {
+  padding: 0rem 3.2rem;
+  height: 6.3rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subHeadingAdvTb {
+  display: flex;
+  align-items: center;
+  padding: 2.1rem 3.2rem;
+  height: 4.3rem;
+  text-align: left;
+}
+.advanceTableTbodyFirst .cellDataHmPricing,
+.advanceTableTbodyFirst .subHeadingAdvTb {
+  justify-content: flex-start;
+  text-align: left;
+}
+.advanceTableTbodyFirst .cellDataHmPricing {
+  border-bottom-left-radius: 1.2rem;
+  border-top-left-radius: 1.2rem;
+}
+.advanceTableTbody:last-child .cellDataHmPricing {
+  border-bottom-right-radius: 1.2rem;
+  border-top-right-radius: 1.2rem;
+}
+.cellDataHmPricing:nth-child(even) {
+  background-color: #f7f7f8;
+}
+
+.adtbEnterprise .cellDataHmPricing,
+.advanceTableTbody:hover .cellDataHmPricing {
+  background-color: transparent;
+}
+.planExecuteBtnHomeCTA {
+  padding: 0.5rem 1.5rem;
+  font-size: 1.2rem;
+  border-radius: 0.6rem;
+  font-weight: 800;
+  background: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.planExecuteBtnHomeCTA:hover {
+  background-color: #1958f7;
+}
+.compareHomeCTA-title {
+  text-align: center;
+}
+
+.compareHomeCTA-title-btn {
+  font-size: 4.8rem;
+  text-align: center;
+  font-weight: 400;
+}
+
+.compareHomeCTA-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.compareHomeCTA-table thead tr,
+.compareHomeCTA-table tbody tr {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
+  padding: 0rem 2.4rem;
+}
+
+.compareHomeCTA-table tbody tr {
+  border-bottom: 1px solid #fafaff;
+}
+.compareHomeCTA-table tbody tr:nth-child(even) {
+  background-color: #f7f7f7;
+}
+.compareHomeCTA-table tbody tr td:first-child {
+  text-align: left;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+.compareHomeCTA-table tbody tr.pricingHeadInTable {
+  background-color: var(--primary-color);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.compareHomeCTA-table th,
+.compareHomeCTA-table td {
+  padding: 12px;
+  text-align: center;
+}
+
+.compareHomeCTA-table thead tr {
+  background: #f7f7f7;
+  border-radius: 1.2rem;
+}
+
+.featuresIcon {
+  color: #236cff;
+}
+
+.featuresDisc {
+  color: #444;
+  text-transform: capitalize;
+  font-weight: 500;
+  font-size: 1.4rem;
+}
+
+.planDiscHeading {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #000;
+}
+
+.tableHeaderPricesCard {
+  font-size: 1.8rem;
+}
+.tableHeaderPricesCard button {
+  padding: 0.4rem 1.2rem;
+  font-size: 1.4rem;
+}
+.prcFooter {
+  font-size: 1.3rem;
+  font-weight: 500;
+  text-align: left;
+  line-height: 1.5;
+}

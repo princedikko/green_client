@@ -17,6 +17,7 @@ import Future from "./home-comps/Future";
 import Footer from "./home-comps/Footer";
 import Ourservices from "./home-comps/Ourservices";
 import Test from "../../../test/Test";
+import PricingCTA from "../public-routs-comps/home-comps/PrincingCTA";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -34,6 +35,7 @@ export default function Home() {
           <Header />
           <Hero />
           <HomeComp3 />
+          <PricingCTA />
           <HomeComp4 />
           <HomeComp5 />
           <HomeComp6 />

@@ -1,5 +1,6 @@
 import "./solutionDropdown.css";
 import { useNavigate } from "react-router-dom";
+import OnlineImage from "../homepage_images/sales.jpg";
 import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import ConstructionOutlinedIcon from "@mui/icons-material/ConstructionOutlined";
@@ -9,6 +10,7 @@ import WarehouseOutlinedIcon from "@mui/icons-material/WarehouseOutlined";
 import FoundationOutlinedIcon from "@mui/icons-material/FoundationOutlined";
 import WeekendOutlinedIcon from "@mui/icons-material/WeekendOutlined";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
+import StorefrontIcon from "@mui/icons-material/Storefront";
 import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
 
 export default function SolutionDropdown({ setOpenIndex }) {
@@ -66,7 +68,7 @@ export default function SolutionDropdown({ setOpenIndex }) {
         {
           title: "Provision Store",
           desc: "Track inventory across multiple store locations with ease.",
-          icon: <SchoolOutlinedIcon style={{ fontSize: "2.8rem" }} />,
+          icon: <StorefrontIcon style={{ fontSize: "2.8rem" }} />,
           link: "/solutions/industries/provision_store",
         },
         {
@@ -94,20 +96,7 @@ export default function SolutionDropdown({ setOpenIndex }) {
     },
   ];
   return (
-    <div
-      className="solutionsDrpdWrap fx-cl space"
-      onMouseLeave={() => setOpenIndex(null)}
-    >
-      {/* <div
-        className="fx-ac fx-jb space2"
-        style={{ borderBottom: "1px solid #eee", paddingBottom: "2rem" }}
-      >
-        <h3 className="fs5">Explore our solutions</h3>
-        <button className="exploreBtn">
-          View all solutions <span>→</span>
-        </button>
-      </div> */}
-
+    <div className="dropDownContent solutionsDrpdWrap">
       <div className="megasolutionsDropdwn space3">
         {/* LEFT CONTENT */}
         <div className="fx-cl space3">
@@ -166,16 +155,13 @@ export default function SolutionDropdown({ setOpenIndex }) {
         {/* RIGHT SIDE */}
         <div className="promoCard fx-cl space1">
           <div className="fx-cl spacem">
-            <h3>Introducing new dashboards</h3>
+            <h3>Getting Started!</h3>
 
-            <p>Turn complex data into clear and beautiful visuals.</p>
+            <p>Learn how to setup your Inventory Account</p>
           </div>
 
           <div className="videoPreview">
-            <img
-              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330"
-              alt="dashboard preview"
-            />
+            <img src={OnlineImage} alt="dashboard preview" />
 
             <div className="playBtn">▶</div>
           </div>

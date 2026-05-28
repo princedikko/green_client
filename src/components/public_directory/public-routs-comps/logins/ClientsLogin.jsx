@@ -1,7 +1,9 @@
 import "./clientslogin.css";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+
+import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import * as Action from "../../../../store/redux/client_reducer.js";
 import axios from "axios";
@@ -26,6 +28,9 @@ export default function ClientsLogin() {
   const redirect = useNavigate();
   const dispatch = useDispatch();
 
+  const clientIsAuthenticated = useSelector(
+    (state) => state.clientFunction?.isAuthenticated,
+  );
   const [clientLoginData, setClientLoginData] = useReducer(
     (reqest, response) => {
       return { ...reqest, ...response };
@@ -49,24 +54,35 @@ export default function ClientsLogin() {
           enqueueSnackbar(`Login success!`, {
             variant: "success",
             autoHideDuration: 3000,
-            ContentProps: {
-              style: { fontSize: "16px", fontWeight: "bold" },
-            },
           });
           redirect(`/clients/${response.data?.info?._id}/account`);
         } else if (response?.data.status === 401) {
           enqueueSnackbar(`${response?.data.message}`, {
             variant: "error",
             autoHideDuration: 3000,
-            ContentProps: {
-              style: { fontSize: "16px", fontWeight: "bold" },
-            },
           });
         }
         setIslaoding(false);
       })
       .catch((err) => {
         setIslaoding(false);
+        if (err.code === "ERR_NETWORK") {
+          enqueueSnackbar(
+            `${err.message} : please connect to the internet and try again`,
+            {
+              variant: "error",
+              autoHideDuration: 3000,
+              ContentProps: {
+                style: { fontSize: "18px", fontWeight: "bold" },
+              },
+            },
+          );
+        } else {
+          enqueueSnackbar(`${err.message}`, {
+            variant: "error",
+            autoHideDuration: 3000,
+          });
+        }
         console.log(err);
       });
   };
@@ -90,6 +106,12 @@ export default function ClientsLogin() {
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
+
+  // useEffect(() => {
+  //   if (clientIsAuthenticated) {
+  //     redirect(`/clients/${clientData._id}/account`);
+  //   }
+  // }, [clientIsAuthenticated]);
   return (
     <section className="section-client-login">
       {isloadin ? <IsLoading /> : null}

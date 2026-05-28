@@ -1,5 +1,5 @@
-import { useState, useReducer, useEffect } from "react";
-
+import { useState, useReducer, useEffect, useRef } from "react";
+import { countriesOnEarth } from "./registrationStatesAndLGA.js";
 import { FlutterWaveButton, closePaymentModal } from "flutterwave-react-v3";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import SPLogo from "./skillpoint.png";
 import * as Action from "../../../store/redux/registrationReducer.js";
+
 import axios from "axios";
 import "./registration.css";
 import Logo from "../public-routes-images/logos/Manga_Cons _Logo3.png";
@@ -16,15 +17,19 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { statesAndLgas } from "./registrationStatesAndLGA.js";
 
 // imported icon
+
+import Person2Icon from "@mui/icons-material/Person2";
+import Face4Icon from "@mui/icons-material/Face4";
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import CategoryRoundedIcon from "@mui/icons-material/CategoryRounded";
 import SchoolIcon from "@mui/icons-material/School";
 
-let applicationData;
+let newClient;
 
 export default function Registration() {
+  const wrapperRef = useRef(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const navigateTo = useNavigate();
@@ -32,6 +37,25 @@ export default function Registration() {
   const [selectedCurrency, setSelectedCurrency] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
 
+  const [countryCode, setcountryCode] = useState("+234 - Nigeria");
+  const [opencountryCodes, setOpencountryCodes] = useState(false);
+  const [openGender, setOpenGender] = useState(false);
+
+  const [filteredCountries, setFilteredCountries] = useState([]);
+  const [searchTermCountries, setSearchTermCountries] = useState("");
+  const handleSearchCountries = (e) => {
+    const term = e.target.value;
+    setSearchTermCountries(term);
+
+    if (term.trim() === "") {
+      setFilteredCountries([]);
+    } else {
+      const filtered = countriesOnEarth.filter((countries) =>
+        countries?.country.toLowerCase().includes(term.toLowerCase()),
+      );
+      setFilteredCountries(filtered);
+    }
+  };
   // ****************************** GENERATING APPLICATION NUMBER FOR APPLICANTS **************************************
 
   // FUNTIONS FOR THE STATE SELECTIONS
@@ -41,28 +65,34 @@ export default function Registration() {
   const handleStateChange = (e) => {
     const state = e.target.value;
     setSelectedState(state);
-    setApplicantData({ state_of_address: e.target.value });
+    setRegistrationData({ state_of_address: e.target.value });
     setLocalGovernments(statesAndLgas[state] || []);
   };
   // ------------------------
   const [loading, setLoading] = useState(false);
-  const [plan, setPlan] = useState("professional");
-  const [applicantData, setApplicantData] = useReducer(
+  const [registrationData, setRegistrationData] = useReducer(
     (request, response) => {
       return { ...request, ...response };
     },
     {
-      ref_number: null,
-      transaction_id: "",
-      state_of_address: "",
-      application_number: "",
+      firstName: "",
+      surName: "",
+      otherName: "",
+      email: "",
+      phone: "",
+      password: "",
+      gender: "",
+      nationality: "",
+      international_dialing_code: 0,
+      // None Registration  Database Content
+      flag: "",
     },
   );
 
   const actions = useSelector((state) => state.applictaionForm);
 
   const payload = {
-    clientId: "CLT-2026-000045",
+    clientId: "",
     businessProfile: {
       businessId: "BIZ-2026-000045",
 
@@ -205,14 +235,14 @@ export default function Registration() {
       ownerId: "OWN-2026-000045",
 
       personalInfo: {
-        fullName: "Abdullahi Dikko",
-        firstName: "Abdullahi",
-        lastName: "Dikko",
-        email: "dikko@supermarket.com",
-        phone: "+2348012345678",
-        dateOfBirth: "1988-05-12",
-        gender: "male",
-        nationality: "Nigerian",
+        firstName: registrationData?.firstName,
+        middleName: registrationData?.otherName,
+        surName: registrationData?.surName,
+        email: registrationData?.email,
+        phone: registrationData?.phone,
+        dateOfBirth: "",
+        gender: registrationData?.gender,
+        nationality: registrationData?.nationality,
       },
 
       identityVerification: {
@@ -259,6 +289,13 @@ export default function Registration() {
       },
 
       linkedClientId: "CLT-2026-000045",
+      files: {
+        profilImage:
+          "https://mangaconsadministrationstafffilesbucket.s3.eu-north-1.amazonaws.com/passport.jpg",
+        photo: "",
+        tumbPrint: "",
+        signature: "",
+      },
 
       documents: [
         {
@@ -323,15 +360,15 @@ export default function Registration() {
 
       user: {
         userId: "USR-1001",
-        fullName: "Abdullahi Dikko",
-        email: "admin@dikko.com",
-        phone: "+2348012345678",
-        emailVerified: true,
-        phoneVerified: true,
+        fullName: `${registrationData?.firstName + " " + registrationData?.surName + " " + registrationData?.otherName}`,
+        email: registrationData?.email,
+        phone: registrationData?.phone,
+        emailVerified: false,
+        phoneVerified: false,
       },
 
       credentials: {
-        passwordHash: "$2b$10$XyZEncryptedHashExample",
+        hashedPassword: registrationData?.password,
         passwordUpdatedAt: "2026-04-01T10:00:00Z",
         lastPasswordResetAt: null,
       },
@@ -541,507 +578,624 @@ export default function Registration() {
     ],
   };
 
-  const executeApplication = async () => {
+  const apiPostNewClient = async () => {
     setLoading(true);
     await axios
       .post(
-        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/candidate_registration`,
+        `${process.env.REACT_APP_SERVER_SCRIPT_HOST}/new_client/register`,
         payload,
       )
       .then((response) => {
-        applicationData = response.data.data;
-        if (response.data.status === 203) {
+        newClient = response.data.newClient;
+        if (response.data.status === 201) {
+          setLoading(false);
+          enqueueSnackbar(`${response.data.message}`, {
+            variant: "success",
+            autoHideDuration: 3000,
+          });
+        } else {
           setLoading(false);
           enqueueSnackbar(`${response.data.message}`, {
             variant: "error",
             autoHideDuration: 3000,
-            ContentProps: {
-              style: { fontSize: "16px", fontWeight: "bold" },
-            },
           });
-        } else {
-          enqueueSnackbar(`${response.data.message}`, {
-            variant: "success",
-            autoHideDuration: 3000,
-            ContentProps: {
-              style: { fontSize: "16px", fontWeight: "bold" },
-            },
-          });
-          navigateTo(
-            `/registrations/${response.data?.data?.auth.loginUsername}/print_reciept`,
-          );
-          setLoading(false);
         }
       })
-      .catch((error) => {
-        enqueueSnackbar(`error: something went wrong!`, {
-          variant: "error",
-          autoHideDuration: 3000,
-          ContentProps: {
-            style: { fontSize: "16px", fontWeight: "bold" },
-          },
-        });
-        console.log(error);
+      .catch((err) => {
+        if (err.code === "ERR_NETWORK") {
+          enqueueSnackbar(
+            `${err.message} : please connect to the internet and try again`,
+            {
+              variant: "error",
+              autoHideDuration: 3000,
+            },
+          );
+        } else {
+          enqueueSnackbar(`${err.message}`, {
+            variant: "error",
+            autoHideDuration: 3000,
+            style: {
+              fontSize: "18px",
+              fontWeight: "bold",
+            },
+          });
+        }
+        console.log(err);
+
         setLoading(false);
       });
   };
 
-  const RegFormFilling = () => {
-    const [appFormData, setAppFormData] = useReducer(
-      (request, response) => {
-        return { ...request, ...response };
-      },
-      {
-        firstName: "",
-        surName: "",
-        otherName: "",
-        gender: "",
-        email: "",
-        tel: "",
-        course: "",
-        ExaminationCouncil: "",
-      },
-    );
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const [errors, setErrors] = useState({});
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const dispatch = useDispatch();
+  const validationSchema = Yup.object().shape({
+    firstName: Yup.string().required("First name is required"),
+    surName: Yup.string().required("Surname is required"),
+    // otherName: Yup.string().required("Other name is required"),
+    gender: Yup.string().required("Gender is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string().required("password is required"),
+    phone: Yup.string().required("Phone number is required"),
+  });
 
-    const validationSchema = Yup.object().shape({
-      firstName: Yup.string().required("First name is required"),
-      surName: Yup.string().required("Sur name is required"),
-      // otherName: Yup.string().required("Other name is required"),
-      gender: Yup.string().required("Gender is required"),
-      email: Yup.string().email("Invalid email").required("Email is required"),
-      programme_of_study: Yup.string().required(
-        "Programme of study is required",
-      ),
-    });
+  const validateForm = async () => {
+    try {
+      await validationSchema.validate(registrationData, {
+        abortEarly: false,
+      });
+      setErrors({});
+      return true; // Form is valid
+    } catch (validationErrors) {
+      const formattedErrors = {};
+      validationErrors.inner.forEach((error) => {
+        formattedErrors[error.path] = error.message;
+      });
+      setErrors(formattedErrors);
+      return false; // Form is invalid
+    }
+  };
 
-    const validateForm = async () => {
-      try {
-        await validationSchema.validate(appFormData, { abortEarly: false });
-        setErrors({});
-        return true; // Form is valid
-      } catch (validationErrors) {
-        const formattedErrors = {};
-        validationErrors.inner.forEach((error) => {
-          formattedErrors[error.path] = error.message;
+  const executeValidation = async () => {
+    const isValid = await validateForm();
+    if (isValid) {
+      setIsSubmitting(true);
+      apiPostNewClient();
+    }
+  };
+
+  // URL is the source of truth
+  const plan = searchParams.get("plan") || "professional";
+
+  // change plan safely
+  const changePlan = (newPlan) => {
+    setSearchParams({ plan: newPlan });
+  };
+
+  // FUNCTIONS TO RECOGNIZE THE DEVICES COUNTRY LOCATIONS
+  async function getUserCountry() {
+    const res = await fetch("https://ipapi.co/json/");
+    const data = await res.json();
+
+    return {
+      country: data.country_name,
+      countryCode: data.country_code,
+    };
+  }
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        // clicked outside
+        setOpencountryCodes(false);
+        setOpenGender(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+
+    async function init() {
+      const user = await getUserCountry();
+
+      const match = countriesOnEarth.find((c) => c.country === user.country);
+
+      if (match) {
+        setRegistrationData({
+          nationality: match.country,
+          international_dialing_code: match.code,
+          imojies: match.flag,
         });
-        setErrors(formattedErrors);
-        return false; // Form is invalid
       }
-    };
+    }
 
-    const execute = async () => {
-      const isValid = await validateForm();
-      if (isValid) {
-        setIsSubmitting(true);
-        dispatch(Action.startappFormAction({ appFormData }));
-      }
-    };
-
-    // URL is the source of truth
-    const plan = searchParams.get("plan") || "professional";
-
-    // change plan safely
-    const changePlan = (newPlan) => {
-      setSearchParams({ plan: newPlan });
-    };
-    return (
-      <div className="regMainCont fx-cl space2">
-        <div className="regHeader fx-cl fx-ac space2">
-          <h3>High-speed, Secure & Stress-Free to your Business</h3>
-          <div className="regHTag fx-ac">
-            <figure className="fx-ac space2">
-              <span>
-                <DashboardRoundedIcon fontSize="large" />
-              </span>
-              <span>Real time sales</span>
-            </figure>
-            <figure className="fx-ac space2">
-              <span>
-                <AssignmentRoundedIcon fontSize="large" />
-              </span>
-              <span>No-logs policy</span>
-            </figure>
-            <figure className="fx-ac space2">
-              <span>
-                <PeopleAltRoundedIcon fontSize="large" />
-              </span>
-              <span>Protected by Universe Inventory Laws</span>
-            </figure>
-            <figure className="fx-ac space2">
-              <span>
-                <CategoryRoundedIcon fontSize="large" />
-              </span>
-              <span>13600 + servers</span>
-            </figure>
-          </div>
-          <figure className="regTag">
-            <CategoryRoundedIcon fontSize="small" /> <strong>100%</strong> Fast
-            & Effortless <strong>Inventory</strong> for All Business
-          </figure>
-        </div>
-        <div className="regMainDiv fx-cl space3">
-          <div className="fx-ac fx-jb space4">
-            <div className=" regStep fx-ac space2">
-              <figure>Step 1</figure> <h3>Select your plan</h3>
+    init();
+  }, []);
+  return (
+    <>
+      {loading ? <IsLoading /> : null}
+      <section className="fx-jc" id="regCont">
+        <div className="regMainCont fx-cl space2">
+          <div className="regHeader fx-cl fx-ac space2">
+            <h3>High-speed, Secure & Stress-Free to your Business</h3>
+            <div className="regHTag fx-ac">
+              <figure className="fx-ac space2">
+                <span>
+                  <DashboardRoundedIcon fontSize="large" />
+                </span>
+                <span>Real time sales</span>
+              </figure>
+              <figure className="fx-ac space2">
+                <span>
+                  <AssignmentRoundedIcon fontSize="large" />
+                </span>
+                <span>No-logs policy</span>
+              </figure>
+              <figure className="fx-ac space2">
+                <span>
+                  <PeopleAltRoundedIcon fontSize="large" />
+                </span>
+                <span>Protected by Universe Inventory Laws</span>
+              </figure>
+              <figure className="fx-ac space2">
+                <span>
+                  <CategoryRoundedIcon fontSize="large" />
+                </span>
+                <span>13600 + servers</span>
+              </figure>
             </div>
-          </div>
-
-          <div className="regPricing fx-as space2">
-            <figure
-              onClick={() => changePlan("standard")}
-              className={`regPricingCard ${plan == "standard" && "active"} fx-cl bestValue`}
-            >
-              <div className="fx-cl space2">
-                <div className="fx-ac space1">
-                  <span className="regPlanRadius">&nbsp;</span>
-                  <h5>Standard</h5>
-                </div>
-                <div className="fx-cl spacem">
-                  <p className="discountReg">
-                    <span>Yearly ₦2,985</span>
-                    <strong
-                      style={{
-                        color: "#5AC2AE",
-                        backgroundColor: "#EBFFFA",
-                        padding: ".3rem",
-                        borderRadius: ".4rem",
-                      }}
-                    >
-                      SAVE 68%
-                    </strong>
-                  </p>
-                  <p className="regPrice">
-                    ₦3,865<span style={{ fontSize: "1rem" }}>/Month</span>
-                  </p>
-                  <span>Monthly</span>
-                </div>
-
-                {plan == "standard" && <button>Make the payment</button>}
-              </div>
-            </figure>
-            <figure
-              onClick={() => changePlan("professional")}
-              className={`regPricingCard ${plan == "professional" && "active"} fx-cl bestValue`}
-            >
-              <span className="bestValueTag">Best value</span>
-              <div className="fx-cl space2">
-                <div className="fx-ac space1">
-                  <span className="regPlanRadius">&nbsp;</span>
-                  <h5>Professional</h5>
-                </div>
-                <div className="fx-cl spacem">
-                  <p className="discountReg">
-                    <span>Yearly -12%</span>
-                    <strong
-                      style={{
-                        color: "#5AC2AE",
-                        backgroundColor: "#EBFFFA",
-                        padding: ".3rem",
-                        borderRadius: ".4rem",
-                      }}
-                    >
-                      SAVE 68%
-                    </strong>
-                  </p>
-                  <p className="regPrice">
-                    ₦5,950<span style={{ fontSize: "1rem" }}>/Month</span>
-                  </p>
-                  <span>Monthly</span>
-                </div>
-
-                {plan == "professional" && (
-                  <button onClick={() => executeApplication()}>
-                    Make the payment
-                  </button>
-                )}
-              </div>
-            </figure>
-            <figure
-              onClick={() => changePlan("premium")}
-              className={`regPricingCard ${plan == "premium" && "active"} fx-cl bestValue`}
-            >
-              <div className="fx-cl space2">
-                <div className="fx-ac space1">
-                  <span className="regPlanRadius">&nbsp;</span>
-                  <h5>Premuim</h5>
-                </div>
-                <div className="fx-cl spacem">
-                  <p className="discountReg">
-                    <span>Yearly -12%</span>
-                    <strong
-                      style={{
-                        color: "#5AC2AE",
-                        backgroundColor: "#EBFFFA",
-                        padding: ".3rem",
-                        borderRadius: ".4rem",
-                      }}
-                    >
-                      SAVE 68%
-                    </strong>
-                  </p>
-                  <p className="regPrice">
-                    {" "}
-                    ₦16,500<span style={{ fontSize: "1rem" }}>/Month</span>{" "}
-                  </p>
-                  <span>Monthly</span>
-                </div>
-                {plan == "premium" && <button>Make the payment</button>}
-              </div>
-            </figure>
-            <figure
-              onClick={() => changePlan("enterprise")}
-              className={`regPricingCard enterprise ${plan == "enterprise" && "active"} fx-cl bestValue`}
-            >
-              <span className="bestValueTag ">Advance</span>
-              <div className="fx-cl space2">
-                <div className="fx-ac space1">
-                  <span className="regPlanRadius">&nbsp;</span>
-                  <h5>Enterprise</h5>
-                </div>
-                <div className="fx-cl spacem">
-                  <p className="discountReg">
-                    <span>Yearly -12%</span>
-                    <strong
-                      style={{
-                        color: "#5AC2AE",
-                        backgroundColor: "#EBFFFA",
-                        padding: ".3rem",
-                        borderRadius: ".4rem",
-                      }}
-                    >
-                      SAVE 68%
-                    </strong>
-                  </p>
-                  <p className="regPrice">
-                    ₦25,850<span style={{ fontSize: "1rem" }}>/Month</span>{" "}
-                  </p>
-                  <span>Monthly</span>
-                </div>
-                {plan == "enterprise" && <button>Make the payment</button>}
-              </div>
+            <figure className="regTag">
+              <CategoryRoundedIcon fontSize="small" /> <strong>100%</strong>{" "}
+              Fast & Effortless <strong>Inventory</strong> for All Business
             </figure>
           </div>
-        </div>
-        <div className="regMainDiv regFormData fx-cl">
-          <div className="fx-cl space3">
-            <div className=" regStep fx-ac space2">
-              <figure>Step 2</figure> <h3>Select your account plan</h3>
+          <div className="regMainDiv fx-cl space3">
+            <div className="fx-ac fx-jb space4">
+              <div className=" regStep fx-ac space2">
+                <figure>Step 1</figure> <h3>Select your plan</h3>
+              </div>
             </div>
 
-            <div className="fx-cl space2 ">
-              <div className="fx-ac space2 regFormfloat">
-                <div className="fx-cl spacem">
-                  <div
-                    className="fx-ac space1 regInputCont"
-                    style={{
-                      boxShadow: `${
-                        errors.firstName && "inset 0rem 0rem 0rem 0.1rem red"
-                      }`,
-                    }}
-                  >
-                    <div className="fx-cl">
-                      <label htmlFor="text">First name:</label>
-                      <input
-                        value={appFormData.firstName}
-                        onChange={(event) =>
-                          setAppFormData({ firstName: event.target.value })
-                        }
-                        type="text"
-                        name="first_name"
-                        style={{ borderColor: errors.firstName ? "red" : "" }}
-                      />
+            <div className="regPricing fx-as space2">
+              <figure
+                onClick={() => changePlan("standard")}
+                className={`regPricingCard ${plan == "standard" && "active"} fx-cl bestValue`}
+              >
+                <div className="fx-cl space2">
+                  <div className="fx-ac space1">
+                    <span className="regPlanRadius">&nbsp;</span>
+                    <h5>Standard</h5>
+                  </div>
+                  <div className="fx-cl spacem">
+                    <p className="discountReg">
+                      <span>Yearly ₦2,985</span>
+                      <strong
+                        style={{
+                          color: "#5AC2AE",
+                          backgroundColor: "#EBFFFA",
+                          padding: ".3rem",
+                          borderRadius: ".4rem",
+                        }}
+                      >
+                        SAVE 68%
+                      </strong>
+                    </p>
+                    <p className="regPrice">
+                      ₦3,865<span style={{ fontSize: "1rem" }}>/Month</span>
+                    </p>
+                    <span>Monthly</span>
+                  </div>
+
+                  {plan == "standard" && <button>Make the payment</button>}
+                </div>
+              </figure>
+              <figure
+                onClick={() => changePlan("professional")}
+                className={`regPricingCard ${plan == "professional" && "active"} fx-cl bestValue`}
+              >
+                <span className="bestValueTag">Best value</span>
+                <div className="fx-cl space2">
+                  <div className="fx-ac space1">
+                    <span className="regPlanRadius">&nbsp;</span>
+                    <h5>Professional</h5>
+                  </div>
+                  <div className="fx-cl spacem">
+                    <p className="discountReg">
+                      <span>Yearly -12%</span>
+                      <strong
+                        style={{
+                          color: "#5AC2AE",
+                          backgroundColor: "#EBFFFA",
+                          padding: ".3rem",
+                          borderRadius: ".4rem",
+                        }}
+                      >
+                        SAVE 68%
+                      </strong>
+                    </p>
+                    <p className="regPrice">
+                      ₦5,950<span style={{ fontSize: "1rem" }}>/Month</span>
+                    </p>
+                    <span>Monthly</span>
+                  </div>
+
+                  {plan == "professional" && <button>Make the payment</button>}
+                </div>
+              </figure>
+              <figure
+                onClick={() => changePlan("premium")}
+                className={`regPricingCard ${plan == "premium" && "active"} fx-cl bestValue`}
+              >
+                <div className="fx-cl space2">
+                  <div className="fx-ac space1">
+                    <span className="regPlanRadius">&nbsp;</span>
+                    <h5>Premuim</h5>
+                  </div>
+                  <div className="fx-cl spacem">
+                    <p className="discountReg">
+                      <span>Yearly -12%</span>
+                      <strong
+                        style={{
+                          color: "#5AC2AE",
+                          backgroundColor: "#EBFFFA",
+                          padding: ".3rem",
+                          borderRadius: ".4rem",
+                        }}
+                      >
+                        SAVE 68%
+                      </strong>
+                    </p>
+                    <p className="regPrice">
+                      {" "}
+                      ₦16,500
+                      <span style={{ fontSize: "1rem" }}>/Month</span>{" "}
+                    </p>
+                    <span>Monthly</span>
+                  </div>
+                  {plan == "premium" && <button>Make the payment</button>}
+                </div>
+              </figure>
+              <figure
+                onClick={() => changePlan("enterprise")}
+                className={`regPricingCard enterprise ${plan == "enterprise" && "active"} fx-cl bestValue`}
+              >
+                <span className="bestValueTag ">Advance</span>
+                <div className="fx-cl space2">
+                  <div className="fx-ac space1">
+                    <span className="regPlanRadius">&nbsp;</span>
+                    <h5>Enterprise</h5>
+                  </div>
+                  <div className="fx-cl spacem">
+                    <p className="discountReg">
+                      <span>Yearly -12%</span>
+                      <strong
+                        style={{
+                          color: "#5AC2AE",
+                          backgroundColor: "#EBFFFA",
+                          padding: ".3rem",
+                          borderRadius: ".4rem",
+                        }}
+                      >
+                        SAVE 68%
+                      </strong>
+                    </p>
+                    <p className="regPrice">
+                      ₦25,850
+                      <span style={{ fontSize: "1rem" }}>/Month</span>{" "}
+                    </p>
+                    <span>Monthly</span>
+                  </div>
+                  {plan == "enterprise" && <button>Make the payment</button>}
+                </div>
+              </figure>
+            </div>
+          </div>
+          <div className="regMainDiv regFormData fx-cl">
+            <div className="fx-cl space3">
+              <div className=" regStep fx-ac space2">
+                <figure>Step 2</figure> <h3>Select your account plan</h3>
+              </div>
+
+              <div className="fx-cl space2 ">
+                <div className="fx-ac space2 regFormfloat">
+                  <div className="fx-cl spacem">
+                    <div
+                      className="fx-ac space1 regInputCont"
+                      style={{
+                        boxShadow: `${
+                          errors.firstName && "inset 0rem 0rem 0rem 0.1rem red"
+                        }`,
+                      }}
+                    >
+                      <div className="fx-cl">
+                        <label htmlFor="text">First name:</label>
+                        <input
+                          value={registrationData.firstName}
+                          onChange={(event) =>
+                            setRegistrationData({
+                              firstName: event.target.value,
+                            })
+                          }
+                          type="text"
+                          name="first_name"
+                          style={{ borderColor: errors.firstName ? "red" : "" }}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="fx-cl spacem">
-                  <div
-                    className="fx-cl space1 regInputCont"
-                    style={{
-                      boxShadow: `${
-                        errors.surName && "inset 0rem 0rem 0rem 0.1rem red"
-                      }`,
-                    }}
-                  >
-                    <div className="fx-cl">
-                      <label htmlFor="text">Sur name:</label>
-                      <input
-                        value={appFormData.surName}
-                        onChange={(event) =>
-                          setAppFormData({ surName: event.target.value })
-                        }
-                        type="text"
-                        name="sur_name"
-                        style={{ borderColor: errors.surName ? "red" : "" }}
-                      />
-                    </div>
-                    {/* {errors.surName && (
+                  <div className="fx-cl spacem">
+                    <div
+                      className="fx-cl space1 regInputCont"
+                      style={{
+                        boxShadow: `${
+                          errors.surName && "inset 0rem 0rem 0rem 0.1rem red"
+                        }`,
+                      }}
+                    >
+                      <div className="fx-cl">
+                        <label htmlFor="text">Sur name:</label>
+                        <input
+                          value={registrationData.surName}
+                          onChange={(event) =>
+                            setRegistrationData({ surName: event.target.value })
+                          }
+                          type="text"
+                          name="sur_name"
+                          style={{ borderColor: errors.surName ? "red" : "" }}
+                        />
+                      </div>
+                      {/* {errors.surName && (
                 <div style={{ color: "red" }}>{errors.surName}</div>
               )} */}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="fx-ac space2 regFormfloat">
-                <div className="fx-cl spacem">
-                  <label htmlFor="text">Other name:</label>
-                  <div className="fx-ac space1 regInputCont ">
-                    <input
-                      value={appFormData.otherName}
-                      onChange={(event) =>
-                        setAppFormData({ otherName: event.target.value })
-                      }
-                      type="text"
-                      name="other_name"
-                      style={{ borderColor: errors.otherName ? "red" : "" }}
-                    />
+                <div className="fx-ac space2 regFormfloat">
+                  <div className="fx-cl spacem">
+                    <label htmlFor="text">Other name:</label>
+                    <div className="fx-ac space1 regInputCont ">
+                      <input
+                        value={registrationData.otherName}
+                        onChange={(event) =>
+                          setRegistrationData({ otherName: event.target.value })
+                        }
+                        type="text"
+                        name="other_name"
+                        style={{ borderColor: errors.otherName ? "red" : "" }}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="fx-cl spacem">
-                  <label htmlFor="text">Gender:</label>
-                  <div
-                    className="fx-ac space1 regInputCont fx-cl"
-                    style={{
-                      boxShadow: `${
-                        errors.gender && "inset 0rem 0rem 0rem 0.1rem red"
-                      }`,
-                    }}
-                  >
-                    <select
-                      value={appFormData.gender}
-                      onChange={(event) =>
-                        setAppFormData({ gender: event.target.value })
-                      }
-                      name="gender"
-                      // style={{ borderColor: errors.gender ? "red" : "" }}
+                  <div className="fx-cl spacem">
+                    <label htmlFor="text">Gender:</label>
+                    <div
+                      className="fx-ac space1 regInputCont fx-ac"
+                      style={{
+                        boxShadow: `${
+                          errors.gender && "inset 0rem 0rem 0rem 0.1rem red"
+                        }`,
+                      }}
                     >
-                      <option value="" disabled hidden>
-                        Select gender
-                      </option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                    </select>
-                    {/* {errors.gender && (
+                      <div className="registrantions-page-limit">
+                        <button
+                          className="fs5 fx-ac spacem"
+                          onClick={() => setOpenGender(!openGender)}
+                        >
+                          {registrationData.gender === "male" && (
+                            <Person2Icon style={{ fontSize: "2.8rem" }} />
+                          )}
+                          {registrationData.gender === "female" && (
+                            <Face4Icon style={{ fontSize: "2.8rem" }} />
+                          )}
+                          {!registrationData?.gender
+                            ? "Select gender ▾"
+                            : registrationData?.gender}
+                        </button>
+
+                        {openGender && (
+                          <ul
+                            ref={wrapperRef}
+                            className="registrantions-limit-dropdown"
+                          >
+                            <li
+                              key="01-male"
+                              onClick={() => {
+                                setRegistrationData({
+                                  gender: "male",
+                                });
+                                setOpenGender(false);
+                              }}
+                              className="registrantions-limit-item fx-ac spacem"
+                            >
+                              <Person2Icon style={{ fontSize: "2.8rem" }} />
+                              <span>Male</span>
+                            </li>
+
+                            <li
+                              key="02-female"
+                              onClick={() => {
+                                setRegistrationData({
+                                  gender: "female",
+                                });
+                                setOpenGender(false);
+                              }}
+                              className="registrantions-limit-item fx-ac spacem"
+                            >
+                              <Face4Icon style={{ fontSize: "2.8rem" }} />
+                              <span>Female</span>
+                            </li>
+                          </ul>
+                        )}
+                      </div>
+                      {/* {errors.gender && (
                 <div style={{ color: "red" }}>{errors.gender}</div>
               )} */}
-                  </div>
-                </div>
-              </div>
-              <div className="fx-ac space2 regFormfloat">
-                <div className="fx-cl spacem">
-                  <label htmlFor="text">Email:</label>
-                  <div
-                    className="fx-ac space1 regInputCont"
-                    style={{
-                      boxShadow: `${
-                        errors.email && "inset 0rem 0rem 0rem 0.1rem red"
-                      }`,
-                    }}
-                  >
-                    <input
-                      value={appFormData.email}
-                      onChange={(event) =>
-                        setAppFormData({ email: event.target.value })
-                      }
-                      type="email"
-                      name="email"
-                      style={{ borderColor: errors.email ? "red" : "" }}
-                    />
-                    {/* {errors.email && <div style={{ color: "red" }}>{errors.email}</div>} */}
-                  </div>
-                </div>
-                <div className="fx-cl spacem">
-                  <label htmlFor="text">Phone number:</label>
-                  <div
-                    className="fx-ac space1 regInputCont"
-                    style={{
-                      boxShadow: `${
-                        errors.phone_number && "inset 0rem 0rem 0rem 0.1rem red"
-                      }`,
-                    }}
-                  >
-                    <div className="fx-ac spacem">
-                      <span className="fx-ac">
-                        <div
-                          style={{
-                            backgroundColor: "green",
-                            padding: "0 .2rem",
-                          }}
-                        >
-                          &nbsp;
-                        </div>
-                        <div
-                          style={{
-                            backgroundColor: "#FFFFFF",
-                            padding: "0 .2rem",
-                          }}
-                        >
-                          &nbsp;
-                        </div>
-                        <div
-                          style={{
-                            backgroundColor: "green",
-                            padding: "0 .2rem",
-                          }}
-                        >
-                          &nbsp;
-                        </div>
-                      </span>
-                      <span>+234</span>
                     </div>
-                    <input
-                      value={appFormData.phone_number}
-                      onChange={(event) =>
-                        setAppFormData({ phone_number: event.target.value })
-                      }
-                      type="number"
-                      name="phone_no"
-                    />
-                    {/* {errors.phone_number && (
-              <p className="error">{errors.phone_number}</p>
+                  </div>
+                </div>
+                <div className="fx-ac space2 regFormfloat">
+                  <div className="fx-cl spacem">
+                    <label htmlFor="text">Email:</label>
+                    <div
+                      className="fx-ac space1 regInputCont"
+                      style={{
+                        boxShadow: `${
+                          errors.email && "inset 0rem 0rem 0rem 0.1rem red"
+                        }`,
+                      }}
+                    >
+                      <input
+                        value={registrationData.email}
+                        onChange={(event) =>
+                          setRegistrationData({ email: event.target.value })
+                        }
+                        type="email"
+                        name="email"
+                        style={{ borderColor: errors.email ? "red" : "" }}
+                      />
+                      {/* {errors.email && <div style={{ color: "red" }}>{errors.email}</div>} */}
+                    </div>
+                  </div>
+                  <div className="fx-cl spacem">
+                    <label htmlFor="text">Phone number:</label>
+                    <div
+                      className="fx-ac space1 regInputCont"
+                      style={{
+                        boxShadow: `${
+                          errors.phone && "inset 0rem 0rem 0rem 0.1rem red"
+                        }`,
+                      }}
+                    >
+                      <div className="registrantions-page-limit">
+                        <button
+                          className="registrantions-page-limit-btn fx-ac spacem"
+                          onClick={() => setOpencountryCodes(!opencountryCodes)}
+                        >
+                          <img src={registrationData?.flag} alt="flag" />
+                          {registrationData?.international_dialing_code}
+                          <span className="registrantions-page-limit-arrow">
+                            ▾
+                          </span>
+                        </button>
+
+                        {opencountryCodes && (
+                          <ul
+                            ref={wrapperRef}
+                            className="registrantions-limit-dropdown"
+                          >
+                            <li>
+                              <input
+                                id="searchcountryCode"
+                                type="text"
+                                placeholder="Search country..."
+                                value={searchTermCountries}
+                                onChange={handleSearchCountries}
+                              />
+                            </li>
+
+                            {filteredCountries.length > 0
+                              ? filteredCountries.map((item, index) => (
+                                  <li
+                                    key={index}
+                                    onClick={() => {
+                                      setRegistrationData({
+                                        nationality: item.country,
+                                        international_dialing_code: item.code,
+                                        flag: item.flag,
+                                      });
+                                      setFilteredCountries("");
+                                      setSearchTermCountries("");
+                                      setOpencountryCodes(false);
+                                    }}
+                                    className="registrantions-limit-item"
+                                  >
+                                    <img src={item.flag} alt="flag" />
+                                    <span>
+                                      {item.code}
+                                      {item.country}
+                                    </span>
+                                  </li>
+                                ))
+                              : countriesOnEarth.map((item, index) => (
+                                  <li
+                                    key={index}
+                                    className="registrantions-limit-item fx-ac spacem"
+                                    onClick={() => {
+                                      setRegistrationData({
+                                        nationality: item.country,
+                                        international_dialing_code: item.code,
+                                        flag: item.flag,
+                                      });
+
+                                      setOpencountryCodes(false);
+                                    }}
+                                  >
+                                    <img src={item.flag} alt="flag" />
+                                    <span>
+                                      {item.code}
+                                      {item.country}
+                                    </span>
+                                  </li>
+                                ))}
+                          </ul>
+                        )}
+                      </div>
+
+                      <input
+                        value={registrationData.phone}
+                        onChange={(event) =>
+                          setRegistrationData({
+                            phone: event.target.value,
+                          })
+                        }
+                        type="number"
+                        name="phoneNumber"
+                      />
+                      {/* {errors.phone && (
+              <p className="error">{errors.phone}</p>
             )} */}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="fx-ac space2">
-                <div className="fx-cl fg1 spacem">
-                  <label htmlFor="text">Password:</label>
-                  <div
-                    className="fx-ac space1 regInputCont"
-                    style={{
-                      boxShadow: `${
-                        errors.password && "inset 0rem 0rem 0rem 0.1rem red"
-                      }`,
-                    }}
+                <div className="fx-ac space2">
+                  <div className="fx-cl fg1 spacem">
+                    <label htmlFor="text">Password:</label>
+                    <div
+                      className="fx-ac space1 regInputCont"
+                      style={{
+                        boxShadow: `${
+                          errors.password && "inset 0rem 0rem 0rem 0.1rem red"
+                        }`,
+                      }}
+                    >
+                      <input
+                        value={registrationData.password}
+                        onChange={(event) =>
+                          setRegistrationData({ password: event.target.value })
+                        }
+                        type="password"
+                        name="password"
+                        style={{ borderColor: errors.password ? "red" : "" }}
+                      />
+                      {/* {errors.password && <div style={{ color: "red" }}>{errors.password}</div>} */}
+                    </div>
+                  </div>
+                </div>
+                <div className="fx-jb space2 regFormfloat">
+                  <span>&nbsp;</span>
+                  <button
+                    className="regbtnSubmit"
+                    onClick={() => executeValidation()}
+                    // disabled={isSubmitting}
                   >
-                    <input
-                      value={appFormData.password}
-                      onChange={(event) =>
-                        setAppFormData({ password: event.target.value })
-                      }
-                      type="password"
-                      name="password"
-                      style={{ borderColor: errors.password ? "red" : "" }}
-                    />
-                    {/* {errors.password && <div style={{ color: "red" }}>{errors.password}</div>} */}
-                  </div>
+                    Submit application
+                  </button>
                 </div>
-              </div>
-              <div className="fx-jb space2 regFormfloat">
-                <span>&nbsp;</span>
-                <button
-                  className="regbtnSubmit"
-                  onClick={execute}
-                  disabled={isSubmitting}
-                >
-                  Submit application
-                </button>
-              </div>
 
-              {/* <div className="fx-cl space3">
+                {/* <div className="fx-cl space3">
                 <h2>Industry</h2>
 
                 <select id="Industry" name="Industry">
@@ -1117,7 +1271,7 @@ export default function Registration() {
                   <option value="Other">Other</option>
                 </select>
               </div> */}
-              {/* <div className="fx-cl space3">
+                {/* <div className="fx-cl space3">
                 <h2>Which accounting system are you using?</h2>
                 <select id="Accounting_System__c" name="Accounting_System__c">
                   <option value="">Select...</option>
@@ -1146,8 +1300,8 @@ export default function Registration() {
                   <option value="Unknown">Unknown</option>
                 </select>
               </div> */}
-              {/* STATE AND LOCAL GOVERNMENTS ON NIGERIA */}
-              {/* <div className="fx-jb space2 regFormfloat">
+                {/* STATE AND LOCAL GOVERNMENTS ON NIGERIA */}
+                {/* <div className="fx-jb space2 regFormfloat">
                 <div className="g g2 space1">
                   <div className="fx-cl spacem">
                     <div
@@ -1188,9 +1342,9 @@ export default function Registration() {
                       <label htmlFor="text">LGA:</label>
                       <select
                         disabled={!selectedState}
-                        value={appFormData.lga_address}
+                        value={registrationData.lga_address}
                         onChange={(event) =>
-                          setAppFormData({ lga_address: event.target.value })
+                          setRegistrationData({ lga_address: event.target.value })
                         }
                       >
                         <option value="" hidden>
@@ -1207,60 +1361,36 @@ export default function Registration() {
                 </div>
                 <button
                   className="regbtnSubmit"
-                  onClick={execute}
+                  onClick={executeValidation}
                   disabled={isSubmitting}
                 >
                   Next
                 </button>
               </div> */}
+              </div>
+              <div className="fx-cl">
+                <p>
+                  <strong>
+                    Already have an account?{" "}
+                    <Link to="/clients_login">Sign in</Link>
+                  </strong>
+                </p>
+                Your information is safe with us. We'll only contact when it's
+                required to provide our services.
+              </div>
             </div>
-            <div className="fx-cl">
-              <p>
-                <strong>
-                  Already have an account?{" "}
-                  <Link to="/clients_login">Sign in</Link>
-                </strong>
-              </p>
-              Your information is safe with us. We'll only contact when it's
-              required to provide our services.
+            <CurrencySelection
+              selectedCurrency={selectedCurrency}
+              setSelectedCurrency={setSelectedCurrency}
+            />
+          </div>
+          <div className="regMainDiv regFormData fx-cl">
+            <Checkout />
+
+            <div>
+              aside contents, preferable graphic designed image attracting
             </div>
           </div>
-          <CurrencySelection
-            selectedCurrency={selectedCurrency}
-            setSelectedCurrency={setSelectedCurrency}
-          />
-        </div>
-        <div className="regMainDiv regFormData fx-cl">
-          <Checkout />
-
-          <div>
-            aside contents, preferable graphic designed image attracting
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  return (
-    <>
-      {loading ? <IsLoading /> : null}
-      <section className="fx-cl space3 " id="regCont">
-        {/* <header className="RegformHeader fx-ac fx-jb space4">
-          <figure style={{ maxWidth: "10rem" }}>
-            <img src={SPLogo} alt="" />
-          </figure>
-
-          <div className="language">
-            icon
-            <select name="" id="`">
-              <option value="English">English</option>
-              <option value="Hausa">Hausa</option>
-            </select>
-          </div>
-        </header> */}
-
-        <div className="fx-jc">
-          <RegFormFilling />
         </div>
       </section>
     </>
@@ -1286,8 +1416,6 @@ function CurrencySelection({ selectedCurrency, setSelectedCurrency }) {
       }
     });
   };
-
-  console.log(selectedCurrency);
 
   const currency = [
     {

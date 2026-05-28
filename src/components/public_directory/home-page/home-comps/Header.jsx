@@ -25,11 +25,11 @@ export default function Header() {
   const navItems = [
     {
       title: "Features",
-      dropdown: ["Principal", "Vice Principal", "Departments"],
+      dropDownContent: <FeaturesDropdown />,
     },
     {
       title: "Solutions",
-      dropdown: ["Programs", "Curriculum", "Calendar"],
+      dropDownContent: <SolutionDropdown />,
     },
     {
       title: "Enterprise",
@@ -37,10 +37,7 @@ export default function Header() {
     },
     {
       title: "Learn",
-      dropdown: [
-        { label: "New Registration", link: "/create_new_account" },
-        { label: "Track Status", link: "#" },
-      ],
+      dropDownContent: <LearningDropdown />,
     },
     {
       title: "Pricing",
@@ -48,13 +45,7 @@ export default function Header() {
     },
     {
       title: "Company",
-      dropdown: [
-        { label: "Career", link: "/institution/instructor-login" },
-        { label: "Agent", link: "/agent_unit/login" },
-        { label: "Become Affiliate", link: "/learners/parent-login" },
-        { label: "About Company", link: "/executive/login" },
-        { label: "Contact Us", link: "/administration/admin_login" },
-      ],
+      dropDownContent: <CompanyDropdown />,
     },
     {
       title: "Sign Up",
@@ -71,17 +62,9 @@ export default function Header() {
               <img src={Logo} alt="uni logo" />
             </div>
 
-            <button className="mobile-menu-toggle" onClick={toggleMobileMenu}>
-              ☰
-            </button>
-
             <ul className={`nav-links fx-ac ${mobileOpen ? "active" : ""}`}>
               {navItems.map((item, i) => (
-                <li
-                  key={i}
-                  className="dropdown"
-                  onMouseEnter={() => setOpenIndex(i)}
-                >
+                <li key={i} className="dropDownBtn fx-cl">
                   <Link to={item.link || "#"} className="fx-ac">
                     <span>{item.title} </span>
                     {item.title === "Features" ||
@@ -96,6 +79,7 @@ export default function Header() {
                       </span>
                     ) : null}
                   </Link>
+                  {item.dropDownContent}
                 </li>
               ))}
             </ul>
@@ -129,25 +113,6 @@ export default function Header() {
           </div>
         </div>
       </nav>
-
-      {/* DROPDOWN INSIDE CONTAINER */}
-      {openIndex !== null && navItems[openIndex]?.dropdown && (
-        <>
-          {navItems[openIndex].title === "Features" && (
-            <FeaturesDropdown setOpenIndex={setOpenIndex} />
-          )}
-          {navItems[openIndex].title === "Solutions" && (
-            <SolutionDropdown setOpenIndex={setOpenIndex} />
-          )}
-          {navItems[openIndex].title === "Learn" && (
-            <LearningDropdown setOpenIndex={setOpenIndex} />
-          )}
-          {navItems[openIndex].title === "Company" && (
-            <CompanyDropdown setOpenIndex={setOpenIndex} />
-          )}
-          {/* Add similar conditions for other dropdowns if needed */}
-        </>
-      )}
     </div>
   );
 }

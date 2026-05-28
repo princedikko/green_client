@@ -1,0 +1,30 @@
+.sectionAccountPage header {
+  padding: 2.4rem 4.6rem;
+  border-bottom: 1px solid var(--gray);
+}
+
+.sectionAccountPage main {
+  grid-template-columns: 1fr 3fr;
+  gap: 2rem;
+  align-items: start;
+  padding: 3.2rem 4.6rem;
+}
+
+.sectionAccountPage main aside {
+  border: 3px solid #ede9e9;
+  border-radius: 3rem;
+  padding: 4.6rem;
+}
+.sectionAccountPage main aside #profile-summary {
+  background-color: #333;
+  color: #fff;
+  padding: 1.1rem 5.2rem;
+  border-radius: 0.8rem;
+  font-weight: 600;
+}
+
+.accountCompClient {
+  border: 3px solid #ede9e9;
+  border-radius: 3rem;
+  padding: 4.6rem;
+}

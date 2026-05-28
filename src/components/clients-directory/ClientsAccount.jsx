@@ -81,7 +81,7 @@ export default function ClientsAccount() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const data = useSelector(
-    (state) => state.clientFunction?.queue?.clientData?.info,
+    (state) => state.clientFunction?.queue?.clientData?.clientInfo,
   );
 
   console.log(data);
@@ -670,7 +670,7 @@ export default function ClientsAccount() {
               onClick={() => handleNavigator("account")}
             >
               <figure className="clientDp fx-ac">
-                <img src={data?.profile?.photoURL} alt="" />
+                <img src={data?.owner?.files?.profilImage} alt="" />
               </figure>
               <p className="fx-cl spacem" style={{ fontSize: "1.6rem" }}>
                 <h3>Sokoto State Mall</h3>

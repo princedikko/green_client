@@ -230,3 +230,79 @@
   background-color: #e0e0e0;
   border-radius: 0.7rem;
 }
+
+/* BRANDS DROPDWN BTN DECORATION */
+.registrantions-page-limit {
+  position: relative;
+}
+
+.productsCardWH h4 {
+  font-size: 1.1rem;
+  font-family: cursive;
+}
+.registrantions-page-limit-btn {
+  width: 100%;
+  cursor: pointer;
+}
+
+.registrantions-page-limit-arrow {
+  font-size: 12px;
+}
+
+.registrantions-limit-dropdown {
+  backdrop-filter: blur(15px);
+  color: #fff;
+  font-weight: 500;
+  font-size: 1.6rem;
+  position: absolute;
+  left: -2.2rem;
+  top: 4rem;
+  background: rgba(13, 66, 104, 0.56);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  overflow: hidden;
+  /* overflow-x: scroll; */
+  width: 22rem;
+  z-index: 10;
+  max-height: 30rem;
+  overflow-y: scroll;
+}
+
+.registrantions-limit-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.registrantions-limit-item:hover {
+  background: rgba(153, 191, 251, 0.188);
+  box-shadow: inset 0rem 0rem 0.2rem 0rem #ddd;
+  color: #fff;
+}
+
+.registrantions-limit-item img {
+  width: 3.2rem;
+  height: 1.9rem;
+  border-radius: 0.5rem;
+}
+.registrantions-page-limit-btn img {
+  width: 3.2rem;
+  height: 1.9rem;
+  border-radius: 0.5rem;
+}
+#searchcountryCode {
+  width: 100%;
+  font-size: 1.7rem;
+  background: rgba(153, 191, 251, 0.188);
+  box-shadow: inset 0rem 0rem 0.2rem 0rem #ddd;
+  color: #ffffff;
+  padding: 0.6rem 0.8rem;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+#searchcountryCode::placeholder {
+  color: #fff;
+  font-weight: 300;
+}

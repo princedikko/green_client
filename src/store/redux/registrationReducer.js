@@ -5,24 +5,9 @@ export const appFormReducer = createSlice({
   name: "appForm_store",
   initialState: {
     isAuthenticated: false,
-    firstDATA: {},
-    secondDATA: {},
     finalForm: {},
   },
   reducers: {
-    startappFormAction: (state, action) => {
-      return {
-        ...state,
-        firstDATA: action.payload,
-        secondDATA: {},
-      };
-    },
-    startappFormCont: (state, action) => {
-      return {
-        ...state,
-        secondDATA: action.payload,
-      };
-    },
     authenticateApplicant: (state, action) => {
       return {
         ...state,
@@ -38,11 +23,7 @@ export const appFormReducer = createSlice({
   },
 });
 
-export const {
-  startappFormAction,
-  startappFormCont,
-  continueAppForm,
-  authenticateApplicant,
-} = appFormReducer.actions;
+export const { continueAppForm, authenticateApplicant } =
+  appFormReducer.actions;
 
 export default appFormReducer.reducer;

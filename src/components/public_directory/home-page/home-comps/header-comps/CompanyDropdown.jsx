@@ -1,4 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import "./companyDropdown.css";
+import OnlineImage from "../homepage_images/sales.jpg";
+import OnlineImage1 from "../homepage_images/sales1.jpg";
+import OnlineImage2 from "../homepage_images/sales2.jpg";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
 import HandshakeOutlinedIcon from "@mui/icons-material/HandshakeOutlined";
@@ -74,44 +78,98 @@ export default function CompanyDropdown({ setOpenIndex }) {
     },
   ];
   return (
-    <section
-      className="sectionCompanyDropdown fx-cl fx-ac space6"
-      onMouseLeave={() => setOpenIndex(null)}
-    >
-      <div className="fx-cl pd3 space6" style={{ maxWidth: "130rem" }}>
-        {companyDropdownData.map((group, index) => (
-          <div key={index} className={`fx-cl space4 ${group.class || ""}`}>
-            {/* Section Header */}
-            <div className="fx-cl spacem">
-              <span className="fs6 fw600">{group.section}</span>
+    <section className="dropDownContent companyDrpdWrap">
+      <div className="companyDrpdFlot">
+        <div className="companyDrpdFlotDesc fx-cl space1">
+          <h3 className="fs4 fw600">Universe Inventory</h3>
+          <p className="fx-cl fs3 lh3">
+            <span>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi
+              mollitia vel repellat iur
+            </span>
+          </p>
+          <Link>
+            Know more <span>→</span>
+          </Link>
+        </div>
+        <div className="companyDrpdFlotContents fx-cl">
+          {companyDropdownData.map((group, index) => (
+            <div key={index} className={` ${group.class || ""}`}>
+              {/* Section Header */}
+              <div className="fx-cl spacem">
+                {group.description && (
+                  <p className="fs4">{group.description}</p>
+                )}
+              </div>
 
-              {group.description && <p className="fs4">{group.description}</p>}
-            </div>
+              {/* Items Grid */}
+              <div className="g g2">
+                {group.items.map((item, i) => (
+                  <div
+                    key={i}
+                    className="companyDropdwnCard fx-as space2 cp"
+                    onClick={() => redirect(item.link)}
+                  >
+                    {/* Content */}
+                    <div className="fx-cl spacem">
+                      <div className="compDrpCardHead fx-ac spacem">
+                        {/* Icon */}
+                        <div className="fx-ac fx-jc">
+                          <span className="fs7">{item.icon}</span>
+                        </div>
+                        <h4 className="fs5 fw500">{item.title}</h4>
+                      </div>
 
-            {/* Items Grid */}
-            <div className="g g3 space2">
-              {group.items.map((item, i) => (
-                <div
-                  key={i}
-                  className="solutionsDropdwnCard fx-as space2 cp"
-                  onClick={() => redirect(item.link)}
-                >
-                  {/* Icon */}
-                  <div className="fx-ac fx-jc">
-                    <span className="fs7">{item.icon}</span>
+                      {item.desc && <p className="fs4">{item.desc}</p>}
+                    </div>
                   </div>
-
-                  {/* Content */}
-                  <div className="fx-cl spacem">
-                    <h4 className="fs5 fw500">{item.title}</h4>
-
-                    {item.desc && <p className="fs4">{item.desc}</p>}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
+          ))}
+        </div>
+        <div className="companyDrpdFlotCards fx-cl space6">
+          <div className="companyDrpdFlotCardsCont fx-cl space2">
+            <figure className="fx-ac space1">
+              <img src={OnlineImage} alt="" />
+              <div className="fx-cl fx-as space1">
+                <p className="fs3 fw500 lh2">
+                  Why Enterprises should adop Cloud-Base ICT Services
+                </p>
+                <button>
+                  <span>Learn more</span>
+                  <span>→</span>
+                </button>
+              </div>
+            </figure>
+            <figure className="fx-ac space1">
+              <img src={OnlineImage2} alt="" />
+              <div className="fx-cl fx-as space1">
+                <p className="fs3 fw500 lh2">
+                  Using Automation in Business Management saves over 95% more
+                  time.
+                </p>
+                <button>
+                  <span>Learn more</span>
+                  <span>→</span>
+                </button>
+              </div>
+            </figure>
+            <figure className="fx-ac space1">
+              <img src={OnlineImage1} alt="" />
+              <div className="fx-cl fx-as space1">
+                <p className="fs3 fw500 lh2">
+                  Using Automation in Business Management saves over 95% more
+                  time.
+                </p>
+                <button>
+                  <span>Learn more</span>
+                  <span>→</span>
+                </button>
+              </div>
+            </figure>
           </div>
-        ))}
+        </div>
       </div>
     </section>
   );

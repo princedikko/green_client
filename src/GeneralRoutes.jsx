@@ -44,6 +44,7 @@ import ProvisionStoreDetailPage from "./components/public_directory/destination-
 import FurnituresDetailPage from "./components/public_directory/destination-pages/FurnituresDetailPage";
 import ElectronicsDetailPage from "./components/public_directory/destination-pages/ElectronicsDetailPage";
 import WholesaleDetailPage from "./components/public_directory/destination-pages/WholesaleDetailPage";
+import AccountContext from "./components/clients-directory/client-account-pages/AccountsContext";
 
 const greenRoutes = [
   // PUBLIC ROUTES
@@ -298,6 +299,12 @@ const greenRoutes = [
     path: `/clients/:id/account/data_printing`,
     name: "POS_terminal",
     element: <CLIENTPrinting />,
+    isClient: true,
+  },
+  {
+    path: `/clients/:id/account/info`,
+    name: "POS_terminal",
+    element: <AccountContext />,
     isClient: true,
   },
 
