@@ -55,7 +55,7 @@ export default function ClientsLogin() {
             variant: "success",
             autoHideDuration: 3000,
           });
-          redirect(`/clients/${response.data?.info?._id}/account`);
+          redirect(`/clients/${response.data?.clientInfo?._id}/account`);
         } else if (response?.data.status === 401) {
           enqueueSnackbar(`${response?.data.message}`, {
             variant: "error",

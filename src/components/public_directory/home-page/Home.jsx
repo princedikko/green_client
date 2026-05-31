@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 import IsLoading from "../../../IsLoading";
 // IMPORTING COMPONENTS_______________________
@@ -21,6 +22,12 @@ import PricingCTA from "../public-routs-comps/home-comps/PrincingCTA";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
+  const clientData = useSelector(
+    (state) => state.clientFunction?.queue?.clientData?.clientInfo,
+  );
+  const isAuthenticated = useSelector(
+    (state) => state.clientFunction?.isAuthenticated,
+  );
 
   const { t, i18n } = useTranslation();
   useEffect(() => {

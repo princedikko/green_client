@@ -1,20 +1,22 @@
 import { useState, useReducer, useEffect, useRef } from "react";
-import { countriesOnEarth } from "./registrationStatesAndLGA.js";
 import { FlutterWaveButton, closePaymentModal } from "flutterwave-react-v3";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import SPLogo from "./skillpoint.png";
-import * as Action from "../../../store/redux/registrationReducer.js";
+import SPLogo from "../skillpoint.png";
+import * as Action from "../../../../store/redux/registrationReducer.js";
 
 import axios from "axios";
-import "./registration.css";
-import Logo from "../public-routes-images/logos/Manga_Cons _Logo3.png";
-import IsLoading from "../../../IsLoading";
+import "./regAdditionalSetup.css";
+import Logo from "../../public-routes-images/logos/Manga_Cons _Logo3.png";
+import IsLoading from "../../../../IsLoading";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { statesAndLgas } from "./registrationStatesAndLGA.js";
+import {
+  statesAndLgas,
+  countriesOnEarth,
+} from "../registrationStatesAndLGA.js";
 
 // imported icon
 
@@ -28,7 +30,7 @@ import SchoolIcon from "@mui/icons-material/School";
 
 let newClient;
 
-export default function Registration() {
+export default function RegAdditionalSetup() {
   const wrapperRef = useRef(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();

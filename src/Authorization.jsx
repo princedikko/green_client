@@ -23,6 +23,9 @@ export default function Authorization() {
   const clientAuth = useSelector(
     (state) => state.clientFunction.isAuthenticated,
   );
+  const clientId = useSelector(
+    (state) => state.clientFunction?.queue?.clientData?.clientInfo?._id,
+  );
 
   return (
     <Routes>
@@ -105,6 +108,20 @@ export default function Authorization() {
               path={req.path}
               element={
                 clientAuth ? req.element : <Navigate to="/clients_login" />
+              }
+              key={index}
+            />
+          );
+        } else if (req.isClientGuest) {
+          return (
+            <Route
+              path={req.path}
+              element={
+                clientAuth ? (
+                  <Navigate to={`/clients/${clientId}/account`} replace />
+                ) : (
+                  req.element
+                )
               }
               key={index}
             />

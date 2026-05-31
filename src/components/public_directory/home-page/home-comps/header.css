@@ -118,3 +118,39 @@
   color: #293a34;
   font-weight: 600;
 }
+
+.notificationWrapper {
+  position: relative;
+}
+
+.notificationDot {
+  position: absolute;
+  top: -2px;
+  right: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 99rem;
+  background: #a435f0;
+}
+
+.profileDropdown {
+  width: 32rem;
+  background: #1f2229;
+  padding: 2rem;
+  border-radius: 1.2rem;
+}
+
+.profileMenuItem {
+  padding: 1rem 0;
+  cursor: pointer;
+}
+
+.upgradeBtn {
+  border: none;
+  padding: 1.2rem;
+  border-radius: 0.8rem;
+  background: #e8b05d;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}

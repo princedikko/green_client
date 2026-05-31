@@ -478,233 +478,235 @@ export default function PricingPage() {
     },
   ];
   return (
-    <div className="pricing-container fx-cl fx-ac space5">
+    <section className="fx-cl space6">
       <Header />
-      <div className="fx-cl space2">
-        <h1 className="title">Start Your Inventory Management Today</h1>
-        <p className="subtitle">
-          Transform how your business does inventory with our powerful system.
-        </p>
-      </div>
-      <div className="fx-ac fx-jc">
-        <div className="pricingBtnPln fx-ac fx-jc space3">
-          <button
-            className={billingCycle === "monthly" ? "active" : ""}
-            onClick={() => setBillingCycle("monthly")}
-          >
-            Monthly
-          </button>
-          <button
-            className={billingCycle === "yearly" ? "active" : ""}
-            onClick={() => setBillingCycle("yearly")}
-          >
-            Annually <span className="pricingDiscount">-20%</span>
-          </button>
+
+      <div className="pricing-container fx-cl fx-ac space5">
+        <div className="fx-cl space2">
+          <h1 className="title">Start Your Inventory Management Today</h1>
+          <p className="subtitle">
+            Transform how your business does inventory with our powerful system.
+          </p>
         </div>
-      </div>
+        <div className="fx-ac fx-jc">
+          <div className="pricingBtnPln fx-ac fx-jc space3">
+            <button
+              className={billingCycle === "monthly" ? "active" : ""}
+              onClick={() => setBillingCycle("monthly")}
+            >
+              Monthly
+            </button>
+            <button
+              className={billingCycle === "yearly" ? "active" : ""}
+              onClick={() => setBillingCycle("yearly")}
+            >
+              Annually <span className="pricingDiscount">-20%</span>
+            </button>
+          </div>
+        </div>
 
-      {/* PRICING CARDS */}
+        {/* PRICING CARDS */}
 
-      <div className="pricing-grid">
-        {plans.map((plan, index) => (
-          <div
-            key={index}
-            className={`pricing-card ${plan.class} fx-cl fx-jb space2 ${plan.highlight ? "highlight" : ""}`}
-          >
-            {plan.tag && <div className="tag">{plan.tag}</div>}
-            <div className="fx-cl space2">
-              <h3>{plan.name}</h3>
-              <div className="fx-cl spacem">
-                <div className="price fx-ac fx-jc spacem">
-                  <span className="actualPrice">
-                    ₦
-                    {billingCycle === "yearly"
-                      ? ((plan.priceYearly * 80) / 100).toLocaleString()
-                      : plan.priceMonthly?.toLocaleString()}
-                  </span>
-                  <span className="pastPrice fx-cl">
-                    <span style={{ textDecoration: "line-through" }}>
+        <div className="pricing-grid">
+          {plans.map((plan, index) => (
+            <div
+              key={index}
+              className={`pricing-card ${plan.class} fx-cl fx-jb space2 ${plan.highlight ? "highlight" : ""}`}
+            >
+              {plan.tag && <div className="tag">{plan.tag}</div>}
+              <div className="fx-cl space2">
+                <h3>{plan.name}</h3>
+                <div className="fx-cl spacem">
+                  <div className="price fx-ac fx-jc spacem">
+                    <span className="actualPrice">
                       ₦
                       {billingCycle === "yearly"
-                        ? (plan.actualPrice * 12).toLocaleString()
-                        : plan.actualPrice?.toLocaleString()}
+                        ? ((plan.priceYearly * 80) / 100).toLocaleString()
+                        : plan.priceMonthly?.toLocaleString()}
                     </span>
-                    <span>{plan.currency}</span>
+                    <span className="pastPrice fx-cl">
+                      <span style={{ textDecoration: "line-through" }}>
+                        ₦
+                        {billingCycle === "yearly"
+                          ? (plan.actualPrice * 12).toLocaleString()
+                          : plan.actualPrice?.toLocaleString()}
+                      </span>
+                      <span>{plan.currency}</span>
+                    </span>
+                  </div>
+                  <div className="fx-ac fx-jc spacem">
+                    <figure className="perOff">{plan.discount}</figure>
+                  </div>
+                </div>
+                <p className="users">
+                  {billingCycle === "yearly"
+                    ? `Billed annually, save ₦${(
+                        Math.round(((plan.priceYearly * 20) / 100) * 100) / 100
+                      ).toLocaleString()}`
+                    : "Billed monthly"}
+                </p>
+                <button
+                  className="planExecuteBtn"
+                  onClick={() =>
+                    redirect(
+                      `/create_new_account?plan=${encodeURIComponent(plan.name.toLowerCase())}&serviceId=${encodeURIComponent(plan.serviceId)}`,
+                    )
+                  }
+                >
+                  {plan.actionBtn}
+                </button>
+              </div>
+
+              <div className="fx-cl space6 fg1 fx-jb">
+                <div className="fx-cl spacem">
+                  <span className="planDiscHeading">
+                    Everything in Standard plus
                   </span>
+                  <ul>
+                    {plan.features.map((f, i) => (
+                      <li key={i} className="fx-ac spacem">
+                        <figure className="featuresIcon">{f.logo}</figure>
+                        <span className="featuresDisc">{f.discription}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <div className="fx-ac fx-jc spacem">
-                  <figure className="perOff">{plan.discount}</figure>
-                </div>
+
+                <p className="prcFooter">{plan.footer}</p>
               </div>
-              <p className="users">
-                {billingCycle === "yearly"
-                  ? `Billed annually, save ₦${(
-                      Math.round(((plan.priceYearly * 20) / 100) * 100) / 100
-                    ).toLocaleString()}`
-                  : "Billed monthly"}
-              </p>
-              <button
-                className="planExecuteBtn"
-                onClick={() =>
-                  redirect(
-                    `/create_new_account?plan=${encodeURIComponent(plan.name.toLowerCase())}&serviceId=${encodeURIComponent(plan.serviceId)}`,
-                  )
-                }
-              >
-                {plan.actionBtn}
-              </button>
             </div>
-
-            <div className="fx-cl space6 fg1 fx-jb">
-              <div className="fx-cl spacem">
-                <span className="planDiscHeading">
-                  Everything in Standard plus
-                </span>
-                <ul>
-                  {plan.features.map((f, i) => (
-                    <li key={i} className="fx-ac spacem">
-                      <figure className="featuresIcon">{f.logo}</figure>
-                      <span className="featuresDisc">{f.discription}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <p className="prcFooter">{plan.footer}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* COMPARISON TABLE */}
-      <div
-        className="fx-cl space6"
-        style={{ padding: "0rem 2.4rem", width: "90%" }}
-      >
-        <div className="compare-title fx-cl spacem fx-jc">
-          <h2 className="compare-title-btn">Compare Plans</h2>
-          <p className="fs7">See how our plans compare side by side.</p>
+          ))}
         </div>
-        <div className="fx-cl space3">
-          <div className="tableHeaderPrices">
-            <span style={{ fontstyle: "italic" }}>
-              Manage your business inventory with smart tools designed for
-              speed, accuracy, and growth — all in one powerful platform.
-            </span>
-            <div className="tableHeaderPricesCard fx-cl fx-ac space1">
-              <span>
-                <strong>Standard</strong>
-              </span>
-              <span>₦3,865.5/mo</span>
-              <button
-                className="planExecuteBtn"
-                onClick={() =>
-                  redirect(
-                    `/create_new_account?plan=${encodeURIComponent("standard")}&serviceId=${encodeURIComponent("347987sdafsdfa8afa")}`,
-                  )
-                }
-              >
-                Select Plan
-              </button>
-            </div>
-            <div className="tableHeaderPricesCard fx-cl fx-ac space1">
-              <span>
-                <strong>Professional</strong>
-              </span>
-              <span>₦3,865.5/mo</span>
-              <button
-                className="planExecuteBtn"
-                onClick={() =>
-                  redirect(
-                    `/create_new_account?plan=${encodeURIComponent("professional")}&serviceId=${encodeURIComponent("347987sdafsdfa8afa")}`,
-                  )
-                }
-              >
-                Select Plan
-              </button>
-            </div>
-            <div className="tableHeaderPricesCard fx-cl fx-ac space1">
-              <span>
-                <strong>Premium</strong>
-              </span>
-              <span>₦3,865.5/mo</span>
-              <button
-                className="planExecuteBtn"
-                onClick={() =>
-                  redirect(
-                    `/create_new_account?plan=${encodeURIComponent("premium")}&serviceId=${encodeURIComponent("347987sdafsdfa8afa")}`,
-                  )
-                }
-              >
-                Select Plan
-              </button>
-            </div>
-            <div className="tableHeaderPricesCard fx-cl fx-ac space1">
-              <span>
-                <strong>Enterprise</strong>
-              </span>
-              <span>₦3,865.5/mo</span>
-              <button
-                className="planExecuteBtn"
-                onClick={() =>
-                  redirect(
-                    `/create_new_account?plan=${encodeURIComponent("enterprise")}&serviceId=${encodeURIComponent("347987sdafsdfa8afa")}`,
-                  )
-                }
-              >
-                Select Plan
-              </button>
-            </div>
-          </div>
 
-          <table className="compare-table">
-            <thead>
-              {/* <tr>
+        {/* COMPARISON TABLE */}
+        <div
+          className="fx-cl space6"
+          style={{ padding: "0rem 2.4rem", width: "90%" }}
+        >
+          <div className="compare-title fx-cl spacem fx-jc">
+            <h2 className="compare-title-btn">Compare Plans</h2>
+            <p className="fs7">See how our plans compare side by side.</p>
+          </div>
+          <div className="fx-cl space3">
+            <div className="tableHeaderPrices">
+              <span style={{ fontstyle: "italic" }}>
+                Manage your business inventory with smart tools designed for
+                speed, accuracy, and growth — all in one powerful platform.
+              </span>
+              <div className="tableHeaderPricesCard fx-cl fx-ac space1">
+                <span>
+                  <strong>Standard</strong>
+                </span>
+                <span>₦3,865.5/mo</span>
+                <button
+                  className="planExecuteBtn"
+                  onClick={() =>
+                    redirect(
+                      `/create_new_account?plan=${encodeURIComponent("standard")}&serviceId=${encodeURIComponent("347987sdafsdfa8afa")}`,
+                    )
+                  }
+                >
+                  Select Plan
+                </button>
+              </div>
+              <div className="tableHeaderPricesCard fx-cl fx-ac space1">
+                <span>
+                  <strong>Professional</strong>
+                </span>
+                <span>₦3,865.5/mo</span>
+                <button
+                  className="planExecuteBtn"
+                  onClick={() =>
+                    redirect(
+                      `/create_new_account?plan=${encodeURIComponent("professional")}&serviceId=${encodeURIComponent("347987sdafsdfa8afa")}`,
+                    )
+                  }
+                >
+                  Select Plan
+                </button>
+              </div>
+              <div className="tableHeaderPricesCard fx-cl fx-ac space1">
+                <span>
+                  <strong>Premium</strong>
+                </span>
+                <span>₦3,865.5/mo</span>
+                <button
+                  className="planExecuteBtn"
+                  onClick={() =>
+                    redirect(
+                      `/create_new_account?plan=${encodeURIComponent("premium")}&serviceId=${encodeURIComponent("347987sdafsdfa8afa")}`,
+                    )
+                  }
+                >
+                  Select Plan
+                </button>
+              </div>
+              <div className="tableHeaderPricesCard fx-cl fx-ac space1">
+                <span>
+                  <strong>Enterprise</strong>
+                </span>
+                <span>₦3,865.5/mo</span>
+                <button
+                  className="planExecuteBtn"
+                  onClick={() =>
+                    redirect(
+                      `/create_new_account?plan=${encodeURIComponent("enterprise")}&serviceId=${encodeURIComponent("347987sdafsdfa8afa")}`,
+                    )
+                  }
+                >
+                  Select Plan
+                </button>
+              </div>
+            </div>
+
+            <table className="compare-table">
+              <thead>
+                {/* <tr>
                 <th>Feature</th>
                 {plans.map((plan, index) => (
                   <th key={index}>{plan.name}</th>
                 ))}
               </tr> */}
-            </thead>
+              </thead>
 
-            <tbody>
-              {comparisonSections.map((section, sectionIndex) => (
-                <React.Fragment key={sectionIndex}>
-                  {/* Heading Row */}
-                  <tr className="pricingHeadInTable">
-                    <td colSpan={6}>{section.heading}</td>
-                  </tr>
-
-                  {/* Feature Rows */}
-                  {section.rows.map((row, rowIndex) => (
-                    <tr key={rowIndex}>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-2">
-                          <span>{row.title}</span>
-
-                          {row.badge && (
-                            <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded">
-                              {row.badge}
-                            </span>
-                          )}
-                        </div>
-                      </td>
-
-                      {row.values.map((val, i) => (
-                        <td key={i} className="text-center px-4 py-3">
-                          {val || <RemoveIcon />}
-                        </td>
-                      ))}
+              <tbody>
+                {comparisonSections.map((section, sectionIndex) => (
+                  <React.Fragment key={sectionIndex}>
+                    {/* Heading Row */}
+                    <tr className="pricingHeadInTable">
+                      <td colSpan={6}>{section.heading}</td>
                     </tr>
-                  ))}
-                </React.Fragment>
-              ))}
-            </tbody>
-          </table>
+
+                    {/* Feature Rows */}
+                    {section.rows.map((row, rowIndex) => (
+                      <tr key={rowIndex}>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            <span>{row.title}</span>
+
+                            {row.badge && (
+                              <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded">
+                                {row.badge}
+                              </span>
+                            )}
+                          </div>
+                        </td>
+
+                        {row.values.map((val, i) => (
+                          <td key={i} className="text-center px-4 py-3">
+                            {val || <RemoveIcon />}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </React.Fragment>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-
       <Footer />
-    </div>
+    </section>
   );
 }

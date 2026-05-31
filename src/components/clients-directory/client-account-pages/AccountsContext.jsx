@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./accountPage.css";
-
+import { useSelector } from "react-redux";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import UniLogo from "./images/UniLogo3.png";
 // MUI Icon Imports
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
@@ -12,354 +14,211 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import DoneAllOutlinedIcon from "@mui/icons-material/DoneAllOutlined";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import ShareIcon from "@mui/icons-material/Share";
+import PersonAddAltRoundedIcon from "@mui/icons-material/PersonAddAltRounded";
+
+import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
+import StopRoundedIcon from "@mui/icons-material/StopRounded";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import TuneIcon from "@mui/icons-material/Tune";
+import BusinessOutlinedIcon from "@mui/icons-material/BusinessOutlined";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
+
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
+import ViewListOutlinedIcon from "@mui/icons-material/ViewListOutlined";
+import StraightenOutlinedIcon from "@mui/icons-material/StraightenOutlined";
+import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
+import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
+import ToggleOnOutlinedIcon from "@mui/icons-material/ToggleOnOutlined";
+
+import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
+import ApiOutlinedIcon from "@mui/icons-material/ApiOutlined";
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
+import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
+import UserProfile from "./components/UserProfile";
+import Preferences from "./components/Preferences";
+import CompanyDetails from "./components/CompanyDetails";
+import Addresses from "./components/Addresses";
+import PlanBilling from "./components/PlanBilling";
+import UserAccessControl from "./components/UsersAccessControl";
+import CustomFields from "./components/CustomFields";
+import ManageAlerts from "./components/ManageAlerts";
+import FeatureControls from "./components/FeaturesControl";
+import CreateLabels from "./components/CreateLabels";
+import PublicApiBeta from "./components/PublicApiBeta";
+import UnitsOfMeasure from "./components/UnitOfMeasure";
+import EmployStaff from "./components/EmployStaff";
 
 export default function AccountContext() {
-  const [activeTab, setActiveTab] = useState("profile-summary");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const redirect = useNavigate();
+  const activeTab = searchParams.get("page") || "personal-profile";
+  const handleTabChange = (tab) => {
+    setSearchParams({ page: tab });
+  };
+  const clientData = useSelector(
+    (state) => state.clientFunction?.queue?.clientData?.clientInfo,
+  );
 
   const navigationItems = [
     {
-      id: "resume-upload",
-      label: "RUser Profile",
+      id: "personal-profile",
+      label: "Personal Profile",
       status: "success",
-      icon: <DescriptionOutlinedIcon fontSize="large" />,
+      icon: <PersonOutlineIcon fontSize="large" />,
     },
     {
-      id: "basic-information",
-      label: "BPreferences",
-      status: "error",
-      icon: <AccountCircleOutlinedIcon fontSize="large" />,
-    },
-    {
-      id: "education",
+      id: "company-details",
       label: "Company Details",
-      status: "error",
-      icon: <SchoolOutlinedIcon fontSize="large" />,
-    },
-    {
-      id: "skills-languages",
-      label: "Addresses",
-      status: "error",
-      icon: <CodeIcon fontSize="large" />,
-    },
-    {
-      id: "work-experience",
-      label: "Plan & Billing",
       status: "success",
-      icon: <WorkOutlineIcon fontSize="large" />,
+      icon: <BusinessOutlinedIcon fontSize="large" />,
+    },
+    {
+      id: "user-access-control",
+      label: "User Access Control",
+      status: "success",
+      icon: <AdminPanelSettingsOutlinedIcon fontSize="large" />,
     },
 
     {
-      id: "professional-profiles",
-      label: "User Access Control",
+      id: "addresses",
+      label: "Addresses",
       status: "success",
-      icon: <LinkIcon fontSize="large" />,
+      icon: <LocationOnOutlinedIcon fontSize="large" />,
     },
     {
-      id: "published-work",
-      label: "Custom Fields",
+      id: "plan-billing",
+      label: "Billing & Subscription",
       status: "success",
-      icon: <MenuBookIcon fontSize="large" />,
+      icon: <CreditCardOutlinedIcon fontSize="large" />,
     },
     {
-      id: "profile-summary",
-      label: "Units of Measure",
-      status: "none",
-      icon: null,
-    },
-    {
-      id: "professional-profiles",
+      id: "manage-alerts",
       label: "Manage Alerts",
       status: "success",
-      icon: <LinkIcon fontSize="large" />,
+      icon: <NotificationsActiveOutlinedIcon fontSize="large" />,
     },
     {
-      id: "published-work",
-      label: "Bulk Import",
+      id: "preferences",
+      label: "System Preferences",
       status: "success",
-      icon: <MenuBookIcon fontSize="large" />,
+      icon: <TuneIcon fontSize="large" />,
     },
+
     {
-      id: "profile-summary",
+      id: "units-of-measure",
+      label: "Units of Measure",
+      status: "success",
+      icon: <StraightenOutlinedIcon fontSize="large" />,
+    },
+
+    {
+      id: "feature-controls",
       label: "Feature Controls",
-      status: "none",
-      icon: null,
+      status: "success",
+      icon: <ToggleOnOutlinedIcon fontSize="large" />,
+    },
+
+    {
+      id: "custom-fields",
+      label: "Custom Fields",
+      status: "success",
+      icon: <ViewListOutlinedIcon fontSize="large" />,
     },
     {
-      id: "published-work",
+      id: "create-labels",
       label: "Create Labels",
       status: "success",
-      icon: <MenuBookIcon fontSize="large" />,
+      icon: <LocalOfferOutlinedIcon fontSize="large" />,
     },
     {
-      id: "profile-summary",
+      id: "public-api-beta",
       label: "Public API (beta)",
-      status: "none",
-      icon: null,
+      status: "success",
+      icon: <ApiOutlinedIcon fontSize="large" />,
     },
   ];
 
-  const renderBasicInformation = () => (
-    <div className="accountCompClient fx-cl space1  ">
-      <div className="fx-ac space">
-        <AccountCircleOutlinedIcon className="fs6" />
-        <h2 className="fs5 fw600 lh1">Basic Information</h2>
-      </div>
-
-      <div className="g g3 space2">
-        <div className="fx-ac">
-          <img
-            src="https://via.placeholder.com/100"
-            alt="Profile"
-            style={{ width: "80px", borderRadius: "8px" }}
-          />
-        </div>
-
-        <div className="fx-cl lh2">
-          <span className="fs1">First name</span>
-          <span className="fw500 fs3">Othman</span>
-        </div>
-
-        <div className="fx-cl lh2">
-          <span className="fs1">Last name</span>
-          <span className="fw500 fs3">Omar Dikko</span>
-        </div>
-
-        <div className="fx-cl lh2">
-          <span className="fs1">Country of residence</span>
-          <span className="fw500 fs3">Nigeria</span>
-        </div>
-
-        <div className="fx-cl lh2">
-          <span className="fs1">Nationality</span>
-          <span className="fs3">Not provided</span>
-        </div>
-
-        <div className="fx-cl lh2">
-          <span className="fs1">City of residence</span>
-          <span className="fs3">Not provided</span>
-        </div>
-
-        <div className="fx-cl lh2">
-          <span className="fs1">Phone number</span>
-          <span className="fw500 fs3">+2348063996056</span>
-        </div>
-
-        <div className="fx-cl lh2">
-          <span className="fs1">Expected annual earnings</span>
-          <span className="fw500 fs3">3,500,000 NGN</span>
-        </div>
-
-        <div className="fx-cl lh2">
-          <span className="fs1">Email</span>
-          <span className="fw500 fs3">princedikko@gmail.com</span>
-        </div>
-
-        <div className="fx-cl lh2">
-          <span className="fs1">LinkedIn</span>
-          <span className="fs3">Not provided</span>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderSkillsAndLanguages = () => {
-    const skillsList1 = [
-      { name: "JavaScript", exp: "4" },
-      { name: "Express.js", exp: "4" },
-      { name: "Node.js", exp: "4" },
-      { name: "MongoDB", exp: "4" },
-      { name: "React", exp: "4" },
-      { name: "Redux", exp: "4" },
-      { name: "Docker", exp: "1" },
-      { name: "Git", exp: "1" },
-    ];
-
-    const skillsList2 = [
-      { name: "HTML", exp: "1" },
-      { name: "GraphQL", exp: "1" },
-      { name: "AWS", exp: "1" },
-      { name: "HTML/CSS", exp: "1" },
-      { name: "Ethical Hacking", exp: "1" },
-      { name: "Back-End Development", exp: "1" },
-      { name: "GitHub", exp: "1" },
-    ];
-
-    return (
-      <div className="accountCompClient fx-cl space1  ">
-        <div className="fx-ac space">
-          <CodeIcon className="fs6" />
-          <h2 className="fs5 fw600 lh1">Skills and languages</h2>
-        </div>
-
-        <div className="g g2 space4">
-          <div className="fx-cl lh2">
-            <span className="fs1">Years of full-time work experience</span>
-            <span className="fw500 fs4">26</span>
-          </div>
-
-          <div className="fx-cl lh2">
-            <span className="fs1">Preferred Role</span>
-            <span className="fw500 fs4">Web Frontend</span>
-          </div>
-        </div>
-
-        <div className="g g2 space4">
-          <div>
-            <div className="fx-jb">
-              <span className="fs1 fw600">Skill</span>
-              <span className="fs1 fw600">Years</span>
-            </div>
-
-            {skillsList1.map((s, i) => (
-              <div key={i} className="fx-jb fs2">
-                <span>{s.name}</span>
-                <span style={{ width: "40px", textAlign: "center" }}>
-                  {s.exp}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <div>
-            <div className="fx-jb">
-              <span className="fs1 fw600">Skill</span>
-              <span className="fs1 fw600">Years</span>
-            </div>
-
-            {skillsList2.map((s, i) => (
-              <div key={i} className="fx-jb fs2">
-                <span>{s.name}</span>
-                <span style={{ width: "40px", textAlign: "center" }}>
-                  {s.exp}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderEducation = () => (
-    <div className="accountCompClient fx-cl space1">
-      <div className="fx-ac space">
-        <SchoolOutlinedIcon className="fs6" />
-        <h2 className="fs5 fw600 lh1">Education</h2>
-      </div>
-
-      <div className="fx-cl lh2">
-        <span className="fs1">Mathematics</span>
-        <span className="fw500 fs3">Bachelors (or equivalent)</span>
-        <span className="fs2">
-          Sokoto State University September 2015 - June 2019
-        </span>
-      </div>
-    </div>
-  );
-
-  const renderWorkExperience = () => (
-    <div className="accountCompClient fx-cl space1">
-      <div className="fx-ac space">
-        <WorkOutlineIcon className="fs6" />
-        <h2 className="fs5 fw600 lh1">Work Experience</h2>
-      </div>
-
-      <div className="fx-cl lh2">
-        <span className="fw600 fs3">Manager</span>
-        <span className="fs2">Manga College of Nursing Sciences, Zuru</span>
-        <span className="fs1">January 2023 - Present</span>
-      </div>
-    </div>
-  );
-
   const renderActiveContent = () => {
     switch (activeTab) {
-      case "resume-upload":
-        return (
-          <div className="accountCompClient fs3">
-            Resume Upload Content View
-          </div>
-        );
-      case "basic-information":
-        return renderBasicInformation();
-      case "education":
-        return renderEducation();
-      case "skills-languages":
-        return renderSkillsAndLanguages();
-      case "work-experience":
-        return renderWorkExperience();
+      case "personal-profile":
+        return <UserProfile data={clientData} />;
+
+      case "preferences":
+        return <Preferences data={clientData} />;
+
+      case "company-details":
+        return <CompanyDetails data={clientData} />;
+
+      case "addresses":
+        return <Addresses data={clientData} />;
+
+      case "plan-billing":
+        return <PlanBilling data={clientData} />;
+
+      case "user-access-control":
+        return <UserAccessControl data={clientData} />;
+
+      case "custom-fields":
+        return <CustomFields data={clientData} />;
+
+      case "units-of-measure":
+        return <UnitsOfMeasure data={clientData} />;
+
+      case "manage-alerts":
+        return <ManageAlerts data={clientData} />;
+
+      case "feature-controls":
+        return <FeatureControls data={clientData} />;
+
+      case "create-labels":
+        return <CreateLabels data={clientData} />;
+
+      case "public-api-beta":
+        return <PublicApiBeta data={clientData} />;
+
+      case "employ-staff-member":
+        return <EmployStaff data={clientData} />;
+
       default:
-        return (
-          <div className="fx-cl space1">
-            {renderBasicInformation()}
-            {renderSkillsAndLanguages()}
-            {renderEducation()}
-            {renderWorkExperience()}
-          </div>
-        );
+        return <UserProfile data={clientData} />;
     }
   };
 
   return (
     <div className="sectionAccountPage fx-cl " style={{ minHeight: "100vh" }}>
-      {/* HEADER */}
-      <header className="fx-jb fx-ac fs5">
-        <div className="fx-ac space2">
-          <span className="fs5 fw600">Universe Inventory</span>
-
-          <nav className="fx space1 fs2">
-            <span>Home</span>
-            <span>Jobs</span>
-            <span>Applications</span>
-          </nav>
-        </div>
-
-        <div className="fx-ac space1">
-          <button className="fx-ac space fs2 p-1">
-            <ShareIcon fontSize="large" />
-            Share & earn
-          </button>
-
-          <div className="fx-ac space">
-            <span
-              className="fx fx-jc fx-ac"
-              style={{
-                width: "32px",
-                height: "32px",
-                borderRadius: "50%",
-              }}
-            >
-              O
-            </span>
-            <span>Othman Omar Dikko</span>
-          </div>
-        </div>
-      </header>
-
       {/* MAIN */}
       <main className="g g2 space2  ">
         {/* SIDEBAR */}
-        <aside className="fx-cl space2  ">
-          {navigationItems.map((item) => {
-            const isActive = activeTab === item.id;
+        <aside className="fx-cl space4 fx-jb  ">
+          <div className="fx-ac spacem">
+            <figure style={{ width: "8.4rem", paddingLeft: "3.2rem" }}>
+              <img src={UniLogo} alt="" />
+            </figure>
+            <span className="fs6 fw500">Universe</span>
+          </div>
+          <div className="sectionAccountPageNavi fx-cl space1">
+            <span className="fw500 fs4" style={{ paddingLeft: "3rem" }}>
+              MENU
+            </span>
+            {navigationItems.map((item) => {
+              const isActive = activeTab === item.id;
 
-            return (
-              <div
-                key={item.id}
-                className="fx-jb fx-ac fs6"
-                onClick={() => setActiveTab(item.id)}
-                style={{
-                  cursor: "pointer",
-                  backgroundColor: isActive ? "#f3f4f6" : "transparent",
-                  borderRadius: "6px",
-                }}
-              >
-                <div className="fx-ac space">
-                  {item.icon}
-                  <span className="fs2">{item.label}</span>
-                </div>
+              return (
+                <div
+                  key={item.id}
+                  className={`navItemAcctPage fx-jb fx-ac fs6 ${activeTab === item.id && "activeNavi"}`}
+                  onClick={() => handleTabChange(item.id)}
+                >
+                  <div className="fx-ac space2">
+                    <div className="navStyleAcctPage">&nbsp;</div>
+                    <div className="fx-ac space">
+                      <figure>{item.icon}</figure>
+                      <span className="fs2">{item.label}</span>
+                    </div>
+                  </div>
 
-                <div>
+                  {/* <div>
                   {item.status === "success" && (
                     <DoneAllOutlinedIcon fontSize="large" />
                   )}
@@ -369,14 +228,171 @@ export default function AccountContext() {
                       style={{ color: "red" }}
                     />
                   )}
+                </div> */}
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+          <div className="bottomNavAcctCard fx-cl space2">
+            <span className="fw500 fs6">Download Mobile App</span>
+            <div className="fx-cl spacem">
+              <span className="fw400 fs4 fx-jc">Get easy in other way</span>
+            </div>
+            <div className="fx-ac fx-jc space2">
+              <button className=" fx-ac fx-jc space1">
+                <span>Download</span>
+              </button>
+            </div>
+          </div>
         </aside>
 
-        {/* CONTENT */}
-        <section className="fx-cl space1">{renderActiveContent()}</section>
+        <div className="fx-cl spacem">
+          {/* HEADER */}
+          <header className="fx-jb fx-ac fs5">
+            <div className="fx-ac space2">
+              <nav className="fx space1 fs2 fw500">
+                <span onClick={() => redirect(`/`)}>Home</span>
+                <span
+                  onClick={() =>
+                    redirect(`/clients/${clientData?._id}/account`)
+                  }
+                >
+                  Dashboard
+                </span>
+                <span onClick={() => handleTabChange("plan-billing")}>
+                  Subscription
+                </span>
+              </nav>
+            </div>
+
+            <div className="fx-ac space1">
+              <button className="fx-ac space fs2 p-1">
+                <ShareIcon fontSize="large" />
+                Share & earn
+              </button>
+
+              <div className="fx-ac space">
+                <div className="fx-ac">
+                  <img
+                    src={clientData?.owner?.files?.profilImage}
+                    alt=""
+                    style={{
+                      width: "4.2rem",
+                      height: "4.2rem",
+                      borderRadius: "99rem",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+                <div className="fx-cl  fs2 fw500">
+                  <span>
+                    <span className="fw500 fs2">
+                      {clientData?.owner?.personalInfo?.firstName ||
+                        "Not provided"}{" "}
+                      {clientData?.owner?.personalInfo?.middleName ||
+                        "Not provided"}{" "}
+                      {clientData?.owner?.personalInfo?.surName ||
+                        "Not provided"}
+                    </span>
+                  </span>
+                  <span
+                    className="fw300"
+                    style={{ fontFamily: "serif", fontStyle: "italic" }}
+                  >
+                    {clientData?.owner?.personalInfo?.email || "Not provided"}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </header>
+          <div className="renderCompsWrapAcct">
+            {/* CONTENT */}
+            <section className="renderComponentsCont fx-cl space1">
+              {renderActiveContent()}
+            </section>
+
+            {/* SIDE CONTENT */}
+            <div className="fx-cl space1">
+              <div className="topRightAcctCard fx-cl space2">
+                <span className="fw600 fs5">Reminders</span>
+                <div className="fx-cl spacem">
+                  <span className="fw500 fs6" style={{ color: "#134a30" }}>
+                    Meeting with Arc Company
+                  </span>
+                  <span className="fw300 fs3">Time: 02:00pm-04:00pm</span>
+                </div>
+                <button className=" fx-ac fx-jc space1">
+                  <CreditCardOutlinedIcon fontSize="large" />{" "}
+                  <span>Start Meeting</span>
+                </button>
+              </div>
+              <div className="geccoRightAcctCard fx-cl space2">
+                <div className="fx-ac fx-jb space2">
+                  <span className="fw500 fs6">Users</span>
+                  <button
+                    onClick={() => handleTabChange("employ-staff-member")}
+                    className="fx-ac  space1 fs2 fw500"
+                  >
+                    <PersonAddAltRoundedIcon style={{ fontSize: "1.8rem" }} />
+                    <span>Add New</span>
+                  </button>
+                </div>
+                <div className="fx-cl space1">
+                  <div className="fx-ac space1">
+                    <span className="usersImg fx-ac fx-jc">
+                      <PersonAddAltRoundedIcon fontSize="large" />
+                    </span>
+                    <div className="fx-cl">
+                      <span className="fs4 fw500">Ameena Yousouf</span>
+                      <span className="fs2 fw300">The Managing Director</span>
+                    </div>
+                  </div>
+                  <div className="fx-ac space1">
+                    <span className="usersImg fx-ac fx-jc">
+                      <PersonAddAltRoundedIcon fontSize="large" />
+                    </span>
+                    <div className="fx-cl">
+                      <span className="fs4 fw500">Ameena Yousouf</span>
+                      <span className="fs2 fw300">The Managing Director</span>
+                    </div>
+                  </div>
+                  <div className="fx-ac space1">
+                    <span className="usersImg fx-ac fx-jc">
+                      <PersonAddAltRoundedIcon fontSize="large" />
+                    </span>
+                    <div className="fx-cl">
+                      <span className="fs4 fw500">Ameena Yousouf</span>
+                      <span className="fs2 fw300">The Managing Director</span>
+                    </div>
+                  </div>
+                  <div className="fx-ac space1">
+                    <span className="usersImg fx-ac fx-jc">
+                      <PersonAddAltRoundedIcon fontSize="large" />
+                    </span>
+                    <div className="fx-cl">
+                      <span className="fs4 fw500">Ameena Yousouf</span>
+                      <span className="fs2 fw300">The Managing Director</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="bottomRightAcctCard fx-cl space2">
+                <span className="fw600 fs6">Time tracker</span>
+                <div className="fx-cl spacem">
+                  <span className="fw600 fs8 fx-jc">01:32:58</span>
+                </div>
+                <div className="fx-ac fx-jc space2">
+                  <button className=" fx-ac fx-jc space1">
+                    <PauseRoundedIcon style={{ fontSize: "3.2rem" }} />
+                  </button>
+                  <button className=" fx-ac fx-jc space1">
+                    <StopRoundedIcon style={{ fontSize: "3.2rem" }} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );

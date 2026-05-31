@@ -12,6 +12,15 @@
   outline: 4px solid #6d4aff;
   outline-offset: 4px;
 }
+
+.pricing-container .professional {
+  background-color: #e7ebfb;
+}
+
+.pricing-container .professional .perOff {
+  background-color: #fff;
+}
+
 .pricing-container .professional,
 .pricing-container .enterprise {
   position: relative;

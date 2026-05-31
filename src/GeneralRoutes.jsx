@@ -45,6 +45,7 @@ import FurnituresDetailPage from "./components/public_directory/destination-page
 import ElectronicsDetailPage from "./components/public_directory/destination-pages/ElectronicsDetailPage";
 import WholesaleDetailPage from "./components/public_directory/destination-pages/WholesaleDetailPage";
 import AccountContext from "./components/clients-directory/client-account-pages/AccountsContext";
+import RegAdditionalSetup from "./components/public_directory/public-routs-comps/registrationformComp/RegAdditionalSetup";
 
 const greenRoutes = [
   // PUBLIC ROUTES
@@ -69,11 +70,17 @@ const greenRoutes = [
     isPublic: true,
   },
 
+  // {
+  //   path: "/clients_login",
+  //   name: "login",
+  //   element: <ClientsLogin />,
+  //   isPublic: true,
+  // },
   {
     path: "/clients_login",
     name: "login",
     element: <ClientsLogin />,
-    isPublic: true,
+    isClientGuest: true,
   },
 
   {
@@ -302,7 +309,7 @@ const greenRoutes = [
     isClient: true,
   },
   {
-    path: `/clients/:id/account/info`,
+    path: `/clients/:id/account/explore-account`,
     name: "POS_terminal",
     element: <AccountContext />,
     isClient: true,
@@ -312,6 +319,12 @@ const greenRoutes = [
     path: "/create_new_account",
     name: "student_apply",
     element: <Registration />,
+    isPublic: true,
+  },
+  {
+    path: "/account-created/:plan/:_id/client/:clientId",
+    name: "student_apply",
+    element: <RegAdditionalSetup />,
     isPublic: true,
   },
 ];

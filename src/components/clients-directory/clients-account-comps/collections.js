@@ -1114,3 +1114,159 @@ const ExpensesColl = {
     },
   ],
 };
+
+const UsersColl = {
+  userId: "USR-2026-000001",
+  clientId: "CLT-2026-000045",
+
+  ownerId: "OWN-2026-000045",
+
+  employeeId: "EMP-2026-000001",
+
+  personalInfo: {
+    firstName: "Aisha",
+    lastName: "Mohammed",
+    middleName: "",
+    gender: "female",
+    dateOfBirth: "1995-06-15",
+    nationality: "Nigerian",
+    profilePhoto: "",
+    signature: "",
+  },
+
+  contactInfo: {
+    email: "aisha@dikko.com",
+    phoneNumber: "+2348012345678",
+    alternatePhoneNumber: "",
+    emergencyContact: {
+      name: "Abdullahi Mohammed",
+      relationship: "Brother",
+      phoneNumber: "+2348098765432",
+      fullAddress: "",
+    },
+  },
+
+  address: {
+    country: "Nigeria",
+    state: "Lagos",
+    city: "Ikeja",
+    streetAddress: "No 12 Allen Avenue",
+    postalCode: "100001",
+    geoCoord: "",
+  },
+
+  employment: {
+    staffNumber: "STF-00001",
+    designation: "Inventory Manager",
+    department: "Inventory",
+    employmentType: "FULL_TIME",
+    employmentStatus: "ACTIVE",
+    dateJoined: "2026-01-15",
+    reportingTo: "USR-2026-000010",
+    branchId: "BR-001",
+    warehouseId: "WH-001",
+  },
+
+  role: {
+    roleId: "ROLE-INVENTORY-MANAGER",
+    roleName: "Inventory Manager",
+    accessLevel: 3,
+  },
+
+  permissions: {
+    inventory: {
+      view: true,
+      create: true,
+      edit: true,
+      delete: false,
+      approve: true,
+    },
+
+    purchases: {
+      view: true,
+      create: true,
+      edit: true,
+      delete: false,
+      approve: true,
+    },
+
+    sales: {
+      view: true,
+      create: false,
+      edit: false,
+      delete: false,
+      approve: false,
+    },
+
+    expenses: {
+      view: true,
+      create: true,
+      edit: false,
+      delete: false,
+      approve: false,
+    },
+
+    reconciliation: {
+      view: true,
+      create: true,
+      edit: true,
+      approve: true,
+    },
+
+    users: {
+      view: false,
+      create: false,
+      edit: false,
+      delete: false,
+    },
+  },
+
+  accessControl: {
+    allowedBranches: ["BR-001", "BR-002"],
+    allowedWarehouses: ["WH-001"],
+    ipRestrictionEnabled: false,
+    allowedIPs: [],
+  },
+
+  authentication: {
+    username: "aisha.m",
+    emailVerified: true,
+    phoneVerified: true,
+    twoFactorEnabled: true,
+    lastLoginAt: "2026-05-30T08:45:00Z",
+    lastPasswordChangeAt: "2026-04-15T12:00:00Z",
+    failedLoginAttempts: 0,
+    accountLocked: false,
+  },
+
+  notifications: {
+    emailNotifications: true,
+    smsNotifications: true,
+    pushNotifications: true,
+  },
+
+  activity: {
+    lastActiveAt: "2026-05-30T09:15:00Z",
+    loginCount: 257,
+    totalActionsPerformed: 1543,
+  },
+
+  status: "ACTIVE",
+  createdBy: "OWN-2026-000045",
+  createdAt: "2026-01-15T08:00:00Z",
+  updatedAt: "2026-05-30T09:15:00Z",
+
+  auditTrail: [
+    {
+      action: "USER_CREATED",
+      by: "OWN-2026-000045",
+      timestamp: "2026-01-15T08:00:00Z",
+    },
+
+    {
+      action: "ROLE_UPDATED",
+      by: "USR-2026-000010",
+      timestamp: "2026-03-12T10:20:00Z",
+    },
+  ],
+};

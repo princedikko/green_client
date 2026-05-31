@@ -1,19 +1,90 @@
+.sectionAccountPage {
+  /* background-image: url("./images/profileBg.png");
+  background-position: top;
+  background-size: cover;
+  background-repeat: no-repeat; */
+  background-color: #fff;
+}
+
+.sectionAccountPage .renderComponentsCont {
+  max-height: 90vh;
+  overflow: auto;
+  padding-right: 0.6rem;
+}
+
+.renderCompsWrapAcct {
+  display: grid;
+  grid-template-columns: 3fr 1.2fr;
+  gap: 1.2rem;
+  background-color: #f7f7f7;
+  border-radius: 1.2rem;
+  padding: 2rem;
+}
+.navItemAcctPage {
+  color: #83ac97;
+  cursor: pointer;
+  transition: all 0.35s ease;
+}
+
+.navItemAcctPage:hover {
+  color: #f93c2f;
+}
+.sectionAccountPageNavi .navItemAcctPage.activeNavi {
+  color: #000;
+  font-weight: 500;
+}
+.sectionAccountPageNavi .navItemAcctPage.activeNavi figure {
+  color: #1dc375;
+}
+.navStyleAcctPage {
+  transition: all 0.35s ease;
+}
+.navItemAcctPage.activeNavi .navStyleAcctPage {
+  width: 0.8rem;
+  border-top-right-radius: 1.2rem;
+  border-bottom-right-radius: 1.2rem;
+  background-image: linear-gradient(#11623c, #2b9464);
+}
+
 .sectionAccountPage header {
-  padding: 2.4rem 4.6rem;
+  padding: 1.5rem 4.6rem;
   border-bottom: 1px solid var(--gray);
+  background-color: #f7f7f7;
+  border-radius: 1.2rem;
+}
+
+.bottomNavAcctCard {
+  background-image: url("./images/dfg.jpg");
+  background-size: cover;
+  color: #fff;
+  padding: 2rem;
+  border-radius: 2.4rem;
+  margin: 8rem 0 0 2rem;
+  max-height: 20rem;
+}
+.bottomNavAcctCard button {
+  background-color: #11623c;
+  padding: 1rem 3rem;
+  width: 15rem;
+  border-radius: 44rem;
+  text-align: center;
+  color: #fff;
 }
 
 .sectionAccountPage main {
-  grid-template-columns: 1fr 3fr;
-  gap: 2rem;
+  grid-template-columns: 1fr 4fr;
+  gap: 1rem;
   align-items: start;
-  padding: 3.2rem 4.6rem;
+  padding: 1.5rem 2rem;
 }
 
 .sectionAccountPage main aside {
-  border: 3px solid #ede9e9;
-  border-radius: 3rem;
-  padding: 4.6rem;
+  min-height: 100%;
+
+  /* border: 3px solid #ede9e9; */
+  background-color: #f7f7f7;
+  border-radius: 1.2rem;
+  padding: 2.6rem 1.6rem 4.6rem 0;
 }
 .sectionAccountPage main aside #profile-summary {
   background-color: #333;
@@ -24,7 +95,63 @@
 }
 
 .accountCompClient {
-  border: 3px solid #ede9e9;
-  border-radius: 3rem;
+  /* border: 3px solid #ede9e9; */
+  background-color: #fff;
+  border-radius: 1.2rem;
   padding: 4.6rem;
+}
+
+.topRightAcctCard,
+.geccoRightAcctCard,
+.bottomRightAcctCard {
+  border-radius: 2.4rem;
+  padding: 3.2rem;
+  background-color: #fff;
+}
+.geccoRightAcctCard {
+  height: 43rem;
+  overflow: auto;
+}
+.geccoRightAcctCard button {
+  border-radius: 44rem;
+  border: 1px solid #11623c;
+  color: #134a30;
+  padding: 0.6rem 1.2rem;
+  text-align: center;
+}
+.geccoRightAcctCard .usersImg {
+  height: 3.2rem;
+  width: 3.2rem;
+  border-radius: 44rem;
+  border: 1px solid #11623c;
+}
+
+.bottomRightAcctCard {
+  background-image: url("./images/bg.jpg");
+  background-size: cover;
+  color: #fff;
+}
+.topRightAcctCard button {
+  border-radius: 2.4rem;
+  background-image: linear-gradient(#134a30, #207a51);
+  color: #fff;
+  font-weight: 500;
+  font-size: 1.9rem;
+  padding: 1.8rem;
+}
+
+.bottomRightAcctCard button {
+  width: 5.2rem;
+  height: 5.2rem;
+  border-radius: 44rem;
+  padding: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #134a30;
+  background-color: #fff;
+}
+.bottomRightAcctCard button:last-child {
+  background-color: #d83737;
+  color: #fff;
 }

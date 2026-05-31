@@ -84,8 +84,6 @@ export default function ClientsAccount() {
     (state) => state.clientFunction?.queue?.clientData?.clientInfo,
   );
 
-  console.log(data);
-
   const active_title = useSelector(
     (state) => state.clientFunction?.dashboard?.nav_title,
   );
@@ -110,7 +108,7 @@ export default function ClientsAccount() {
   function logOut() {
     dispatch(Action.logOut());
     dispatch(ActionHybrid.clearCartAction());
-    // redirect("/client_login");
+    // navigate("/client_login");
   }
 
   function handleTerminal() {
@@ -143,8 +141,12 @@ export default function ClientsAccount() {
   }
 
   // Redux functions for sub-navigation
-  function handleSubNavigator(hook, title, main) {
-    dispatch(Action.dispatchDashboardSubNavigator({ hook, title, main }));
+  function handleSubNavigator(hook, title, main, link) {
+    if (link) {
+      navigate(link);
+    } else {
+      dispatch(Action.dispatchDashboardSubNavigator({ hook, title, main }));
+    }
   }
 
   function handlePayload(item) {
@@ -513,22 +515,22 @@ export default function ClientsAccount() {
         {
           title: "Profile",
           hook: "profile",
-          tabs: ["main", "completed", "pending"],
+          link: `/clients/${data?._id}/account/explore-account?page=personal-profile`,
         },
         {
           title: "Settings",
           hook: "setting",
-          tabs: ["main", "completed", "pending"],
+          link: `/clients/${data?._id}/account/explore-account?page=personal-profile`,
         },
         {
           title: "Users",
           hook: "users",
-          tabs: ["main", "completed", "pending"],
+          link: `/clients/${data?._id}/account/explore-account?page=user-access-control`,
         },
         {
           title: "Language",
           hook: "language",
-          tabs: ["main", "completed", "pending"],
+          link: `/clients/${data?._id}/account/explore-account?page=language`,
         },
       ],
     },
@@ -564,7 +566,9 @@ export default function ClientsAccount() {
                   marginBottom: "2rem",
                   fontSize: "1.4rem",
                   fontWeight: "bold",
+                  cursor: "pointer",
                 }}
+                onClick={() => navigate("/")}
               >
                 <figure className="dashboardLogo fx-ac space2 fx-jc">
                   <img src={UniLogo} alt="" />
@@ -645,6 +649,7 @@ export default function ClientsAccount() {
                                 sub.hook,
                                 sub.title,
                                 item.title,
+                                sub.link,
                               );
                             }}
                           >

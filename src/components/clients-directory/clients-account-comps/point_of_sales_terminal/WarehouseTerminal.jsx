@@ -1006,20 +1006,7 @@ function WarehouseTerminal() {
   return (
     <>
       {!temporaryAuth ? (
-        <div className="pointOfSaleAuthCont fx-ac fx-jc">
-          <div className="pointOfSaleAuth fx-cl spacem">
-            <h3>Enter Pin</h3>
-            <div className=" space2 fx-ac fx-jc">
-              <input type="password" />
-              <input type="password" />
-              <input type="password" />
-              <input type="password" />
-              <input type="password" />
-              <input type="password" />
-            </div>
-            <button onClick={() => setTemporaryAuth(true)}> Continue</button>
-          </div>
-        </div>
+        <PinInput setTemporaryAuth={setTemporaryAuth} />
       ) : (
         <section className="sectionwarehouseHub fx-cl">
           {alert && <WarehouseAlert alert={alert} setAlert={setAlert} />}
@@ -1454,6 +1441,53 @@ function ActivityLog() {
         <NotificationsActiveOutlinedIcon />
         <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
       </div>
+    </div>
+  );
+}
+
+function PinInput({ setTemporaryAuth }) {
+  const [pin, setPin] = useState(["", "", "", "", "", ""]);
+
+  const inputRefs = useRef([]);
+
+  const handleChange = (value, index) => {
+    if (!/^\d?$/.test(value)) return;
+
+    const updatedPin = [...pin];
+    updatedPin[index] = value;
+
+    setPin(updatedPin);
+
+    // Move to next input
+    if (value && index < pin.length - 1) {
+      inputRefs.current[index + 1].focus();
+    }
+  };
+
+  const handleKeyDown = (e, index) => {
+    // Move back on delete
+    if (e.key === "Backspace" && !pin[index] && index > 0) {
+      inputRefs.current[index - 1].focus();
+    }
+  };
+
+  return (
+    <div className="pointOfSaleAuthCont fx-ac fx-jc pdlarge">
+      <div className="pointOfSaleAuth fx-ac space2">
+        {pin.map((digit, index) => (
+          <input
+            key={index}
+            type="text"
+            value={digit}
+            maxLength={1}
+            ref={(el) => (inputRefs.current[index] = el)}
+            onChange={(e) => handleChange(e.target.value, index)}
+            onKeyDown={(e) => handleKeyDown(e, index)}
+            className="pinInput"
+          />
+        ))}
+      </div>
+      <button onClick={() => setTemporaryAuth(true)}>submit</button>
     </div>
   );
 }
