@@ -39,7 +39,7 @@ export default function Home() {
         <IsLoading></IsLoading>
       ) : (
         <section className="sectionHomeCont fx-cl">
-          <Header />
+          <Header setLoading={setLoading} />
           <Hero />
           <HomeComp3 />
           <PricingCTA />

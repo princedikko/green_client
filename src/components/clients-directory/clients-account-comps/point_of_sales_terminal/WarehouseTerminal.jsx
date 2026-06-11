@@ -1,12 +1,14 @@
 import "./warehouseTerminal.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as Action from "../../../../store/redux/hybrid_reducer.js";
 import * as Mongodb from "../../../../store/redux/mongodb.js";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
+import useBarcodeScanner from "../../../../hooks/useBarcodeScanner.js";
 import Calculator from "./modalBoxComps/Calculator.jsx";
+import CameraIcon from "@mui/icons-material/Camera";
 import Items from "./ware_house_comps/Items.jsx";
 import BannerImg from "./images/banner.avif";
 // ------------------NEW IMPORTS---------------------
@@ -132,10 +134,95 @@ function WarehouseTerminal() {
   const products = useSelector(
     (state) => state.hybridActions.warehouse.products,
   );
+  console.log("PRODUCTS IN WAREHOUSE:", products);
   const cart = useSelector((state) => state.hybridActions.warehouse.cart);
   const onHoldData = useSelector(
     (state) => state.hybridActions.on_holded_sales,
   );
+
+  /////////////////////////////////////////////////////////////////////////
+  // BARCODE SCANNER
+  /////////////////////////////////////////////////////////////////////////
+  /**
+   * Handle scanned barcode by finding product and adding to cart
+   */
+  const handleBarcodeScanned = useCallback(
+    (barcode) => {
+      // Find product by barcode or SKU
+      const product = products.find(
+        (p) =>
+          p.barcode === barcode ||
+          p.sku === barcode ||
+          p.barcode?.toLowerCase() === barcode?.toLowerCase(),
+      );
+
+      if (!product) {
+        enqueueSnackbar(`Product not found: ${barcode}`, {
+          variant: "error",
+          autoHideDuration: 3000,
+          ContentProps: {
+            style: { fontSize: "16px", fontWeight: "bold" },
+          },
+        });
+        console.warn(
+          `[BarcodeScanner] Product not found for barcode: ${barcode}`,
+        );
+        return;
+      }
+
+      // Create cart item from product
+      const intoCart = {
+        saleId: `SALE-${Math.floor(Math.random() * 1000000)}`,
+        sku: product.sku,
+        name: product.name,
+        barcode: product.barcode,
+        warehouseId: product.warehouses?.[0]?.warehouseId,
+        soldQuantity: product.stock?.sellingQuantity || 1,
+        unit: product.units?.baseUnit,
+        pricing: {
+          costPrice: product.pricing?.costPrice || 0,
+          sellingPrice: product.pricing?.sellingPrice || 0,
+          discount: 0,
+          taxRate: product.pricing?.taxRate || 0,
+        },
+        batch: {
+          batchNo: product.batch?.batches?.[0]?.batchNo,
+          quantity: product.batch?.batches?.[0]?.quantity,
+          expiryDate: product.expiryDate,
+        },
+        createdAt: new Date().toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        }),
+      };
+
+      // Add to cart
+      addToCart(intoCart);
+
+      // Show success feedback
+      enqueueSnackbar(`✓ Added: ${product.name}`, {
+        variant: "success",
+        autoHideDuration: 2000,
+        ContentProps: {
+          style: { fontSize: "16px", fontWeight: "bold" },
+        },
+      });
+
+      console.log(
+        `[BarcodeScanner] Product added: ${product.name} (${barcode})`,
+      );
+    },
+    [products, enqueueSnackbar],
+  );
+
+  // Initialize barcode scanner
+  useBarcodeScanner(handleBarcodeScanned, {
+    timeoutMs: 100, // Wait 100ms for scan completion
+    minLength: 3, // Minimum 3 characters
+    preventDuplicates: true, // Don't process duplicate scans
+    debug: false, // Set to true for debugging
+  });
 
   /////////////////////////////////////////////////////////////////////////
   // REDUX FUCNTIONS
@@ -144,25 +231,28 @@ function WarehouseTerminal() {
     dispatch(Action.switchView(!switchWarehouseView));
   }
 
-  function addToCart(item) {
-    // Check if item already exists in cart
-    const existingItem = cart.find((cartItem) => cartItem.sku === item.sku);
+  const addToCart = useCallback(
+    (item) => {
+      // Check if item already exists in cart
+      const existingItem = cart.find((cartItem) => cartItem.sku === item.sku);
 
-    if (existingItem) {
-      // If exists, update quantity
-      enqueueSnackbar(`Item already in cart`, {
-        variant: "success",
-        autoHideDuration: 3000,
-        ContentProps: {
-          style: { fontSize: "16px", fontWeight: "bold" },
-        },
-      });
-      // dispatch(Action.addtoCart(updatedItem));
-    } else {
-      // If not exists, add new item
-      dispatch(Action.addtoCart(item));
-    }
-  }
+      if (existingItem) {
+        // If exists, update quantity
+        enqueueSnackbar(`Item already in cart`, {
+          variant: "success",
+          autoHideDuration: 3000,
+          ContentProps: {
+            style: { fontSize: "16px", fontWeight: "bold" },
+          },
+        });
+        // dispatch(Action.addtoCart(updatedItem));
+      } else {
+        // If not exists, add new item
+        dispatch(Action.addtoCart(item));
+      }
+    },
+    [cart, dispatch, enqueueSnackbar],
+  );
 
   function clearCart() {
     dispatch(Action.clearCartAction());
@@ -739,11 +829,10 @@ function WarehouseTerminal() {
               <div className="fx-ac spacem">
                 <div className="icontBtnMiddle fx-ac space1">
                   <button
-                    onClick={() => handleModalSwitch("calculator")}
-                    className="fx-ac spacem"
-                    style={{ color: "#26bf89", padding: ".2rem" }}
+                    // button for camera icon, to open camera for barcode scanning
+                    className="cameraBarcodeBtn fx-ac spacem"
                   >
-                    <CalculateIcon fontSize="large" />
+                    <CameraIcon fontSize="large" />
                   </button>
                 </div>
                 <div className="brands_entries-info fx-ac spacem">

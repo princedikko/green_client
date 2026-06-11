@@ -46,6 +46,7 @@ import ElectronicsDetailPage from "./components/public_directory/destination-pag
 import WholesaleDetailPage from "./components/public_directory/destination-pages/WholesaleDetailPage";
 import AccountContext from "./components/clients-directory/client-account-pages/AccountsContext";
 import RegAdditionalSetup from "./components/public_directory/public-routs-comps/registrationformComp/RegAdditionalSetup";
+import QueryRegistration from "./components/public_directory/public-routs-comps/QueryRegistration";
 
 const greenRoutes = [
   // PUBLIC ROUTES
@@ -319,6 +320,12 @@ const greenRoutes = [
     path: "/create_new_account",
     name: "student_apply",
     element: <Registration />,
+    isPublic: true,
+  },
+  {
+    path: "/create_new_account/queries",
+    name: "student_apply",
+    element: <QueryRegistration />,
     isPublic: true,
   },
   {

@@ -139,7 +139,8 @@
   color: #000;
 }
 
-.regPricingCard button,
+.regPricingCard a:link,
+.regPricingCard a:visited,
 .regbtnSubmit {
   background-color: #6d4aff;
   color: #fff;

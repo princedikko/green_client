@@ -28,6 +28,16 @@
 .checkEx::before {
   border: 6px solid #3a84f8;
 }
+.warehouseHubMiddleWare button.cameraBarcodeBtn {
+  transition: all 0.3s ease;
+  color: #3a84f8;
+}
+
+.warehouseHubMiddleWare button.cameraBarcodeBtn:hover {
+  background-color: transparent;
+  color: #f85a38;
+  transform: scale(1.2);
+}
 
 /* ------------------------------------NEW ------------------------------------ */
 .sectionwarehouseHub {

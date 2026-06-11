@@ -1,0 +1,206 @@
+.queryRegContainer {
+  min-height: calc(100vh - 10rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1.5rem;
+  background: linear-gradient(180deg, #eef2ff 0%, #ffffff 100%);
+}
+
+.queryRegCard {
+  max-width: 120rem;
+  width: 100%;
+  padding: 6.5rem 8.2rem;
+  background-color: rgba(255, 255, 255, 0.486);
+  backdrop-filter: blur(10px);
+  /* border: 6px solid #ffffff; */
+  border-radius: 2.4rem;
+  overflow: hidden;
+  /* box-shadow: 1rem 1.2rem 2rem -1.1rem rgba(0, 0, 0, 0.35);
+   */
+
+  box-shadow:
+    0 0 0 1px oklch(86.72% 0.0192 282.72deg),
+    0 2px 8px 0
+      color-mix(in oklch, oklch(62.95% 0.0204 306.5deg) 8%, transparent),
+    0 4px 16px 0
+      color-mix(in oklch, oklch(62.95% 0.0204 306.5deg) 12%, transparent);
+
+  font-size: 1.6rem;
+}
+
+.queryRegHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.queryRegHeader h2 {
+  margin: 0.9rem auto 0;
+  color: #5f5f7d;
+  max-width: 70rem;
+}
+
+.queryRegHeader p {
+  margin: 0.9rem auto 0;
+  color: #5f5f7d;
+  max-width: 60rem;
+}
+
+.queryProgressBar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.queryStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 1rem;
+  border-radius: 1.2rem;
+  background: #f4f6ff;
+  color: #5f5f7d;
+  text-align: center;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.queryStep.active {
+  background: #6d4aff;
+  color: #fff;
+  transform: scale(1.03);
+}
+
+.queryStep.complete {
+  background: #e2d8ff;
+}
+
+.queryStepNumber {
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-weight: 700;
+  background: #d8d0ff;
+  color: #4a31a3;
+}
+
+.queryStep.active .queryStepNumber {
+  background: #ffffff;
+  color: #6d4aff;
+}
+
+.queryForm {
+  display: grid;
+  gap: 1.8rem;
+}
+
+.queryStepHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.queryStepHeader h3 {
+  margin: 0;
+}
+
+.queryStepHeader p {
+  margin: 0;
+  color: #6f6f8f;
+}
+
+.queryStepFields,
+.queryReviewSection {
+  display: grid;
+  gap: 1.3rem;
+}
+
+.queryStepFields label,
+.queryReviewSection dt {
+  display: grid;
+  gap: 0.7rem;
+  color: #222;
+}
+
+.queryStepFields input {
+  width: 100%;
+  padding: 2rem 3.1rem;
+  /* border: 1px solid #d8d8e8; */
+  font-size: 1.8rem;
+  font-weight: 400;
+  border-radius: 1rem;
+  color: #666;
+  font-size: 1.8rem;
+  box-shadow:
+    0 0 0 1px oklch(86.72% 0.0192 282.72deg),
+    0 2px 8px 0
+      color-mix(in oklch, oklch(62.95% 0.0204 306.5deg) 8%, transparent),
+    0 4px 16px 0
+      color-mix(in oklch, oklch(62.95% 0.0204 306.5deg) 12%, transparent);
+}
+
+.queryReviewSection h3 {
+  margin: 0;
+  color: #2c2c5b;
+}
+
+.queryReviewSection dl {
+  display: grid;
+  gap: 1rem;
+  padding: 5.2rem 6rem;
+  background: #f8f8ff;
+  border-radius: 2.2rem;
+}
+
+.queryReviewSection dt {
+  font-weight: 700;
+  color: #3b3b6b;
+}
+
+.queryReviewSection dd {
+  margin: 0;
+  color: #55567a;
+}
+
+.queryNavButtons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.queryButton {
+  width: 16rem;
+  border: none;
+  border-radius: 1rem;
+  padding: 1.5rem 1.6rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.queryButton.primary {
+  background: #6d4aff;
+  color: #fff;
+}
+
+.queryButton.secondary {
+  background: #eef1ff;
+  color: #4c4c79;
+}
+
+.queryButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (max-width: 720px) {
+  .queryProgressBar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

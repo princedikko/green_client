@@ -12,6 +12,30 @@
   padding: 1.5rem 0rem;
 }
 
+.header a:link,
+.header a:visited {
+  color: #000;
+}
+
+.authenticatedHeaderNavRight .dropDownBtn {
+  padding-bottom: 1.2rem;
+}
+.authenticatedHeaderNavRight .dropDownBtn:hover .dropDownContent {
+  display: block;
+  position: absolute;
+  top: 100%;
+  right: 0;
+
+  border-radius: 1.2rem;
+
+  box-shadow:
+    0 0 0 1px oklch(86.72% 0.0192 282.72deg),
+    0 2px 8px 0
+      color-mix(in oklch, oklch(62.95% 0.0204 306.5deg) 8%, transparent),
+    0 4px 16px 0
+      color-mix(in oklch, oklch(62.95% 0.0204 306.5deg) 12%, transparent);
+}
+
 .navbar-logo img {
   width: 18.4rem;
   height: auto;
@@ -135,8 +159,8 @@
 
 .profileDropdown {
   width: 32rem;
-  background: #1f2229;
-  padding: 2rem;
+  background: #fff;
+  padding: 3.2rem;
   border-radius: 1.2rem;
 }
 
@@ -147,10 +171,32 @@
 
 .upgradeBtn {
   border: none;
+  font-style: italic;
+  font-family: serif;
   padding: 1.2rem;
-  border-radius: 0.8rem;
-  background: #e8b05d;
+  border-radius: 0.4rem;
+  background: var(--primary-color);
   color: #fff;
-  font-weight: 600;
+  /* font-weight: 600; */
+  font-size: 1.7rem;
   cursor: pointer;
+  transition: all 0.195s ease-out;
+}
+.upgradeBtn:hover {
+  background: #163dc9;
+}
+
+.profileDropdwnCard {
+  padding: 2.4rem 0;
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+}
+.profileDropdwnCard .g div:first-child {
+  border-right: 1px solid #ddd;
+}
+
+.profileDropdwnList {
+  border-bottom: 1px solid #ddd;
+  color: #666;
+  padding: 1rem 0;
 }

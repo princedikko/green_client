@@ -3,30 +3,32 @@ import { Link, useNavigate } from "react-router-dom";
 import "./header.css";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import * as Action from "../../../../store/redux/client_reducer.js";
+import * as ActionHybrid from "../../../../store/redux/hybrid_reducer.js";
+
 import Logo from "../logo/universeLogo.png";
 import SolutionDropdown from "./header-comps/SolutionDropdown.jsx";
 import FeaturesDropdown from "./header-comps/FeaturesDropdown";
 import LearningDropdown from "./header-comps/LearningDropdown.jsx";
 import CompanyDropdown from "./header-comps/CompanyDropdown.jsx";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import {
-  ShoppingCartOutlinedIcon,
-  NotificationsNoneOutlinedIcon,
-  DiscountIcon,
-  ShareIcon,
-  LanguageIcon,
-  KeyboardArrowDownIcon,
-  PersonOutline,
-  DownloadOutlined,
-  AutoAwesomeOutlined,
-  FavoriteBorderOutlined,
-  CloudUploadOutlined,
-  BookmarksOutlined,
-  PowerSettingsNewOutlined,
-  InfoOutlined,
-} from "@mui/icons-material";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import DiscountIcon from "@mui/icons-material/Discount";
+import ShareIcon from "@mui/icons-material/Share";
+import LanguageIcon from "@mui/icons-material/Language";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
+import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
+import BookmarksOutlinedIcon from "@mui/icons-material/BookmarksOutlined";
+import PowerSettingsNewOutlinedIcon from "@mui/icons-material/PowerSettingsNewOutlined";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
-export default function Header() {
+export default function Header({ setLoading }) {
   const { t, i18n } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openIndex, setOpenIndex] = useState(null);
@@ -110,7 +112,7 @@ export default function Header() {
           </div>
 
           {isAuthenticated ? (
-            <div className="fx-ac space">
+            <div className="authenticatedHeaderNavRight fx-ac space">
               <div className="fx-ac space2">
                 {/* My Learning */}
                 <span className="dropDownBtn fx-cl">
@@ -166,7 +168,7 @@ export default function Header() {
                         }}
                       />{" "}
                     </div>{" "}
-                    <div className="fx-cl spacem fs2 fw500">
+                    {/* <div className="fx-cl spacem fs2 fw500">
                       {" "}
                       <span>
                         {" "}
@@ -176,9 +178,14 @@ export default function Header() {
                             "Not provided"}{" "}
                         </span>{" "}
                       </span>{" "}
-                    </div>{" "}
+                    </div>{" "} */}
                   </div>{" "}
-                  <ProfileDropContents />
+                  <div className="dropDownContent">
+                    <ProfileDropContents
+                      redirect={redirect}
+                      clientData={clientData}
+                    />
+                  </div>
                 </span>
               </div>
             </div>
@@ -216,11 +223,19 @@ export default function Header() {
   );
 }
 
-function ProfileDropContents() {
+function ProfileDropContents({ setLoading, redirect, clientData }) {
+  const dispatch = useDispatch();
+  function logOut() {
+    setLoading(true);
+    dispatch(Action.logOut());
+    dispatch(ActionHybrid.clearCartAction());
+    redirect("/");
+    setLoading(false);
+  }
   return (
-    <div className="profileDropdown fx-cl space1">
+    <div className="profileDropdown fx-cl">
       {/* Header */}
-      <div className="fx-ac space">
+      <div className="fx-ac space " style={{ paddingBottom: "1.4rem" }}>
         <img
           src={clientData?.owner?.files?.profilImage}
           alt=""
@@ -242,56 +257,97 @@ function ProfileDropContents() {
         </div>
       </div>
 
-      <hr />
+      <div className="profileDropdwnCard fx-cl space2">
+        {/* Stats */}
+        <div className="g g2">
+          <div className="fx-cl fx-ac">
+            <span className="fs7 fw600">1</span>
+            <span className="fs2">Source file quota</span>
+          </div>
 
-      {/* Stats */}
-      <div className="fx-ac fx-jb">
-        <div className="fx-cl fx-ac">
-          <span className="fs7 fw600">1</span>
-          <span className="fs2">Source file quota</span>
+          <div className="fx-cl fx-ac">
+            <span className="fs7 fw600">1</span>
+            <span className="fs2">Source files left</span>
+          </div>
         </div>
 
-        <div className="fx-cl fx-ac">
-          <span className="fs7 fw600">1</span>
-          <span className="fs2">Source files left</span>
-        </div>
+        {/* Upgrade */}
+        <button
+          className="upgradeBtn fw500 fs3"
+          onClick={() => {
+            redirect(`/clients/${clientData?._id}/account`);
+          }}
+        >
+          Launch Inventory Workspace
+        </button>
       </div>
-
-      {/* Upgrade */}
-      <button className="upgradeBtn">Up To 92% Off</button>
-
-      <hr />
-
-      {/* Menu */}
       <div className="fx-cl">
-        <div className="fx-ac space profileMenuItem">
-          <PersonOutline />
-          <span>My Profile</span>
+        {/* Menu */}
+        <div className="profileDropdwnList fx-cl">
+          <div className="fx-ac space profileMenuItem">
+            <PersonOutlineIcon fontSize="large" />
+            <span>Point of Sales</span>
+          </div>
+          <div className="fx-ac space profileMenuItem">
+            <PersonOutlineIcon fontSize="large" />
+            <span>Dashboard</span>
+          </div>
+          <div className="fx-ac space profileMenuItem">
+            <NotificationsNoneOutlinedIcon fontSize="large" />
+            <span>Notifications</span>
+          </div>
+
+          <div className="fx-ac space profileMenuItem">
+            <ShareIcon fontSize="large" />
+            <span>Messages</span>
+          </div>
+
+          <div className="fx-ac space profileMenuItem">
+            <DownloadOutlinedIcon fontSize="large" />
+            <span>Reports</span>
+          </div>
         </div>
 
-        <div className="fx-ac space profileMenuItem">
-          <DownloadOutlined />
-          <span>Downloads</span>
+        {/* Menu */}
+        <div className="profileDropdwnList fx-cl">
+          <div className="fx-ac space profileMenuItem">
+            <DiscountIcon fontSize="large" />
+            <span>Payments</span>
+          </div>
+
+          <div className="fx-ac space profileMenuItem">
+            <BookmarksOutlinedIcon fontSize="large" />
+            <span>Bank Accounts</span>
+          </div>
+
+          <div className="fx-ac space profileMenuItem">
+            <PersonOutlineIcon fontSize="large" />
+            <span>Contacts</span>
+          </div>
+
+          <div className="fx-ac space profileMenuItem">
+            <InfoOutlinedIcon fontSize="large" />
+            <span>Audit Logs</span>
+          </div>
         </div>
 
-        <div className="fx-ac space profileMenuItem">
-          <FavoriteBorderOutlined />
-          <span>Favorites</span>
-        </div>
-
-        <div className="fx-ac space profileMenuItem">
-          <CloudUploadOutlined />
-          <span>Upload My Work</span>
-        </div>
-
-        <div className="fx-ac space profileMenuItem">
-          <BookmarksOutlined />
-          <span>Subscriptions</span>
-        </div>
-
-        <div className="fx-ac space profileMenuItem">
-          <LogoutOutlined />
-          <span>Log Out</span>
+        {/* Menu */}
+        <div className="profileDropdwnList fx-cl">
+          <div className="fx-ac space profileMenuItem">
+            <InfoOutlinedIcon fontSize="large" />
+            <span>Help & Support</span>
+          </div>
+          <div className="fx-ac space profileMenuItem">
+            <AutoAwesomeOutlinedIcon fontSize="large" />
+            <span>Settings</span>
+          </div>
+          <button
+            className="fx-ac space profileMenuItem"
+            onClick={() => logOut()}
+          >
+            <PowerSettingsNewOutlinedIcon fontSize="large" />
+            <span>Log Out</span>
+          </button>
         </div>
       </div>
     </div>

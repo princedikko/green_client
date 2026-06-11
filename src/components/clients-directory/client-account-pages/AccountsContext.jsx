@@ -313,7 +313,7 @@ export default function AccountContext() {
 
             {/* SIDE CONTENT */}
             <div className="fx-cl space1">
-              <div className="topRightAcctCard fx-cl space2">
+              <article className="topRightAcctCard fx-cl space2">
                 <span className="fw600 fs5">Reminders</span>
                 <div className="fx-cl spacem">
                   <span className="fw500 fs6" style={{ color: "#134a30" }}>
@@ -325,8 +325,8 @@ export default function AccountContext() {
                   <CreditCardOutlinedIcon fontSize="large" />{" "}
                   <span>Start Meeting</span>
                 </button>
-              </div>
-              <div className="geccoRightAcctCard fx-cl space2">
+              </article>
+              <article className="geccoRightAcctCard fx-cl space2">
                 <div className="fx-ac fx-jb space2">
                   <span className="fw500 fs6">Users</span>
                   <button
@@ -375,8 +375,8 @@ export default function AccountContext() {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="bottomRightAcctCard fx-cl space2">
+              </article>
+              <article className="bottomRightAcctCard fx-cl space2">
                 <span className="fw600 fs6">Time tracker</span>
                 <div className="fx-cl spacem">
                   <span className="fw600 fs8 fx-jc">01:32:58</span>
@@ -389,7 +389,7 @@ export default function AccountContext() {
                     <StopRoundedIcon style={{ fontSize: "3.2rem" }} />
                   </button>
                 </div>
-              </div>
+              </article>
             </div>
           </div>
         </div>

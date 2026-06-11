@@ -1,6 +1,6 @@
 import { useState, useReducer, useEffect, useRef } from "react";
 import { countriesOnEarth } from "./registrationStatesAndLGA.js";
-import { FlutterWaveButton, closePaymentModal } from "flutterwave-react-v3";
+import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
@@ -372,7 +372,11 @@ export default function Registration() {
         passwordUpdatedAt: "2026-04-01T10:00:00Z",
         lastPasswordResetAt: null,
       },
-
+      pointOfSale: {
+        hashedPin: "012026",
+        pinUpdatedAt: "",
+        lastPinResetAt: "",
+      },
       authentication: {
         method: "EMAIL_PASSWORD",
         status: "ACTIVE",
@@ -593,7 +597,22 @@ export default function Registration() {
             variant: "success",
             autoHideDuration: 3000,
           });
-        } else {
+          navigateTo("/create_new_account/queries?page=1");
+        } else if (response.data.status === 408) {
+          // This is a fallback for an Existing Email address that is already in use
+           setLoading(false);
+          enqueueSnackbar(`${response.data.message}`, {
+            variant: "error",
+            autoHideDuration: 3000,
+          });
+        } else if (response.data.status === 409) {
+          // This is a fallback for an Existing Phone number  that is already in use
+           setLoading(false);
+          enqueueSnackbar(`${response.data.message}`, {
+            variant: "error",
+            autoHideDuration: 3000,
+          });
+        } {
           setLoading(false);
           enqueueSnackbar(`${response.data.message}`, {
             variant: "error",
@@ -660,7 +679,7 @@ export default function Registration() {
     const isValid = await validateForm();
     if (isValid) {
       setIsSubmitting(true);
-      apiPostNewClient();
+      handleSubmission();
     }
   };
 
@@ -683,6 +702,84 @@ export default function Registration() {
     };
   }
 
+  /// PAYMENT GATEWAY INTEGRATION
+
+  function accountFee() {
+    switch (plan) {
+      case "standard":
+        return 3865;
+      case "professional":
+        return 5950;
+      case "premium":
+        return 16500;
+      case "enterprise":
+        return 25850;
+      default:
+        return 5950;
+    }
+  }
+  const config = {
+    public_key: process.env.REACT_APP_TEST_PAYMENT_KEY,
+    tx_ref: `order-${Date.now()}`,
+    amount: `${accountFee()}`,
+    currency: "NGN",
+    // redirect_url: "http://localhost:3000/create_new_account/queries?page=1",
+    payment_options: "card,mobilemoney,ussd",
+    customer: {
+      email: "user@gmail.com",
+      phone_number: "070********",
+      name: "nana",
+    },
+    customizations: {
+      title: "Universe Inventory",
+      description: "Payment for Universe Inventory Subscription",
+      logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
+    },
+  };
+
+  const handleFlutterPayment = useFlutterwave(config);
+
+  // ❌ REMOVED WRONG AUTO CALL (THIS WAS THE BUG)
+
+  /* handleFlutterPayment({
+  callback: async (response) => {
+    if (
+      response.status === "successful" ||
+      response.status === "completed"
+    ) {
+      await activateSubscription(response);
+    }
+
+    closePaymentModal();
+  },
+
+  onClose: () => {
+    console.log("Payment modal closed");
+  },
+}); */
+
+  // END OF PAYMENT GATEWAY INTEGRATION
+
+  function handleSubmission() {
+    handleFlutterPayment({
+      callback: async (response) => {
+        console.log("Payment response:", response);
+
+        if (
+          response.status === "successful" ||
+          response.status === "completed"
+        ) {
+          await apiPostNewClient();
+        }
+
+        closePaymentModal();
+      },
+
+      onClose: () => {
+        console.log("Payment modal closed");
+      },
+    });
+  }
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -789,7 +886,17 @@ export default function Registration() {
                     <span>Monthly</span>
                   </div>
 
-                  {plan == "standard" && <button>Make the payment</button>}
+                  {plan == "standard" && (
+                    <button
+                      onClick={() => {
+                        document.getElementById("regFormData")?.scrollIntoView({
+                          behavior: "smooth",
+                        });
+                      }}
+                    >
+                      Make the payment
+                    </button>
+                  )}
                 </div>
               </figure>
               <figure
@@ -821,8 +928,17 @@ export default function Registration() {
                     </p>
                     <span>Monthly</span>
                   </div>
-
-                  {plan == "professional" && <button>Make the payment</button>}
+                  {plan == "standard" && (
+                    <button
+                      onClick={() => {
+                        document.getElementById("regFormData")?.scrollIntoView({
+                          behavior: "smooth",
+                        });
+                      }}
+                    >
+                      Make the payment
+                    </button>
+                  )}
                 </div>
               </figure>
               <figure
@@ -855,7 +971,17 @@ export default function Registration() {
                     </p>
                     <span>Monthly</span>
                   </div>
-                  {plan == "premium" && <button>Make the payment</button>}
+                  {plan == "premium" && (
+                    <button
+                      onClick={() => {
+                        document.getElementById("regFormData")?.scrollIntoView({
+                          behavior: "smooth",
+                        });
+                      }}
+                    >
+                      Make the payment
+                    </button>
+                  )}
                 </div>
               </figure>
               <figure
@@ -888,12 +1014,22 @@ export default function Registration() {
                     </p>
                     <span>Monthly</span>
                   </div>
-                  {plan == "enterprise" && <button>Make the payment</button>}
+                  {plan == "enterprise" && (
+                    <button
+                      onClick={() => {
+                        document.getElementById("regFormData")?.scrollIntoView({
+                          behavior: "smooth",
+                        });
+                      }}
+                    >
+                      Make the payment
+                    </button>
+                  )}
                 </div>
               </figure>
             </div>
           </div>
-          <div className="regMainDiv regFormData fx-cl">
+          <div id="regFormData" className="regMainDiv regFormData fx-cl">
             <div className="fx-cl space3">
               <div className=" regStep fx-ac space2">
                 <figure>Step 2</figure> <h3>Select your account plan</h3>
@@ -980,14 +1116,14 @@ export default function Registration() {
                     >
                       <div className="registrantions-page-limit">
                         <button
-                          className="fs5 fx-ac spacem"
+                          className=" fx-ac spacem"
                           onClick={() => setOpenGender(!openGender)}
                         >
                           {registrationData.gender === "male" && (
-                            <Person2Icon style={{ fontSize: "2.8rem" }} />
+                            <Person2Icon style={{ fontSize: "1.8rem" }} />
                           )}
                           {registrationData.gender === "female" && (
-                            <Face4Icon style={{ fontSize: "2.8rem" }} />
+                            <Face4Icon style={{ fontSize: "1.8rem" }} />
                           )}
                           {!registrationData?.gender
                             ? "Select gender ▾"
@@ -1188,6 +1324,8 @@ export default function Registration() {
                   <span>&nbsp;</span>
                   <button
                     className="regbtnSubmit"
+                    // onClick={() => executeValidation()}
+
                     onClick={() => executeValidation()}
                     // disabled={isSubmitting}
                   >

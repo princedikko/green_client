@@ -263,8 +263,8 @@ const productsData = [
   {
     sku: "COLA-COC-001",
     barcode: "6224001234569",
-    qrcode: "1234567890125",
-    name: "Coca-Cola 330ml",
+    qrcode: "",
+    name: "Coca-Cola 35cl",
     brand: "Coca-Cola",
     units: { baseUnit: "bottle", purchaseUnit: "carton", conversionRate: 24 },
     description: "Business laptop",
@@ -275,6 +275,69 @@ const productsData = [
     pricing: {
       costPrice: 200,
       sellingPrice: 250,
+      taxRate: 7.5,
+      currency: "NGN",
+    },
+
+    stock: {
+      quantityAvailable: 200,
+      reorderLevel: 50,
+      reorderQuantity: 100,
+
+      minLevel: 100,
+      sellingQuantity: 1,
+    },
+
+    warehouses: [
+      {
+        warehouseId: "sdr3-1234-sdfg-5678",
+        location: "Aisle 1 - Rack A",
+        quantity: 200,
+      },
+    ],
+
+    batch: {
+      batchTracking: true,
+      expiryTracking: true,
+      trackingMethod: "FEFO",
+      batches: [
+        {
+          batchNo: "CC0124A",
+          costPrice: 180,
+          quantity: 300,
+          manufactureDate: "2024-01-15",
+          expiryDate: "2025-01-15",
+          warehouseId: "sdr3-1234-sdfg-5678",
+        },
+      ],
+    },
+    dimensions: {
+      weight: null,
+      length: null,
+      width: null,
+      height: null,
+    },
+    images: [],
+    trackInventory: true,
+    status: "active",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    sku: "COLA-COC-001",
+    barcode: "42117131",
+    qrcode: "1234567890125",
+    name: "Coca-Cola 35ml",
+    brand: "Coca-Cola",
+    units: { baseUnit: "bottle", purchaseUnit: "carton", conversionRate: 24 },
+    description: "Business laptop",
+    categoryId: "",
+    supplierId: "uac-5678",
+    productType: "inventory",
+
+    pricing: {
+      costPrice: 200,
+      sellingPrice: 300,
       taxRate: 7.5,
       currency: "NGN",
     },
@@ -6105,6 +6168,63 @@ const productsData = [
     pricing: {
       costPrice: 460,
       sellingPrice: 600,
+      taxRate: 7.5,
+      currency: "NGN",
+    },
+
+    stock: {
+      quantityAvailable: 100,
+      reorderLevel: 20,
+      reorderQuantity: 40,
+      minLevel: 50,
+      sellingQuantity: 1,
+    },
+
+    warehouses: [
+      {
+        warehouseId: "sdr3-1234-sdfg-5678",
+        location: "Aisle 2 - Rack P",
+        quantity: 100,
+      },
+    ],
+
+    batch: {
+      batchTracking: true,
+      expiryTracking: true,
+      trackingMethod: "FEFO",
+      batches: [
+        {
+          batchNo: "CH0124H",
+          costPrice: 440,
+          quantity: 160,
+          manufactureDate: "2024-05-13",
+          expiryDate: "2025-12-13",
+          warehouseId: "sdr3-1234-sdfg-5678",
+        },
+      ],
+    },
+    dimensions: { weight: null, length: null, width: null, height: null },
+    images: [],
+    trackInventory: true,
+    status: "active",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    sku: "JUICE-SCSWP-008",
+    barcode: "544900273789",
+    qrcode: "",
+    name: "Schweppes Bitter Lemon 1L",
+    brand: "Schweppes",
+    units: { baseUnit: "bottle", purchaseUnit: "carton", conversionRate: 24 },
+    description: "Business laptop",
+    categoryId: "",
+    supplierId: "uac-5678",
+    productType: "inventory",
+
+    pricing: {
+      costPrice: 460,
+      sellingPrice: 500,
       taxRate: 7.5,
       currency: "NGN",
     },

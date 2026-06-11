@@ -83,7 +83,7 @@ export default function ClientsAccount() {
   const data = useSelector(
     (state) => state.clientFunction?.queue?.clientData?.clientInfo,
   );
-
+  console.log("Client Data: ", data);
   const active_title = useSelector(
     (state) => state.clientFunction?.dashboard?.nav_title,
   );

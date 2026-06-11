@@ -49,12 +49,12 @@ export default function ClientsLogin() {
       .then((response) => {
         clientData = response.data;
         console.log("login response:", response);
-        dispatch(DispatchClientData());
-        if (response?.data.status === 201) {
+        if (response?.data.status === 200) {
           enqueueSnackbar(`Login success!`, {
             variant: "success",
             autoHideDuration: 3000,
           });
+          dispatch(DispatchClientData());
           redirect(`/clients/${response.data?.clientInfo?._id}/account`);
         } else if (response?.data.status === 401) {
           enqueueSnackbar(`${response?.data.message}`, {
